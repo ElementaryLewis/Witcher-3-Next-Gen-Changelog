@@ -1,0 +1,320 @@
+ 1 file changed, 115 insertions(+), 47 deletions(-)
+
+diff --git 1.32/environment/decorations/light_sources/torches/torch_wall_metal.w2ent.txt 4.00/environment/decorations/light_sources/torches/torch_wall_metal.w2ent.txt
+index e2b00f8..175bc70 100644
+--- 1.32/environment/decorations/light_sources/torches/torch_wall_metal.w2ent.txt
++++ 4.00/environment/decorations/light_sources/torches/torch_wall_metal.w2ent.txt
+@@ -25,7 +25,7 @@
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         streamingDataBuffer (SharedDataBuffer)
+-                            Bufferdata (CByteArray) : 1973 bytes
++                            Bufferdata (CByteArray) : 1781 bytes
+                             CStaticMeshComponent #0 (CStaticMeshComponent) : CStaticMeshComponent0
+                                 CStaticMeshComponent (CStaticMeshComponent)
+                                     guid (CGUID) : f6db63f5-6b3b-428b-9739-9c6303689488
+@@ -36,18 +36,17 @@
+                                     graphPositionY (Int16) : 241
+                                     boundingBox (Box)
+                                         Min (Vector)
+-                                            X (Float) : -0.3008
+-                                            Y (Float) : -0.0582
+-                                            Z (Float) : -0.3505
++                                            X (Float) : NAN
++                                            Y (Float) : NAN
++                                            Z (Float) : NAN
+                                             W (Float) : 1.0000
+                                         Max (Vector)
+-                                            X (Float) : 0.0075
+-                                            Y (Float) : 0.0627
+-                                            Z (Float) : 0.3384
++                                            X (Float) : -340282300000000000000000000000000000000.0000
++                                            Y (Float) : -340282300000000000000000000000000000000.0000
++                                            Z (Float) : -340282300000000000000000000000000000000.0000
+                                             W (Float) : 1.0000
+                                     drawableFlags (EDrawableFlags) : DF_IsVisible,DF_CastShadows
+                                     mesh (handle:CMesh) : environment/decorations/light_sources/torches/torch_wall_metal.w2mesh
+-                                unknownBytes (CBytes) : 64 bytes
+                             CDecalComponent #1 (CDecalComponent) : CDecalComponent0
+                                 CDecalComponent (CDecalComponent)
+                                     transform (EngineTransform)
+@@ -68,14 +67,14 @@
+                                     graphPositionY (Int16) : 54
+                                     boundingBox (Box)
+                                         Min (Vector)
+-                                            X (Float) : -0.3126
+-                                            Y (Float) : -0.5711
+-                                            Z (Float) : -0.0016
++                                            X (Float) : NAN
++                                            Y (Float) : NAN
++                                            Z (Float) : NAN
+                                             W (Float) : 1.0000
+                                         Max (Vector)
+-                                            X (Float) : 0.2736
+-                                            Y (Float) : 0.5711
+-                                            Z (Float) : 1.1963
++                                            X (Float) : -340282300000000000000000000000000000000.0000
++                                            Y (Float) : -340282300000000000000000000000000000000.0000
++                                            Z (Float) : -340282300000000000000000000000000000000.0000
+                                             W (Float) : 1.0000
+                                     diffuseTexture (handle:CBitmapTexture) : environment/textures_tileable/decals/burned/burned_circular.xbm
+                                     specularity (Float) : 0.8000
+@@ -84,7 +83,6 @@
+                                         Green (Uint8) : 25
+                                         Blue (Uint8) : 25
+                                         Alpha (Uint8) : 255
+-                                unknownBytes (CBytes) : 64 bytes
+                             CSoundEmitterComponent #2 (CSoundEmitterComponent) : CSoundEmitterComponent
+                                 transform (EngineTransform)
+                                     X (Float) : -0.3000
+@@ -96,7 +94,6 @@
+                                 name (String) : "CSoundEmitterComponent"
+                                 graphPositionX (Int16) : 154
+                                 graphPositionY (Int16) : 175
+-                                unknownBytes (CBytes) : 64 bytes
+                         streamingDistance (Uint8) : 9
+                         name (String) : "PreviewEntity"
+                         Components (array:ptr:CComponent)
+@@ -107,8 +104,9 @@
+                             0 (SEntityBufferType1)
+                                 ComponentName (CName) : 
+                         BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+-                        idTag (IdTag) :  ecd4de47-b2e7-4411-aea9-0d1404d3dbe5
++                        idTag (IdTag) :  2342f185-2639-4f5f-8060-a763ecd9f088
+                         isSaveable (Bool) : false
++                        displayName (LocalizedString) : 1223655
+                 CPointLightComponent #1 (CPointLightComponent) : light1
+                     CPointLightComponent (CPointLightComponent)
+                         transform (EngineTransform)
+@@ -123,6 +121,7 @@
+                         graphPositionY (Int16) : 248
+                         shadowCastingMode (ELightShadowCastingMode) : LSCM_Normal
+                         shadowFadeDistance (Float) : 5.0000
++                        shadowBlendFactor (Float) : 0.8000
+                         radius (Float) : 4.0000
+                         brightness (Float) : 40.0000
+                         color (Color)
+@@ -1037,37 +1036,104 @@
+                 4 (CEntityTemplateCookedEffect)
+                     name (CName) : fire
+                     buffer (SharedDataBuffer)
+-                        Bufferdata (CByteArray) : 2168 bytes
++                        Bufferdata (CByteArray) : 3344 bytes
+                         CFXDefinition #0 (CFXDefinition) : fire
+                             CFXDefinition (CFXDefinition)
+                                 trackGroups (array:ptr:CFXTrackGroup)
+                                     0 (ptr:CFXTrackGroup) : CFXTrackGroup #1
+-                                    1 (ptr:CFXTrackGroup) : CFXTrackGroup #5
++                                    1 (ptr:CFXTrackGroup) : CFXTrackGroup #6
++                                    2 (ptr:CFXTrackGroup) : CFXTrackGroup #10
+                                 length (Float) : 3.4841
+                                 loopStart (Float) : 0.8058
+                                 loopEnd (Float) : 1.1050
+                                 name (CName) : fire
+-                                showDistance (Float) : 35.0000
++                                showDistance (Float) : 60.0000
+                                 isLooped (Bool) : true
+                                 randomStart (Bool) : true
+-                        CFXTrackGroup #1 (CFXTrackGroup) : sounds
++                        CFXTrackGroup #1 (CFXTrackGroup) : flare
+                             CFXTrackGroup (CFXTrackGroup)
+-                                name (String) : "sounds"
++                                name (String) : "flare"
+                                 tracks (array:ptr:CFXTrack)
+                                     0 (ptr:CFXTrack) : CFXTrack #2
+                                 isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 148
++                                    Green (Uint8) : 180
++                                    Blue (Uint8) : 147
++                                    Alpha (Uint8) : 100
++                        CFXTrack #2 (CFXTrack) : flare
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemFlare #3
++                                name (String) : "flare"
++                        CFXTrackItemFlare #3 (CFXTrackItemFlare) : 
++                            CFXTrackItemFlare (CFXTrackItemFlare)
++                                timeDuration (Float) : 6.7466
++                                buffername (CName) : 
++                                count (CDynamicInt) : 1
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 0.4395
++                                        4 (Float) : 0.0000
++                                        5 (Float) : 0.0000
++                                        6 (Float) : 0.0000
++                                        7 (Float) : 0.0000
++                                        8 (Float) : 0.0000
++                                        9 (Float) : 0.0000
++                                        10 (Float) : 0.0000
++                                        11 (Float) : 0.0000
++                                        12 (Float) : 0.0000
++                                        13 (Float) : 0.0000
++                                        14 (Float) : 0.0000
++                                        15 (Float) : 0.0000
++                                material (handle:CMaterialInstance) : CMaterialInstance #4
++                                parameters (SFlareParameters)
++                                    occlusionExtent (Float) : 0.1000
++                                    flareRadius (Float) : 1.2500
++                                    fadeInAccel (Float) : 12.0000
++                                spawner (ptr:IFXSpawner) : CFXSpawnerComponent #5
++                        CMaterialInstance #4 (CMaterialInstance) : 
++                            CMaterialInstance (CMaterialInstance)
++                                baseMaterial (handle:IMaterial) : fx/shaders/flares_fx_mat.w2mg
++                                InstanceParameters (array:CVariantSizeNameType)
++                                    color (Color)
++                                        Red (Uint8) : 255
++                                        Green (Uint8) : 162
++                                        Blue (Uint8) : 127
++                                        Alpha (Uint8) : 255
++                                    blend_far_end (Float) : 50.0000
++                                    blend_far_start (Float) : 30.0000
++                                    color_scale (Float) : 6.0000
++                                    texture (handle:ITexture) : fx/textures/other/dot_glow.xbm
++                        CFXSpawnerComponent #5 (CFXSpawnerComponent) : fx_fire_point
++                            CFXSpawnerComponent (CFXSpawnerComponent)
++                                componentName (CName) : fx_fire_point
++                                attach (Bool) : true
++                                relativePosition (Vector)
++                                    X (Float) : 0.0000
++                                    Y (Float) : 0.0000
++                                    Z (Float) : 0.1750
++                                    W (Float) : 0.0000
++                        CFXTrackGroup #6 (CFXTrackGroup) : sounds
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "sounds"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #7
++                                isExpanded (Bool) : true
+                                 trackGroupColor (Color)
+                                     Red (Uint8) : 145
+                                     Green (Uint8) : 167
+                                     Blue (Uint8) : 218
+                                     Alpha (Uint8) : 100
+-                        CFXTrack #2 (CFXTrack) : sfx
++                        CFXTrack #7 (CFXTrack) : sfx
+                             CFXTrack (CFXTrack)
+                                 trackItems (array:ptr:CFXTrackItem)
+-                                    0 (ptr:CFXTrackItem) : CFXTrackItemSoundEvent #3
+-                                    1 (ptr:CFXTrackItem) : CFXTrackItemSoundEvent #4
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemSoundEvent #8
++                                    1 (ptr:CFXTrackItem) : CFXTrackItemSoundEvent #9
+                                 name (String) : "sfx"
+-                        CFXTrackItemSoundEvent #3 (CFXTrackItemSoundEvent) : 
++                        CFXTrackItemSoundEvent #8 (CFXTrackItemSoundEvent) : 
+                             CFXTrackItemSoundEvent (CFXTrackItemSoundEvent)
+                                 timeBegin (Float) : 0.3400
+                                 buffername (CName) : 
+@@ -1077,7 +1143,7 @@
+                                 soundEventName (StringAnsi) : fx_fire_burning_torch_loop
+                                 isAmbient (Bool) : true
+                                 maxDistance (Float) : 8.0000
+-                        CFXTrackItemSoundEvent #4 (CFXTrackItemSoundEvent) : 
++                        CFXTrackItemSoundEvent #9 (CFXTrackItemSoundEvent) : 
+                             CFXTrackItemSoundEvent (CFXTrackItemSoundEvent)
+                                 timeBegin (Float) : 1.2640
+                                 buffername (CName) : 
+@@ -1086,23 +1152,23 @@
+                                 buffer (CCompressedBuffer:CBufferUInt16:CFloat) : 0
+                                 soundEventName (StringAnsi) : fx_fire_burning_torch_loop_end
+                                 maxDistance (Float) : 8.0000
+-                        CFXTrackGroup #5 (CFXTrackGroup) : particle
++                        CFXTrackGroup #10 (CFXTrackGroup) : particle
+                             CFXTrackGroup (CFXTrackGroup)
+                                 name (String) : "particle"
+                                 tracks (array:ptr:CFXTrack)
+-                                    0 (ptr:CFXTrack) : CFXTrack #6
++                                    0 (ptr:CFXTrack) : CFXTrack #11
+                                 isExpanded (Bool) : true
+                                 trackGroupColor (Color)
+                                     Red (Uint8) : 191
+                                     Green (Uint8) : 210
+                                     Blue (Uint8) : 225
+                                     Alpha (Uint8) : 100
+-                        CFXTrack #6 (CFXTrack) : fire
++                        CFXTrack #11 (CFXTrack) : fire
+                             CFXTrack (CFXTrack)
+                                 trackItems (array:ptr:CFXTrackItem)
+-                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #7
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #12
+                                 name (String) : "fire"
+-                        CFXTrackItemParticles #7 (CFXTrackItemParticles) : Particles
++                        CFXTrackItemParticles #12 (CFXTrackItemParticles) : Particles
+                             CFXTrackItemParticles (CFXTrackItemParticles)
+                                 timeBegin (Float) : 0.0095
+                                 timeDuration (Float) : 3.0945
+@@ -1159,8 +1225,8 @@
+                                         14 (Float) : 0.0000
+                                         15 (Float) : 0.0000
+                                 particleSystem (soft:CParticleSystem) : fx/light_sources/torches/torch_fx1.w2p
+-                                spawner (ptr:IFXSpawner) : CFXSpawnerComponent #8
+-                        CFXSpawnerComponent #8 (CFXSpawnerComponent) : fx_fire_point
++                                spawner (ptr:IFXSpawner) : CFXSpawnerComponent #13
++                        CFXSpawnerComponent #13 (CFXSpawnerComponent) : fx_fire_point
+                             CFXSpawnerComponent (CFXSpawnerComponent)
+                                 componentName (CName) : fx_fire_point
+                                 copyRotation (Bool) : false
+@@ -1186,14 +1252,14 @@
+                         graphPositionY (Int16) : 241
+                         boundingBox (Box)
+                             Min (Vector)
+-                                X (Float) : -0.3008
+-                                Y (Float) : -0.0582
+-                                Z (Float) : -0.3505
++                                X (Float) : NAN
++                                Y (Float) : NAN
++                                Z (Float) : NAN
+                                 W (Float) : 1.0000
+                             Max (Vector)
+-                                X (Float) : 0.0075
+-                                Y (Float) : 0.0627
+-                                Z (Float) : 0.3384
++                                X (Float) : -340282300000000000000000000000000000000.0000
++                                Y (Float) : -340282300000000000000000000000000000000.0000
++                                Z (Float) : -340282300000000000000000000000000000000.0000
+                                 W (Float) : 1.0000
+                         drawableFlags (EDrawableFlags) : DF_IsVisible,DF_CastShadows
+                         mesh (handle:CMesh) : environment/decorations/light_sources/torches/torch_wall_metal.w2mesh
+@@ -1217,14 +1283,14 @@
+                         graphPositionY (Int16) : 54
+                         boundingBox (Box)
+                             Min (Vector)
+-                                X (Float) : -0.3126
+-                                Y (Float) : -0.5711
+-                                Z (Float) : -0.0016
++                                X (Float) : NAN
++                                Y (Float) : NAN
++                                Z (Float) : NAN
+                                 W (Float) : 1.0000
+                             Max (Vector)
+-                                X (Float) : 0.2736
+-                                Y (Float) : 0.5711
+-                                Z (Float) : 1.1963
++                                X (Float) : -340282300000000000000000000000000000000.0000
++                                Y (Float) : -340282300000000000000000000000000000000.0000
++                                Z (Float) : -340282300000000000000000000000000000000.0000
+                                 W (Float) : 1.0000
+                         diffuseTexture (handle:CBitmapTexture) : environment/textures_tileable/decals/burned/burned_circular.xbm
+                         specularity (Float) : 0.8000
+@@ -1253,8 +1319,9 @@
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+-            idTag (IdTag) :  ecd4de47-b2e7-4411-aea9-0d1404d3dbe5
++            idTag (IdTag) :  2342f185-2639-4f5f-8060-a763ecd9f088
+             isSaveable (Bool) : false
++            displayName (LocalizedString) : 1223655
+     CPointLightComponent #2 (CPointLightComponent) : light1
+         CPointLightComponent (CPointLightComponent)
+             transform (EngineTransform)
+@@ -1267,6 +1334,7 @@
+             name (String) : "light1"
+             shadowCastingMode (ELightShadowCastingMode) : LSCM_Normal
+             shadowFadeDistance (Float) : 5.0000
++            shadowBlendFactor (Float) : 0.8000
+             radius (Float) : 4.0000
+             brightness (Float) : 40.0000
+             color (Color)

@@ -1,0 +1,1119 @@
+ 1 file changed, 336 insertions(+), 185 deletions(-)
+
+diff --git 1.32/characters/npc_entities/animals/horse/player_horse.w2ent.txt 4.00/characters/npc_entities/animals/horse/player_horse.w2ent.txt
+index 8d711a2..7a90e80 100644
+--- 1.32/characters/npc_entities/animals/horse/player_horse.w2ent.txt
++++ 4.00/characters/npc_entities/animals/horse/player_horse.w2ent.txt
+@@ -18,12 +18,7 @@
+                         3 (CName) : isInIdle
+                         4 (CName) : panicDamper
+                         5 (CName) : horseActor
+-                2 (SEntityTemplateOverride)
+-                    componentName (CName) : CMimicComponent0
+-                    className (CName) : CMimicComponent
+-                    overriddenProperties (array:CName)
+-                        0 (CName) : skeleton
+-                        1 (CName) : behaviorInstanceSlots
++                        6 (CName) : lookatTicker
+             properOverrides (Bool) : true
+             entityClass (CName) : CNewNPC
+             entityObject (ptr:CEntity) : CNewNPC #1
+@@ -32,20 +27,20 @@
+                     name (CName) : player_horse
+                     voicetag (CName) : ABEL LUPO
+                     appearanceParams (array:ptr:CEntityTemplateParam)
+-                        0 (ptr:CEntityTemplateParam) : CEquipmentDefinition #39
++                        0 (ptr:CEntityTemplateParam) : CEquipmentDefinition #42
+                     includedTemplates (array:handle:CEntityTemplate)
+                         0 (handle:CEntityTemplate) : characters/models/animals/horse/draft/b_01_hd__brown_harness.w2ent
+                 1 (CEntityAppearance)
+                     name (CName) : player_horse_after_q110
+                     appearanceParams (array:ptr:CEntityTemplateParam)
+-                        0 (ptr:CEntityTemplateParam) : CEquipmentDefinition #39
++                        0 (ptr:CEntityTemplateParam) : CEquipmentDefinition #42
+                     includedTemplates (array:handle:CEntityTemplate)
+                         0 (handle:CEntityTemplate) : characters/models/animals/horse/draft/b_01_hd__black_harness_fast.w2ent
+                 2 (CEntityAppearance)
+                     name (CName) : player_horse_mimics
+                     voicetag (CName) : ABEL LUPO
+                     appearanceParams (array:ptr:CEntityTemplateParam)
+-                        0 (ptr:CEntityTemplateParam) : CEquipmentDefinition #39
++                        0 (ptr:CEntityTemplateParam) : CEquipmentDefinition #42
+                     includedTemplates (array:handle:CEntityTemplate)
+                         0 (handle:CEntityTemplate) : characters/models/animals/horse/draft/h_01_horse_mimic.w2ent
+                         1 (handle:CEntityTemplate) : characters/models/animals/horse/draft/b_01_hd__brown_mimic.w2ent
+@@ -53,7 +48,7 @@
+                     name (CName) : player_horse_after_q110_mimics
+                     voicetag (CName) : ABEL LUPO
+                     appearanceParams (array:ptr:CEntityTemplateParam)
+-                        0 (ptr:CEntityTemplateParam) : CEquipmentDefinition #39
++                        0 (ptr:CEntityTemplateParam) : CEquipmentDefinition #42
+                     includedTemplates (array:handle:CEntityTemplate)
+                         0 (handle:CEntityTemplate) : characters/models/animals/horse/draft/b_01_hd__fast_mimic.w2ent
+                         1 (handle:CEntityTemplate) : characters/models/animals/horse/draft/h_02_horse_mimic.w2ent
+@@ -100,21 +95,21 @@
+                     componentName (CName) : Character
+                     boneName (CName) : pelvis
+             templateParams (array:ptr:CEntityTemplateParam)
+-                0 (ptr:CEntityTemplateParam) : CAnimConstraintsParam #43
+-                1 (ptr:CEntityTemplateParam) : CInventoryDefinition #44
+-                2 (ptr:CEntityTemplateParam) : CAIProfile #51
+-                3 (ptr:CEntityTemplateParam) : CAIProfile #52
+-                4 (ptr:CEntityTemplateParam) : CAnimAnimsetsParam #55
+-                5 (ptr:CEntityTemplateParam) : CAnimBehaviorsParam #56
+-                6 (ptr:CEntityTemplateParam) : CCharacterControllerParam #57
+-                7 (ptr:CEntityTemplateParam) : CCharacterStatsParam #58
+-                8 (ptr:CEntityTemplateParam) : CInventoryDefinition #59
+-                9 (ptr:CEntityTemplateParam) : CAIBaseTreeTemplateParam #62
+-                10 (ptr:CEntityTemplateParam) : CAutoEffectsParam #72
+-                11 (ptr:CEntityTemplateParam) : CAttackRangeParam #73
+-                12 (ptr:CEntityTemplateParam) : CMonsterParam #79
+-                13 (ptr:CEntityTemplateParam) : CBuffImmunityParam #80
+-                14 (ptr:CEntityTemplateParam) : CAnimMimicParam #81
++                0 (ptr:CEntityTemplateParam) : CAnimConstraintsParam #46
++                1 (ptr:CEntityTemplateParam) : CInventoryDefinition #47
++                2 (ptr:CEntityTemplateParam) : CAIProfile #54
++                3 (ptr:CEntityTemplateParam) : CAIProfile #55
++                4 (ptr:CEntityTemplateParam) : CAnimAnimsetsParam #58
++                5 (ptr:CEntityTemplateParam) : CAnimBehaviorsParam #59
++                6 (ptr:CEntityTemplateParam) : CCharacterControllerParam #60
++                7 (ptr:CEntityTemplateParam) : CCharacterStatsParam #61
++                8 (ptr:CEntityTemplateParam) : CInventoryDefinition #62
++                9 (ptr:CEntityTemplateParam) : CAIBaseTreeTemplateParam #65
++                10 (ptr:CEntityTemplateParam) : CAutoEffectsParam #75
++                11 (ptr:CEntityTemplateParam) : CAttackRangeParam #76
++                12 (ptr:CEntityTemplateParam) : CMonsterParam #82
++                13 (ptr:CEntityTemplateParam) : CBuffImmunityParam #83
++                14 (ptr:CEntityTemplateParam) : CAnimMimicParam #84
+             flatCompiledData (array:Uint8) : # array:2,0,Uint8
+                 CNewNPC #0 (CNewNPC) : PreviewEntity
+                     CNewNPC (CNewNPC)
+@@ -127,41 +122,44 @@
+                                 4 (CName) : horse
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+-                        streamingDistance (Uint8) : 14
++                        streamingDistance (Uint8) : 21
+                         name (String) : "PreviewEntity"
+                         Components (array:ptr:CComponent)
+                             0 (ptr:CComponent) : CAppearanceComponent #4
+                             1 (ptr:CComponent) : CMovingPhysicalAgentComponent #5
+-                            2 (ptr:CComponent) : W3HorseComponent #27
+-                            3 (ptr:CComponent) : CSoundEmitterComponent #28
+-                            4 (ptr:CComponent) : CInventoryComponent #29
++                            2 (ptr:CComponent) : W3HorseComponent #30
++                            3 (ptr:CComponent) : CSoundEmitterComponent #31
++                            4 (ptr:CComponent) : CInventoryComponent #32
+                             5 (ptr:CComponent) : CDynamicColliderComponent #7
+                             6 (ptr:CComponent) : CDynamicColliderComponent #10
+                             7 (ptr:CComponent) : CDynamicColliderComponent #13
+                             8 (ptr:CComponent) : CDynamicColliderComponent #16
+-                            9 (ptr:CComponent) : CExplorationComponent #30
+-                            10 (ptr:CComponent) : CExplorationComponent #31
+-                            11 (ptr:CComponent) : CExplorationComponent #32
+-                            12 (ptr:CComponent) : CExplorationComponent #33
+-                            13 (ptr:CComponent) : CExplorationComponent #34
++                            9 (ptr:CComponent) : CExplorationComponent #33
++                            10 (ptr:CComponent) : CExplorationComponent #34
++                            11 (ptr:CComponent) : CExplorationComponent #35
++                            12 (ptr:CComponent) : CExplorationComponent #36
++                            13 (ptr:CComponent) : CExplorationComponent #37
+                             14 (ptr:CComponent) : CDynamicColliderComponent #19
+-                            15 (ptr:CComponent) : CInteractionToComponentComponent #35
+-                            16 (ptr:CComponent) : CInteractionComponent #36
++                            15 (ptr:CComponent) : CInteractionToComponentComponent #38
++                            16 (ptr:CComponent) : CInteractionComponent #39
+                             17 (ptr:CComponent) : CPhantomComponent #22
+                             18 (ptr:CComponent) : CPhantomComponent #24
+                             19 (ptr:CComponent) : CPhantomComponent #26
+-                            20 (ptr:CComponent) : CGameplayEffectsComponent #37
++                            20 (ptr:CComponent) : CGameplayEffectsComponent #40
++                            21 (ptr:CComponent) : CDynamicColliderComponent #28
+                         BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                             0 (SEntityBufferType1)
+                                 ComponentName (CName) : 
+                         BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+-                        idTag (IdTag) :  3ce13c18-7b4c-4af6-a607-33f337e5b883
++                        idTag (IdTag) :  cf07d607-c23e-4d01-a8fb-e218e9b627dd
+                         displayName (LocalizedString) : 543164
+                         gameplayFlags (Uint32) : 2
+                         voiceTag (CName) : ABEL LUPO
++                        useHiResShadows (Bool) : true
+                         useAnimationEventFilter (Bool) : true
+                         abilityManager (handle:W3AbilityManager) : W3NonPlayerAbilityManager #1
+                         effectManager (handle:W3EffectManager) : W3EffectManager #3
++                        keepUseHiResShadows (Bool) : true
+                 W3NonPlayerAbilityManager #1 (W3NonPlayerAbilityManager) : 
+                     W3NonPlayerAbilityManager (W3NonPlayerAbilityManager)
+                         statPoints (array:SBaseStat)
+@@ -298,90 +296,95 @@
+                         attachmentReplacements (SAttachmentReplacements)
+                             replacements (array:SAttachmentReplacement)
+                                 0 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CInventoryComponent0_B9C218CF-4BD20513-08A532BF-B53FD8FB
++                                    oldName (CName) : proxy_CInventoryComponent0_16886E98-481EC52B-358FBFAE-145A9DD2
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CInventoryComponent0
+                                     newClass (CName) : CInventoryComponent
+                                 1 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CDynamicColliderComponent0_DED446D7-4F69F625-913BF08B-A80F8BA9
++                                    oldName (CName) : proxy_CDynamicColliderComponent0_8399F10C-41A988C7-F7950EAC-F8FF8063
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CDynamicColliderComponent0
+                                     newClass (CName) : CDynamicColliderComponent
+                                 2 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CDynamicColliderComponent1_F800838E-4FAD2563-E8D9A196-AAE3DC56
++                                    oldName (CName) : proxy_CDynamicColliderComponent1_D1AEE3A2-4ED09AD5-74A13BA2-3E78CAF0
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CDynamicColliderComponent1
+                                     newClass (CName) : CDynamicColliderComponent
+                                 3 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CDynamicColliderComponent2_93AE45E8-4C61596A-971F8D86-824DF55F
++                                    oldName (CName) : proxy_CDynamicColliderComponent2_AB877FEE-4CAC6CE1-72233298-9201D1C2
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CDynamicColliderComponent2
+                                     newClass (CName) : CDynamicColliderComponent
+                                 4 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CDynamicColliderComponent3_2678627B-49D47B68-26EDB6B2-FC8EF444
++                                    oldName (CName) : proxy_CDynamicColliderComponent3_CAE9A46C-458EC7DD-536DDB9F-A581D746
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CDynamicColliderComponent3
+                                     newClass (CName) : CDynamicColliderComponent
+                                 5 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_right_F32CBB31-4CC4A90A-5FC530BF-8A1AFE4A
++                                    oldName (CName) : proxy_right_B2D3B5B6-4C5467EA-BA95459C-B85E52BD
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : right
+                                     newClass (CName) : CExplorationComponent
+                                 6 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_right_front_255C3A01-44526ECD-5F69E088-F6C2071B
++                                    oldName (CName) : proxy_right_front_97B3334C-47005176-F04E4CBB-3D2B5DBE
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : right_front
+                                     newClass (CName) : CExplorationComponent
+                                 7 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_back_AA49B9EC-4889857E-D6E4D2AD-C28D7CD9
++                                    oldName (CName) : proxy_back_ED27766F-4ADAAB65-4EC92BB6-F1C2A970
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : back
+                                     newClass (CName) : CExplorationComponent
+                                 8 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_left_293EDF2F-4EF7249F-3091BA82-7BA93ED2
++                                    oldName (CName) : proxy_left_C1587373-4B3DD9DF-5566E0B8-AD87AD50
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : left
+                                     newClass (CName) : CExplorationComponent
+                                 9 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_left_front_F93E6D8B-41C98113-09DD4EAD-EDCAEE85
++                                    oldName (CName) : proxy_left_front_C2F32223-41ADAA21-F33637BB-E1E996D9
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : left_front
+                                     newClass (CName) : CExplorationComponent
+                                 10 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CDynamicColliderComponent4_2E92B6E8-476B216C-4D0135BC-A6BCBF20
++                                    oldName (CName) : proxy_CDynamicColliderComponent4_270FB44D-479BB7E5-94B9EEB1-303F0104
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CDynamicColliderComponent4
+                                     newClass (CName) : CDynamicColliderComponent
+                                 11 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_horseMount_ED15E5AD-49AE4D67-1D128BBD-34CBD2BB
++                                    oldName (CName) : proxy_horseMount_BC27C7B4-4F8EF4CB-4C887F8B-F4C932F5
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : horseMount
+                                     newClass (CName) : CInteractionToComponentComponent
+                                 12 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_horseFollow_1D63765F-43FDA4A0-B917709A-7A1D8944
++                                    oldName (CName) : proxy_horseFollow_EA6AAF5F-4F6F3A42-E01E3FAB-C83612E3
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : horseFollow
+                                     newClass (CName) : CInteractionComponent
+                                 13 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_ChargeCollider_214397F0-46D76936-B08FC5BF-E5252E62
++                                    oldName (CName) : proxy_ChargeCollider_B5A612C6-48CBC05A-2C976BB8-C788656C
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : ChargeCollider
+                                     newClass (CName) : CPhantomComponent
+                                 14 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_RightSideCollider_87873C28-4BEBCC60-60C9119C-94AD550B
++                                    oldName (CName) : proxy_RightSideCollider_72F1943B-45721F54-D26F21BF-98FE0FE2
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : RightSideCollider
+                                     newClass (CName) : CPhantomComponent
+                                 15 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_LeftSideCollider_B8DA9D3F-463C364A-D9D1DFA9-EEFA40EB
++                                    oldName (CName) : proxy_LeftSideCollider_EA646E39-4844D933-D33BF2AE-F8F67634
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : LeftSideCollider
+                                     newClass (CName) : CPhantomComponent
+                                 16 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CGameplayEffectsComponent0_829FE59F-4A993CF4-2FB0B686-C3B1647A
++                                    oldName (CName) : proxy_CGameplayEffectsComponent0_479309E2-4285A040-A8D94384-C7AD0CF8
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CGameplayEffectsComponent0
+                                     newClass (CName) : CGameplayEffectsComponent
++                                17 (SAttachmentReplacement)
++                                    oldName (CName) : proxy_CDynamicColliderComponent5_7DCC65C9-48E8FA6A-DC276585-7466C8EC
++                                    oldClass (CName) : CExternalProxyComponent
++                                    newName (CName) : CDynamicColliderComponent5
++                                    newClass (CName) : CDynamicColliderComponent
+                         appearanceAttachments (array:SAppearanceAttachments)
+                             0 (SAppearanceAttachments)
+                                 appearance (CName) : player_horse_mimics
+@@ -407,6 +410,7 @@
+                             5 (handle:IAttachment) : CHardAttachment #21
+                             6 (handle:IAttachment) : CHardAttachment #23
+                             7 (handle:IAttachment) : CHardAttachment #25
++                            8 (handle:IAttachment) : CHardAttachment #27
+                         name (String) : "Character"
+                         graphPositionX (Int16) : 1383
+                         graphPositionY (Int16) : 56
+@@ -538,9 +542,9 @@
+                         transform (EngineTransform)
+                             Scale_x (Float) : 2.0000
+                             Scale_y (Float) : 2.0000
+-                            Scale_z (Float) : 1.5000
+-                            X (Float) : 0.7000
+-                            Y (Float) : -0.3000
++                            Scale_z (Float) : 1.1000
++                            X (Float) : 0.5000
++                            Y (Float) : 0.1000
+                             Z (Float) : 0.0000
+                         transformParent (ptr:CHardAttachment) : CHardAttachment #18
+                         guid (CGUID) : 80c21f5a-0bcb-4b5f-bc35-d2983b7794b4
+@@ -548,8 +552,8 @@
+                             0 (handle:IAttachment) : CHardAttachment #18
+                         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         name (String) : "CDynamicColliderComponent4"
+-                        graphPositionX (Int16) : 1281
+-                        graphPositionY (Int16) : 405
++                        graphPositionX (Int16) : 1280
++                        graphPositionY (Int16) : 434
+                         useInWaterNormal (Bool) : false
+                         useInGrassDisplacement (Bool) : true
+                 CSkeletonBoneSlot #20 (CSkeletonBoneSlot) : 
+@@ -639,7 +643,33 @@
+                             Z (Float) : 0.7500
+                             W (Float) : 1.0000
+                         onTriggerEnteredScriptEvent (CName) : OnActorSideCollision
+-                W3HorseComponent #27 (W3HorseComponent) : HorseComponent
++                CHardAttachment #27 (CHardAttachment) : head
++                    CHardAttachment (CHardAttachment)
++                        parent (ptr:CNode) : CMovingPhysicalAgentComponent #5
++                        child (ptr:CNode) : CDynamicColliderComponent #28
++                        parentSlotName (CName) : head
++                        parentSlot (ptr:ISlot) : CSkeletonBoneSlot #29
++                CDynamicColliderComponent #28 (CDynamicColliderComponent) : CDynamicColliderComponent5
++                    CDynamicColliderComponent (CDynamicColliderComponent)
++                        transform (EngineTransform)
++                            Scale_x (Float) : 0.2000
++                            Scale_y (Float) : 0.2000
++                            Scale_z (Float) : 0.2000
++                            X (Float) : -0.0500
++                            Y (Float) : -0.2500
++                            Z (Float) : 0.0000
++                        transformParent (ptr:CHardAttachment) : CHardAttachment #27
++                        guid (CGUID) : b708aea1-02d9-42e2-bc02-9d0772f7bd59
++                        AttachmentsReference (array:handle:IAttachment)
++                            0 (handle:IAttachment) : CHardAttachment #27
++                        AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++                        name (String) : "CDynamicColliderComponent5"
++                        graphPositionX (Int16) : 1495
++                        graphPositionY (Int16) : 428
++                CSkeletonBoneSlot #29 (CSkeletonBoneSlot) : 
++                    CSkeletonBoneSlot (CSkeletonBoneSlot)
++                        boneIndex (Uint32) : 22
++                W3HorseComponent #30 (W3HorseComponent) : HorseComponent
+                     W3HorseComponent (W3HorseComponent)
+                         guid (CGUID) : 030de57a-a3fb-4aed-b597-531eb43f20eb
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -655,7 +685,7 @@
+                                 W (Float) : -90.0000
+                         mainStateName (CName) : HorseRiding
+                         firstSpawn (Bool) : false
+-                CSoundEmitterComponent #28 (CSoundEmitterComponent) : CSoundEmitterComponent
++                CSoundEmitterComponent #31 (CSoundEmitterComponent) : CSoundEmitterComponent
+                     transform (EngineTransform)
+                         X (Float) : 0.0000
+                         Y (Float) : 1.1000
+@@ -666,7 +696,7 @@
+                     name (String) : "CSoundEmitterComponent"
+                     graphPositionX (Int16) : 1885
+                     graphPositionY (Int16) : 467
+-                CInventoryComponent #29 (CInventoryComponent) : CInventoryComponent0
++                CInventoryComponent #32 (CInventoryComponent) : CInventoryComponent0
+                     CInventoryComponent (CInventoryComponent)
+                         guid (CGUID) : 2484e6cd-06ba-4441-b425-bdf596a9b96f
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -675,7 +705,7 @@
+                         graphPositionX (Int16) : 741
+                         graphPositionY (Int16) : 336
+                         turnOffSpawnItemsBudgeting (Bool) : true
+-                CExplorationComponent #30 (CExplorationComponent) : right
++                CExplorationComponent #33 (CExplorationComponent) : right
+                     CExplorationComponent (CExplorationComponent)
+                         transform (EngineTransform)
+                             Pitch (Float) : 0.0000
+@@ -703,7 +733,7 @@
+                             W (Float) : 1.0000
+                         componentForEvents (String) : "vehicle"
+                         internalExploration (Bool) : true
+-                CExplorationComponent #31 (CExplorationComponent) : right_front
++                CExplorationComponent #34 (CExplorationComponent) : right_front
+                     CExplorationComponent (CExplorationComponent)
+                         transform (EngineTransform)
+                             X (Float) : 0.3700
+@@ -727,7 +757,7 @@
+                             W (Float) : 1.0000
+                         componentForEvents (String) : "vehicle"
+                         internalExploration (Bool) : true
+-                CExplorationComponent #32 (CExplorationComponent) : back
++                CExplorationComponent #35 (CExplorationComponent) : back
+                     CExplorationComponent (CExplorationComponent)
+                         transform (EngineTransform)
+                             Pitch (Float) : 0.0000
+@@ -755,7 +785,7 @@
+                             W (Float) : 1.0000
+                         componentForEvents (String) : "vehicle"
+                         internalExploration (Bool) : true
+-                CExplorationComponent #33 (CExplorationComponent) : left
++                CExplorationComponent #36 (CExplorationComponent) : left
+                     CExplorationComponent (CExplorationComponent)
+                         transform (EngineTransform)
+                             Pitch (Float) : 0.0000
+@@ -783,7 +813,7 @@
+                             W (Float) : 1.0000
+                         componentForEvents (String) : "vehicle"
+                         internalExploration (Bool) : true
+-                CExplorationComponent #34 (CExplorationComponent) : left_front
++                CExplorationComponent #37 (CExplorationComponent) : left_front
+                     CExplorationComponent (CExplorationComponent)
+                         transform (EngineTransform)
+                             Pitch (Float) : 0.0000
+@@ -811,7 +841,7 @@
+                             W (Float) : 1.0000
+                         componentForEvents (String) : "vehicle"
+                         internalExploration (Bool) : true
+-                CInteractionToComponentComponent #35 (CInteractionToComponentComponent) : horseMount
++                CInteractionToComponentComponent #38 (CInteractionToComponentComponent) : horseMount
+                     CInteractionToComponentComponent (CInteractionToComponentComponent)
+                         guid (CGUID) : 30c59c47-fcd9-43b8-939d-95d6152b4fc7
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -825,7 +855,7 @@
+                         reportToScript (Bool) : true
+                         isEnabledInCombat (Bool) : true
+                         targetComponentName (String) : "HorseComponent"
+-                CInteractionComponent #36 (CInteractionComponent) : horseFollow
++                CInteractionComponent #39 (CInteractionComponent) : horseFollow
+                     CInteractionComponent (CInteractionComponent)
+                         guid (CGUID) : e2e64f9e-f4e1-4773-aa60-c35da1986c2e
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -839,7 +869,7 @@
+                         actionName (String) : "Follow"
+                         reportToScript (Bool) : true
+                         isEnabledOnHorse (Bool) : true
+-                CGameplayEffectsComponent #37 (CGameplayEffectsComponent) : CGameplayEffectsComponent0
++                CGameplayEffectsComponent #40 (CGameplayEffectsComponent) : CGameplayEffectsComponent0
+                     CGameplayEffectsComponent (CGameplayEffectsComponent)
+                         guid (CGUID) : a93db2f2-1c0d-4475-89f8-28f884040ae5
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -4382,6 +4412,94 @@
+                                 copyRotation (Bool) : false
+                                 attach (Bool) : true
+                                 parentSlotName (CName) : head
++                25 (CEntityTemplateCookedEffect)
++                    name (CName) : water_hit_blood
++                    buffer (SharedDataBuffer)
++                        Bufferdata (CByteArray) : 1495 bytes
++                        CFXDefinition #0 (CFXDefinition) : water_hit_blood
++                            CFXDefinition (CFXDefinition)
++                                trackGroups (array:ptr:CFXTrackGroup)
++                                    0 (ptr:CFXTrackGroup) : CFXTrackGroup #1
++                                length (Float) : 10.8133
++                                loopStart (Float) : 0.1515
++                                loopEnd (Float) : 0.3553
++                                name (CName) : water_hit_blood
++                        CFXTrackGroup #1 (CFXTrackGroup) : fx
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "fx"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #2
++                                isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 163
++                                    Green (Uint8) : 169
++                                    Blue (Uint8) : 167
++                                    Alpha (Uint8) : 100
++                        CFXTrack #2 (CFXTrack) : fx
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #3
++                                name (String) : "fx"
++                        CFXTrackItemParticles #3 (CFXTrackItemParticles) : Particles
++                            CFXTrackItemParticles (CFXTrackItemParticles)
++                                timeBegin (Float) : 0.0002
++                                timeDuration (Float) : 10.5552
++                                buffername (CName) : Particles
++                                count (CDynamicInt) : 3
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    1 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    2 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                particleSystem (soft:CParticleSystem) : fx/blood/standard_hit/water_blood.w2p
++                                spawner (ptr:IFXSpawner) : CFXWaterSpawner #4
++                        CFXWaterSpawner #4 (CFXWaterSpawner) : 
++                            CFXWaterSpawner (CFXWaterSpawner) : <CFXWaterSpawner>CFXWaterSpawner
+             cookedEffectsVersion (Uint32) : 1
+             Unk1 (Uint32) : 0
+     CNewNPC #1 (CNewNPC) : ABEL LUPO
+@@ -4395,40 +4513,43 @@
+                     4 (CName) : horse
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+-            streamingDistance (Uint8) : 14
++            streamingDistance (Uint8) : 21
+             Components (array:ptr:CComponent)
+                 0 (ptr:CComponent) : CAppearanceComponent #5
+                 1 (ptr:CComponent) : CMovingPhysicalAgentComponent #6
+-                2 (ptr:CComponent) : W3HorseComponent #28
+-                3 (ptr:CComponent) : CSoundEmitterComponent #29
+-                4 (ptr:CComponent) : CInventoryComponent #30
++                2 (ptr:CComponent) : W3HorseComponent #31
++                3 (ptr:CComponent) : CSoundEmitterComponent #32
++                4 (ptr:CComponent) : CInventoryComponent #33
+                 5 (ptr:CComponent) : CDynamicColliderComponent #8
+                 6 (ptr:CComponent) : CDynamicColliderComponent #11
+                 7 (ptr:CComponent) : CDynamicColliderComponent #14
+                 8 (ptr:CComponent) : CDynamicColliderComponent #17
+-                9 (ptr:CComponent) : CExplorationComponent #31
+-                10 (ptr:CComponent) : CExplorationComponent #32
+-                11 (ptr:CComponent) : CExplorationComponent #33
+-                12 (ptr:CComponent) : CExplorationComponent #34
+-                13 (ptr:CComponent) : CExplorationComponent #35
++                9 (ptr:CComponent) : CExplorationComponent #34
++                10 (ptr:CComponent) : CExplorationComponent #35
++                11 (ptr:CComponent) : CExplorationComponent #36
++                12 (ptr:CComponent) : CExplorationComponent #37
++                13 (ptr:CComponent) : CExplorationComponent #38
+                 14 (ptr:CComponent) : CDynamicColliderComponent #20
+-                15 (ptr:CComponent) : CInteractionToComponentComponent #36
+-                16 (ptr:CComponent) : CInteractionComponent #37
++                15 (ptr:CComponent) : CInteractionToComponentComponent #39
++                16 (ptr:CComponent) : CInteractionComponent #40
+                 17 (ptr:CComponent) : CPhantomComponent #23
+                 18 (ptr:CComponent) : CPhantomComponent #25
+                 19 (ptr:CComponent) : CPhantomComponent #27
+-                20 (ptr:CComponent) : CGameplayEffectsComponent #38
++                20 (ptr:CComponent) : CGameplayEffectsComponent #41
++                21 (ptr:CComponent) : CDynamicColliderComponent #29
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+-            idTag (IdTag) :  3ce13c18-7b4c-4af6-a607-33f337e5b883
++            idTag (IdTag) :  cf07d607-c23e-4d01-a8fb-e218e9b627dd
+             displayName (LocalizedString) : 543164
+             gameplayFlags (Uint32) : 2
+             voiceTag (CName) : ABEL LUPO
++            useHiResShadows (Bool) : true
+             useAnimationEventFilter (Bool) : true
+             abilityManager (handle:W3AbilityManager) : W3NonPlayerAbilityManager #2
+             effectManager (handle:W3EffectManager) : W3EffectManager #4
++            keepUseHiResShadows (Bool) : true
+     W3NonPlayerAbilityManager #2 (W3NonPlayerAbilityManager) : 
+         W3NonPlayerAbilityManager (W3NonPlayerAbilityManager)
+             statPoints (array:SBaseStat)
+@@ -4563,90 +4684,95 @@
+             attachmentReplacements (SAttachmentReplacements)
+                 replacements (array:SAttachmentReplacement)
+                     0 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CInventoryComponent0_B9C218CF-4BD20513-08A532BF-B53FD8FB
++                        oldName (CName) : proxy_CInventoryComponent0_16886E98-481EC52B-358FBFAE-145A9DD2
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CInventoryComponent0
+                         newClass (CName) : CInventoryComponent
+                     1 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CDynamicColliderComponent0_DED446D7-4F69F625-913BF08B-A80F8BA9
++                        oldName (CName) : proxy_CDynamicColliderComponent0_8399F10C-41A988C7-F7950EAC-F8FF8063
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CDynamicColliderComponent0
+                         newClass (CName) : CDynamicColliderComponent
+                     2 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CDynamicColliderComponent1_F800838E-4FAD2563-E8D9A196-AAE3DC56
++                        oldName (CName) : proxy_CDynamicColliderComponent1_D1AEE3A2-4ED09AD5-74A13BA2-3E78CAF0
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CDynamicColliderComponent1
+                         newClass (CName) : CDynamicColliderComponent
+                     3 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CDynamicColliderComponent2_93AE45E8-4C61596A-971F8D86-824DF55F
++                        oldName (CName) : proxy_CDynamicColliderComponent2_AB877FEE-4CAC6CE1-72233298-9201D1C2
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CDynamicColliderComponent2
+                         newClass (CName) : CDynamicColliderComponent
+                     4 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CDynamicColliderComponent3_2678627B-49D47B68-26EDB6B2-FC8EF444
++                        oldName (CName) : proxy_CDynamicColliderComponent3_CAE9A46C-458EC7DD-536DDB9F-A581D746
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CDynamicColliderComponent3
+                         newClass (CName) : CDynamicColliderComponent
+                     5 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_right_F32CBB31-4CC4A90A-5FC530BF-8A1AFE4A
++                        oldName (CName) : proxy_right_B2D3B5B6-4C5467EA-BA95459C-B85E52BD
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : right
+                         newClass (CName) : CExplorationComponent
+                     6 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_right_front_255C3A01-44526ECD-5F69E088-F6C2071B
++                        oldName (CName) : proxy_right_front_97B3334C-47005176-F04E4CBB-3D2B5DBE
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : right_front
+                         newClass (CName) : CExplorationComponent
+                     7 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_back_AA49B9EC-4889857E-D6E4D2AD-C28D7CD9
++                        oldName (CName) : proxy_back_ED27766F-4ADAAB65-4EC92BB6-F1C2A970
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : back
+                         newClass (CName) : CExplorationComponent
+                     8 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_left_293EDF2F-4EF7249F-3091BA82-7BA93ED2
++                        oldName (CName) : proxy_left_C1587373-4B3DD9DF-5566E0B8-AD87AD50
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : left
+                         newClass (CName) : CExplorationComponent
+                     9 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_left_front_F93E6D8B-41C98113-09DD4EAD-EDCAEE85
++                        oldName (CName) : proxy_left_front_C2F32223-41ADAA21-F33637BB-E1E996D9
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : left_front
+                         newClass (CName) : CExplorationComponent
+                     10 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CDynamicColliderComponent4_2E92B6E8-476B216C-4D0135BC-A6BCBF20
++                        oldName (CName) : proxy_CDynamicColliderComponent4_270FB44D-479BB7E5-94B9EEB1-303F0104
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CDynamicColliderComponent4
+                         newClass (CName) : CDynamicColliderComponent
+                     11 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_horseMount_ED15E5AD-49AE4D67-1D128BBD-34CBD2BB
++                        oldName (CName) : proxy_horseMount_BC27C7B4-4F8EF4CB-4C887F8B-F4C932F5
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : horseMount
+                         newClass (CName) : CInteractionToComponentComponent
+                     12 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_horseFollow_1D63765F-43FDA4A0-B917709A-7A1D8944
++                        oldName (CName) : proxy_horseFollow_EA6AAF5F-4F6F3A42-E01E3FAB-C83612E3
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : horseFollow
+                         newClass (CName) : CInteractionComponent
+                     13 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_ChargeCollider_214397F0-46D76936-B08FC5BF-E5252E62
++                        oldName (CName) : proxy_ChargeCollider_B5A612C6-48CBC05A-2C976BB8-C788656C
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : ChargeCollider
+                         newClass (CName) : CPhantomComponent
+                     14 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_RightSideCollider_87873C28-4BEBCC60-60C9119C-94AD550B
++                        oldName (CName) : proxy_RightSideCollider_72F1943B-45721F54-D26F21BF-98FE0FE2
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : RightSideCollider
+                         newClass (CName) : CPhantomComponent
+                     15 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_LeftSideCollider_B8DA9D3F-463C364A-D9D1DFA9-EEFA40EB
++                        oldName (CName) : proxy_LeftSideCollider_EA646E39-4844D933-D33BF2AE-F8F67634
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : LeftSideCollider
+                         newClass (CName) : CPhantomComponent
+                     16 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CGameplayEffectsComponent0_829FE59F-4A993CF4-2FB0B686-C3B1647A
++                        oldName (CName) : proxy_CGameplayEffectsComponent0_479309E2-4285A040-A8D94384-C7AD0CF8
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CGameplayEffectsComponent0
+                         newClass (CName) : CGameplayEffectsComponent
++                    17 (SAttachmentReplacement)
++                        oldName (CName) : proxy_CDynamicColliderComponent5_7DCC65C9-48E8FA6A-DC276585-7466C8EC
++                        oldClass (CName) : CExternalProxyComponent
++                        newName (CName) : CDynamicColliderComponent5
++                        newClass (CName) : CDynamicColliderComponent
+             appearanceAttachments (array:SAppearanceAttachments)
+                 0 (SAppearanceAttachments)
+                     appearance (CName) : player_horse_mimics
+@@ -4672,6 +4798,7 @@
+                 5 (handle:IAttachment) : CHardAttachment #22
+                 6 (handle:IAttachment) : CHardAttachment #24
+                 7 (handle:IAttachment) : CHardAttachment #26
++                8 (handle:IAttachment) : CHardAttachment #28
+             name (String) : "Character"
+             ragdoll (handle:CRagdoll) : characters/base_entities/horse_base/horse_ragdoll.w2ragdoll
+             skeleton (handle:CSkeleton) : characters/base_entities/horse_base/horse_base.w2rig
+@@ -4793,9 +4920,9 @@
+             transform (EngineTransform)
+                 Scale_x (Float) : 2.0000
+                 Scale_y (Float) : 2.0000
+-                Scale_z (Float) : 1.5000
+-                X (Float) : 0.7000
+-                Y (Float) : -0.3000
++                Scale_z (Float) : 1.1000
++                X (Float) : 0.5000
++                Y (Float) : 0.1000
+                 Z (Float) : 0.0000
+             transformParent (ptr:CHardAttachment) : CHardAttachment #19
+             guid (CGUID) : 80c21f5a-0bcb-4b5f-bc35-d2983b7794b4
+@@ -4886,7 +5013,31 @@
+                 Z (Float) : 0.7500
+                 W (Float) : 1.0000
+             onTriggerEnteredScriptEvent (CName) : OnActorSideCollision
+-    W3HorseComponent #28 (W3HorseComponent) : HorseComponent
++    CHardAttachment #28 (CHardAttachment) : head
++        CHardAttachment (CHardAttachment)
++            parent (ptr:CNode) : CMovingPhysicalAgentComponent #6
++            child (ptr:CNode) : CDynamicColliderComponent #29
++            parentSlotName (CName) : head
++            parentSlot (ptr:ISlot) : CSkeletonBoneSlot #30
++    CDynamicColliderComponent #29 (CDynamicColliderComponent) : CDynamicColliderComponent5
++        CDynamicColliderComponent (CDynamicColliderComponent)
++            transform (EngineTransform)
++                Scale_x (Float) : 0.2000
++                Scale_y (Float) : 0.2000
++                Scale_z (Float) : 0.2000
++                X (Float) : -0.0500
++                Y (Float) : -0.2500
++                Z (Float) : 0.0000
++            transformParent (ptr:CHardAttachment) : CHardAttachment #28
++            guid (CGUID) : b708aea1-02d9-42e2-bc02-9d0772f7bd59
++            AttachmentsReference (array:handle:IAttachment)
++                0 (handle:IAttachment) : CHardAttachment #28
++            AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++            name (String) : "CDynamicColliderComponent5"
++    CSkeletonBoneSlot #30 (CSkeletonBoneSlot) : 
++        CSkeletonBoneSlot (CSkeletonBoneSlot)
++            boneIndex (Uint32) : 22
++    W3HorseComponent #31 (W3HorseComponent) : HorseComponent
+         W3HorseComponent (W3HorseComponent)
+             guid (CGUID) : 030de57a-a3fb-4aed-b597-531eb43f20eb
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -4900,7 +5051,7 @@
+                     W (Float) : -90.0000
+             mainStateName (CName) : HorseRiding
+             firstSpawn (Bool) : false
+-    CSoundEmitterComponent #29 (CSoundEmitterComponent) : CSoundEmitterComponent
++    CSoundEmitterComponent #32 (CSoundEmitterComponent) : CSoundEmitterComponent
+         transform (EngineTransform)
+             X (Float) : 0.0000
+             Y (Float) : 1.1000
+@@ -4909,14 +5060,14 @@
+         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+         name (String) : "CSoundEmitterComponent"
+-    CInventoryComponent #30 (CInventoryComponent) : CInventoryComponent0
++    CInventoryComponent #33 (CInventoryComponent) : CInventoryComponent0
+         CInventoryComponent (CInventoryComponent)
+             guid (CGUID) : 2484e6cd-06ba-4441-b425-bdf596a9b96f
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "CInventoryComponent0"
+             turnOffSpawnItemsBudgeting (Bool) : true
+-    CExplorationComponent #31 (CExplorationComponent) : right
++    CExplorationComponent #34 (CExplorationComponent) : right
+         CExplorationComponent (CExplorationComponent)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -4942,7 +5093,7 @@
+                 W (Float) : 1.0000
+             componentForEvents (String) : "vehicle"
+             internalExploration (Bool) : true
+-    CExplorationComponent #32 (CExplorationComponent) : right_front
++    CExplorationComponent #35 (CExplorationComponent) : right_front
+         CExplorationComponent (CExplorationComponent)
+             transform (EngineTransform)
+                 X (Float) : 0.3700
+@@ -4965,7 +5116,7 @@
+                 W (Float) : 1.0000
+             componentForEvents (String) : "vehicle"
+             internalExploration (Bool) : true
+-    CExplorationComponent #33 (CExplorationComponent) : back
++    CExplorationComponent #36 (CExplorationComponent) : back
+         CExplorationComponent (CExplorationComponent)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -4991,7 +5142,7 @@
+                 W (Float) : 1.0000
+             componentForEvents (String) : "vehicle"
+             internalExploration (Bool) : true
+-    CExplorationComponent #34 (CExplorationComponent) : left
++    CExplorationComponent #37 (CExplorationComponent) : left
+         CExplorationComponent (CExplorationComponent)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -5017,7 +5168,7 @@
+                 W (Float) : 1.0000
+             componentForEvents (String) : "vehicle"
+             internalExploration (Bool) : true
+-    CExplorationComponent #35 (CExplorationComponent) : left_front
++    CExplorationComponent #38 (CExplorationComponent) : left_front
+         CExplorationComponent (CExplorationComponent)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -5043,7 +5194,7 @@
+                 W (Float) : 1.0000
+             componentForEvents (String) : "vehicle"
+             internalExploration (Bool) : true
+-    CInteractionToComponentComponent #36 (CInteractionToComponentComponent) : horseMount
++    CInteractionToComponentComponent #39 (CInteractionToComponentComponent) : horseMount
+         CInteractionToComponentComponent (CInteractionToComponentComponent)
+             guid (CGUID) : 30c59c47-fcd9-43b8-939d-95d6152b4fc7
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -5055,7 +5206,7 @@
+             reportToScript (Bool) : true
+             isEnabledInCombat (Bool) : true
+             targetComponentName (String) : "HorseComponent"
+-    CInteractionComponent #37 (CInteractionComponent) : horseFollow
++    CInteractionComponent #40 (CInteractionComponent) : horseFollow
+         CInteractionComponent (CInteractionComponent)
+             guid (CGUID) : e2e64f9e-f4e1-4773-aa60-c35da1986c2e
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -5067,93 +5218,93 @@
+             actionName (String) : "Follow"
+             reportToScript (Bool) : true
+             isEnabledOnHorse (Bool) : true
+-    CGameplayEffectsComponent #38 (CGameplayEffectsComponent) : CGameplayEffectsComponent0
++    CGameplayEffectsComponent #41 (CGameplayEffectsComponent) : CGameplayEffectsComponent0
+         CGameplayEffectsComponent (CGameplayEffectsComponent)
+             guid (CGUID) : a93db2f2-1c0d-4475-89f8-28f884040ae5
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "CGameplayEffectsComponent0"
+-    CEquipmentDefinition #39 (CEquipmentDefinition) : 
++    CEquipmentDefinition #42 (CEquipmentDefinition) : 
+         CEquipmentDefinition (CEquipmentDefinition)
+             entries (array:ptr:CEquipmentDefinitionEntry)
+-                0 (ptr:CEquipmentDefinitionEntry) : CEquipmentDefinitionEntry #40
+-                1 (ptr:CEquipmentDefinitionEntry) : CEquipmentDefinitionEntry #41
+-                2 (ptr:CEquipmentDefinitionEntry) : CEquipmentDefinitionEntry #42
+-    CEquipmentDefinitionEntry #40 (CEquipmentDefinitionEntry) : horse_saddle
++                0 (ptr:CEquipmentDefinitionEntry) : CEquipmentDefinitionEntry #43
++                1 (ptr:CEquipmentDefinitionEntry) : CEquipmentDefinitionEntry #44
++                2 (ptr:CEquipmentDefinitionEntry) : CEquipmentDefinitionEntry #45
++    CEquipmentDefinitionEntry #43 (CEquipmentDefinitionEntry) : horse_saddle
+         CEquipmentDefinitionEntry (CEquipmentDefinitionEntry)
+             category (CName) : horse_saddle
+             defaultItemName (CName) : Horse Saddle 0
+-    CEquipmentDefinitionEntry #41 (CEquipmentDefinitionEntry) : horse_hair
++    CEquipmentDefinitionEntry #44 (CEquipmentDefinitionEntry) : horse_hair
+         CEquipmentDefinitionEntry (CEquipmentDefinitionEntry)
+             category (CName) : horse_hair
+             defaultItemName (CName) : Horse Hair 0
+-    CEquipmentDefinitionEntry #42 (CEquipmentDefinitionEntry) : horse_tail
++    CEquipmentDefinitionEntry #45 (CEquipmentDefinitionEntry) : horse_tail
+         CEquipmentDefinitionEntry (CEquipmentDefinitionEntry)
+             category (CName) : horse_tail
+             defaultItemName (CName) : Horse apex tail
+-    CAnimConstraintsParam #43 (CAnimConstraintsParam) : 
++    CAnimConstraintsParam #46 (CAnimConstraintsParam) : 
+         CAnimConstraintsParam (CAnimConstraintsParam)
+             graph (handle:CBehaviorGraph) : gameplay/behaviors/animals/behaviorgraph/horse_constraints.w2beh
+-    CInventoryDefinition #44 (CInventoryDefinition) : 
++    CInventoryDefinition #47 (CInventoryDefinition) : 
+         CInventoryDefinition (CInventoryDefinition)
+             entries (array:ptr:CInventoryDefinitionEntry)
+-                0 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #45
+-                1 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #47
+-                2 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #49
+-    CInventoryDefinitionEntry #45 (CInventoryDefinitionEntry) : horse_reins
++                0 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #48
++                1 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #50
++                2 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #52
++    CInventoryDefinitionEntry #48 (CInventoryDefinitionEntry) : horse_reins
+         CInventoryDefinitionEntry (CInventoryDefinitionEntry)
+             category (CName) : horse_reins
+             isMount (Bool) : true
+-            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #46
+-    CInventoryInitializerUniform #46 (CInventoryInitializerUniform) : Horse Universal Reins
++            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #49
++    CInventoryInitializerUniform #49 (CInventoryInitializerUniform) : Horse Universal Reins
+         CInventoryInitializerUniform (CInventoryInitializerUniform)
+             itemName (CName) : Horse Universal Reins
+-    CInventoryDefinitionEntry #47 (CInventoryDefinitionEntry) : horse_tail
++    CInventoryDefinitionEntry #50 (CInventoryDefinitionEntry) : horse_tail
+         CInventoryDefinitionEntry (CInventoryDefinitionEntry)
+             category (CName) : horse_tail
+             isMount (Bool) : true
+             isLootable (Bool) : false
+-            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #48
+-    CInventoryInitializerUniform #48 (CInventoryInitializerUniform) : Horse apex tail
++            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #51
++    CInventoryInitializerUniform #51 (CInventoryInitializerUniform) : Horse apex tail
+         CInventoryInitializerUniform (CInventoryInitializerUniform)
+             itemName (CName) : Horse apex tail
+-    CInventoryDefinitionEntry #49 (CInventoryDefinitionEntry) : horse_saddle
++    CInventoryDefinitionEntry #52 (CInventoryDefinitionEntry) : horse_saddle
+         CInventoryDefinitionEntry (CInventoryDefinitionEntry)
+             category (CName) : horse_saddle
+-            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #50
+-    CInventoryInitializerUniform #50 (CInventoryInitializerUniform) : Horse Saddle 1
++            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #53
++    CInventoryInitializerUniform #53 (CInventoryInitializerUniform) : Horse Saddle 1
+         CInventoryInitializerUniform (CInventoryInitializerUniform)
+             itemName (CName) : Horse Saddle 1
+-    CAIProfile #51 (CAIProfile) : player
++    CAIProfile #54 (CAIProfile) : player
+         CAIProfile (CAIProfile)
+             attitudeGroup (CName) : player
+-    CAIProfile #52 (CAIProfile) : animals
++    CAIProfile #55 (CAIProfile) : animals
+         CAIProfile (CAIProfile)
+             wasIncluded (Bool) : true
+-            senseVisionParams (ptr:CAISenseParams) : CAISenseParams #53
+-            senseAbsoluteParams (ptr:CAISenseParams) : CAISenseParams #54
++            senseVisionParams (ptr:CAISenseParams) : CAISenseParams #56
++            senseAbsoluteParams (ptr:CAISenseParams) : CAISenseParams #57
+             attitudeGroup (CName) : animals
+-    CAISenseParams #53 (CAISenseParams) : 
++    CAISenseParams #56 (CAISenseParams) : 
+         CAISenseParams (CAISenseParams)
+             rangeMax (Float) : 15.0000
+             rangeAngle (Float) : 300.0000
+             height (Float) : 4.0000
+             detectOnlyHostiles (Bool) : false
+-    CAISenseParams #54 (CAISenseParams) : 
++    CAISenseParams #57 (CAISenseParams) : 
+         CAISenseParams (CAISenseParams)
+             rangeMax (Float) : 3.0000
+             rangeAngle (Float) : 360.0000
+             height (Float) : 4.0000
+             testLOS (Bool) : false
+             detectOnlyHostiles (Bool) : false
+-    CAnimAnimsetsParam #55 (CAnimAnimsetsParam) : horse_vehicle_base
++    CAnimAnimsetsParam #58 (CAnimAnimsetsParam) : horse_vehicle_base
+         CAnimAnimsetsParam (CAnimAnimsetsParam)
+             wasIncluded (Bool) : true
+             name (String) : "horse_vehicle_base"
+             componentName (String) : "Character"
+             animationSets (array:handle:CSkeletalAnimationSet)
+                 0 (handle:CSkeletalAnimationSet) : animations/interaction/horse_draft/horse_draft.w2anims
+-    CAnimBehaviorsParam #56 (CAnimBehaviorsParam) : horse_vehicle_base
++    CAnimBehaviorsParam #59 (CAnimBehaviorsParam) : horse_vehicle_base
+         CAnimBehaviorsParam (CAnimBehaviorsParam)
+             wasIncluded (Bool) : true
+             name (String) : "horse_vehicle_base"
+@@ -5171,7 +5322,7 @@
+                 3 (SBehaviorGraphInstanceSlot)
+                     instanceName (CName) : Cutscene
+                     graph (handle:CBehaviorGraph) : gameplay/behaviors/cutscene_graph.w2beh
+-    CCharacterControllerParam #57 (CCharacterControllerParam) : horse_vehicle_base_cc
++    CCharacterControllerParam #60 (CCharacterControllerParam) : horse_vehicle_base_cc
+         CCharacterControllerParam (CCharacterControllerParam)
+             wasIncluded (Bool) : true
+             name (String) : "horse_vehicle_base_cc"
+@@ -5280,93 +5431,93 @@
+                         W (Float) : 0.0000
+                     height (Float) : 1.6000
+                     radius (Float) : 0.4000
+-    CCharacterStatsParam #58 (CCharacterStatsParam) : horse_character_stats
++    CCharacterStatsParam #61 (CCharacterStatsParam) : horse_character_stats
+         CCharacterStatsParam (CCharacterStatsParam)
+             wasIncluded (Bool) : true
+             name (String) : "horse_character_stats"
+             abilities (array:CName)
+                 0 (CName) : HorseLevel1
+                 1 (CName) : horse_charging
+-    CInventoryDefinition #59 (CInventoryDefinition) : 
++    CInventoryDefinition #62 (CInventoryDefinition) : 
+         CInventoryDefinition (CInventoryDefinition)
+             wasIncluded (Bool) : true
+             entries (array:ptr:CInventoryDefinitionEntry)
+-                0 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #60
+-    CInventoryDefinitionEntry #60 (CInventoryDefinitionEntry) : monster_weapon
++                0 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #63
++    CInventoryDefinitionEntry #63 (CInventoryDefinitionEntry) : monster_weapon
+         CInventoryDefinitionEntry (CInventoryDefinitionEntry)
+             category (CName) : monster_weapon
+             isLootable (Bool) : false
+-            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #61
+-    CInventoryInitializerUniform #61 (CInventoryInitializerUniform) : mon_horse_weapon
++            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #64
++    CInventoryInitializerUniform #64 (CInventoryInitializerUniform) : mon_horse_weapon
+         CInventoryInitializerUniform (CInventoryInitializerUniform)
+             itemName (CName) : mon_horse_weapon
+-    CAIBaseTreeTemplateParam #62 (CAIBaseTreeTemplateParam) : 
++    CAIBaseTreeTemplateParam #65 (CAIBaseTreeTemplateParam) : 
+         CAIBaseTreeTemplateParam (CAIBaseTreeTemplateParam)
+             wasIncluded (Bool) : true
+-            aiBaseTree (handle:CAIBaseTree) : CAIAnimalBase #63
+-    CAIAnimalBase #63 (CAIAnimalBase) : 
++            aiBaseTree (handle:CAIBaseTree) : CAIAnimalBase #66
++    CAIAnimalBase #66 (CAIAnimalBase) : 
+         CAIAnimalBase (CAIAnimalBase)
+             tree (handle:CBehTree) : gameplay/trees/animal_base.w2behtree
+-            params (handle:CAIAnimalDefaults) : CAIHorseDefaults #64
+-    CAIHorseDefaults #64 (CAIHorseDefaults) : 
++            params (handle:CAIAnimalDefaults) : CAIHorseDefaults #67
++    CAIHorseDefaults #67 (CAIHorseDefaults) : 
+         CAIHorseDefaults (CAIHorseDefaults)
+-            combatTree (handle:CAIAnimalCombat) : CAIAnimalCombatHorse #65
+-            idleDecoratorTree (handle:CAIMonsterIdleDecorator) : CHorseIdleDecoratorTree #67
+-            charmedTree (handle:CAIAnimalCharmed) : CAIHorseCharmed #69
+-            deathTree (handle:CAIAnimalDeath) : CAIAnimalDeath #70
+-    CAIAnimalCombatHorse #65 (CAIAnimalCombatHorse) : 
++            combatTree (handle:CAIAnimalCombat) : CAIAnimalCombatHorse #68
++            idleDecoratorTree (handle:CAIMonsterIdleDecorator) : CHorseIdleDecoratorTree #70
++            charmedTree (handle:CAIAnimalCharmed) : CAIHorseCharmed #72
++            deathTree (handle:CAIAnimalDeath) : CAIAnimalDeath #73
++    CAIAnimalCombatHorse #68 (CAIAnimalCombatHorse) : 
+         CAIAnimalCombatHorse (CAIAnimalCombatHorse)
+             tree (handle:CBehTree) : gameplay/trees/combat/horse_combat.w2behtree
+-            shakeRiderTree (handle:CAIHorseShakeRider) : CAIHorseShakeRider #66
+-    CAIHorseShakeRider #66 (CAIHorseShakeRider) : 
++            shakeRiderTree (handle:CAIHorseShakeRider) : CAIHorseShakeRider #69
++    CAIHorseShakeRider #69 (CAIHorseShakeRider) : 
+         CAIHorseShakeRider (CAIHorseShakeRider)
+             tree (handle:CBehTree) : gameplay/trees/combat/horse_shake_rider.w2behtree
+-    CHorseIdleDecoratorTree #67 (CHorseIdleDecoratorTree) : 
++    CHorseIdleDecoratorTree #70 (CHorseIdleDecoratorTree) : 
+         CHorseIdleDecoratorTree (CHorseIdleDecoratorTree)
+             tree (handle:CBehTree) : gameplay/trees/idle/horse_idle_decorator.w2behtree
+-            actionPointSelector (handle:CHorseParkingActionPointSelector) : CHorseParkingActionPointSelector #68
+-    CHorseParkingActionPointSelector #68 (CHorseParkingActionPointSelector) : 
++            actionPointSelector (handle:CHorseParkingActionPointSelector) : CHorseParkingActionPointSelector #71
++    CHorseParkingActionPointSelector #71 (CHorseParkingActionPointSelector) : 
+         CHorseParkingActionPointSelector (CHorseParkingActionPointSelector)
+-    CAIHorseCharmed #69 (CAIHorseCharmed) : 
++    CAIHorseCharmed #72 (CAIHorseCharmed) : 
+         CAIHorseCharmed (CAIHorseCharmed)
+             tree (handle:CBehTree) : gameplay/trees/idle/animal_charmed_idle.w2behtree
+             charmedGotoDistance (Float) : 5.0000
+-    CAIAnimalDeath #70 (CAIAnimalDeath) : 
++    CAIAnimalDeath #73 (CAIAnimalDeath) : 
+         CAIAnimalDeath (CAIAnimalDeath)
+             tree (handle:CBehTree) : gameplay/trees/death/death.w2behtree
+-            params (handle:CAINpcDeathParams) : CAIAnimalDeathParams #71
+-    CAIAnimalDeathParams #71 (CAIAnimalDeathParams) : 
++            params (handle:CAINpcDeathParams) : CAIAnimalDeathParams #74
++    CAIAnimalDeathParams #74 (CAIAnimalDeathParams) : 
+         CAIAnimalDeathParams (CAIAnimalDeathParams)
+-    CAutoEffectsParam #72 (CAutoEffectsParam) : horse_gameplay_effects
++    CAutoEffectsParam #75 (CAutoEffectsParam) : horse_gameplay_effects
+         CAutoEffectsParam (CAutoEffectsParam)
+             wasIncluded (Bool) : true
+             name (String) : "horse_gameplay_effects"
+             autoEffects (array:CName)
+                 0 (CName) : AutoStaminaRegen
+                 1 (CName) : AutoPanicRegen
+-    CAttackRangeParam #73 (CAttackRangeParam) : horse_attack_ranges
++    CAttackRangeParam #76 (CAttackRangeParam) : horse_attack_ranges
+         CAttackRangeParam (CAttackRangeParam)
+             wasIncluded (Bool) : true
+             name (String) : "horse_attack_ranges"
+             attackRanges (array:ptr:CAIAttackRange)
+-                0 (ptr:CAIAttackRange) : CConeAttackRange #74
+-                1 (ptr:CAIAttackRange) : CConeAttackRange #75
+-                2 (ptr:CAIAttackRange) : CConeAttackRange #76
+-                3 (ptr:CAIAttackRange) : CConeAttackRange #77
+-                4 (ptr:CAIAttackRange) : CConeAttackRange #78
+-    CConeAttackRange #74 (CConeAttackRange) : rearing
++                0 (ptr:CAIAttackRange) : CConeAttackRange #77
++                1 (ptr:CAIAttackRange) : CConeAttackRange #78
++                2 (ptr:CAIAttackRange) : CConeAttackRange #79
++                3 (ptr:CAIAttackRange) : CConeAttackRange #80
++                4 (ptr:CAIAttackRange) : CConeAttackRange #81
++    CConeAttackRange #77 (CConeAttackRange) : rearing
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : rearing
+             rangeMax (Float) : 2.0000
+             height (Float) : 2.0000
+             rangeAngle (Float) : 30.0000
+-    CConeAttackRange #75 (CConeAttackRange) : kick
++    CConeAttackRange #78 (CConeAttackRange) : kick
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : kick
+             rangeMax (Float) : 3.0000
+             angleOffset (Float) : 180.0000
+             rangeAngle (Float) : 90.0000
+-    CConeAttackRange #76 (CConeAttackRange) : riderAttack
++    CConeAttackRange #79 (CConeAttackRange) : riderAttack
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : riderAttack
+             rangeMax (Float) : 2.2000
+@@ -5378,7 +5529,7 @@
+                 W (Float) : 1.0000
+             checkLineOfSight (Bool) : true
+             rangeAngle (Float) : 240.0000
+-    CConeAttackRange #77 (CConeAttackRange) : horse_right
++    CConeAttackRange #80 (CConeAttackRange) : horse_right
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : horse_right
+             rangeMax (Float) : 1.5000
+@@ -5390,7 +5541,7 @@
+                 W (Float) : 1.0000
+             checkLineOfSight (Bool) : true
+             rangeAngle (Float) : 90.0000
+-    CConeAttackRange #78 (CConeAttackRange) : horse_left
++    CConeAttackRange #81 (CConeAttackRange) : horse_left
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : horse_left
+             rangeMax (Float) : 2.0000
+@@ -5400,18 +5551,18 @@
+                 Y (Float) : 0.7000
+                 Z (Float) : 0.0000
+                 W (Float) : 1.0000
+-    CMonsterParam #79 (CMonsterParam) : monster_params
++    CMonsterParam #82 (CMonsterParam) : monster_params
+         CMonsterParam (CMonsterParam)
+             wasIncluded (Bool) : true
+             name (String) : "monster_params"
+             monsterCategory (Int32) : 14
+-    CBuffImmunityParam #80 (CBuffImmunityParam) : immunities
++    CBuffImmunityParam #83 (CBuffImmunityParam) : immunities
+         CBuffImmunityParam (CBuffImmunityParam)
+             wasIncluded (Bool) : true
+             name (String) : "immunities"
+             immunityTo (array:Int32)
+                 0 (Int32) : 53
+-    CAnimMimicParam #81 (CAnimMimicParam) : 
++    CAnimMimicParam #84 (CAnimMimicParam) : 
+         CAnimMimicParam (CAnimMimicParam)
+             wasIncluded (Bool) : true
+             behaviorInstanceSlots (array:SBehaviorGraphInstanceSlot)

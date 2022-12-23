@@ -1,0 +1,879 @@
+ 1 file changed, 255 insertions(+), 178 deletions(-)
+
+diff --git 1.32/characters/base_entities/woman_base/player_base_w/player_base_w.w2ent.txt 4.00/characters/base_entities/woman_base/player_base_w/player_base_w.w2ent.txt
+index f03150a..efe1f1f 100644
+--- 1.32/characters/base_entities/woman_base/player_base_w/player_base_w.w2ent.txt
++++ 4.00/characters/base_entities/woman_base/player_base_w/player_base_w.w2ent.txt
+@@ -14,6 +14,11 @@
+                     overriddenProperties (array:CName)
+                         0 (CName) : blendOutFromRain
+                 2 (SEntityTemplateOverride)
++                    componentName (CName) : grassCollider
++                    className (CName) : CDynamicColliderComponent
++                    overriddenProperties (array:CName)
++                        0 (CName) : transform
++                3 (SEntityTemplateOverride)
+                     componentName (CName) : CSoundEmitterComponent0
+                     className (CName) : CSoundEmitterComponent
+                     overriddenProperties (array:CName)
+@@ -112,22 +117,22 @@
+                         Y (Float) : -0.5500
+                         Z (Float) : 0.1000
+             templateParams (array:ptr:CEntityTemplateParam)
+-                0 (ptr:CEntityTemplateParam) : CAnimAnimsetsParam #36
+-                1 (ptr:CEntityTemplateParam) : CAnimBehaviorsParam #37
+-                2 (ptr:CEntityTemplateParam) : CAIBaseTreeTemplateParam #38
+-                3 (ptr:CEntityTemplateParam) : CAnimBehaviorsParam #40
+-                4 (ptr:CEntityTemplateParam) : CAnimConstraintsParam #41
+-                5 (ptr:CEntityTemplateParam) : CAnimMimicParam #42
+-                6 (ptr:CEntityTemplateParam) : CMonsterParam #43
+-                7 (ptr:CEntityTemplateParam) : CAnimAnimsetsParam #44
+-                8 (ptr:CEntityTemplateParam) : CAnimGlobalParam #45
+-                9 (ptr:CEntityTemplateParam) : CCharacterControllerParam #46
++                0 (ptr:CEntityTemplateParam) : CAnimAnimsetsParam #40
++                1 (ptr:CEntityTemplateParam) : CAnimBehaviorsParam #41
++                2 (ptr:CEntityTemplateParam) : CAIBaseTreeTemplateParam #42
++                3 (ptr:CEntityTemplateParam) : CAnimBehaviorsParam #44
++                4 (ptr:CEntityTemplateParam) : CAnimConstraintsParam #45
++                5 (ptr:CEntityTemplateParam) : CAnimMimicParam #46
++                6 (ptr:CEntityTemplateParam) : CMonsterParam #47
++                7 (ptr:CEntityTemplateParam) : CAnimAnimsetsParam #48
++                8 (ptr:CEntityTemplateParam) : CAnimGlobalParam #49
++                9 (ptr:CEntityTemplateParam) : CCharacterControllerParam #50
+             flatCompiledData (array:Uint8) : # array:2,0,Uint8
+                 CActor #0 (CActor) : PreviewEntity
+                     CActor (CActor)
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+-                        streamingDistance (Uint8) : 6
++                        streamingDistance (Uint8) : 9
+                         entityStaticFlags (EEntityStaticFlags) : 
+                         name (String) : "PreviewEntity"
+                         Components (array:ptr:CComponent)
+@@ -135,20 +140,22 @@
+                             1 (ptr:CComponent) : CAnimatedComponent #3
+                             2 (ptr:CComponent) : CMeshComponent #6
+                             3 (ptr:CComponent) : CMeshComponent #8
+-                            4 (ptr:CComponent) : CWetnessComponent #17
+-                            5 (ptr:CComponent) : CSoundEmitterComponent #18
++                            4 (ptr:CComponent) : CWetnessComponent #20
++                            5 (ptr:CComponent) : CDynamicColliderComponent #21
+                             6 (ptr:CComponent) : CDynamicColliderComponent #10
+-                            7 (ptr:CComponent) : CReactionSceneActorComponent #19
+-                            8 (ptr:CComponent) : CMeshComponent #13
+-                            9 (ptr:CComponent) : CR4HumanoidCombatComponent #20
+-                            10 (ptr:CComponent) : CEffectDummyComponent #15
+-                            11 (ptr:CComponent) : CGameplayEffectsComponent #21
+-                            12 (ptr:CComponent) : CDropPhysicsComponent #22
++                            7 (ptr:CComponent) : CDynamicColliderComponent #13
++                            8 (ptr:CComponent) : CSoundEmitterComponent #22
++                            9 (ptr:CComponent) : CReactionSceneActorComponent #23
++                            10 (ptr:CComponent) : CMeshComponent #16
++                            11 (ptr:CComponent) : CR4HumanoidCombatComponent #24
++                            12 (ptr:CComponent) : CEffectDummyComponent #18
++                            13 (ptr:CComponent) : CGameplayEffectsComponent #25
++                            14 (ptr:CComponent) : CDropPhysicsComponent #26
+                         BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                             0 (SEntityBufferType1)
+                                 ComponentName (CName) : 
+                         BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+-                        idTag (IdTag) :  2e84b024-7eb9-46b9-b4c2-c7f6cd031df9
++                        idTag (IdTag) :  ea9ef50b-4086-4cc1-a787-4d39754d0e01
+                         displayName (LocalizedString) : 163765
+                 CMovingPhysicalAgentComponent #1 (CMovingPhysicalAgentComponent) : woman_base
+                     CMovingPhysicalAgentComponent (CMovingPhysicalAgentComponent)
+@@ -159,8 +166,9 @@
+                             1 (handle:IAttachment) : CMeshSkinningAttachment #5
+                             2 (handle:IAttachment) : CMeshSkinningAttachment #7
+                             3 (handle:IAttachment) : CHardAttachment #9
+-                            4 (handle:IAttachment) : CMeshSkinningAttachment #12
+-                            5 (handle:IAttachment) : CHardAttachment #14
++                            4 (handle:IAttachment) : CHardAttachment #12
++                            5 (handle:IAttachment) : CMeshSkinningAttachment #15
++                            6 (handle:IAttachment) : CHardAttachment #17
+                         name (String) : "woman_base"
+                         graphPositionX (Int16) : 402
+                         graphPositionY (Int16) : -43
+@@ -252,93 +260,128 @@
+                         drawableFlags (EDrawableFlags) : DF_CastShadows,DF_CastShadowsWhenNotVisible,DF_IsCharacterShadowFallback
+                         lightChannels (ELightChannel) : LC_Characters
+                         mesh (handle:CMesh) : characters/models/common/shadowmesh/woman_average_shadowmesh.w2mesh
+-                CHardAttachment #9 (CHardAttachment) : pelvis
++                CHardAttachment #9 (CHardAttachment) : r_foot
+                     CHardAttachment (CHardAttachment)
+                         parent (ptr:CNode) : CMovingPhysicalAgentComponent #1
+                         child (ptr:CNode) : CDynamicColliderComponent #10
+-                        parentSlotName (CName) : pelvis
++                        parentSlotName (CName) : r_foot
+                         parentSlot (ptr:ISlot) : CSkeletonBoneSlot #11
+-                CDynamicColliderComponent #10 (CDynamicColliderComponent) : grassCollider
++                CDynamicColliderComponent #10 (CDynamicColliderComponent) : grassCollider2
+                     CDynamicColliderComponent (CDynamicColliderComponent)
+                         transform (EngineTransform)
+-                            Scale_x (Float) : 1.0000
+-                            Scale_y (Float) : 1.8000
+-                            Scale_z (Float) : 1.0000
+-                            X (Float) : 0.0000
+-                            Y (Float) : 0.2000
+-                            Z (Float) : 0.0000
++                            Pitch (Float) : 2.7961
++                            Yaw (Float) : 358.9303
++                            Roll (Float) : 30.5175
++                            Scale_x (Float) : 0.8700
++                            Scale_y (Float) : 0.8700
++                            Scale_z (Float) : 0.8000
+                         transformParent (ptr:CHardAttachment) : CHardAttachment #9
+-                        guid (CGUID) : 95333a45-e35c-4fdc-848c-4f42a176796d
++                        guid (CGUID) : f1c131f7-9c3c-4273-a768-e71b1edcb981
+                         AttachmentsReference (array:handle:IAttachment)
+                             0 (handle:IAttachment) : CHardAttachment #9
+                         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+-                        name (String) : "grassCollider"
+-                        graphPositionX (Int16) : 459
+-                        graphPositionY (Int16) : 74
++                        name (String) : "grassCollider2"
++                        graphPositionX (Int16) : 893
++                        graphPositionY (Int16) : 199
+                         useInWaterNormal (Bool) : false
+                         useInGrassDisplacement (Bool) : true
+                 CSkeletonBoneSlot #11 (CSkeletonBoneSlot) : 
+                     CSkeletonBoneSlot (CSkeletonBoneSlot)
+-                        boneIndex (Uint32) : 9
+-                CMeshSkinningAttachment #12 (CMeshSkinningAttachment) : 
++                        boneIndex (Uint32) : 20
++                CHardAttachment #12 (CHardAttachment) : l_foot
++                    CHardAttachment (CHardAttachment)
++                        parent (ptr:CNode) : CMovingPhysicalAgentComponent #1
++                        child (ptr:CNode) : CDynamicColliderComponent #13
++                        parentSlotName (CName) : l_foot
++                        parentSlot (ptr:ISlot) : CSkeletonBoneSlot #14
++                CDynamicColliderComponent #13 (CDynamicColliderComponent) : grassCollider3
++                    CDynamicColliderComponent (CDynamicColliderComponent)
++                        transform (EngineTransform)
++                            Pitch (Float) : 2.7961
++                            Yaw (Float) : 358.9300
++                            Roll (Float) : 30.5175
++                            Scale_x (Float) : 0.8700
++                            Scale_y (Float) : 0.8700
++                            Scale_z (Float) : 0.8000
++                        transformParent (ptr:CHardAttachment) : CHardAttachment #12
++                        guid (CGUID) : f80e6efc-6540-40d8-952d-fae8317b8265
++                        AttachmentsReference (array:handle:IAttachment)
++                            0 (handle:IAttachment) : CHardAttachment #12
++                        AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++                        name (String) : "grassCollider3"
++                        graphPositionX (Int16) : 1009
++                        graphPositionY (Int16) : 195
++                        useInWaterNormal (Bool) : false
++                        useInGrassDisplacement (Bool) : true
++                CSkeletonBoneSlot #14 (CSkeletonBoneSlot) : 
++                    CSkeletonBoneSlot (CSkeletonBoneSlot)
++                        boneIndex (Uint32) : 17
++                CMeshSkinningAttachment #15 (CMeshSkinningAttachment) : 
+                     CMeshSkinningAttachment (CMeshSkinningAttachment)
+                         parent (ptr:CNode) : CMovingPhysicalAgentComponent #1
+-                        child (ptr:CNode) : CMeshComponent #13
+-                CMeshComponent #13 (CMeshComponent) : h_wa__neck_transition
++                        child (ptr:CNode) : CMeshComponent #16
++                CMeshComponent #16 (CMeshComponent) : h_wa__neck_transition
+                     CMeshComponent (CMeshComponent)
+-                        transformParent (ptr:CHardAttachment) : CMeshSkinningAttachment #12
++                        transformParent (ptr:CHardAttachment) : CMeshSkinningAttachment #15
+                         guid (CGUID) : 0be76069-b7ca-4155-a401-4429c4cbb0d7
+                         AttachmentsReference (array:handle:IAttachment)
+-                            0 (handle:IAttachment) : CMeshSkinningAttachment #12
++                            0 (handle:IAttachment) : CMeshSkinningAttachment #15
+                         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         name (String) : "h_wa__neck_transition"
+                         isStreamed (Bool) : false
+                         graphPositionX (Int16) : 245
+                         graphPositionY (Int16) : 28
+-                        boundingBox (Box)
+-                            Min (Vector)
+-                                X (Float) : 340282300000000000000000000000000000000.0000
+-                                Y (Float) : 340282300000000000000000000000000000000.0000
+-                                Z (Float) : 340282300000000000000000000000000000000.0000
+-                                W (Float) : 1.0000
+-                            Max (Vector)
+-                                X (Float) : NAN
+-                                Y (Float) : NAN
+-                                Z (Float) : NAN
+-                                W (Float) : 1.0000
+                         lightChannels (ELightChannel) : LC_Characters
+                         mesh (handle:CMesh) : characters/models/common/woman_average/body/model/h_wa__neck_transition.w2mesh
+-                CHardAttachment #14 (CHardAttachment) : torso2
++                CHardAttachment #17 (CHardAttachment) : torso2
+                     CHardAttachment (CHardAttachment)
+                         parent (ptr:CNode) : CMovingPhysicalAgentComponent #1
+-                        child (ptr:CNode) : CEffectDummyComponent #15
++                        child (ptr:CNode) : CEffectDummyComponent #18
+                         parentSlotName (CName) : torso2
+-                        parentSlot (ptr:ISlot) : CSkeletonBoneSlot #16
+-                CEffectDummyComponent #15 (CEffectDummyComponent) : torso3effect
++                        parentSlot (ptr:ISlot) : CSkeletonBoneSlot #19
++                CEffectDummyComponent #18 (CEffectDummyComponent) : torso3effect
+                     CEffectDummyComponent (CEffectDummyComponent)
+                         transform (EngineTransform)
+                             Pitch (Float) : 270.0039
+                             Yaw (Float) : 9.0660
+                             Roll (Float) : 359.9941
+-                        transformParent (ptr:CHardAttachment) : CHardAttachment #14
++                        transformParent (ptr:CHardAttachment) : CHardAttachment #17
+                         guid (CGUID) : 91f573ac-b8ad-4763-8819-2e6e71618fda
+                         AttachmentsReference (array:handle:IAttachment)
+-                            0 (handle:IAttachment) : CHardAttachment #14
++                            0 (handle:IAttachment) : CHardAttachment #17
+                         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         name (String) : "torso3effect"
+                         graphPositionX (Int16) : 638
+                         graphPositionY (Int16) : -85
+-                CSkeletonBoneSlot #16 (CSkeletonBoneSlot) : 
++                CSkeletonBoneSlot #19 (CSkeletonBoneSlot) : 
+                     CSkeletonBoneSlot (CSkeletonBoneSlot)
+                         boneIndex (Uint32) : 11
+-                CWetnessComponent #17 (CWetnessComponent) : wetness
++                CWetnessComponent #20 (CWetnessComponent) : wetness
+                     CWetnessComponent (CWetnessComponent)
+                         guid (CGUID) : 3a890a32-8275-4c11-9bac-fc40917642d5
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         name (String) : "wetness"
+                         blendOutFromRain (Float) : 30.0000
+-                CSoundEmitterComponent #18 (CSoundEmitterComponent) : CSoundEmitterComponent0
++                CDynamicColliderComponent #21 (CDynamicColliderComponent) : grassCollider
++                    CDynamicColliderComponent (CDynamicColliderComponent)
++                        transform (EngineTransform)
++                            Scale_x (Float) : 1.1000
++                            Scale_y (Float) : 1.2000
++                            Scale_z (Float) : 1.1000
++                            X (Float) : 0.0000
++                            Y (Float) : -0.5000
++                            Z (Float) : 0.0000
++                        transformParent (ptr:CHardAttachment) : NULL
++                        guid (CGUID) : 95333a45-e35c-4fdc-848c-4f42a176796d
++                        AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++                        AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++                        name (String) : "grassCollider"
++                        graphPositionX (Int16) : 459
++                        graphPositionY (Int16) : 74
++                        useInWaterNormal (Bool) : false
++                        useInGrassDisplacement (Bool) : true
++                CSoundEmitterComponent #22 (CSoundEmitterComponent) : CSoundEmitterComponent0
+                     CSoundEmitterComponent (CSoundEmitterComponent)
+                         guid (CGUID) : 38cd20b6-cc17-4844-986b-135fb978e4bd
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -352,7 +395,7 @@
+                             1 (StringAnsi) : set_entity_name_ciri
+                             2 (StringAnsi) : 
+                         maxDistance (Float) : 32.0000
+-                CReactionSceneActorComponent #19 (CReactionSceneActorComponent) : CReactionSceneActorComponent0
++                CReactionSceneActorComponent #23 (CReactionSceneActorComponent) : CReactionSceneActorComponent0
+                     CReactionSceneActorComponent (CReactionSceneActorComponent)
+                         guid (CGUID) : 99106ae5-cea7-4df3-9453-e34e2a97da41
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -361,7 +404,7 @@
+                         graphPositionX (Int16) : 62
+                         graphPositionY (Int16) : -58
+                         cooldownInterval (Float) : 30.0000
+-                CR4HumanoidCombatComponent #20 (CR4HumanoidCombatComponent) : CR4HumanoidCombatComponent0
++                CR4HumanoidCombatComponent #24 (CR4HumanoidCombatComponent) : CR4HumanoidCombatComponent0
+                     CR4HumanoidCombatComponent (CR4HumanoidCombatComponent)
+                         guid (CGUID) : e8b177f7-6230-4b64-a3cd-e0f91ee79a2f
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -369,7 +412,7 @@
+                         name (String) : "CR4HumanoidCombatComponent0"
+                         graphPositionX (Int16) : 633
+                         graphPositionY (Int16) : 13
+-                CGameplayEffectsComponent #21 (CGameplayEffectsComponent) : CGameplayEffectsComponent0
++                CGameplayEffectsComponent #25 (CGameplayEffectsComponent) : CGameplayEffectsComponent0
+                     CGameplayEffectsComponent (CGameplayEffectsComponent)
+                         guid (CGUID) : 9ab690a1-b1b7-41d7-9b93-5d3de2ef898c
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -377,7 +420,7 @@
+                         name (String) : "CGameplayEffectsComponent0"
+                         graphPositionX (Int16) : 63
+                         graphPositionY (Int16) : 178
+-                CDropPhysicsComponent #22 (CDropPhysicsComponent) : CDropPhysicsComponent0
++                CDropPhysicsComponent #26 (CDropPhysicsComponent) : CDropPhysicsComponent0
+                     CDropPhysicsComponent (CDropPhysicsComponent)
+                         guid (CGUID) : 15bd5a1c-1d52-4df2-b349-acb67af6e890
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -386,19 +429,19 @@
+                         graphPositionX (Int16) : 108
+                         graphPositionY (Int16) : -263
+                         dropSetups (array:handle:CDropPhysicsSetup)
+-                            0 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #23
+-                            1 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #24
+-                            2 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #25
+-                            3 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #26
+-                            4 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #27
+-                            5 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #28
+-                            6 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #29
+-                            7 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #30
+-                            8 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #31
+-                            9 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #32
+-                            10 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #33
+-                            11 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #34
+-                CDropPhysicsSetup #23 (CDropPhysicsSetup) : head
++                            0 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #27
++                            1 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #28
++                            2 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #29
++                            3 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #30
++                            4 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #31
++                            5 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #32
++                            6 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #33
++                            7 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #34
++                            8 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #35
++                            9 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #36
++                            10 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #37
++                            11 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #38
++                CDropPhysicsSetup #27 (CDropPhysicsSetup) : head
+                     CDropPhysicsSetup (CDropPhysicsSetup)
+                         name (CName) : head
+                         curves (array:SDropPhysicsCurves)
+@@ -896,7 +939,7 @@
+                                     rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     hasInitialParentTransform (Bool) : true
+-                CDropPhysicsSetup #24 (CDropPhysicsSetup) : torso_left
++                CDropPhysicsSetup #28 (CDropPhysicsSetup) : torso_left
+                     CDropPhysicsSetup (CDropPhysicsSetup)
+                         name (CName) : torso_left
+                         curves (array:SDropPhysicsCurves)
+@@ -1137,7 +1180,7 @@
+                                     rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     hasInitialParentTransform (Bool) : true
+-                CDropPhysicsSetup #25 (CDropPhysicsSetup) : torso_right
++                CDropPhysicsSetup #29 (CDropPhysicsSetup) : torso_right
+                     CDropPhysicsSetup (CDropPhysicsSetup)
+                         name (CName) : torso_right
+                         curves (array:SDropPhysicsCurves)
+@@ -1380,7 +1423,7 @@
+                                     rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     hasInitialParentTransform (Bool) : true
+-                CDropPhysicsSetup #26 (CDropPhysicsSetup) : arm_right
++                CDropPhysicsSetup #30 (CDropPhysicsSetup) : arm_right
+                     CDropPhysicsSetup (CDropPhysicsSetup)
+                         name (CName) : arm_right
+                         curves (array:SDropPhysicsCurves)
+@@ -1620,7 +1663,7 @@
+                                     rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     hasInitialParentTransform (Bool) : true
+-                CDropPhysicsSetup #27 (CDropPhysicsSetup) : arm_left
++                CDropPhysicsSetup #31 (CDropPhysicsSetup) : arm_left
+                     CDropPhysicsSetup (CDropPhysicsSetup)
+                         name (CName) : arm_left
+                         curves (array:SDropPhysicsCurves)
+@@ -1861,7 +1904,7 @@
+                                     rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     hasInitialParentTransform (Bool) : true
+-                CDropPhysicsSetup #28 (CDropPhysicsSetup) : leg_left
++                CDropPhysicsSetup #32 (CDropPhysicsSetup) : leg_left
+                     CDropPhysicsSetup (CDropPhysicsSetup)
+                         name (CName) : leg_left
+                         curves (array:SDropPhysicsCurves)
+@@ -2115,7 +2158,7 @@
+                                     rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     hasInitialParentTransform (Bool) : true
+-                CDropPhysicsSetup #29 (CDropPhysicsSetup) : leg_right
++                CDropPhysicsSetup #33 (CDropPhysicsSetup) : leg_right
+                     CDropPhysicsSetup (CDropPhysicsSetup)
+                         name (CName) : leg_right
+                         curves (array:SDropPhysicsCurves)
+@@ -2370,7 +2413,7 @@
+                                     rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     hasInitialParentTransform (Bool) : true
+-                CDropPhysicsSetup #30 (CDropPhysicsSetup) : Explode_head
++                CDropPhysicsSetup #34 (CDropPhysicsSetup) : Explode_head
+                     CDropPhysicsSetup (CDropPhysicsSetup)
+                         name (CName) : Explode_head
+                         curves (array:SDropPhysicsCurves)
+@@ -2621,7 +2664,7 @@
+                                     rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     hasInitialParentTransform (Bool) : true
+-                CDropPhysicsSetup #31 (CDropPhysicsSetup) : Explode_left_torso
++                CDropPhysicsSetup #35 (CDropPhysicsSetup) : Explode_left_torso
+                     CDropPhysicsSetup (CDropPhysicsSetup)
+                         name (CName) : Explode_left_torso
+                         curves (array:SDropPhysicsCurves)
+@@ -2862,7 +2905,7 @@
+                                     rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     hasInitialParentTransform (Bool) : true
+-                CDropPhysicsSetup #32 (CDropPhysicsSetup) : Explode_right_torso
++                CDropPhysicsSetup #36 (CDropPhysicsSetup) : Explode_right_torso
+                     CDropPhysicsSetup (CDropPhysicsSetup)
+                         name (CName) : Explode_right_torso
+                         curves (array:SDropPhysicsCurves)
+@@ -3102,7 +3145,7 @@
+                                     rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     hasInitialParentTransform (Bool) : true
+-                CDropPhysicsSetup #33 (CDropPhysicsSetup) : Explode_right_arm
++                CDropPhysicsSetup #37 (CDropPhysicsSetup) : Explode_right_arm
+                     CDropPhysicsSetup (CDropPhysicsSetup)
+                         name (CName) : Explode_right_arm
+                         curves (array:SDropPhysicsCurves)
+@@ -3342,7 +3385,7 @@
+                                     rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                                     hasInitialParentTransform (Bool) : true
+-                CDropPhysicsSetup #34 (CDropPhysicsSetup) : Explode_left_arm
++                CDropPhysicsSetup #38 (CDropPhysicsSetup) : Explode_left_arm
+                     CDropPhysicsSetup (CDropPhysicsSetup)
+                         name (CName) : Explode_left_arm
+                         curves (array:SDropPhysicsCurves)
+@@ -7623,27 +7666,29 @@
+         CActor (CActor)
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+-            streamingDistance (Uint8) : 6
++            streamingDistance (Uint8) : 9
+             entityStaticFlags (EEntityStaticFlags) : 
+             Components (array:ptr:CComponent)
+                 0 (ptr:CComponent) : CMovingPhysicalAgentComponent #2
+                 1 (ptr:CComponent) : CAnimatedComponent #4
+                 2 (ptr:CComponent) : CMeshComponent #7
+                 3 (ptr:CComponent) : CMeshComponent #9
+-                4 (ptr:CComponent) : CWetnessComponent #18
+-                5 (ptr:CComponent) : CSoundEmitterComponent #19
++                4 (ptr:CComponent) : CWetnessComponent #21
++                5 (ptr:CComponent) : CDynamicColliderComponent #22
+                 6 (ptr:CComponent) : CDynamicColliderComponent #11
+-                7 (ptr:CComponent) : CReactionSceneActorComponent #20
+-                8 (ptr:CComponent) : CMeshComponent #14
+-                9 (ptr:CComponent) : CR4HumanoidCombatComponent #21
+-                10 (ptr:CComponent) : CEffectDummyComponent #16
+-                11 (ptr:CComponent) : CGameplayEffectsComponent #22
+-                12 (ptr:CComponent) : CDropPhysicsComponent #23
++                7 (ptr:CComponent) : CDynamicColliderComponent #14
++                8 (ptr:CComponent) : CSoundEmitterComponent #23
++                9 (ptr:CComponent) : CReactionSceneActorComponent #24
++                10 (ptr:CComponent) : CMeshComponent #17
++                11 (ptr:CComponent) : CR4HumanoidCombatComponent #25
++                12 (ptr:CComponent) : CEffectDummyComponent #19
++                13 (ptr:CComponent) : CGameplayEffectsComponent #26
++                14 (ptr:CComponent) : CDropPhysicsComponent #27
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+-            idTag (IdTag) :  2e84b024-7eb9-46b9-b4c2-c7f6cd031df9
++            idTag (IdTag) :  ea9ef50b-4086-4cc1-a787-4d39754d0e01
+             displayName (LocalizedString) : 163765
+     CMovingPhysicalAgentComponent #2 (CMovingPhysicalAgentComponent) : woman_base
+         CMovingPhysicalAgentComponent (CMovingPhysicalAgentComponent)
+@@ -7654,8 +7699,9 @@
+                 1 (handle:IAttachment) : CMeshSkinningAttachment #6
+                 2 (handle:IAttachment) : CMeshSkinningAttachment #8
+                 3 (handle:IAttachment) : CHardAttachment #10
+-                4 (handle:IAttachment) : CMeshSkinningAttachment #13
+-                5 (handle:IAttachment) : CHardAttachment #15
++                4 (handle:IAttachment) : CHardAttachment #13
++                5 (handle:IAttachment) : CMeshSkinningAttachment #16
++                6 (handle:IAttachment) : CHardAttachment #18
+             name (String) : "woman_base"
+             ragdoll (handle:CRagdoll) : characters/base_entities/woman_base/woman_base_ragdoll.w2ragdoll
+             skeleton (handle:CSkeleton) : characters/base_entities/woman_base/woman_base.w2rig
+@@ -7739,87 +7785,118 @@
+             drawableFlags (EDrawableFlags) : DF_CastShadows,DF_CastShadowsWhenNotVisible,DF_IsCharacterShadowFallback
+             lightChannels (ELightChannel) : LC_Characters
+             mesh (handle:CMesh) : characters/models/common/shadowmesh/woman_average_shadowmesh.w2mesh
+-    CHardAttachment #10 (CHardAttachment) : pelvis
++    CHardAttachment #10 (CHardAttachment) : r_foot
+         CHardAttachment (CHardAttachment)
+             parent (ptr:CNode) : CMovingPhysicalAgentComponent #2
+             child (ptr:CNode) : CDynamicColliderComponent #11
+-            parentSlotName (CName) : pelvis
++            parentSlotName (CName) : r_foot
+             parentSlot (ptr:ISlot) : CSkeletonBoneSlot #12
+-    CDynamicColliderComponent #11 (CDynamicColliderComponent) : grassCollider
++    CDynamicColliderComponent #11 (CDynamicColliderComponent) : grassCollider2
+         CDynamicColliderComponent (CDynamicColliderComponent)
+             transform (EngineTransform)
+-                Scale_x (Float) : 1.0000
+-                Scale_y (Float) : 1.8000
+-                Scale_z (Float) : 1.0000
+-                X (Float) : 0.0000
+-                Y (Float) : 0.2000
+-                Z (Float) : 0.0000
++                Pitch (Float) : 2.7961
++                Yaw (Float) : 358.9303
++                Roll (Float) : 30.5175
++                Scale_x (Float) : 0.8700
++                Scale_y (Float) : 0.8700
++                Scale_z (Float) : 0.8000
+             transformParent (ptr:CHardAttachment) : CHardAttachment #10
+-            guid (CGUID) : 95333a45-e35c-4fdc-848c-4f42a176796d
++            guid (CGUID) : f1c131f7-9c3c-4273-a768-e71b1edcb981
+             AttachmentsReference (array:handle:IAttachment)
+                 0 (handle:IAttachment) : CHardAttachment #10
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+-            name (String) : "grassCollider"
++            name (String) : "grassCollider2"
+             useInWaterNormal (Bool) : false
+             useInGrassDisplacement (Bool) : true
+     CSkeletonBoneSlot #12 (CSkeletonBoneSlot) : 
+         CSkeletonBoneSlot (CSkeletonBoneSlot)
+-            boneIndex (Uint32) : 9
+-    CMeshSkinningAttachment #13 (CMeshSkinningAttachment) : 
++            boneIndex (Uint32) : 20
++    CHardAttachment #13 (CHardAttachment) : l_foot
++        CHardAttachment (CHardAttachment)
++            parent (ptr:CNode) : CMovingPhysicalAgentComponent #2
++            child (ptr:CNode) : CDynamicColliderComponent #14
++            parentSlotName (CName) : l_foot
++            parentSlot (ptr:ISlot) : CSkeletonBoneSlot #15
++    CDynamicColliderComponent #14 (CDynamicColliderComponent) : grassCollider3
++        CDynamicColliderComponent (CDynamicColliderComponent)
++            transform (EngineTransform)
++                Pitch (Float) : 2.7961
++                Yaw (Float) : 358.9300
++                Roll (Float) : 30.5175
++                Scale_x (Float) : 0.8700
++                Scale_y (Float) : 0.8700
++                Scale_z (Float) : 0.8000
++            transformParent (ptr:CHardAttachment) : CHardAttachment #13
++            guid (CGUID) : f80e6efc-6540-40d8-952d-fae8317b8265
++            AttachmentsReference (array:handle:IAttachment)
++                0 (handle:IAttachment) : CHardAttachment #13
++            AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++            name (String) : "grassCollider3"
++            useInWaterNormal (Bool) : false
++            useInGrassDisplacement (Bool) : true
++    CSkeletonBoneSlot #15 (CSkeletonBoneSlot) : 
++        CSkeletonBoneSlot (CSkeletonBoneSlot)
++            boneIndex (Uint32) : 17
++    CMeshSkinningAttachment #16 (CMeshSkinningAttachment) : 
+         CMeshSkinningAttachment (CMeshSkinningAttachment)
+             parent (ptr:CNode) : CMovingPhysicalAgentComponent #2
+-            child (ptr:CNode) : CMeshComponent #14
+-    CMeshComponent #14 (CMeshComponent) : h_wa__neck_transition
++            child (ptr:CNode) : CMeshComponent #17
++    CMeshComponent #17 (CMeshComponent) : h_wa__neck_transition
+         CMeshComponent (CMeshComponent)
+-            transformParent (ptr:CHardAttachment) : CMeshSkinningAttachment #13
++            transformParent (ptr:CHardAttachment) : CMeshSkinningAttachment #16
+             guid (CGUID) : 0be76069-b7ca-4155-a401-4429c4cbb0d7
+             AttachmentsReference (array:handle:IAttachment)
+-                0 (handle:IAttachment) : CMeshSkinningAttachment #13
++                0 (handle:IAttachment) : CMeshSkinningAttachment #16
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "h_wa__neck_transition"
+             isStreamed (Bool) : false
+-            boundingBox (Box)
+-                Min (Vector)
+-                    X (Float) : 340282300000000000000000000000000000000.0000
+-                    Y (Float) : 340282300000000000000000000000000000000.0000
+-                    Z (Float) : 340282300000000000000000000000000000000.0000
+-                    W (Float) : 1.0000
+-                Max (Vector)
+-                    X (Float) : NAN
+-                    Y (Float) : NAN
+-                    Z (Float) : NAN
+-                    W (Float) : 1.0000
+             lightChannels (ELightChannel) : LC_Characters
+             mesh (handle:CMesh) : characters/models/common/woman_average/body/model/h_wa__neck_transition.w2mesh
+-    CHardAttachment #15 (CHardAttachment) : torso2
++    CHardAttachment #18 (CHardAttachment) : torso2
+         CHardAttachment (CHardAttachment)
+             parent (ptr:CNode) : CMovingPhysicalAgentComponent #2
+-            child (ptr:CNode) : CEffectDummyComponent #16
++            child (ptr:CNode) : CEffectDummyComponent #19
+             parentSlotName (CName) : torso2
+-            parentSlot (ptr:ISlot) : CSkeletonBoneSlot #17
+-    CEffectDummyComponent #16 (CEffectDummyComponent) : torso3effect
++            parentSlot (ptr:ISlot) : CSkeletonBoneSlot #20
++    CEffectDummyComponent #19 (CEffectDummyComponent) : torso3effect
+         CEffectDummyComponent (CEffectDummyComponent)
+             transform (EngineTransform)
+                 Pitch (Float) : 270.0039
+                 Yaw (Float) : 9.0660
+                 Roll (Float) : 359.9941
+-            transformParent (ptr:CHardAttachment) : CHardAttachment #15
++            transformParent (ptr:CHardAttachment) : CHardAttachment #18
+             guid (CGUID) : 91f573ac-b8ad-4763-8819-2e6e71618fda
+             AttachmentsReference (array:handle:IAttachment)
+-                0 (handle:IAttachment) : CHardAttachment #15
++                0 (handle:IAttachment) : CHardAttachment #18
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "torso3effect"
+-    CSkeletonBoneSlot #17 (CSkeletonBoneSlot) : 
++    CSkeletonBoneSlot #20 (CSkeletonBoneSlot) : 
+         CSkeletonBoneSlot (CSkeletonBoneSlot)
+             boneIndex (Uint32) : 11
+-    CWetnessComponent #18 (CWetnessComponent) : wetness
++    CWetnessComponent #21 (CWetnessComponent) : wetness
+         CWetnessComponent (CWetnessComponent)
+             guid (CGUID) : 3a890a32-8275-4c11-9bac-fc40917642d5
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "wetness"
+             blendOutFromRain (Float) : 30.0000
+-    CSoundEmitterComponent #19 (CSoundEmitterComponent) : CSoundEmitterComponent0
++    CDynamicColliderComponent #22 (CDynamicColliderComponent) : grassCollider
++        CDynamicColliderComponent (CDynamicColliderComponent)
++            transform (EngineTransform)
++                Scale_x (Float) : 1.1000
++                Scale_y (Float) : 1.2000
++                Scale_z (Float) : 1.1000
++                X (Float) : 0.0000
++                Y (Float) : -0.5000
++                Z (Float) : 0.0000
++            transformParent (ptr:CHardAttachment) : NULL
++            guid (CGUID) : 95333a45-e35c-4fdc-848c-4f42a176796d
++            AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++            AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++            name (String) : "grassCollider"
++            useInWaterNormal (Bool) : false
++            useInGrassDisplacement (Bool) : true
++    CSoundEmitterComponent #23 (CSoundEmitterComponent) : CSoundEmitterComponent0
+         CSoundEmitterComponent (CSoundEmitterComponent)
+             guid (CGUID) : 38cd20b6-cc17-4844-986b-135fb978e4bd
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -7831,45 +7908,45 @@
+                 1 (StringAnsi) : set_entity_name_ciri
+                 2 (StringAnsi) : 
+             maxDistance (Float) : 32.0000
+-    CReactionSceneActorComponent #20 (CReactionSceneActorComponent) : CReactionSceneActorComponent0
++    CReactionSceneActorComponent #24 (CReactionSceneActorComponent) : CReactionSceneActorComponent0
+         CReactionSceneActorComponent (CReactionSceneActorComponent)
+             guid (CGUID) : 99106ae5-cea7-4df3-9453-e34e2a97da41
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "CReactionSceneActorComponent0"
+             cooldownInterval (Float) : 30.0000
+-    CR4HumanoidCombatComponent #21 (CR4HumanoidCombatComponent) : CR4HumanoidCombatComponent0
++    CR4HumanoidCombatComponent #25 (CR4HumanoidCombatComponent) : CR4HumanoidCombatComponent0
+         CR4HumanoidCombatComponent (CR4HumanoidCombatComponent)
+             guid (CGUID) : e8b177f7-6230-4b64-a3cd-e0f91ee79a2f
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "CR4HumanoidCombatComponent0"
+-    CGameplayEffectsComponent #22 (CGameplayEffectsComponent) : CGameplayEffectsComponent0
++    CGameplayEffectsComponent #26 (CGameplayEffectsComponent) : CGameplayEffectsComponent0
+         CGameplayEffectsComponent (CGameplayEffectsComponent)
+             guid (CGUID) : 9ab690a1-b1b7-41d7-9b93-5d3de2ef898c
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "CGameplayEffectsComponent0"
+-    CDropPhysicsComponent #23 (CDropPhysicsComponent) : CDropPhysicsComponent0
++    CDropPhysicsComponent #27 (CDropPhysicsComponent) : CDropPhysicsComponent0
+         CDropPhysicsComponent (CDropPhysicsComponent)
+             guid (CGUID) : 15bd5a1c-1d52-4df2-b349-acb67af6e890
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "CDropPhysicsComponent0"
+             dropSetups (array:handle:CDropPhysicsSetup)
+-                0 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #24
+-                1 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #25
+-                2 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #26
+-                3 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #27
+-                4 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #28
+-                5 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #29
+-                6 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #30
+-                7 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #31
+-                8 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #32
+-                9 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #33
+-                10 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #34
+-                11 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #35
+-    CDropPhysicsSetup #24 (CDropPhysicsSetup) : head
++                0 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #28
++                1 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #29
++                2 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #30
++                3 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #31
++                4 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #32
++                5 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #33
++                6 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #34
++                7 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #35
++                8 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #36
++                9 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #37
++                10 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #38
++                11 (handle:CDropPhysicsSetup) : CDropPhysicsSetup #39
++    CDropPhysicsSetup #28 (CDropPhysicsSetup) : head
+         CDropPhysicsSetup (CDropPhysicsSetup)
+             name (CName) : head
+             curves (array:SDropPhysicsCurves)
+@@ -8367,7 +8444,7 @@
+                         rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         hasInitialParentTransform (Bool) : true
+-    CDropPhysicsSetup #25 (CDropPhysicsSetup) : torso_left
++    CDropPhysicsSetup #29 (CDropPhysicsSetup) : torso_left
+         CDropPhysicsSetup (CDropPhysicsSetup)
+             name (CName) : torso_left
+             curves (array:SDropPhysicsCurves)
+@@ -8608,7 +8685,7 @@
+                         rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         hasInitialParentTransform (Bool) : true
+-    CDropPhysicsSetup #26 (CDropPhysicsSetup) : torso_right
++    CDropPhysicsSetup #30 (CDropPhysicsSetup) : torso_right
+         CDropPhysicsSetup (CDropPhysicsSetup)
+             name (CName) : torso_right
+             curves (array:SDropPhysicsCurves)
+@@ -8851,7 +8928,7 @@
+                         rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         hasInitialParentTransform (Bool) : true
+-    CDropPhysicsSetup #27 (CDropPhysicsSetup) : arm_right
++    CDropPhysicsSetup #31 (CDropPhysicsSetup) : arm_right
+         CDropPhysicsSetup (CDropPhysicsSetup)
+             name (CName) : arm_right
+             curves (array:SDropPhysicsCurves)
+@@ -9091,7 +9168,7 @@
+                         rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         hasInitialParentTransform (Bool) : true
+-    CDropPhysicsSetup #28 (CDropPhysicsSetup) : arm_left
++    CDropPhysicsSetup #32 (CDropPhysicsSetup) : arm_left
+         CDropPhysicsSetup (CDropPhysicsSetup)
+             name (CName) : arm_left
+             curves (array:SDropPhysicsCurves)
+@@ -9332,7 +9409,7 @@
+                         rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         hasInitialParentTransform (Bool) : true
+-    CDropPhysicsSetup #29 (CDropPhysicsSetup) : leg_left
++    CDropPhysicsSetup #33 (CDropPhysicsSetup) : leg_left
+         CDropPhysicsSetup (CDropPhysicsSetup)
+             name (CName) : leg_left
+             curves (array:SDropPhysicsCurves)
+@@ -9586,7 +9663,7 @@
+                         rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         hasInitialParentTransform (Bool) : true
+-    CDropPhysicsSetup #30 (CDropPhysicsSetup) : leg_right
++    CDropPhysicsSetup #34 (CDropPhysicsSetup) : leg_right
+         CDropPhysicsSetup (CDropPhysicsSetup)
+             name (CName) : leg_right
+             curves (array:SDropPhysicsCurves)
+@@ -9841,7 +9918,7 @@
+                         rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         hasInitialParentTransform (Bool) : true
+-    CDropPhysicsSetup #31 (CDropPhysicsSetup) : Explode_head
++    CDropPhysicsSetup #35 (CDropPhysicsSetup) : Explode_head
+         CDropPhysicsSetup (CDropPhysicsSetup)
+             name (CName) : Explode_head
+             curves (array:SDropPhysicsCurves)
+@@ -10092,7 +10169,7 @@
+                         rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         hasInitialParentTransform (Bool) : true
+-    CDropPhysicsSetup #32 (CDropPhysicsSetup) : Explode_left_torso
++    CDropPhysicsSetup #36 (CDropPhysicsSetup) : Explode_left_torso
+         CDropPhysicsSetup (CDropPhysicsSetup)
+             name (CName) : Explode_left_torso
+             curves (array:SDropPhysicsCurves)
+@@ -10333,7 +10410,7 @@
+                         rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         hasInitialParentTransform (Bool) : true
+-    CDropPhysicsSetup #33 (CDropPhysicsSetup) : Explode_right_torso
++    CDropPhysicsSetup #37 (CDropPhysicsSetup) : Explode_right_torso
+         CDropPhysicsSetup (CDropPhysicsSetup)
+             name (CName) : Explode_right_torso
+             curves (array:SDropPhysicsCurves)
+@@ -10573,7 +10650,7 @@
+                         rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         hasInitialParentTransform (Bool) : true
+-    CDropPhysicsSetup #34 (CDropPhysicsSetup) : Explode_right_arm
++    CDropPhysicsSetup #38 (CDropPhysicsSetup) : Explode_right_arm
+         CDropPhysicsSetup (CDropPhysicsSetup)
+             name (CName) : Explode_right_arm
+             curves (array:SDropPhysicsCurves)
+@@ -10813,7 +10890,7 @@
+                         rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         hasInitialParentTransform (Bool) : true
+-    CDropPhysicsSetup #35 (CDropPhysicsSetup) : Explode_left_arm
++    CDropPhysicsSetup #39 (CDropPhysicsSetup) : Explode_left_arm
+         CDropPhysicsSetup (CDropPhysicsSetup)
+             name (CName) : Explode_left_arm
+             curves (array:SDropPhysicsCurves)
+@@ -11054,13 +11131,13 @@
+                         rotationRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         scaleRelativeMode (ECurveRelativeMode) : ECurveRelativeMode_None
+                         hasInitialParentTransform (Bool) : true
+-    CAnimAnimsetsParam #36 (CAnimAnimsetsParam) : ciri_scabbard
++    CAnimAnimsetsParam #40 (CAnimAnimsetsParam) : ciri_scabbard
+         CAnimAnimsetsParam (CAnimAnimsetsParam)
+             name (String) : "ciri_scabbard"
+             componentName (String) : "scabbard"
+             animationSets (array:handle:CSkeletalAnimationSet)
+                 0 (handle:CSkeletalAnimationSet) : animations/items/weapon/ciri_scabbards.w2anims
+-    CAnimBehaviorsParam #37 (CAnimBehaviorsParam) : ciri_scabbard
++    CAnimBehaviorsParam #41 (CAnimBehaviorsParam) : ciri_scabbard
+         CAnimBehaviorsParam (CAnimBehaviorsParam)
+             name (String) : "ciri_scabbard"
+             componentName (String) : "scabbard"
+@@ -11068,13 +11145,13 @@
+                 0 (SBehaviorGraphInstanceSlot)
+                     instanceName (CName) : Default
+                     graph (handle:CBehaviorGraph) : gameplay/behaviors/pc/behaviorgraph/pc_scabbards.w2beh
+-    CAIBaseTreeTemplateParam #38 (CAIBaseTreeTemplateParam) : 
++    CAIBaseTreeTemplateParam #42 (CAIBaseTreeTemplateParam) : 
+         CAIBaseTreeTemplateParam (CAIBaseTreeTemplateParam)
+-            aiBaseTree (handle:CAIBaseTree) : CAIPCBase #39
+-    CAIPCBase #39 (CAIPCBase) : 
++            aiBaseTree (handle:CAIBaseTree) : CAIPCBase #43
++    CAIPCBase #43 (CAIPCBase) : 
+         CAIPCBase (CAIPCBase)
+             tree (handle:CBehTree) : gameplay/trees/pc.w2behtree
+-    CAnimBehaviorsParam #40 (CAnimBehaviorsParam) : woman_cutscene
++    CAnimBehaviorsParam #44 (CAnimBehaviorsParam) : woman_cutscene
+         CAnimBehaviorsParam (CAnimBehaviorsParam)
+             wasIncluded (Bool) : true
+             name (String) : "woman_cutscene"
+@@ -11083,11 +11160,11 @@
+                 0 (SBehaviorGraphInstanceSlot)
+                     instanceName (CName) : Cutscene
+                     graph (handle:CBehaviorGraph) : gameplay/behaviors/cutscene_graph.w2beh
+-    CAnimConstraintsParam #41 (CAnimConstraintsParam) : 
++    CAnimConstraintsParam #45 (CAnimConstraintsParam) : 
+         CAnimConstraintsParam (CAnimConstraintsParam)
+             wasIncluded (Bool) : true
+             graph (handle:CBehaviorGraph) : animations/constraints/constraints.w2beh
+-    CAnimMimicParam #42 (CAnimMimicParam) : 
++    CAnimMimicParam #46 (CAnimMimicParam) : 
+         CAnimMimicParam (CAnimMimicParam)
+             wasIncluded (Bool) : true
+             animationSets (array:handle:CSkeletalAnimationSet)
+@@ -11101,12 +11178,12 @@
+                 1 (SBehaviorGraphInstanceSlot)
+                     instanceName (CName) : Cutscene
+                     graph (handle:CBehaviorGraph) : gameplay/behaviors/cutscene_graph.w2beh
+-    CMonsterParam #43 (CMonsterParam) : woman_base_monster_params
++    CMonsterParam #47 (CMonsterParam) : woman_base_monster_params
+         CMonsterParam (CMonsterParam)
+             wasIncluded (Bool) : true
+             name (String) : "woman_base_monster_params"
+             monsterCategory (Int32) : 11
+-    CAnimAnimsetsParam #44 (CAnimAnimsetsParam) : woman_dialog
++    CAnimAnimsetsParam #48 (CAnimAnimsetsParam) : woman_dialog
+         CAnimAnimsetsParam (CAnimAnimsetsParam)
+             wasIncluded (Bool) : true
+             name (String) : "woman_dialog"
+@@ -11127,11 +11204,11 @@
+                 12 (handle:CSkeletalAnimationSet) : animations/woman/dialog/woman_dialog_locomotion.w2anims
+                 13 (handle:CSkeletalAnimationSet) : animations/woman/dialog/woman_dialog_gameplay_recompress.w2anims
+                 14 (handle:CSkeletalAnimationSet) : animations/woman/dialog/ep1_woman_dialog_animation.w2anims
+-    CAnimGlobalParam #45 (CAnimGlobalParam) : 
++    CAnimGlobalParam #49 (CAnimGlobalParam) : 
+         CAnimGlobalParam (CAnimGlobalParam)
+             wasIncluded (Bool) : true
+             skeletonType (ESkeletonType) : Woman
+-    CCharacterControllerParam #46 (CCharacterControllerParam) : woman_character_controller_params
++    CCharacterControllerParam #50 (CCharacterControllerParam) : woman_character_controller_params
+         CCharacterControllerParam (CCharacterControllerParam)
+             wasIncluded (Bool) : true
+             name (String) : "woman_character_controller_params"

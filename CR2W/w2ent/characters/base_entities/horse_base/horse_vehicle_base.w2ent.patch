@@ -1,0 +1,706 @@
+ 1 file changed, 252 insertions(+), 110 deletions(-)
+
+diff --git 1.32/characters/base_entities/horse_base/horse_vehicle_base.w2ent.txt 4.00/characters/base_entities/horse_base/horse_vehicle_base.w2ent.txt
+index 0631a02..b228126 100644
+--- 1.32/characters/base_entities/horse_base/horse_vehicle_base.w2ent.txt
++++ 4.00/characters/base_entities/horse_base/horse_vehicle_base.w2ent.txt
+@@ -13,18 +13,18 @@
+                     componentName (CName) : Character
+                     boneName (CName) : pelvis
+             templateParams (array:ptr:CEntityTemplateParam)
+-                0 (ptr:CEntityTemplateParam) : CAIProfile #34
+-                1 (ptr:CEntityTemplateParam) : CAnimAnimsetsParam #37
+-                2 (ptr:CEntityTemplateParam) : CAnimBehaviorsParam #38
+-                3 (ptr:CEntityTemplateParam) : CCharacterControllerParam #39
+-                4 (ptr:CEntityTemplateParam) : CCharacterStatsParam #40
+-                5 (ptr:CEntityTemplateParam) : CInventoryDefinition #41
+-                6 (ptr:CEntityTemplateParam) : CAIBaseTreeTemplateParam #44
+-                7 (ptr:CEntityTemplateParam) : CAutoEffectsParam #54
+-                8 (ptr:CEntityTemplateParam) : CAttackRangeParam #55
+-                9 (ptr:CEntityTemplateParam) : CMonsterParam #61
+-                10 (ptr:CEntityTemplateParam) : CBuffImmunityParam #62
+-                11 (ptr:CEntityTemplateParam) : CAnimMimicParam #63
++                0 (ptr:CEntityTemplateParam) : CAIProfile #37
++                1 (ptr:CEntityTemplateParam) : CAnimAnimsetsParam #40
++                2 (ptr:CEntityTemplateParam) : CAnimBehaviorsParam #41
++                3 (ptr:CEntityTemplateParam) : CCharacterControllerParam #42
++                4 (ptr:CEntityTemplateParam) : CCharacterStatsParam #43
++                5 (ptr:CEntityTemplateParam) : CInventoryDefinition #44
++                6 (ptr:CEntityTemplateParam) : CAIBaseTreeTemplateParam #47
++                7 (ptr:CEntityTemplateParam) : CAutoEffectsParam #57
++                8 (ptr:CEntityTemplateParam) : CAttackRangeParam #58
++                9 (ptr:CEntityTemplateParam) : CMonsterParam #64
++                10 (ptr:CEntityTemplateParam) : CBuffImmunityParam #65
++                11 (ptr:CEntityTemplateParam) : CAnimMimicParam #66
+             flatCompiledData (array:Uint8) : # array:2,0,Uint8
+                 CNewNPC #0 (CNewNPC) : PreviewEntity
+                     CNewNPC (CNewNPC)
+@@ -40,29 +40,30 @@
+                         name (String) : "PreviewEntity"
+                         Components (array:ptr:CComponent)
+                             0 (ptr:CComponent) : CMovingPhysicalAgentComponent #1
+-                            1 (ptr:CComponent) : CInventoryComponent #23
++                            1 (ptr:CComponent) : CInventoryComponent #26
+                             2 (ptr:CComponent) : CDynamicColliderComponent #3
+                             3 (ptr:CComponent) : CDynamicColliderComponent #6
+                             4 (ptr:CComponent) : CDynamicColliderComponent #9
+                             5 (ptr:CComponent) : CDynamicColliderComponent #12
+-                            6 (ptr:CComponent) : CExplorationComponent #24
+-                            7 (ptr:CComponent) : CExplorationComponent #25
+-                            8 (ptr:CComponent) : CExplorationComponent #26
+-                            9 (ptr:CComponent) : CExplorationComponent #27
+-                            10 (ptr:CComponent) : CExplorationComponent #28
++                            6 (ptr:CComponent) : CExplorationComponent #27
++                            7 (ptr:CComponent) : CExplorationComponent #28
++                            8 (ptr:CComponent) : CExplorationComponent #29
++                            9 (ptr:CComponent) : CExplorationComponent #30
++                            10 (ptr:CComponent) : CExplorationComponent #31
+                             11 (ptr:CComponent) : CDynamicColliderComponent #15
+-                            12 (ptr:CComponent) : CInteractionToComponentComponent #29
+-                            13 (ptr:CComponent) : W3HorseComponent #30
+-                            14 (ptr:CComponent) : CInteractionComponent #31
++                            12 (ptr:CComponent) : CInteractionToComponentComponent #32
++                            13 (ptr:CComponent) : W3HorseComponent #33
++                            14 (ptr:CComponent) : CInteractionComponent #34
+                             15 (ptr:CComponent) : CPhantomComponent #18
+                             16 (ptr:CComponent) : CPhantomComponent #20
+                             17 (ptr:CComponent) : CPhantomComponent #22
+-                            18 (ptr:CComponent) : CGameplayEffectsComponent #32
++                            18 (ptr:CComponent) : CGameplayEffectsComponent #35
++                            19 (ptr:CComponent) : CDynamicColliderComponent #24
+                         BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                             0 (SEntityBufferType1)
+                                 ComponentName (CName) : 
+                         BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+-                        idTag (IdTag) :  47d0847d-a6d0-4b3c-9198-115a08a9da33
++                        idTag (IdTag) :  27222366-8dc4-4352-a906-1049823667e4
+                         displayName (LocalizedString) : 1061961
+                         gameplayFlags (Uint32) : 2
+                 CMovingPhysicalAgentComponent #1 (CMovingPhysicalAgentComponent) : Character
+@@ -78,6 +79,7 @@
+                             5 (handle:IAttachment) : CHardAttachment #17
+                             6 (handle:IAttachment) : CHardAttachment #19
+                             7 (handle:IAttachment) : CHardAttachment #21
++                            8 (handle:IAttachment) : CHardAttachment #23
+                         name (String) : "Character"
+                         graphPositionX (Int16) : 1383
+                         graphPositionY (Int16) : 56
+@@ -209,9 +211,9 @@
+                         transform (EngineTransform)
+                             Scale_x (Float) : 2.0000
+                             Scale_y (Float) : 2.0000
+-                            Scale_z (Float) : 1.5000
+-                            X (Float) : 0.7000
+-                            Y (Float) : -0.3000
++                            Scale_z (Float) : 1.1000
++                            X (Float) : 0.5000
++                            Y (Float) : 0.1000
+                             Z (Float) : 0.0000
+                         transformParent (ptr:CHardAttachment) : CHardAttachment #14
+                         guid (CGUID) : 80c21f5a-0bcb-4b5f-bc35-d2983b7794b4
+@@ -219,8 +221,8 @@
+                             0 (handle:IAttachment) : CHardAttachment #14
+                         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         name (String) : "CDynamicColliderComponent4"
+-                        graphPositionX (Int16) : 1281
+-                        graphPositionY (Int16) : 405
++                        graphPositionX (Int16) : 1280
++                        graphPositionY (Int16) : 434
+                         useInWaterNormal (Bool) : false
+                         useInGrassDisplacement (Bool) : true
+                 CSkeletonBoneSlot #16 (CSkeletonBoneSlot) : 
+@@ -310,7 +312,33 @@
+                             Z (Float) : 0.7500
+                             W (Float) : 1.0000
+                         onTriggerEnteredScriptEvent (CName) : OnActorSideCollision
+-                CInventoryComponent #23 (CInventoryComponent) : CInventoryComponent0
++                CHardAttachment #23 (CHardAttachment) : head
++                    CHardAttachment (CHardAttachment)
++                        parent (ptr:CNode) : CMovingPhysicalAgentComponent #1
++                        child (ptr:CNode) : CDynamicColliderComponent #24
++                        parentSlotName (CName) : head
++                        parentSlot (ptr:ISlot) : CSkeletonBoneSlot #25
++                CDynamicColliderComponent #24 (CDynamicColliderComponent) : CDynamicColliderComponent5
++                    CDynamicColliderComponent (CDynamicColliderComponent)
++                        transform (EngineTransform)
++                            Scale_x (Float) : 0.2000
++                            Scale_y (Float) : 0.2000
++                            Scale_z (Float) : 0.2000
++                            X (Float) : -0.0500
++                            Y (Float) : -0.2500
++                            Z (Float) : 0.0000
++                        transformParent (ptr:CHardAttachment) : CHardAttachment #23
++                        guid (CGUID) : b708aea1-02d9-42e2-bc02-9d0772f7bd59
++                        AttachmentsReference (array:handle:IAttachment)
++                            0 (handle:IAttachment) : CHardAttachment #23
++                        AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++                        name (String) : "CDynamicColliderComponent5"
++                        graphPositionX (Int16) : 1495
++                        graphPositionY (Int16) : 428
++                CSkeletonBoneSlot #25 (CSkeletonBoneSlot) : 
++                    CSkeletonBoneSlot (CSkeletonBoneSlot)
++                        boneIndex (Uint32) : 22
++                CInventoryComponent #26 (CInventoryComponent) : CInventoryComponent0
+                     CInventoryComponent (CInventoryComponent)
+                         guid (CGUID) : 2484e6cd-06ba-4441-b425-bdf596a9b96f
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -319,7 +347,7 @@
+                         graphPositionX (Int16) : 741
+                         graphPositionY (Int16) : 336
+                         turnOffSpawnItemsBudgeting (Bool) : true
+-                CExplorationComponent #24 (CExplorationComponent) : right
++                CExplorationComponent #27 (CExplorationComponent) : right
+                     CExplorationComponent (CExplorationComponent)
+                         transform (EngineTransform)
+                             Pitch (Float) : 0.0000
+@@ -347,7 +375,7 @@
+                             W (Float) : 1.0000
+                         componentForEvents (String) : "vehicle"
+                         internalExploration (Bool) : true
+-                CExplorationComponent #25 (CExplorationComponent) : right_front
++                CExplorationComponent #28 (CExplorationComponent) : right_front
+                     CExplorationComponent (CExplorationComponent)
+                         transform (EngineTransform)
+                             X (Float) : 0.3700
+@@ -371,7 +399,7 @@
+                             W (Float) : 1.0000
+                         componentForEvents (String) : "vehicle"
+                         internalExploration (Bool) : true
+-                CExplorationComponent #26 (CExplorationComponent) : back
++                CExplorationComponent #29 (CExplorationComponent) : back
+                     CExplorationComponent (CExplorationComponent)
+                         transform (EngineTransform)
+                             Pitch (Float) : 0.0000
+@@ -399,7 +427,7 @@
+                             W (Float) : 1.0000
+                         componentForEvents (String) : "vehicle"
+                         internalExploration (Bool) : true
+-                CExplorationComponent #27 (CExplorationComponent) : left
++                CExplorationComponent #30 (CExplorationComponent) : left
+                     CExplorationComponent (CExplorationComponent)
+                         transform (EngineTransform)
+                             Pitch (Float) : 0.0000
+@@ -427,7 +455,7 @@
+                             W (Float) : 1.0000
+                         componentForEvents (String) : "vehicle"
+                         internalExploration (Bool) : true
+-                CExplorationComponent #28 (CExplorationComponent) : left_front
++                CExplorationComponent #31 (CExplorationComponent) : left_front
+                     CExplorationComponent (CExplorationComponent)
+                         transform (EngineTransform)
+                             Pitch (Float) : 0.0000
+@@ -455,7 +483,7 @@
+                             W (Float) : 1.0000
+                         componentForEvents (String) : "vehicle"
+                         internalExploration (Bool) : true
+-                CInteractionToComponentComponent #29 (CInteractionToComponentComponent) : horseMount
++                CInteractionToComponentComponent #32 (CInteractionToComponentComponent) : horseMount
+                     CInteractionToComponentComponent (CInteractionToComponentComponent)
+                         guid (CGUID) : 30c59c47-fcd9-43b8-939d-95d6152b4fc7
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -469,7 +497,7 @@
+                         reportToScript (Bool) : true
+                         isEnabledInCombat (Bool) : true
+                         targetComponentName (String) : "HorseComponent"
+-                W3HorseComponent #30 (W3HorseComponent) : HorseComponent
++                W3HorseComponent #33 (W3HorseComponent) : HorseComponent
+                     W3HorseComponent (W3HorseComponent)
+                         guid (CGUID) : 030de57a-a3fb-4aed-b597-531eb43f20eb
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -485,7 +513,7 @@
+                                 W (Float) : -90.0000
+                         mainStateName (CName) : HorseRiding
+                         firstSpawn (Bool) : false
+-                CInteractionComponent #31 (CInteractionComponent) : horseFollow
++                CInteractionComponent #34 (CInteractionComponent) : horseFollow
+                     CInteractionComponent (CInteractionComponent)
+                         guid (CGUID) : e2e64f9e-f4e1-4773-aa60-c35da1986c2e
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -499,7 +527,7 @@
+                         actionName (String) : "Follow"
+                         reportToScript (Bool) : true
+                         isEnabledOnHorse (Bool) : true
+-                CGameplayEffectsComponent #32 (CGameplayEffectsComponent) : CGameplayEffectsComponent0
++                CGameplayEffectsComponent #35 (CGameplayEffectsComponent) : CGameplayEffectsComponent0
+                     CGameplayEffectsComponent (CGameplayEffectsComponent)
+                         guid (CGUID) : a93db2f2-1c0d-4475-89f8-28f884040ae5
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -3287,6 +3315,94 @@
+                                 copyRotation (Bool) : false
+                                 attach (Bool) : true
+                                 parentSlotName (CName) : head
++                24 (CEntityTemplateCookedEffect)
++                    name (CName) : water_hit_blood
++                    buffer (SharedDataBuffer)
++                        Bufferdata (CByteArray) : 1495 bytes
++                        CFXDefinition #0 (CFXDefinition) : water_hit_blood
++                            CFXDefinition (CFXDefinition)
++                                trackGroups (array:ptr:CFXTrackGroup)
++                                    0 (ptr:CFXTrackGroup) : CFXTrackGroup #1
++                                length (Float) : 10.8133
++                                loopStart (Float) : 0.1515
++                                loopEnd (Float) : 0.3553
++                                name (CName) : water_hit_blood
++                        CFXTrackGroup #1 (CFXTrackGroup) : fx
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "fx"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #2
++                                isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 163
++                                    Green (Uint8) : 169
++                                    Blue (Uint8) : 167
++                                    Alpha (Uint8) : 100
++                        CFXTrack #2 (CFXTrack) : fx
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #3
++                                name (String) : "fx"
++                        CFXTrackItemParticles #3 (CFXTrackItemParticles) : Particles
++                            CFXTrackItemParticles (CFXTrackItemParticles)
++                                timeBegin (Float) : 0.0002
++                                timeDuration (Float) : 10.5552
++                                buffername (CName) : Particles
++                                count (CDynamicInt) : 3
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    1 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    2 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                particleSystem (soft:CParticleSystem) : fx/blood/standard_hit/water_blood.w2p
++                                spawner (ptr:IFXSpawner) : CFXWaterSpawner #4
++                        CFXWaterSpawner #4 (CFXWaterSpawner) : 
++                            CFXWaterSpawner (CFXWaterSpawner) : <CFXWaterSpawner>CFXWaterSpawner
+             cookedEffectsVersion (Uint32) : 1
+             Unk1 (Uint32) : 0
+     CNewNPC #1 (CNewNPC) : 
+@@ -3302,29 +3418,30 @@
+             streamingDistance (Uint8) : 5
+             Components (array:ptr:CComponent)
+                 0 (ptr:CComponent) : CMovingPhysicalAgentComponent #2
+-                1 (ptr:CComponent) : CInventoryComponent #24
++                1 (ptr:CComponent) : CInventoryComponent #27
+                 2 (ptr:CComponent) : CDynamicColliderComponent #4
+                 3 (ptr:CComponent) : CDynamicColliderComponent #7
+                 4 (ptr:CComponent) : CDynamicColliderComponent #10
+                 5 (ptr:CComponent) : CDynamicColliderComponent #13
+-                6 (ptr:CComponent) : CExplorationComponent #25
+-                7 (ptr:CComponent) : CExplorationComponent #26
+-                8 (ptr:CComponent) : CExplorationComponent #27
+-                9 (ptr:CComponent) : CExplorationComponent #28
+-                10 (ptr:CComponent) : CExplorationComponent #29
++                6 (ptr:CComponent) : CExplorationComponent #28
++                7 (ptr:CComponent) : CExplorationComponent #29
++                8 (ptr:CComponent) : CExplorationComponent #30
++                9 (ptr:CComponent) : CExplorationComponent #31
++                10 (ptr:CComponent) : CExplorationComponent #32
+                 11 (ptr:CComponent) : CDynamicColliderComponent #16
+-                12 (ptr:CComponent) : CInteractionToComponentComponent #30
+-                13 (ptr:CComponent) : W3HorseComponent #31
+-                14 (ptr:CComponent) : CInteractionComponent #32
++                12 (ptr:CComponent) : CInteractionToComponentComponent #33
++                13 (ptr:CComponent) : W3HorseComponent #34
++                14 (ptr:CComponent) : CInteractionComponent #35
+                 15 (ptr:CComponent) : CPhantomComponent #19
+                 16 (ptr:CComponent) : CPhantomComponent #21
+                 17 (ptr:CComponent) : CPhantomComponent #23
+-                18 (ptr:CComponent) : CGameplayEffectsComponent #33
++                18 (ptr:CComponent) : CGameplayEffectsComponent #36
++                19 (ptr:CComponent) : CDynamicColliderComponent #25
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+-            idTag (IdTag) :  47d0847d-a6d0-4b3c-9198-115a08a9da33
++            idTag (IdTag) :  27222366-8dc4-4352-a906-1049823667e4
+             displayName (LocalizedString) : 1061961
+             gameplayFlags (Uint32) : 2
+     CMovingPhysicalAgentComponent #2 (CMovingPhysicalAgentComponent) : Character
+@@ -3340,6 +3457,7 @@
+                 5 (handle:IAttachment) : CHardAttachment #18
+                 6 (handle:IAttachment) : CHardAttachment #20
+                 7 (handle:IAttachment) : CHardAttachment #22
++                8 (handle:IAttachment) : CHardAttachment #24
+             name (String) : "Character"
+             ragdoll (handle:CRagdoll) : characters/base_entities/horse_base/horse_ragdoll.w2ragdoll
+             skeleton (handle:CSkeleton) : characters/base_entities/horse_base/horse_base.w2rig
+@@ -3461,9 +3579,9 @@
+             transform (EngineTransform)
+                 Scale_x (Float) : 2.0000
+                 Scale_y (Float) : 2.0000
+-                Scale_z (Float) : 1.5000
+-                X (Float) : 0.7000
+-                Y (Float) : -0.3000
++                Scale_z (Float) : 1.1000
++                X (Float) : 0.5000
++                Y (Float) : 0.1000
+                 Z (Float) : 0.0000
+             transformParent (ptr:CHardAttachment) : CHardAttachment #15
+             guid (CGUID) : 80c21f5a-0bcb-4b5f-bc35-d2983b7794b4
+@@ -3554,14 +3672,38 @@
+                 Z (Float) : 0.7500
+                 W (Float) : 1.0000
+             onTriggerEnteredScriptEvent (CName) : OnActorSideCollision
+-    CInventoryComponent #24 (CInventoryComponent) : CInventoryComponent0
++    CHardAttachment #24 (CHardAttachment) : head
++        CHardAttachment (CHardAttachment)
++            parent (ptr:CNode) : CMovingPhysicalAgentComponent #2
++            child (ptr:CNode) : CDynamicColliderComponent #25
++            parentSlotName (CName) : head
++            parentSlot (ptr:ISlot) : CSkeletonBoneSlot #26
++    CDynamicColliderComponent #25 (CDynamicColliderComponent) : CDynamicColliderComponent5
++        CDynamicColliderComponent (CDynamicColliderComponent)
++            transform (EngineTransform)
++                Scale_x (Float) : 0.2000
++                Scale_y (Float) : 0.2000
++                Scale_z (Float) : 0.2000
++                X (Float) : -0.0500
++                Y (Float) : -0.2500
++                Z (Float) : 0.0000
++            transformParent (ptr:CHardAttachment) : CHardAttachment #24
++            guid (CGUID) : b708aea1-02d9-42e2-bc02-9d0772f7bd59
++            AttachmentsReference (array:handle:IAttachment)
++                0 (handle:IAttachment) : CHardAttachment #24
++            AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++            name (String) : "CDynamicColliderComponent5"
++    CSkeletonBoneSlot #26 (CSkeletonBoneSlot) : 
++        CSkeletonBoneSlot (CSkeletonBoneSlot)
++            boneIndex (Uint32) : 22
++    CInventoryComponent #27 (CInventoryComponent) : CInventoryComponent0
+         CInventoryComponent (CInventoryComponent)
+             guid (CGUID) : 2484e6cd-06ba-4441-b425-bdf596a9b96f
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "CInventoryComponent0"
+             turnOffSpawnItemsBudgeting (Bool) : true
+-    CExplorationComponent #25 (CExplorationComponent) : right
++    CExplorationComponent #28 (CExplorationComponent) : right
+         CExplorationComponent (CExplorationComponent)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -3587,7 +3729,7 @@
+                 W (Float) : 1.0000
+             componentForEvents (String) : "vehicle"
+             internalExploration (Bool) : true
+-    CExplorationComponent #26 (CExplorationComponent) : right_front
++    CExplorationComponent #29 (CExplorationComponent) : right_front
+         CExplorationComponent (CExplorationComponent)
+             transform (EngineTransform)
+                 X (Float) : 0.3700
+@@ -3610,7 +3752,7 @@
+                 W (Float) : 1.0000
+             componentForEvents (String) : "vehicle"
+             internalExploration (Bool) : true
+-    CExplorationComponent #27 (CExplorationComponent) : back
++    CExplorationComponent #30 (CExplorationComponent) : back
+         CExplorationComponent (CExplorationComponent)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -3636,7 +3778,7 @@
+                 W (Float) : 1.0000
+             componentForEvents (String) : "vehicle"
+             internalExploration (Bool) : true
+-    CExplorationComponent #28 (CExplorationComponent) : left
++    CExplorationComponent #31 (CExplorationComponent) : left
+         CExplorationComponent (CExplorationComponent)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -3662,7 +3804,7 @@
+                 W (Float) : 1.0000
+             componentForEvents (String) : "vehicle"
+             internalExploration (Bool) : true
+-    CExplorationComponent #29 (CExplorationComponent) : left_front
++    CExplorationComponent #32 (CExplorationComponent) : left_front
+         CExplorationComponent (CExplorationComponent)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -3688,7 +3830,7 @@
+                 W (Float) : 1.0000
+             componentForEvents (String) : "vehicle"
+             internalExploration (Bool) : true
+-    CInteractionToComponentComponent #30 (CInteractionToComponentComponent) : horseMount
++    CInteractionToComponentComponent #33 (CInteractionToComponentComponent) : horseMount
+         CInteractionToComponentComponent (CInteractionToComponentComponent)
+             guid (CGUID) : 30c59c47-fcd9-43b8-939d-95d6152b4fc7
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -3700,7 +3842,7 @@
+             reportToScript (Bool) : true
+             isEnabledInCombat (Bool) : true
+             targetComponentName (String) : "HorseComponent"
+-    W3HorseComponent #31 (W3HorseComponent) : HorseComponent
++    W3HorseComponent #34 (W3HorseComponent) : HorseComponent
+         W3HorseComponent (W3HorseComponent)
+             guid (CGUID) : 030de57a-a3fb-4aed-b597-531eb43f20eb
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -3714,7 +3856,7 @@
+                     W (Float) : -90.0000
+             mainStateName (CName) : HorseRiding
+             firstSpawn (Bool) : false
+-    CInteractionComponent #32 (CInteractionComponent) : horseFollow
++    CInteractionComponent #35 (CInteractionComponent) : horseFollow
+         CInteractionComponent (CInteractionComponent)
+             guid (CGUID) : e2e64f9e-f4e1-4773-aa60-c35da1986c2e
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -3726,37 +3868,37 @@
+             actionName (String) : "Follow"
+             reportToScript (Bool) : true
+             isEnabledOnHorse (Bool) : true
+-    CGameplayEffectsComponent #33 (CGameplayEffectsComponent) : CGameplayEffectsComponent0
++    CGameplayEffectsComponent #36 (CGameplayEffectsComponent) : CGameplayEffectsComponent0
+         CGameplayEffectsComponent (CGameplayEffectsComponent)
+             guid (CGUID) : a93db2f2-1c0d-4475-89f8-28f884040ae5
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "CGameplayEffectsComponent0"
+-    CAIProfile #34 (CAIProfile) : animals
++    CAIProfile #37 (CAIProfile) : animals
+         CAIProfile (CAIProfile)
+-            senseVisionParams (ptr:CAISenseParams) : CAISenseParams #35
+-            senseAbsoluteParams (ptr:CAISenseParams) : CAISenseParams #36
++            senseVisionParams (ptr:CAISenseParams) : CAISenseParams #38
++            senseAbsoluteParams (ptr:CAISenseParams) : CAISenseParams #39
+             attitudeGroup (CName) : animals
+-    CAISenseParams #35 (CAISenseParams) : 
++    CAISenseParams #38 (CAISenseParams) : 
+         CAISenseParams (CAISenseParams)
+             rangeMax (Float) : 15.0000
+             rangeAngle (Float) : 300.0000
+             height (Float) : 4.0000
+             detectOnlyHostiles (Bool) : false
+-    CAISenseParams #36 (CAISenseParams) : 
++    CAISenseParams #39 (CAISenseParams) : 
+         CAISenseParams (CAISenseParams)
+             rangeMax (Float) : 3.0000
+             rangeAngle (Float) : 360.0000
+             height (Float) : 4.0000
+             testLOS (Bool) : false
+             detectOnlyHostiles (Bool) : false
+-    CAnimAnimsetsParam #37 (CAnimAnimsetsParam) : horse_vehicle_base
++    CAnimAnimsetsParam #40 (CAnimAnimsetsParam) : horse_vehicle_base
+         CAnimAnimsetsParam (CAnimAnimsetsParam)
+             name (String) : "horse_vehicle_base"
+             componentName (String) : "Character"
+             animationSets (array:handle:CSkeletalAnimationSet)
+                 0 (handle:CSkeletalAnimationSet) : animations/interaction/horse_draft/horse_draft.w2anims
+-    CAnimBehaviorsParam #38 (CAnimBehaviorsParam) : horse_vehicle_base
++    CAnimBehaviorsParam #41 (CAnimBehaviorsParam) : horse_vehicle_base
+         CAnimBehaviorsParam (CAnimBehaviorsParam)
+             name (String) : "horse_vehicle_base"
+             componentName (String) : "Character"
+@@ -3773,7 +3915,7 @@
+                 3 (SBehaviorGraphInstanceSlot)
+                     instanceName (CName) : Cutscene
+                     graph (handle:CBehaviorGraph) : gameplay/behaviors/cutscene_graph.w2beh
+-    CCharacterControllerParam #39 (CCharacterControllerParam) : horse_vehicle_base_cc
++    CCharacterControllerParam #42 (CCharacterControllerParam) : horse_vehicle_base_cc
+         CCharacterControllerParam (CCharacterControllerParam)
+             name (String) : "horse_vehicle_base_cc"
+             height (Float) : 2.3500
+@@ -3881,88 +4023,88 @@
+                         W (Float) : 0.0000
+                     height (Float) : 1.6000
+                     radius (Float) : 0.4000
+-    CCharacterStatsParam #40 (CCharacterStatsParam) : horse_character_stats
++    CCharacterStatsParam #43 (CCharacterStatsParam) : horse_character_stats
+         CCharacterStatsParam (CCharacterStatsParam)
+             name (String) : "horse_character_stats"
+             abilities (array:CName)
+                 0 (CName) : HorseLevel1
+                 1 (CName) : horse_charging
+-    CInventoryDefinition #41 (CInventoryDefinition) : 
++    CInventoryDefinition #44 (CInventoryDefinition) : 
+         CInventoryDefinition (CInventoryDefinition)
+             entries (array:ptr:CInventoryDefinitionEntry)
+-                0 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #42
+-    CInventoryDefinitionEntry #42 (CInventoryDefinitionEntry) : monster_weapon
++                0 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #45
++    CInventoryDefinitionEntry #45 (CInventoryDefinitionEntry) : monster_weapon
+         CInventoryDefinitionEntry (CInventoryDefinitionEntry)
+             category (CName) : monster_weapon
+             isLootable (Bool) : false
+-            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #43
+-    CInventoryInitializerUniform #43 (CInventoryInitializerUniform) : mon_horse_weapon
++            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #46
++    CInventoryInitializerUniform #46 (CInventoryInitializerUniform) : mon_horse_weapon
+         CInventoryInitializerUniform (CInventoryInitializerUniform)
+             itemName (CName) : mon_horse_weapon
+-    CAIBaseTreeTemplateParam #44 (CAIBaseTreeTemplateParam) : 
++    CAIBaseTreeTemplateParam #47 (CAIBaseTreeTemplateParam) : 
+         CAIBaseTreeTemplateParam (CAIBaseTreeTemplateParam)
+-            aiBaseTree (handle:CAIBaseTree) : CAIAnimalBase #45
+-    CAIAnimalBase #45 (CAIAnimalBase) : 
++            aiBaseTree (handle:CAIBaseTree) : CAIAnimalBase #48
++    CAIAnimalBase #48 (CAIAnimalBase) : 
+         CAIAnimalBase (CAIAnimalBase)
+             tree (handle:CBehTree) : gameplay/trees/animal_base.w2behtree
+-            params (handle:CAIAnimalDefaults) : CAIHorseDefaults #46
+-    CAIHorseDefaults #46 (CAIHorseDefaults) : 
++            params (handle:CAIAnimalDefaults) : CAIHorseDefaults #49
++    CAIHorseDefaults #49 (CAIHorseDefaults) : 
+         CAIHorseDefaults (CAIHorseDefaults)
+-            combatTree (handle:CAIAnimalCombat) : CAIAnimalCombatHorse #47
+-            idleDecoratorTree (handle:CAIMonsterIdleDecorator) : CHorseIdleDecoratorTree #49
+-            charmedTree (handle:CAIAnimalCharmed) : CAIHorseCharmed #51
+-            deathTree (handle:CAIAnimalDeath) : CAIAnimalDeath #52
+-    CAIAnimalCombatHorse #47 (CAIAnimalCombatHorse) : 
++            combatTree (handle:CAIAnimalCombat) : CAIAnimalCombatHorse #50
++            idleDecoratorTree (handle:CAIMonsterIdleDecorator) : CHorseIdleDecoratorTree #52
++            charmedTree (handle:CAIAnimalCharmed) : CAIHorseCharmed #54
++            deathTree (handle:CAIAnimalDeath) : CAIAnimalDeath #55
++    CAIAnimalCombatHorse #50 (CAIAnimalCombatHorse) : 
+         CAIAnimalCombatHorse (CAIAnimalCombatHorse)
+             tree (handle:CBehTree) : gameplay/trees/combat/horse_combat.w2behtree
+-            shakeRiderTree (handle:CAIHorseShakeRider) : CAIHorseShakeRider #48
+-    CAIHorseShakeRider #48 (CAIHorseShakeRider) : 
++            shakeRiderTree (handle:CAIHorseShakeRider) : CAIHorseShakeRider #51
++    CAIHorseShakeRider #51 (CAIHorseShakeRider) : 
+         CAIHorseShakeRider (CAIHorseShakeRider)
+             tree (handle:CBehTree) : gameplay/trees/combat/horse_shake_rider.w2behtree
+-    CHorseIdleDecoratorTree #49 (CHorseIdleDecoratorTree) : 
++    CHorseIdleDecoratorTree #52 (CHorseIdleDecoratorTree) : 
+         CHorseIdleDecoratorTree (CHorseIdleDecoratorTree)
+             tree (handle:CBehTree) : gameplay/trees/idle/horse_idle_decorator.w2behtree
+-            actionPointSelector (handle:CHorseParkingActionPointSelector) : CHorseParkingActionPointSelector #50
+-    CHorseParkingActionPointSelector #50 (CHorseParkingActionPointSelector) : 
++            actionPointSelector (handle:CHorseParkingActionPointSelector) : CHorseParkingActionPointSelector #53
++    CHorseParkingActionPointSelector #53 (CHorseParkingActionPointSelector) : 
+         CHorseParkingActionPointSelector (CHorseParkingActionPointSelector)
+-    CAIHorseCharmed #51 (CAIHorseCharmed) : 
++    CAIHorseCharmed #54 (CAIHorseCharmed) : 
+         CAIHorseCharmed (CAIHorseCharmed)
+             tree (handle:CBehTree) : gameplay/trees/idle/animal_charmed_idle.w2behtree
+             charmedGotoDistance (Float) : 5.0000
+-    CAIAnimalDeath #52 (CAIAnimalDeath) : 
++    CAIAnimalDeath #55 (CAIAnimalDeath) : 
+         CAIAnimalDeath (CAIAnimalDeath)
+             tree (handle:CBehTree) : gameplay/trees/death/death.w2behtree
+-            params (handle:CAINpcDeathParams) : CAIAnimalDeathParams #53
+-    CAIAnimalDeathParams #53 (CAIAnimalDeathParams) : 
++            params (handle:CAINpcDeathParams) : CAIAnimalDeathParams #56
++    CAIAnimalDeathParams #56 (CAIAnimalDeathParams) : 
+         CAIAnimalDeathParams (CAIAnimalDeathParams)
+-    CAutoEffectsParam #54 (CAutoEffectsParam) : horse_gameplay_effects
++    CAutoEffectsParam #57 (CAutoEffectsParam) : horse_gameplay_effects
+         CAutoEffectsParam (CAutoEffectsParam)
+             name (String) : "horse_gameplay_effects"
+             autoEffects (array:CName)
+                 0 (CName) : AutoStaminaRegen
+                 1 (CName) : AutoPanicRegen
+-    CAttackRangeParam #55 (CAttackRangeParam) : horse_attack_ranges
++    CAttackRangeParam #58 (CAttackRangeParam) : horse_attack_ranges
+         CAttackRangeParam (CAttackRangeParam)
+             name (String) : "horse_attack_ranges"
+             attackRanges (array:ptr:CAIAttackRange)
+-                0 (ptr:CAIAttackRange) : CConeAttackRange #56
+-                1 (ptr:CAIAttackRange) : CConeAttackRange #57
+-                2 (ptr:CAIAttackRange) : CConeAttackRange #58
+-                3 (ptr:CAIAttackRange) : CConeAttackRange #59
+-                4 (ptr:CAIAttackRange) : CConeAttackRange #60
+-    CConeAttackRange #56 (CConeAttackRange) : rearing
++                0 (ptr:CAIAttackRange) : CConeAttackRange #59
++                1 (ptr:CAIAttackRange) : CConeAttackRange #60
++                2 (ptr:CAIAttackRange) : CConeAttackRange #61
++                3 (ptr:CAIAttackRange) : CConeAttackRange #62
++                4 (ptr:CAIAttackRange) : CConeAttackRange #63
++    CConeAttackRange #59 (CConeAttackRange) : rearing
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : rearing
+             rangeMax (Float) : 2.0000
+             height (Float) : 2.0000
+             rangeAngle (Float) : 30.0000
+-    CConeAttackRange #57 (CConeAttackRange) : kick
++    CConeAttackRange #60 (CConeAttackRange) : kick
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : kick
+             rangeMax (Float) : 3.0000
+             angleOffset (Float) : 180.0000
+             rangeAngle (Float) : 90.0000
+-    CConeAttackRange #58 (CConeAttackRange) : riderAttack
++    CConeAttackRange #61 (CConeAttackRange) : riderAttack
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : riderAttack
+             rangeMax (Float) : 2.2000
+@@ -3974,7 +4116,7 @@
+                 W (Float) : 1.0000
+             checkLineOfSight (Bool) : true
+             rangeAngle (Float) : 240.0000
+-    CConeAttackRange #59 (CConeAttackRange) : horse_right
++    CConeAttackRange #62 (CConeAttackRange) : horse_right
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : horse_right
+             rangeMax (Float) : 1.5000
+@@ -3986,7 +4128,7 @@
+                 W (Float) : 1.0000
+             checkLineOfSight (Bool) : true
+             rangeAngle (Float) : 90.0000
+-    CConeAttackRange #60 (CConeAttackRange) : horse_left
++    CConeAttackRange #63 (CConeAttackRange) : horse_left
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : horse_left
+             rangeMax (Float) : 2.0000
+@@ -3996,16 +4138,16 @@
+                 Y (Float) : 0.7000
+                 Z (Float) : 0.0000
+                 W (Float) : 1.0000
+-    CMonsterParam #61 (CMonsterParam) : monster_params
++    CMonsterParam #64 (CMonsterParam) : monster_params
+         CMonsterParam (CMonsterParam)
+             name (String) : "monster_params"
+             monsterCategory (Int32) : 14
+-    CBuffImmunityParam #62 (CBuffImmunityParam) : immunities
++    CBuffImmunityParam #65 (CBuffImmunityParam) : immunities
+         CBuffImmunityParam (CBuffImmunityParam)
+             name (String) : "immunities"
+             immunityTo (array:Int32)
+                 0 (Int32) : 53
+-    CAnimMimicParam #63 (CAnimMimicParam) : 
++    CAnimMimicParam #66 (CAnimMimicParam) : 
+         CAnimMimicParam (CAnimMimicParam)
+             behaviorInstanceSlots (array:SBehaviorGraphInstanceSlot)
+                 0 (SBehaviorGraphInstanceSlot)

@@ -1,0 +1,530 @@
+ 1 file changed, 159 insertions(+), 98 deletions(-)
+
+diff --git 1.32/characters/npc_entities/main_npc/triss.w2ent.txt 4.00/characters/npc_entities/main_npc/triss.w2ent.txt
+index 3410a8e..5e23a40 100644
+--- 1.32/characters/npc_entities/main_npc/triss.w2ent.txt
++++ 4.00/characters/npc_entities/main_npc/triss.w2ent.txt
+@@ -614,7 +614,7 @@
+                     CNewNPC (CNewNPC)
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+-                        streamingDistance (Uint8) : 14
++                        streamingDistance (Uint8) : 16
+                         name (String) : "PreviewEntity"
+                         Components (array:ptr:CComponent)
+                             0 (ptr:CComponent) : CMovingPhysicalAgentComponent #3
+@@ -638,10 +638,12 @@
+                             0 (SEntityBufferType1)
+                                 ComponentName (CName) : 
+                         BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+-                        idTag (IdTag) :  6df11d3e-0307-4997-a39e-c9562c608eca
++                        idTag (IdTag) :  c48d24c8-4579-4d4d-9bcb-9f00438e3413
+                         displayName (LocalizedString) : 163363
++                        useHiResShadows (Bool) : true
+                         abilityManager (handle:W3AbilityManager) : W3NonPlayerAbilityManager #1
+                         effectManager (handle:W3EffectManager) : W3EffectManager #2
++                        keepUseHiResShadows (Bool) : true
+                 W3NonPlayerAbilityManager #1 (W3NonPlayerAbilityManager) : 
+                     W3NonPlayerAbilityManager (W3NonPlayerAbilityManager)
+                 W3EffectManager #2 (W3EffectManager) : 
+@@ -716,17 +718,6 @@
+                         isStreamed (Bool) : false
+                         graphPositionX (Int16) : 238
+                         graphPositionY (Int16) : 73
+-                        boundingBox (Box)
+-                            Min (Vector)
+-                                X (Float) : 340282300000000000000000000000000000000.0000
+-                                Y (Float) : 340282300000000000000000000000000000000.0000
+-                                Z (Float) : 340282300000000000000000000000000000000.0000
+-                                W (Float) : 1.0000
+-                            Max (Vector)
+-                                X (Float) : NAN
+-                                Y (Float) : NAN
+-                                Z (Float) : NAN
+-                                W (Float) : 1.0000
+                         drawableFlags (EDrawableFlags) : DF_CastShadows,DF_CastShadowsWhenNotVisible,DF_IsCharacterShadowFallback
+                         lightChannels (ELightChannel) : LC_Characters
+                         mesh (handle:CMesh) : characters/models/common/shadowmesh/woman_average_shadowmesh.w2mesh
+@@ -740,7 +731,7 @@
+                     CDynamicColliderComponent (CDynamicColliderComponent)
+                         transform (EngineTransform)
+                             Scale_x (Float) : 1.0000
+-                            Scale_y (Float) : 1.8000
++                            Scale_y (Float) : 1.6000
+                             Scale_z (Float) : 1.0000
+                             X (Float) : 0.0000
+                             Y (Float) : 0.2000
+@@ -773,17 +764,6 @@
+                         isStreamed (Bool) : false
+                         graphPositionX (Int16) : 245
+                         graphPositionY (Int16) : 28
+-                        boundingBox (Box)
+-                            Min (Vector)
+-                                X (Float) : 340282300000000000000000000000000000000.0000
+-                                Y (Float) : 340282300000000000000000000000000000000.0000
+-                                Z (Float) : 340282300000000000000000000000000000000.0000
+-                                W (Float) : 1.0000
+-                            Max (Vector)
+-                                X (Float) : NAN
+-                                Y (Float) : NAN
+-                                Z (Float) : NAN
+-                                W (Float) : 1.0000
+                         lightChannels (ELightChannel) : LC_Characters
+                         mesh (handle:CMesh) : characters/models/common/woman_average/body/model/h_wa__neck_transition.w2mesh
+                 CHardAttachment #13 (CHardAttachment) : torso2
+@@ -821,7 +801,7 @@
+                         attachmentReplacements (SAttachmentReplacements)
+                             replacements (array:SAttachmentReplacement)
+                                 0 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CDropPhysicsComponent0_A9119BB6-4BE56CA2-C3D5D5B7-FAE5A075
++                                    oldName (CName) : proxy_CDropPhysicsComponent0_58DA528C-4AAE4891-DE527E92-4BA527C5
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CDropPhysicsComponent0
+                                     newClass (CName) : CDropPhysicsComponent
+@@ -866,67 +846,72 @@
+                                     newName (CName) : CDropPhysicsComponent0
+                                     newClass (CName) : CDropPhysicsComponent
+                                 9 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_talk_49422A65-46D2E45D-7D14ADB1-5C4327AC
++                                    oldName (CName) : proxy_talk_C34D06C9-45BCC475-5B161780-D6B074CA
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : talk
+                                     newClass (CName) : CInteractionComponent
+                                 10 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_inventory_6230B5A9-47C1D7FD-1BF9CDB7-161E01DE
++                                    oldName (CName) : proxy_inventory_8F995C94-4AD009AC-187DB7AE-DABB9EEC
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : inventory
+                                     newClass (CName) : CInventoryComponent
+                                 11 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_Finish_1038B430-434001F4-B9ACC68D-9355781F
++                                    oldName (CName) : proxy_Finish_7FF5109E-46FB34A6-44AF8681-5AA28D4F
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : Finish
+                                     newClass (CName) : CInteractionComponent
+                                 12 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_Dismemberment_5B68963A-43F579CB-7421A39F-86E130B2
++                                    oldName (CName) : proxy_Dismemberment_A453D8D6-4B3824DB-2471DCBC-6DDB4B32
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : Dismemberment
+                                     newClass (CName) : CDismembermentComponent
+                                 13 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_follow_290B79F9-4FF19A67-58D78E83-CA1403F6
++                                    oldName (CName) : proxy_follow_C293ABFD-4DF32F04-1A42D2BB-48C0C4DE
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : follow
+                                     newClass (CName) : CInteractionComponent
+                                 14 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_woman_average_shadowmesh_0F4E44E0-47643FE5-0C196B91-70D44FD5
++                                    oldName (CName) : proxy_woman_average_shadowmesh_56B6CF22-41E1C8AA-B337EF90-CC474FBB
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : woman_average_shadowmesh
+                                     newClass (CName) : CMeshComponent
+                                 15 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_grassCollider_E95E85FF-41F2B848-C4E1AC9D-C4EE4609
++                                    oldName (CName) : proxy_grassCollider_E4E62B1F-4B5A8695-3F955C9F-F1934939
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : grassCollider
+                                     newClass (CName) : CDynamicColliderComponent
+                                 16 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CReactionSceneActorComponent0_A16121B6-48CC473E-4CE853AD-8B054DFF
++                                    oldName (CName) : proxy_CReactionSceneActorComponent0_712C9393-47DB6797-03B1C691-D5D3265B
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CReactionSceneActorComponent0
+                                     newClass (CName) : CReactionSceneActorComponent
+                                 17 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_h_wa__neck_transition_39A435D7-453C6414-4B4A518F-DDEC9CFC
++                                    oldName (CName) : proxy_h_wa__neck_transition_62E9D8E2-4AE62C6E-1AF9E2AE-878CA278
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : h_wa__neck_transition
+                                     newClass (CName) : CMeshComponent
+                                 18 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CR4HumanoidCombatComponent0_E4EFC9CB-4A9DA99F-ED7AC3B2-2EEC025F
++                                    oldName (CName) : proxy_CR4HumanoidCombatComponent0_766DA231-4B76D254-6C00EBB9-32136059
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CR4HumanoidCombatComponent0
+                                     newClass (CName) : CR4HumanoidCombatComponent
+                                 19 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_torso3effect_D5643CDC-43CFC7E8-B0592582-E1745E20
++                                    oldName (CName) : proxy_torso3effect_E9B77832-4B22C387-7E1D02B1-40F12889
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : torso3effect
+                                     newClass (CName) : CEffectDummyComponent
+                                 20 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CGameplayEffectsComponent0_207BCD68-458F4963-9F25A684-864EF146
++                                    oldName (CName) : proxy_CGameplayEffectsComponent0_2DD52818-4C20E7F8-FD8843A0-66F384BB
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CGameplayEffectsComponent0
+                                     newClass (CName) : CGameplayEffectsComponent
+                                 21 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CDropPhysicsComponent0_AA768900-428C33E0-27F3E7B8-DA35012B
++                                    oldName (CName) : proxy_wetness_2F867192-470EE4AD-C8CAA2BB-4FFCDF35
++                                    oldClass (CName) : CExternalProxyComponent
++                                    newName (CName) : wetness
++                                    newClass (CName) : CWetnessComponent
++                                22 (SAttachmentReplacement)
++                                    oldName (CName) : proxy_CDropPhysicsComponent0_70EF4550-444FE89F-6B28779F-30430239
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CDropPhysicsComponent0
+                                     newClass (CName) : CDropPhysicsComponent
+@@ -4479,7 +4464,7 @@
+                                     1 (ptr:CFXTrackGroup) : CFXTrackGroup #6
+                                     2 (ptr:CFXTrackGroup) : CFXTrackGroup #10
+                                     3 (ptr:CFXTrackGroup) : CFXTrackGroup #14
+-                                length (Float) : 2.1244
++                                length (Float) : 1.0500
+                                 loopStart (Float) : 0.1444
+                                 loopEnd (Float) : 0.4146
+                                 name (CName) : hand_fx
+@@ -4603,27 +4588,27 @@
+                         CFXTrackItemDynamicLight #12 (CFXTrackItemDynamicLight) : DynamicLight
+                             CFXTrackItemDynamicLight (CFXTrackItemDynamicLight)
+                                 timeBegin (Float) : 0.0028
+-                                timeDuration (Float) : 2.4409
++                                timeDuration (Float) : 1.0086
+                                 buffername (CName) : DynamicLight
+                                 count (CDynamicInt) : 2
+                                 unk (Uint8) : 1
+                                 buffer (CCompressedBuffer:CBufferUInt16:CFloat)
+                                     0 (CBufferUInt16:CFloat)
+-                                        1 (Float) : 122.0000
+-                                        2 (Float) : 122.0000
+-                                        3 (Float) : 73.9708
+-                                        4 (Float) : 0.0000
+-                                        5 (Float) : 0.0000
+-                                        6 (Float) : 0.0000
+-                                        7 (Float) : 0.0000
+-                                        8 (Float) : 0.0000
+-                                        9 (Float) : 0.0000
+-                                        10 (Float) : 0.0000
+-                                        11 (Float) : 0.0000
+-                                        12 (Float) : 0.0000
+-                                        13 (Float) : 0.0000
+-                                        14 (Float) : 0.0000
+-                                        15 (Float) : 0.0000
++                                        1 (Float) : 69.2730
++                                        2 (Float) : 121.3999
++                                        3 (Float) : 121.2987
++                                        4 (Float) : 121.1975
++                                        5 (Float) : 121.0963
++                                        6 (Float) : 120.9951
++                                        7 (Float) : 114.3822
++                                        8 (Float) : 87.6077
++                                        9 (Float) : 60.8333
++                                        10 (Float) : 34.0588
++                                        11 (Float) : 7.2844
++                                        12 (Float) : 1.6221
++                                        13 (Float) : 1.6221
++                                        14 (Float) : 1.6221
++                                        15 (Float) : 1.6221
+                                     1 (CBufferUInt16:CFloat)
+                                         0 (Float) : 1.0000
+                                         2 (Float) : 1.0000
+@@ -9071,7 +9056,7 @@
+                                 name (String) : "f"
+                         CFXTrackItemFlare #7 (CFXTrackItemFlare) : 
+                             CFXTrackItemFlare (CFXTrackItemFlare)
+-                                timeBegin (Float) : 0.0116
++                                timeBegin (Float) : 5.7464
+                                 timeDuration (Float) : 1.9822
+                                 buffername (CName) : 
+                                 count (CDynamicInt) : 1
+@@ -10861,7 +10846,7 @@
+                 33 (CEntityTemplateCookedEffect)
+                     name (CName) : igni_burn_hit
+                     buffer (SharedDataBuffer)
+-                        Bufferdata (CByteArray) : 2644 bytes
++                        Bufferdata (CByteArray) : 2675 bytes
+                         CFXDefinition #0 (CFXDefinition) : igni_burn_hit
+                             CFXDefinition (CFXDefinition)
+                                 trackGroups (array:ptr:CFXTrackGroup)
+@@ -10967,6 +10952,7 @@
+                                     Blue (Uint8) : 22
+                                     Alpha (Uint8) : 255
+                                 radius (Float) : 3.0000
++                                brightness (Float) : 0.5000
+                                 autoHideDistance (Float) : 45.0000
+                                 colorGroup (EEnvColorGroup) : ECG_FX_FireLight
+                                 spawner (ptr:IFXSpawner) : CFXSpawnerComponent #8
+@@ -14119,7 +14105,7 @@
+                 44 (CEntityTemplateCookedEffect)
+                     name (CName) : critical_burning
+                     buffer (SharedDataBuffer)
+-                        Bufferdata (CByteArray) : 6476 bytes
++                        Bufferdata (CByteArray) : 6539 bytes
+                         CFXDefinition #0 (CFXDefinition) : critical_burning
+                             CFXDefinition (CFXDefinition)
+                                 trackGroups (array:ptr:CFXTrackGroup)
+@@ -14191,6 +14177,7 @@
+                                         Green (Uint8) : 140
+                                         Blue (Uint8) : 80
+                                         Alpha (Uint8) : 255
++                                    color_scale (Float) : 0.3000
+                         CFXSpawnerComponent #5 (CFXSpawnerComponent) : woman_base
+                             CFXSpawnerComponent (CFXSpawnerComponent)
+                                 componentName (CName) : woman_base
+@@ -14268,6 +14255,7 @@
+                                     Blue (Uint8) : 61
+                                     Alpha (Uint8) : 255
+                                 radius (Float) : 6.0000
++                                brightness (Float) : 0.5000
+                                 lightFlickering (SLightFlickering)
+                                     flickerStrength (Float) : 0.7000
+                                     flickerPeriod (Float) : 0.1000
+@@ -16638,13 +16626,101 @@
+                                 componentName (CName) : woman_base
+                                 attach (Bool) : true
+                                 parentSlotName (CName) : pelvis
++                53 (CEntityTemplateCookedEffect)
++                    name (CName) : water_hit_blood
++                    buffer (SharedDataBuffer)
++                        Bufferdata (CByteArray) : 1495 bytes
++                        CFXDefinition #0 (CFXDefinition) : water_hit_blood
++                            CFXDefinition (CFXDefinition)
++                                trackGroups (array:ptr:CFXTrackGroup)
++                                    0 (ptr:CFXTrackGroup) : CFXTrackGroup #1
++                                length (Float) : 10.8133
++                                loopStart (Float) : 0.1515
++                                loopEnd (Float) : 0.3553
++                                name (CName) : water_hit_blood
++                        CFXTrackGroup #1 (CFXTrackGroup) : fx
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "fx"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #2
++                                isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 163
++                                    Green (Uint8) : 169
++                                    Blue (Uint8) : 167
++                                    Alpha (Uint8) : 100
++                        CFXTrack #2 (CFXTrack) : fx
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #3
++                                name (String) : "fx"
++                        CFXTrackItemParticles #3 (CFXTrackItemParticles) : Particles
++                            CFXTrackItemParticles (CFXTrackItemParticles)
++                                timeBegin (Float) : 0.0002
++                                timeDuration (Float) : 10.5552
++                                buffername (CName) : Particles
++                                count (CDynamicInt) : 3
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    1 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    2 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                particleSystem (soft:CParticleSystem) : fx/blood/standard_hit/water_blood.w2p
++                                spawner (ptr:IFXSpawner) : CFXWaterSpawner #4
++                        CFXWaterSpawner #4 (CFXWaterSpawner) : 
++                            CFXWaterSpawner (CFXWaterSpawner) : <CFXWaterSpawner>CFXWaterSpawner
+             cookedEffectsVersion (Uint32) : 1
+             Unk1 (Uint32) : 0
+     CNewNPC #1 (CNewNPC) : 
+         CNewNPC (CNewNPC)
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+-            streamingDistance (Uint8) : 14
++            streamingDistance (Uint8) : 16
+             Components (array:ptr:CComponent)
+                 0 (ptr:CComponent) : CMovingPhysicalAgentComponent #4
+                 1 (ptr:CComponent) : CAppearanceComponent #17
+@@ -16667,10 +16743,12 @@
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+-            idTag (IdTag) :  6df11d3e-0307-4997-a39e-c9562c608eca
++            idTag (IdTag) :  c48d24c8-4579-4d4d-9bcb-9f00438e3413
+             displayName (LocalizedString) : 163363
++            useHiResShadows (Bool) : true
+             abilityManager (handle:W3AbilityManager) : W3NonPlayerAbilityManager #2
+             effectManager (handle:W3EffectManager) : W3EffectManager #3
++            keepUseHiResShadows (Bool) : true
+     W3NonPlayerAbilityManager #2 (W3NonPlayerAbilityManager) : 
+         W3NonPlayerAbilityManager (W3NonPlayerAbilityManager)
+     W3EffectManager #3 (W3EffectManager) : 
+@@ -16739,17 +16817,6 @@
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "woman_average_shadowmesh"
+             isStreamed (Bool) : false
+-            boundingBox (Box)
+-                Min (Vector)
+-                    X (Float) : 340282300000000000000000000000000000000.0000
+-                    Y (Float) : 340282300000000000000000000000000000000.0000
+-                    Z (Float) : 340282300000000000000000000000000000000.0000
+-                    W (Float) : 1.0000
+-                Max (Vector)
+-                    X (Float) : NAN
+-                    Y (Float) : NAN
+-                    Z (Float) : NAN
+-                    W (Float) : 1.0000
+             drawableFlags (EDrawableFlags) : DF_CastShadows,DF_CastShadowsWhenNotVisible,DF_IsCharacterShadowFallback
+             lightChannels (ELightChannel) : LC_Characters
+             mesh (handle:CMesh) : characters/models/common/shadowmesh/woman_average_shadowmesh.w2mesh
+@@ -16763,7 +16830,7 @@
+         CDynamicColliderComponent (CDynamicColliderComponent)
+             transform (EngineTransform)
+                 Scale_x (Float) : 1.0000
+-                Scale_y (Float) : 1.8000
++                Scale_y (Float) : 1.6000
+                 Scale_z (Float) : 1.0000
+                 X (Float) : 0.0000
+                 Y (Float) : 0.2000
+@@ -16792,17 +16859,6 @@
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "h_wa__neck_transition"
+             isStreamed (Bool) : false
+-            boundingBox (Box)
+-                Min (Vector)
+-                    X (Float) : 340282300000000000000000000000000000000.0000
+-                    Y (Float) : 340282300000000000000000000000000000000.0000
+-                    Z (Float) : 340282300000000000000000000000000000000.0000
+-                    W (Float) : 1.0000
+-                Max (Vector)
+-                    X (Float) : NAN
+-                    Y (Float) : NAN
+-                    Z (Float) : NAN
+-                    W (Float) : 1.0000
+             lightChannels (ELightChannel) : LC_Characters
+             mesh (handle:CMesh) : characters/models/common/woman_average/body/model/h_wa__neck_transition.w2mesh
+     CHardAttachment #14 (CHardAttachment) : torso2
+@@ -16836,7 +16892,7 @@
+             attachmentReplacements (SAttachmentReplacements)
+                 replacements (array:SAttachmentReplacement)
+                     0 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CDropPhysicsComponent0_A9119BB6-4BE56CA2-C3D5D5B7-FAE5A075
++                        oldName (CName) : proxy_CDropPhysicsComponent0_58DA528C-4AAE4891-DE527E92-4BA527C5
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CDropPhysicsComponent0
+                         newClass (CName) : CDropPhysicsComponent
+@@ -16881,67 +16937,72 @@
+                         newName (CName) : CDropPhysicsComponent0
+                         newClass (CName) : CDropPhysicsComponent
+                     9 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_talk_49422A65-46D2E45D-7D14ADB1-5C4327AC
++                        oldName (CName) : proxy_talk_C34D06C9-45BCC475-5B161780-D6B074CA
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : talk
+                         newClass (CName) : CInteractionComponent
+                     10 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_inventory_6230B5A9-47C1D7FD-1BF9CDB7-161E01DE
++                        oldName (CName) : proxy_inventory_8F995C94-4AD009AC-187DB7AE-DABB9EEC
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : inventory
+                         newClass (CName) : CInventoryComponent
+                     11 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_Finish_1038B430-434001F4-B9ACC68D-9355781F
++                        oldName (CName) : proxy_Finish_7FF5109E-46FB34A6-44AF8681-5AA28D4F
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : Finish
+                         newClass (CName) : CInteractionComponent
+                     12 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_Dismemberment_5B68963A-43F579CB-7421A39F-86E130B2
++                        oldName (CName) : proxy_Dismemberment_A453D8D6-4B3824DB-2471DCBC-6DDB4B32
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : Dismemberment
+                         newClass (CName) : CDismembermentComponent
+                     13 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_follow_290B79F9-4FF19A67-58D78E83-CA1403F6
++                        oldName (CName) : proxy_follow_C293ABFD-4DF32F04-1A42D2BB-48C0C4DE
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : follow
+                         newClass (CName) : CInteractionComponent
+                     14 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_woman_average_shadowmesh_0F4E44E0-47643FE5-0C196B91-70D44FD5
++                        oldName (CName) : proxy_woman_average_shadowmesh_56B6CF22-41E1C8AA-B337EF90-CC474FBB
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : woman_average_shadowmesh
+                         newClass (CName) : CMeshComponent
+                     15 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_grassCollider_E95E85FF-41F2B848-C4E1AC9D-C4EE4609
++                        oldName (CName) : proxy_grassCollider_E4E62B1F-4B5A8695-3F955C9F-F1934939
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : grassCollider
+                         newClass (CName) : CDynamicColliderComponent
+                     16 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CReactionSceneActorComponent0_A16121B6-48CC473E-4CE853AD-8B054DFF
++                        oldName (CName) : proxy_CReactionSceneActorComponent0_712C9393-47DB6797-03B1C691-D5D3265B
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CReactionSceneActorComponent0
+                         newClass (CName) : CReactionSceneActorComponent
+                     17 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_h_wa__neck_transition_39A435D7-453C6414-4B4A518F-DDEC9CFC
++                        oldName (CName) : proxy_h_wa__neck_transition_62E9D8E2-4AE62C6E-1AF9E2AE-878CA278
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : h_wa__neck_transition
+                         newClass (CName) : CMeshComponent
+                     18 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CR4HumanoidCombatComponent0_E4EFC9CB-4A9DA99F-ED7AC3B2-2EEC025F
++                        oldName (CName) : proxy_CR4HumanoidCombatComponent0_766DA231-4B76D254-6C00EBB9-32136059
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CR4HumanoidCombatComponent0
+                         newClass (CName) : CR4HumanoidCombatComponent
+                     19 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_torso3effect_D5643CDC-43CFC7E8-B0592582-E1745E20
++                        oldName (CName) : proxy_torso3effect_E9B77832-4B22C387-7E1D02B1-40F12889
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : torso3effect
+                         newClass (CName) : CEffectDummyComponent
+                     20 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CGameplayEffectsComponent0_207BCD68-458F4963-9F25A684-864EF146
++                        oldName (CName) : proxy_CGameplayEffectsComponent0_2DD52818-4C20E7F8-FD8843A0-66F384BB
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CGameplayEffectsComponent0
+                         newClass (CName) : CGameplayEffectsComponent
+                     21 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CDropPhysicsComponent0_AA768900-428C33E0-27F3E7B8-DA35012B
++                        oldName (CName) : proxy_wetness_2F867192-470EE4AD-C8CAA2BB-4FFCDF35
++                        oldClass (CName) : CExternalProxyComponent
++                        newName (CName) : wetness
++                        newClass (CName) : CWetnessComponent
++                    22 (SAttachmentReplacement)
++                        oldName (CName) : proxy_CDropPhysicsComponent0_70EF4550-444FE89F-6B28779F-30430239
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CDropPhysicsComponent0
+                         newClass (CName) : CDropPhysicsComponent

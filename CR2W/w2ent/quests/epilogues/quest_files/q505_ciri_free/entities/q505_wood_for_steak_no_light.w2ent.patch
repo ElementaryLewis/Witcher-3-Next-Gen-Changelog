@@ -1,0 +1,565 @@
+ 1 file changed, 172 insertions(+), 222 deletions(-)
+
+diff --git 1.32/quests/epilogues/quest_files/q505_ciri_free/entities/q505_wood_for_steak_no_light.w2ent.txt 4.00/quests/epilogues/quest_files/q505_ciri_free/entities/q505_wood_for_steak_no_light.w2ent.txt
+index 5bbdb4b..eb56aeb 100644
+--- 1.32/quests/epilogues/quest_files/q505_ciri_free/entities/q505_wood_for_steak_no_light.w2ent.txt
++++ 4.00/quests/epilogues/quest_files/q505_ciri_free/entities/q505_wood_for_steak_no_light.w2ent.txt
+@@ -17,7 +17,7 @@
+                         Y (Float) : -0.0721
+                         Z (Float) : -0.1000
+             templateParams (array:ptr:CEntityTemplateParam)
+-                0 (ptr:CEntityTemplateParam) : CAttackableArea #6
++                0 (ptr:CEntityTemplateParam) : CAttackableArea #7
+             flatCompiledData (array:Uint8) : # array:2,0,Uint8
+                 W3FireSource #0 (W3FireSource) : PreviewEntity
+                     W3FireSource (W3FireSource)
+@@ -33,12 +33,14 @@
+                             0 (ptr:CComponent) : CStaticMeshComponent #1
+                             1 (ptr:CComponent) : CGameplayLightComponent #2
+                             2 (ptr:CComponent) : CFocusActionComponent #3
+-                            3 (ptr:CComponent) : CSoundEmitterComponent #4
++                            3 (ptr:CComponent) : CPointLightComponent #4
++                            4 (ptr:CComponent) : CSoundEmitterComponent #5
+                         BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                             0 (SEntityBufferType1)
+                                 ComponentName (CName) : 
+                         BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+-                        idTag (IdTag) :  b0bb127b-fc1d-4377-bad5-609b1828ed0f
++                        idTag (IdTag) :  89d3f4b7-bada-4a1d-a10b-a93af58c8191
++                        displayName (LocalizedString) : 1224402
+                 CStaticMeshComponent #1 (CStaticMeshComponent) : CMeshComponent campfire
+                     CStaticMeshComponent (CStaticMeshComponent)
+                         transform (EngineTransform)
+@@ -93,8 +95,35 @@
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         name (String) : "CFocusActionComponent0"
+-                        actionName (CName) : Igni
+-                CSoundEmitterComponent #4 (CSoundEmitterComponent) : CSoundEmitterComponent
++                        graphPositionX (Int16) : -111
++                        graphPositionY (Int16) : 58
++                        actionName (CName) : Aard
++                CPointLightComponent #4 (CPointLightComponent) : CPointLightComponent0
++                    CPointLightComponent (CPointLightComponent)
++                        transform (EngineTransform)
++                            X (Float) : 0.0132
++                            Y (Float) : -0.0083
++                            Z (Float) : 0.4000
++                        guid (CGUID) : 4f0a30e8-0891-4fd0-ab4a-84b74d7fd7d9
++                        AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++                        AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++                        name (String) : "CPointLightComponent0"
++                        graphPositionX (Int16) : 24
++                        graphPositionY (Int16) : -33
++                        radius (Float) : 4.0000
++                        brightness (Float) : 0.0000
++                        color (Color)
++                            Red (Uint8) : 255
++                            Green (Uint8) : 188
++                            Blue (Uint8) : 127
++                            Alpha (Uint8) : 255
++                        envColorGroup (EEnvColorGroup) : ECG_FX_FireLight
++                        autoHideDistance (Float) : 55.0000
++                        lightFlickering (SLightFlickering)
++                            positionOffset (Float) : 0.1000
++                            flickerStrength (Float) : 0.6000
++                            flickerPeriod (Float) : 0.1000
++                CSoundEmitterComponent #5 (CSoundEmitterComponent) : CSoundEmitterComponent
+                     transform (EngineTransform)
+                         X (Float) : 0.0000
+                         Y (Float) : 0.0000
+@@ -109,19 +138,19 @@
+                 0 (CEntityTemplateCookedEffect)
+                     name (CName) : fire
+                     buffer (SharedDataBuffer)
+-                        Bufferdata (CByteArray) : 5164 bytes
++                        Bufferdata (CByteArray) : 4496 bytes
+                         CFXDefinition #0 (CFXDefinition) : fire
+                             CFXDefinition (CFXDefinition)
+                                 trackGroups (array:ptr:CFXTrackGroup)
+                                     0 (ptr:CFXTrackGroup) : CFXTrackGroup #1
+                                     1 (ptr:CFXTrackGroup) : CFXTrackGroup #5
+                                     2 (ptr:CFXTrackGroup) : CFXTrackGroup #8
+-                                    3 (ptr:CFXTrackGroup) : CFXTrackGroup #16
+-                                    4 (ptr:CFXTrackGroup) : CFXTrackGroup #29
++                                    3 (ptr:CFXTrackGroup) : CFXTrackGroup #13
+                                 length (Float) : 1.1169
+                                 loopStart (Float) : 0.2798
+                                 loopEnd (Float) : 0.5728
+                                 name (CName) : fire
++                                showDistance (Float) : 32.0000
+                                 isLooped (Bool) : true
+                         CFXTrackGroup #1 (CFXTrackGroup) : sounds
+                             CFXTrackGroup (CFXTrackGroup)
+@@ -163,6 +192,7 @@
+                                 name (String) : "light2"
+                                 tracks (array:ptr:CFXTrack)
+                                     0 (ptr:CFXTrack) : CFXTrack #6
++                                isExpanded (Bool) : true
+                                 trackGroupColor (Color)
+                                     Red (Uint8) : 159
+                                     Green (Uint8) : 163
+@@ -183,16 +213,17 @@
+                                 unk (Uint8) : 1
+                                 buffer (CCompressedBuffer:CBufferUInt16:CFloat)
+                                     0 (CBufferUInt16:CFloat)
+-                                        1 (Float) : 1.3886
+-                                        3 (Float) : 2.0000
+-                                        4 (Float) : 2.0000
+-                                        5 (Float) : 2.0000
+-                                        6 (Float) : 1.8001
+-                                        7 (Float) : 1.4800
+-                                        8 (Float) : 1.1599
+-                                        9 (Float) : 0.8398
+-                                        10 (Float) : 0.5196
+-                                        11 (Float) : 0.1995
++                                        1 (Float) : 4.1659
++                                        2 (Float) : 6.0000
++                                        3 (Float) : 6.0000
++                                        4 (Float) : 6.0000
++                                        5 (Float) : 6.0000
++                                        6 (Float) : 5.4003
++                                        7 (Float) : 4.4400
++                                        8 (Float) : 3.4796
++                                        9 (Float) : 2.5193
++                                        10 (Float) : 1.5589
++                                        11 (Float) : 0.5986
+                                         12 (Float) : 0.0000
+                                         13 (Float) : 0.0000
+                                         14 (Float) : 0.0000
+@@ -204,20 +235,20 @@
+                                 tracks (array:ptr:CFXTrack)
+                                     0 (ptr:CFXTrack) : CFXTrack #9
+                                     1 (ptr:CFXTrack) : CFXTrack #12
+-                                    2 (ptr:CFXTrack) : CFXTrack #15
++                                isExpanded (Bool) : true
+                                 trackGroupColor (Color)
+                                     Red (Uint8) : 232
+                                     Green (Uint8) : 132
+                                     Blue (Uint8) : 227
+                                     Alpha (Uint8) : 100
+-                        CFXTrack #9 (CFXTrack) : fx3
++                        CFXTrack #9 (CFXTrack) : fx
+                             CFXTrack (CFXTrack)
+                                 trackItems (array:ptr:CFXTrackItem)
+                                     0 (ptr:CFXTrackItem) : CFXTrackItemParticles #10
+-                                name (String) : "fx3"
++                                name (String) : "fx"
+                         CFXTrackItemParticles #10 (CFXTrackItemParticles) : Particles
+                             CFXTrackItemParticles (CFXTrackItemParticles)
+-                                timeBegin (Float) : 0.0415
++                                timeBegin (Float) : -0.0140
+                                 timeDuration (Float) : 3.1928
+                                 buffername (CName) : Particles
+                                 count (CDynamicInt) : 3
+@@ -271,100 +302,103 @@
+                                         13 (Float) : 1.0000
+                                         14 (Float) : 1.0000
+                                         15 (Float) : 1.0000
++                                particleSystem (soft:CParticleSystem) : fx/light_sources/bonfire/large/smoke_07.w2p
+                                 spawner (ptr:IFXSpawner) : CFXSpawnerComponent #11
+                         CFXSpawnerComponent #11 (CFXSpawnerComponent) : fire_point1
+                             CFXSpawnerComponent (CFXSpawnerComponent)
+                                 componentName (CName) : fire_point1
+-                        CFXTrack #12 (CFXTrack) : fx
+-                            CFXTrack (CFXTrack)
+-                                trackItems (array:ptr:CFXTrackItem)
+-                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #13
+-                                name (String) : "fx"
+-                        CFXTrackItemParticles #13 (CFXTrackItemParticles) : Particles
+-                            CFXTrackItemParticles (CFXTrackItemParticles)
+-                                timeBegin (Float) : 0.0093
+-                                timeDuration (Float) : 3.1928
+-                                buffername (CName) : Particles
+-                                count (CDynamicInt) : 3
+-                                unk (Uint8) : 1
+-                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
+-                                    0 (CBufferUInt16:CFloat)
+-                                        0 (Float) : 1.0000
+-                                        2 (Float) : 1.0000
+-                                        3 (Float) : 1.0000
+-                                        4 (Float) : 1.0000
+-                                        5 (Float) : 1.0000
+-                                        6 (Float) : 1.0000
+-                                        7 (Float) : 1.0000
+-                                        8 (Float) : 1.0000
+-                                        9 (Float) : 1.0000
+-                                        10 (Float) : 1.0000
+-                                        11 (Float) : 1.0000
+-                                        12 (Float) : 1.0000
+-                                        13 (Float) : 1.0000
+-                                        14 (Float) : 1.0000
+-                                        15 (Float) : 1.0000
+-                                    1 (CBufferUInt16:CFloat)
+-                                        0 (Float) : 1.0000
+-                                        2 (Float) : 1.0000
+-                                        3 (Float) : 1.0000
+-                                        4 (Float) : 1.0000
+-                                        5 (Float) : 1.0000
+-                                        6 (Float) : 1.0000
+-                                        7 (Float) : 1.0000
+-                                        8 (Float) : 1.0000
+-                                        9 (Float) : 1.0000
+-                                        10 (Float) : 1.0000
+-                                        11 (Float) : 1.0000
+-                                        12 (Float) : 1.0000
+-                                        13 (Float) : 1.0000
+-                                        14 (Float) : 1.0000
+-                                        15 (Float) : 1.0000
+-                                    2 (CBufferUInt16:CFloat)
+-                                        0 (Float) : 1.0000
+-                                        2 (Float) : 1.0000
+-                                        3 (Float) : 1.0000
+-                                        4 (Float) : 1.0000
+-                                        5 (Float) : 1.0000
+-                                        6 (Float) : 1.0000
+-                                        7 (Float) : 1.0000
+-                                        8 (Float) : 1.0000
+-                                        9 (Float) : 1.0000
+-                                        10 (Float) : 1.0000
+-                                        11 (Float) : 1.0000
+-                                        12 (Float) : 1.0000
+-                                        13 (Float) : 1.0000
+-                                        14 (Float) : 1.0000
+-                                        15 (Float) : 1.0000
+-                                particleSystem (soft:CParticleSystem) : fx/light_sources/bonfire/small/fire_small_refraction.w2p
+-                                spawner (ptr:IFXSpawner) : CFXSpawnerComponent #14
+-                        CFXSpawnerComponent #14 (CFXSpawnerComponent) : fire_point1
+-                            CFXSpawnerComponent (CFXSpawnerComponent)
+-                                componentName (CName) : fire_point1
+-                        CFXTrack #15 (CFXTrack) : dx
++                        CFXTrack #12 (CFXTrack) : dx
+                             CFXTrack (CFXTrack)
+                                 name (String) : "dx"
+-                        CFXTrackGroup #16 (CFXTrackGroup) : fire1
++                        CFXTrackGroup #13 (CFXTrackGroup) : fire1
+                             CFXTrackGroup (CFXTrackGroup)
+                                 name (String) : "fire1"
+                                 tracks (array:ptr:CFXTrack)
+-                                    0 (ptr:CFXTrack) : CFXTrack #17
+-                                    1 (ptr:CFXTrack) : CFXTrack #20
+-                                    2 (ptr:CFXTrack) : CFXTrack #23
+-                                    3 (ptr:CFXTrack) : CFXTrack #26
++                                    0 (ptr:CFXTrack) : CFXTrack #14
++                                    1 (ptr:CFXTrack) : CFXTrack #17
++                                    2 (ptr:CFXTrack) : CFXTrack #20
++                                    3 (ptr:CFXTrack) : CFXTrack #23
++                                isExpanded (Bool) : true
+                                 trackGroupColor (Color)
+                                     Red (Uint8) : 188
+                                     Green (Uint8) : 167
+                                     Blue (Uint8) : 203
+                                     Alpha (Uint8) : 100
+-                        CFXTrack #17 (CFXTrack) : fx4
++                        CFXTrack #14 (CFXTrack) : fx4
+                             CFXTrack (CFXTrack)
+                                 trackItems (array:ptr:CFXTrackItem)
+-                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #18
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #15
+                                 name (String) : "fx4"
++                        CFXTrackItemParticles #15 (CFXTrackItemParticles) : Particles
++                            CFXTrackItemParticles (CFXTrackItemParticles)
++                                timeBegin (Float) : -0.0019
++                                timeDuration (Float) : 3.0454
++                                buffername (CName) : Particles
++                                count (CDynamicInt) : 3
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    1 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    2 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 0.4872
++                                        5 (Float) : 0.0000
++                                        6 (Float) : 0.0000
++                                        7 (Float) : 0.0000
++                                        8 (Float) : 0.0000
++                                        9 (Float) : 0.0000
++                                        10 (Float) : 0.0000
++                                        11 (Float) : 0.0000
++                                        12 (Float) : 0.0000
++                                        13 (Float) : 0.0000
++                                        14 (Float) : 0.0000
++                                        15 (Float) : 0.0000
++                                particleSystem (soft:CParticleSystem) : fx/light_sources/bonfire/large/fire_01.w2p
++                                spawner (ptr:IFXSpawner) : CFXSpawnerComponent #16
++                        CFXSpawnerComponent #16 (CFXSpawnerComponent) : fire_point4
++                            CFXSpawnerComponent (CFXSpawnerComponent)
++                                componentName (CName) : fire_point4
++                                attach (Bool) : true
++                        CFXTrack #17 (CFXTrack) : fx3
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #18
++                                name (String) : "fx3"
+                         CFXTrackItemParticles #18 (CFXTrackItemParticles) : Particles
+                             CFXTrackItemParticles (CFXTrackItemParticles)
+-                                timeBegin (Float) : 0.0213
++                                timeBegin (Float) : 0.0503
+                                 timeDuration (Float) : 3.0454
+                                 buffername (CName) : Particles
+                                 count (CDynamicInt) : 3
+@@ -420,18 +454,18 @@
+                                         15 (Float) : 0.0000
+                                 particleSystem (soft:CParticleSystem) : fx/light_sources/bonfire/large/fire_01.w2p
+                                 spawner (ptr:IFXSpawner) : CFXSpawnerComponent #19
+-                        CFXSpawnerComponent #19 (CFXSpawnerComponent) : fire_point4
++                        CFXSpawnerComponent #19 (CFXSpawnerComponent) : fire_point3
+                             CFXSpawnerComponent (CFXSpawnerComponent)
+-                                componentName (CName) : fire_point4
++                                componentName (CName) : fire_point3
+                                 attach (Bool) : true
+-                        CFXTrack #20 (CFXTrack) : fx3
++                        CFXTrack #20 (CFXTrack) : fx2
+                             CFXTrack (CFXTrack)
+                                 trackItems (array:ptr:CFXTrackItem)
+                                     0 (ptr:CFXTrackItem) : CFXTrackItemParticles #21
+-                                name (String) : "fx3"
++                                name (String) : "fx2"
+                         CFXTrackItemParticles #21 (CFXTrackItemParticles) : Particles
+                             CFXTrackItemParticles (CFXTrackItemParticles)
+-                                timeBegin (Float) : -0.0019
++                                timeBegin (Float) : -0.0126
+                                 timeDuration (Float) : 3.0454
+                                 buffername (CName) : Particles
+                                 count (CDynamicInt) : 3
+@@ -487,83 +521,16 @@
+                                         15 (Float) : 0.0000
+                                 particleSystem (soft:CParticleSystem) : fx/light_sources/bonfire/large/fire_01.w2p
+                                 spawner (ptr:IFXSpawner) : CFXSpawnerComponent #22
+-                        CFXSpawnerComponent #22 (CFXSpawnerComponent) : fire_point3
++                        CFXSpawnerComponent #22 (CFXSpawnerComponent) : fire_point2
+                             CFXSpawnerComponent (CFXSpawnerComponent)
+-                                componentName (CName) : fire_point3
++                                componentName (CName) : fire_point2
+                                 attach (Bool) : true
+-                        CFXTrack #23 (CFXTrack) : fx2
++                        CFXTrack #23 (CFXTrack) : fx
+                             CFXTrack (CFXTrack)
+                                 trackItems (array:ptr:CFXTrackItem)
+                                     0 (ptr:CFXTrackItem) : CFXTrackItemParticles #24
+-                                name (String) : "fx2"
++                                name (String) : "fx"
+                         CFXTrackItemParticles #24 (CFXTrackItemParticles) : Particles
+-                            CFXTrackItemParticles (CFXTrackItemParticles)
+-                                timeBegin (Float) : 0.0222
+-                                timeDuration (Float) : 3.0454
+-                                buffername (CName) : Particles
+-                                count (CDynamicInt) : 3
+-                                unk (Uint8) : 1
+-                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
+-                                    0 (CBufferUInt16:CFloat)
+-                                        0 (Float) : 1.0000
+-                                        2 (Float) : 1.0000
+-                                        3 (Float) : 1.0000
+-                                        4 (Float) : 1.0000
+-                                        5 (Float) : 1.0000
+-                                        6 (Float) : 1.0000
+-                                        7 (Float) : 1.0000
+-                                        8 (Float) : 1.0000
+-                                        9 (Float) : 1.0000
+-                                        10 (Float) : 1.0000
+-                                        11 (Float) : 1.0000
+-                                        12 (Float) : 1.0000
+-                                        13 (Float) : 1.0000
+-                                        14 (Float) : 1.0000
+-                                        15 (Float) : 1.0000
+-                                    1 (CBufferUInt16:CFloat)
+-                                        0 (Float) : 1.0000
+-                                        2 (Float) : 1.0000
+-                                        3 (Float) : 1.0000
+-                                        4 (Float) : 1.0000
+-                                        5 (Float) : 1.0000
+-                                        6 (Float) : 1.0000
+-                                        7 (Float) : 1.0000
+-                                        8 (Float) : 1.0000
+-                                        9 (Float) : 1.0000
+-                                        10 (Float) : 1.0000
+-                                        11 (Float) : 1.0000
+-                                        12 (Float) : 1.0000
+-                                        13 (Float) : 1.0000
+-                                        14 (Float) : 1.0000
+-                                        15 (Float) : 1.0000
+-                                    2 (CBufferUInt16:CFloat)
+-                                        0 (Float) : 1.0000
+-                                        2 (Float) : 1.0000
+-                                        3 (Float) : 1.0000
+-                                        4 (Float) : 0.4872
+-                                        5 (Float) : 0.0000
+-                                        6 (Float) : 0.0000
+-                                        7 (Float) : 0.0000
+-                                        8 (Float) : 0.0000
+-                                        9 (Float) : 0.0000
+-                                        10 (Float) : 0.0000
+-                                        11 (Float) : 0.0000
+-                                        12 (Float) : 0.0000
+-                                        13 (Float) : 0.0000
+-                                        14 (Float) : 0.0000
+-                                        15 (Float) : 0.0000
+-                                particleSystem (soft:CParticleSystem) : fx/light_sources/bonfire/large/fire_01.w2p
+-                                spawner (ptr:IFXSpawner) : CFXSpawnerComponent #25
+-                        CFXSpawnerComponent #25 (CFXSpawnerComponent) : fire_point2
+-                            CFXSpawnerComponent (CFXSpawnerComponent)
+-                                componentName (CName) : fire_point2
+-                                attach (Bool) : true
+-                        CFXTrack #26 (CFXTrack) : fx
+-                            CFXTrack (CFXTrack)
+-                                trackItems (array:ptr:CFXTrackItem)
+-                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #27
+-                                name (String) : "fx"
+-                        CFXTrackItemParticles #27 (CFXTrackItemParticles) : Particles
+                             CFXTrackItemParticles (CFXTrackItemParticles)
+                                 timeBegin (Float) : 0.0092
+                                 timeDuration (Float) : 3.0454
+@@ -622,8 +589,8 @@
+                                         14 (Float) : 0.0000
+                                         15 (Float) : 0.0000
+                                 particleSystem (soft:CParticleSystem) : fx/light_sources/bonfire/medium/medium_fire_anim.w2p
+-                                spawner (ptr:IFXSpawner) : CFXSpawnerComponent #28
+-                        CFXSpawnerComponent #28 (CFXSpawnerComponent) : fire_point1
++                                spawner (ptr:IFXSpawner) : CFXSpawnerComponent #25
++                        CFXSpawnerComponent #25 (CFXSpawnerComponent) : fire_point1
+                             CFXSpawnerComponent (CFXSpawnerComponent)
+                                 componentName (CName) : fire_point1
+                                 attach (Bool) : true
+@@ -632,48 +599,6 @@
+                                     Y (Float) : 0.0000
+                                     Z (Float) : 0.0200
+                                     W (Float) : 0.0000
+-                        CFXTrackGroup #29 (CFXTrackGroup) : light
+-                            CFXTrackGroup (CFXTrackGroup)
+-                                name (String) : "light"
+-                                tracks (array:ptr:CFXTrack)
+-                                    0 (ptr:CFXTrack) : CFXTrack #30
+-                                trackGroupColor (Color)
+-                                    Red (Uint8) : 134
+-                                    Green (Uint8) : 162
+-                                    Blue (Uint8) : 247
+-                                    Alpha (Uint8) : 100
+-                                componentName (CName) : CSpotLightComponent0
+-                        CFXTrack #30 (CFXTrack) : param
+-                            CFXTrack (CFXTrack)
+-                                trackItems (array:ptr:CFXTrackItem)
+-                                    0 (ptr:CFXTrackItem) : CFXTrackItemParameterFloat #31
+-                                name (String) : "param"
+-                        CFXTrackItemParameterFloat #31 (CFXTrackItemParameterFloat) : 
+-                            CFXTrackItemParameterFloat (CFXTrackItemParameterFloat)
+-                                timeBegin (Float) : -0.0035
+-                                timeDuration (Float) : 2.9535
+-                                buffername (CName) : 
+-                                count (CDynamicInt) : 1
+-                                unk (Uint8) : 1
+-                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
+-                                    0 (CBufferUInt16:CFloat)
+-                                        0 (Float) : 1.0000
+-                                        1 (Float) : 9.1008
+-                                        2 (Float) : 12.0000
+-                                        3 (Float) : 12.0000
+-                                        4 (Float) : 10.9395
+-                                        5 (Float) : 9.8427
+-                                        6 (Float) : 8.7460
+-                                        7 (Float) : 7.6492
+-                                        8 (Float) : 6.5524
+-                                        9 (Float) : 5.4556
+-                                        10 (Float) : 4.3588
+-                                        11 (Float) : 3.2620
+-                                        12 (Float) : 2.1652
+-                                        13 (Float) : 1.0684
+-                                        14 (Float) : 0.0000
+-                                        15 (Float) : 0.0000
+-                                parameterName (CName) : Brightness
+             cookedEffectsVersion (Uint32) : 1
+             Unk1 (Uint32) : 0
+     W3FireSource #1 (W3FireSource) : 
+@@ -689,12 +614,14 @@
+                 0 (ptr:CComponent) : CStaticMeshComponent #2
+                 1 (ptr:CComponent) : CGameplayLightComponent #3
+                 2 (ptr:CComponent) : CFocusActionComponent #4
+-                3 (ptr:CComponent) : CSoundEmitterComponent #5
++                3 (ptr:CComponent) : CPointLightComponent #5
++                4 (ptr:CComponent) : CSoundEmitterComponent #6
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+-            idTag (IdTag) :  b0bb127b-fc1d-4377-bad5-609b1828ed0f
++            idTag (IdTag) :  89d3f4b7-bada-4a1d-a10b-a93af58c8191
++            displayName (LocalizedString) : 1224402
+     CStaticMeshComponent #2 (CStaticMeshComponent) : CMeshComponent campfire
+         CStaticMeshComponent (CStaticMeshComponent)
+             transform (EngineTransform)
+@@ -745,8 +672,31 @@
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "CFocusActionComponent0"
+-            actionName (CName) : Igni
+-    CSoundEmitterComponent #5 (CSoundEmitterComponent) : CSoundEmitterComponent
++            actionName (CName) : Aard
++    CPointLightComponent #5 (CPointLightComponent) : CPointLightComponent0
++        CPointLightComponent (CPointLightComponent)
++            transform (EngineTransform)
++                X (Float) : 0.0132
++                Y (Float) : -0.0083
++                Z (Float) : 0.4000
++            guid (CGUID) : 4f0a30e8-0891-4fd0-ab4a-84b74d7fd7d9
++            AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++            AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++            name (String) : "CPointLightComponent0"
++            radius (Float) : 4.0000
++            brightness (Float) : 0.0000
++            color (Color)
++                Red (Uint8) : 255
++                Green (Uint8) : 188
++                Blue (Uint8) : 127
++                Alpha (Uint8) : 255
++            envColorGroup (EEnvColorGroup) : ECG_FX_FireLight
++            autoHideDistance (Float) : 55.0000
++            lightFlickering (SLightFlickering)
++                positionOffset (Float) : 0.1000
++                flickerStrength (Float) : 0.6000
++                flickerPeriod (Float) : 0.1000
++    CSoundEmitterComponent #6 (CSoundEmitterComponent) : CSoundEmitterComponent
+         transform (EngineTransform)
+             X (Float) : 0.0000
+             Y (Float) : 0.0000
+@@ -755,7 +705,7 @@
+         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+         name (String) : "CSoundEmitterComponent"
+-    CAttackableArea #6 (CAttackableArea) : attackable_area_for_signs
++    CAttackableArea #7 (CAttackableArea) : attackable_area_for_signs
+         CAttackableArea (CAttackableArea)
+             name (String) : "attackable_area_for_signs"
+             offset (Vector)

@@ -1,0 +1,426 @@
+ 1 file changed, 194 insertions(+), 61 deletions(-)
+
+diff --git 1.32/environment/decorations/light_sources/complex/shrine_of_ethernal_fire_altar_wide_bounce.w2ent.txt 4.00/environment/decorations/light_sources/complex/shrine_of_ethernal_fire_altar_wide_bounce.w2ent.txt
+index 3e0f53e..695f964 100644
+--- 1.32/environment/decorations/light_sources/complex/shrine_of_ethernal_fire_altar_wide_bounce.w2ent.txt
++++ 4.00/environment/decorations/light_sources/complex/shrine_of_ethernal_fire_altar_wide_bounce.w2ent.txt
+@@ -9,7 +9,7 @@
+                     transform (EngineTransform)
+                         X (Float) : 0.0000
+                         Y (Float) : 0.0000
+-                        Z (Float) : 1.5297
++                        Z (Float) : 1.5200
+                 1 (EntitySlot)
+                     name (CName) : smoke
+                     transform (EngineTransform)
+@@ -25,7 +25,7 @@
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         streamingDataBuffer (SharedDataBuffer)
+-                            Bufferdata (CByteArray) : 1741 bytes
++                            Bufferdata (CByteArray) : 1549 bytes
+                             CStaticMeshComponent #0 (CStaticMeshComponent) : CStaticMeshComponent shrine_of_ethernal_fire
+                                 CStaticMeshComponent (CStaticMeshComponent)
+                                     guid (CGUID) : ca93019e-f26c-4566-877f-83cf768a2b5c
+@@ -36,18 +36,17 @@
+                                     graphPositionY (Int16) : 291
+                                     boundingBox (Box)
+                                         Min (Vector)
+-                                            X (Float) : -0.9052
+-                                            Y (Float) : -0.9052
+-                                            Z (Float) : 0.0000
++                                            X (Float) : NAN
++                                            Y (Float) : NAN
++                                            Z (Float) : NAN
+                                             W (Float) : 1.0000
+                                         Max (Vector)
+-                                            X (Float) : 0.9052
+-                                            Y (Float) : 0.9052
+-                                            Z (Float) : 1.6358
++                                            X (Float) : -340282300000000000000000000000000000000.0000
++                                            Y (Float) : -340282300000000000000000000000000000000.0000
++                                            Z (Float) : -340282300000000000000000000000000000000.0000
+                                             W (Float) : 1.0000
+                                     drawableFlags (EDrawableFlags) : DF_IsVisible,DF_CastShadows
+                                     mesh (handle:CMesh) : environment/architecture/human/redania/novigrad/temple_of_internal_fire/shrine_of_ethernal_fire_altar_wide.w2mesh
+-                                unknownBytes (CBytes) : 64 bytes
+                             CInteractionComponent #1 (CInteractionComponent) : ApplyDamage
+                                 CInteractionComponent (CInteractionComponent)
+                                     transform (EngineTransform)
+@@ -65,7 +64,6 @@
+                                     height (Float) : 1.0000
+                                     checkLineOfSight (Bool) : false
+                                     reportToScript (Bool) : true
+-                                unknownBytes (CBytes) : 64 bytes
+                             CSoundEmitterComponent #2 (CSoundEmitterComponent) : CSoundEmitterComponent
+                                 transform (EngineTransform)
+                                     X (Float) : 0.0000
+@@ -78,8 +76,7 @@
+                                 graphPositionX (Int16) : 834
+                                 graphPositionY (Int16) : 291
+                                 maxDistance (Float) : 15.0000
+-                                unknownBytes (CBytes) : 64 bytes
+-                        streamingDistance (Uint8) : 13
++                        streamingDistance (Uint8) : 19
+                         autoPlayEffectName (CName) : effects
+                         name (String) : "PreviewEntity"
+                         Components (array:ptr:CComponent)
+@@ -90,8 +87,9 @@
+                             0 (SEntityBufferType1)
+                                 ComponentName (CName) : 
+                         BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+-                        idTag (IdTag) :  bfba895b-0053-4989-bcab-a59deb7666b9
++                        idTag (IdTag) :  3b8f1882-a895-4e58-ad87-b1ccd1460191
+                         isSaveable (Bool) : false
++                        displayName (LocalizedString) : 1224477
+                 CGameplayLightComponent #1 (CGameplayLightComponent) : CGameplayLightComponent0
+                     CGameplayLightComponent (CGameplayLightComponent)
+                         guid (CGUID) : 9fa09c38-fd30-45fe-bb38-ee42dbc15817
+@@ -108,14 +106,16 @@
+                         transform (EngineTransform)
+                             X (Float) : 0.0000
+                             Y (Float) : 0.0000
+-                            Z (Float) : 8.9000
++                            Z (Float) : 6.4941
+                         guid (CGUID) : 4529ea38-84d4-41a1-947b-819c381f0e77
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         name (String) : "CPointLightComponent1"
+                         graphPositionX (Int16) : 7
+                         graphPositionY (Int16) : 154
++                        shadowCastingMode (ELightShadowCastingMode) : LSCM_Normal
+                         shadowFadeDistance (Float) : 5.0000
++                        shadowBlendFactor (Float) : 0.8000
+                         radius (Float) : 12.0000
+                         brightness (Float) : 120.0000
+                         color (Color)
+@@ -166,13 +166,15 @@
+                 0 (CEntityTemplateCookedEffect)
+                     name (CName) : fire
+                     buffer (SharedDataBuffer)
+-                        Bufferdata (CByteArray) : 2303 bytes
++                        Bufferdata (CByteArray) : 3928 bytes
+                         CFXDefinition #0 (CFXDefinition) : fire
+                             CFXDefinition (CFXDefinition)
+                                 trackGroups (array:ptr:CFXTrackGroup)
+                                     0 (ptr:CFXTrackGroup) : CFXTrackGroup #1
+                                     1 (ptr:CFXTrackGroup) : CFXTrackGroup #4
+-                                loopStart (Float) : 0.0290
++                                length (Float) : 1.9886
++                                loopStart (Float) : 0.2478
++                                loopEnd (Float) : 0.3981
+                                 name (CName) : fire
+                                 showDistance (Float) : 80.0000
+                                 isLooped (Bool) : true
+@@ -208,20 +210,23 @@
+                                 tracks (array:ptr:CFXTrack)
+                                     0 (ptr:CFXTrack) : CFXTrack #5
+                                     1 (ptr:CFXTrack) : CFXTrack #8
++                                    2 (ptr:CFXTrack) : CFXTrack #11
++                                    3 (ptr:CFXTrack) : CFXTrack #15
+                                 isExpanded (Bool) : true
+                                 trackGroupColor (Color)
+                                     Red (Uint8) : 149
+                                     Green (Uint8) : 217
+                                     Blue (Uint8) : 127
+                                     Alpha (Uint8) : 100
+-                        CFXTrack #5 (CFXTrack) : smoke1
++                        CFXTrack #5 (CFXTrack) : startt
+                             CFXTrack (CFXTrack)
+                                 trackItems (array:ptr:CFXTrackItem)
+                                     0 (ptr:CFXTrackItem) : CFXTrackItemParticles #6
+-                                name (String) : "smoke1"
++                                name (String) : "startt"
+                         CFXTrackItemParticles #6 (CFXTrackItemParticles) : Particles
+                             CFXTrackItemParticles (CFXTrackItemParticles)
+-                                timeBegin (Float) : 0.0144
++                                timeBegin (Float) : 0.0030
++                                timeDuration (Float) : 5.4993
+                                 buffername (CName) : Particles
+                                 count (CDynamicInt) : 3
+                                 unk (Uint8) : 1
+@@ -229,19 +234,19 @@
+                                     0 (CBufferUInt16:CFloat)
+                                         0 (Float) : 1.0000
+                                         2 (Float) : 1.0000
+-                                        3 (Float) : 1.0000
+-                                        4 (Float) : 1.0000
+-                                        5 (Float) : 1.0000
+-                                        6 (Float) : 1.0000
+-                                        7 (Float) : 1.0000
+-                                        8 (Float) : 1.0000
+-                                        9 (Float) : 1.0000
+-                                        10 (Float) : 1.0000
+-                                        11 (Float) : 1.0000
+-                                        12 (Float) : 1.0000
+-                                        13 (Float) : 1.0000
+-                                        14 (Float) : 1.0000
+-                                        15 (Float) : 1.0000
++                                        3 (Float) : 0.0000
++                                        4 (Float) : 0.0000
++                                        5 (Float) : 0.0000
++                                        6 (Float) : 0.0000
++                                        7 (Float) : 0.0000
++                                        8 (Float) : 0.0000
++                                        9 (Float) : 0.0000
++                                        10 (Float) : 0.0000
++                                        11 (Float) : 0.0000
++                                        12 (Float) : 0.0000
++                                        13 (Float) : 0.0000
++                                        14 (Float) : 0.0000
++                                        15 (Float) : 0.0000
+                                     1 (CBufferUInt16:CFloat)
+                                         0 (Float) : 1.0000
+                                         2 (Float) : 1.0000
+@@ -274,19 +279,21 @@
+                                         13 (Float) : 1.0000
+                                         14 (Float) : 1.0000
+                                         15 (Float) : 1.0000
++                                particleSystem (soft:CParticleSystem) : fx/light_sources/bonfire/small/fire_interactive_fx2.w2p
+                                 spawner (ptr:IFXSpawner) : CFXSpawnerComponent #7
+-                        CFXSpawnerComponent #7 (CFXSpawnerComponent) : smoke
++                        CFXSpawnerComponent #7 (CFXSpawnerComponent) : fire
+                             CFXSpawnerComponent (CFXSpawnerComponent)
+-                                componentName (CName) : smoke
+-                                attach (Bool) : true
+-                        CFXTrack #8 (CFXTrack) : fx_fire
++                                componentName (CName) : fire
++                                copyRotation (Bool) : false
++                        CFXTrack #8 (CFXTrack) : soparks
+                             CFXTrack (CFXTrack)
+                                 trackItems (array:ptr:CFXTrackItem)
+                                     0 (ptr:CFXTrackItem) : CFXTrackItemParticles #9
+-                                name (String) : "fx_fire"
++                                name (String) : "soparks"
+                         CFXTrackItemParticles #9 (CFXTrackItemParticles) : Particles
+                             CFXTrackItemParticles (CFXTrackItemParticles)
+-                                timeBegin (Float) : 0.0165
++                                timeBegin (Float) : 0.4049
++                                timeDuration (Float) : 5.4993
+                                 buffername (CName) : Particles
+                                 count (CDynamicInt) : 3
+                                 unk (Uint8) : 1
+@@ -294,19 +301,19 @@
+                                     0 (CBufferUInt16:CFloat)
+                                         0 (Float) : 1.0000
+                                         2 (Float) : 1.0000
+-                                        3 (Float) : 1.0000
+-                                        4 (Float) : 1.0000
+-                                        5 (Float) : 1.0000
+-                                        6 (Float) : 1.0000
+-                                        7 (Float) : 1.0000
+-                                        8 (Float) : 1.0000
+-                                        9 (Float) : 1.0000
+-                                        10 (Float) : 1.0000
+-                                        11 (Float) : 1.0000
+-                                        12 (Float) : 1.0000
+-                                        13 (Float) : 1.0000
+-                                        14 (Float) : 1.0000
+-                                        15 (Float) : 1.0000
++                                        3 (Float) : 0.0000
++                                        4 (Float) : 0.0000
++                                        5 (Float) : 0.0000
++                                        6 (Float) : 0.0000
++                                        7 (Float) : 0.0000
++                                        8 (Float) : 0.0000
++                                        9 (Float) : 0.0000
++                                        10 (Float) : 0.0000
++                                        11 (Float) : 0.0000
++                                        12 (Float) : 0.0000
++                                        13 (Float) : 0.0000
++                                        14 (Float) : 0.0000
++                                        15 (Float) : 0.0000
+                                     1 (CBufferUInt16:CFloat)
+                                         0 (Float) : 1.0000
+                                         2 (Float) : 1.0000
+@@ -339,9 +346,132 @@
+                                         13 (Float) : 1.0000
+                                         14 (Float) : 1.0000
+                                         15 (Float) : 1.0000
+-                                particleSystem (soft:CParticleSystem) : fx/fire/fire_medium/p_fire_medium_subuv_spot.w2p
++                                particleSystem (soft:CParticleSystem) : fx/light_sources/bonfire/small/fire_interactive_fx2.w2p
+                                 spawner (ptr:IFXSpawner) : CFXSpawnerComponent #10
+                         CFXSpawnerComponent #10 (CFXSpawnerComponent) : fire
++                            CFXSpawnerComponent (CFXSpawnerComponent)
++                                componentName (CName) : fire
++                                copyRotation (Bool) : false
++                        CFXTrack #11 (CFXTrack) : flare
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemFlare #12
++                                name (String) : "flare"
++                        CFXTrackItemFlare #12 (CFXTrackItemFlare) : 
++                            CFXTrackItemFlare (CFXTrackItemFlare)
++                                timeBegin (Float) : 0.0105
++                                timeDuration (Float) : 6.7466
++                                buffername (CName) : 
++                                count (CDynamicInt) : 1
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        1 (Float) : 0.9934
++                                        2 (Float) : 0.3377
++                                        3 (Float) : 0.0000
++                                        4 (Float) : 0.0000
++                                        5 (Float) : 0.0000
++                                        6 (Float) : 0.0000
++                                        7 (Float) : 0.0000
++                                        8 (Float) : 0.0000
++                                        9 (Float) : 0.0000
++                                        10 (Float) : 0.0000
++                                        11 (Float) : 0.0000
++                                        12 (Float) : 0.0000
++                                        13 (Float) : 0.0000
++                                        14 (Float) : 0.0000
++                                        15 (Float) : 0.0000
++                                material (handle:CMaterialInstance) : CMaterialInstance #13
++                                parameters (SFlareParameters)
++                                    occlusionExtent (Float) : 0.1000
++                                    flareRadius (Float) : 4.0000
++                                    fadeInAccel (Float) : 12.0000
++                                spawner (ptr:IFXSpawner) : CFXSpawnerComponent #14
++                        CMaterialInstance #13 (CMaterialInstance) : 
++                            CMaterialInstance (CMaterialInstance)
++                                baseMaterial (handle:IMaterial) : fx/shaders/flares_fx_mat.w2mg
++                                InstanceParameters (array:CVariantSizeNameType)
++                                    color (Color)
++                                        Red (Uint8) : 255
++                                        Green (Uint8) : 181
++                                        Blue (Uint8) : 115
++                                        Alpha (Uint8) : 255
++                                    blend_far_end (Float) : 50.0000
++                                    blend_far_start (Float) : 30.0000
++                                    color_scale (Float) : 7.0000
++                                    texture (handle:ITexture) : fx/textures/other/dot_glow.xbm
++                        CFXSpawnerComponent #14 (CFXSpawnerComponent) : fire
++                            CFXSpawnerComponent (CFXSpawnerComponent)
++                                componentName (CName) : fire
++                                attach (Bool) : true
++                                relativePosition (Vector)
++                                    X (Float) : 0.0000
++                                    Y (Float) : 0.0000
++                                    Z (Float) : 0.1750
++                                    W (Float) : 0.0000
++                        CFXTrack #15 (CFXTrack) : fx_fire
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #16
++                                name (String) : "fx_fire"
++                        CFXTrackItemParticles #16 (CFXTrackItemParticles) : Particles
++                            CFXTrackItemParticles (CFXTrackItemParticles)
++                                timeBegin (Float) : -0.0001
++                                buffername (CName) : Particles
++                                count (CDynamicInt) : 3
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        1 (Float) : 0.3036
++                                        2 (Float) : 0.6073
++                                        3 (Float) : 0.9109
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 0.8333
++                                        8 (Float) : 0.4167
++                                        9 (Float) : 0.0000
++                                        10 (Float) : 0.0000
++                                        11 (Float) : 0.0000
++                                        12 (Float) : 0.0000
++                                        13 (Float) : 0.0000
++                                        14 (Float) : 0.0000
++                                        15 (Float) : 0.0000
++                                    1 (CBufferUInt16:CFloat)
++                                        1 (Float) : 0.3049
++                                        2 (Float) : 0.6099
++                                        3 (Float) : 0.9148
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 0.9383
++                                        8 (Float) : 0.8210
++                                        9 (Float) : 0.7037
++                                        10 (Float) : 0.5864
++                                        11 (Float) : 0.4691
++                                        12 (Float) : 0.3519
++                                        13 (Float) : 0.2346
++                                        14 (Float) : 0.1173
++                                        15 (Float) : 0.0000
++                                    2 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                particleSystem (soft:CParticleSystem) : fx/fire/fire_medium/p_fire_big_subuv_spot.w2p
++                                spawner (ptr:IFXSpawner) : CFXSpawnerComponent #17
++                        CFXSpawnerComponent #17 (CFXSpawnerComponent) : fire
+                             CFXSpawnerComponent (CFXSpawnerComponent)
+                                 componentName (CName) : fire
+                                 attach (Bool) : true
+@@ -366,14 +496,14 @@
+                         graphPositionY (Int16) : 291
+                         boundingBox (Box)
+                             Min (Vector)
+-                                X (Float) : -0.9052
+-                                Y (Float) : -0.9052
+-                                Z (Float) : 0.0000
++                                X (Float) : NAN
++                                Y (Float) : NAN
++                                Z (Float) : NAN
+                                 W (Float) : 1.0000
+                             Max (Vector)
+-                                X (Float) : 0.9052
+-                                Y (Float) : 0.9052
+-                                Z (Float) : 1.6358
++                                X (Float) : -340282300000000000000000000000000000000.0000
++                                Y (Float) : -340282300000000000000000000000000000000.0000
++                                Z (Float) : -340282300000000000000000000000000000000.0000
+                                 W (Float) : 1.0000
+                         drawableFlags (EDrawableFlags) : DF_IsVisible,DF_CastShadows
+                         mesh (handle:CMesh) : environment/architecture/human/redania/novigrad/temple_of_internal_fire/shrine_of_ethernal_fire_altar_wide.w2mesh
+@@ -406,7 +536,7 @@
+                     graphPositionX (Int16) : 834
+                     graphPositionY (Int16) : 291
+                     maxDistance (Float) : 15.0000
+-            streamingDistance (Uint8) : 13
++            streamingDistance (Uint8) : 19
+             autoPlayEffectName (CName) : effects
+             Components (array:ptr:CComponent)
+                 0 (ptr:CComponent) : CGameplayLightComponent #2
+@@ -416,8 +546,9 @@
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+-            idTag (IdTag) :  bfba895b-0053-4989-bcab-a59deb7666b9
++            idTag (IdTag) :  3b8f1882-a895-4e58-ad87-b1ccd1460191
+             isSaveable (Bool) : false
++            displayName (LocalizedString) : 1224477
+     CGameplayLightComponent #2 (CGameplayLightComponent) : CGameplayLightComponent0
+         CGameplayLightComponent (CGameplayLightComponent)
+             guid (CGUID) : 9fa09c38-fd30-45fe-bb38-ee42dbc15817
+@@ -432,12 +563,14 @@
+             transform (EngineTransform)
+                 X (Float) : 0.0000
+                 Y (Float) : 0.0000
+-                Z (Float) : 8.9000
++                Z (Float) : 6.4941
+             guid (CGUID) : 4529ea38-84d4-41a1-947b-819c381f0e77
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "CPointLightComponent1"
++            shadowCastingMode (ELightShadowCastingMode) : LSCM_Normal
+             shadowFadeDistance (Float) : 5.0000
++            shadowBlendFactor (Float) : 0.8000
+             radius (Float) : 12.0000
+             brightness (Float) : 120.0000
+             color (Color)

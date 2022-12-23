@@ -1,0 +1,420 @@
+ 1 file changed, 379 insertions(+), 6 deletions(-)
+
+diff --git 1.32/items/work/work_torch/torch_work.w2ent.txt 4.00/items/work/work_torch/torch_work.w2ent.txt
+index 3231f26..02a2dec 100644
+--- 1.32/items/work/work_torch/torch_work.w2ent.txt
++++ 4.00/items/work/work_torch/torch_work.w2ent.txt
+@@ -11,6 +11,19 @@
+                         X (Float) : 0.0000
+                         Y (Float) : 0.0000
+                         Z (Float) : 0.6000
++                1 (EntitySlot)
++                    name (CName) : light_point
++                    componentName (CName) : CMeshComponent torch_wall_metal
++                    transform (EngineTransform)
++                        X (Float) : 0.0000
++                        Y (Float) : 0.0000
++                        Z (Float) : 0.4500
++                2 (EntitySlot)
++                    name (CName) : fx_fire_local_point
++                    transform (EngineTransform)
++                        X (Float) : -0.0221
++                        Y (Float) : 0.0000
++                        Z (Float) : 0.2800
+             flatCompiledData (array:Uint8) : # array:2,0,Uint8
+                 W3LightSource #0 (W3LightSource) : PreviewEntity
+                     W3LightSource (W3LightSource)
+@@ -131,8 +144,11 @@
+                         name (String) : "CPointLightComponent0"
+                         graphPositionX (Int16) : 4
+                         graphPositionY (Int16) : 241
+-                        radius (Float) : 6.0000
+-                        brightness (Float) : 10.0000
++                        shadowCastingMode (ELightShadowCastingMode) : LSCM_Normal
++                        shadowFadeDistance (Float) : 30.0000
++                        shadowBlendFactor (Float) : 0.8000
++                        radius (Float) : 4.0000
++                        brightness (Float) : 25.0000
+                         attenuation (Float) : 0.4000
+                         color (Color)
+                             Red (Uint8) : 255
+@@ -140,11 +156,13 @@
+                             Blue (Uint8) : 250
+                             Alpha (Uint8) : 255
+                         envColorGroup (EEnvColorGroup) : ECG_FX_FireLight
+-                        autoHideDistance (Float) : 35.0000
+-                        autoHideRange (Float) : 10.0000
++                        autoHideDistance (Float) : 120.0000
++                        autoHideRange (Float) : 30.0000
+                         lightFlickering (SLightFlickering)
+-                            flickerStrength (Float) : 0.3000
+-                            flickerPeriod (Float) : 0.1500
++                            positionOffset (Float) : 0.0100
++                            flickerStrength (Float) : 0.2500
++                            flickerPeriod (Float) : 0.1200
++                        lightUsageMask (ELightUsageMask) : 
+             cookedEffects (array:CEntityTemplateCookedEffect)
+                 0 (CEntityTemplateCookedEffect)
+                     name (CName) : fire
+@@ -386,6 +404,361 @@
+                                 componentName (CName) : CEffectDummyComponent0
+                                 copyRotation (Bool) : false
+                                 attach (Bool) : true
++                1 (CEntityTemplateCookedEffect)
++                    name (CName) : fire_local_effect
++                    buffer (SharedDataBuffer)
++                        Bufferdata (CByteArray) : 2154 bytes
++                        CFXDefinition #0 (CFXDefinition) : fire_local_effect
++                            CFXDefinition (CFXDefinition)
++                                trackGroups (array:ptr:CFXTrackGroup)
++                                    0 (ptr:CFXTrackGroup) : CFXTrackGroup #1
++                                    1 (ptr:CFXTrackGroup) : CFXTrackGroup #5
++                                length (Float) : 3.0000
++                                loopStart (Float) : 0.2283
++                                loopEnd (Float) : 0.7088
++                                name (CName) : fire_local_effect
++                                showDistance (Float) : 50.0000
++                                isLooped (Bool) : true
++                        CFXTrackGroup #1 (CFXTrackGroup) : sounds
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "sounds"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #2
++                                isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 212
++                                    Green (Uint8) : 188
++                                    Blue (Uint8) : 201
++                                    Alpha (Uint8) : 100
++                        CFXTrack #2 (CFXTrack) : sfx
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemSoundEvent #3
++                                    1 (ptr:CFXTrackItem) : CFXTrackItemSoundEvent #4
++                                name (String) : "sfx"
++                        CFXTrackItemSoundEvent #3 (CFXTrackItemSoundEvent) : 
++                            CFXTrackItemSoundEvent (CFXTrackItemSoundEvent)
++                                timeBegin (Float) : 0.1030
++                                buffername (CName) : 
++                                count (CDynamicInt) : 0
++                                unk (Uint8) : 0
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat) : 0
++                                soundEventName (StringAnsi) : fx_fire_burning_torch_loop
++                                isAmbient (Bool) : true
++                                maxDistance (Float) : 8.0000
++                        CFXTrackItemSoundEvent #4 (CFXTrackItemSoundEvent) : 
++                            CFXTrackItemSoundEvent (CFXTrackItemSoundEvent)
++                                timeBegin (Float) : 1.0269
++                                buffername (CName) : 
++                                count (CDynamicInt) : 0
++                                unk (Uint8) : 0
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat) : 0
++                                soundEventName (StringAnsi) : fx_fire_burning_torch_loop_end
++                                maxDistance (Float) : 8.0000
++                        CFXTrackGroup #5 (CFXTrackGroup) : particle
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "particle"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #6
++                                isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 172
++                                    Green (Uint8) : 211
++                                    Blue (Uint8) : 152
++                                    Alpha (Uint8) : 100
++                        CFXTrack #6 (CFXTrack) : fx
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #7
++                                name (String) : "fx"
++                        CFXTrackItemParticles #7 (CFXTrackItemParticles) : Particles
++                            CFXTrackItemParticles (CFXTrackItemParticles)
++                                timeDuration (Float) : 3.0000
++                                buffername (CName) : Particles
++                                count (CDynamicInt) : 3
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 0.6009
++                                        5 (Float) : 0.0000
++                                        6 (Float) : 0.0000
++                                        7 (Float) : 0.0000
++                                        8 (Float) : 0.0000
++                                        9 (Float) : 0.0000
++                                        10 (Float) : 0.0000
++                                        11 (Float) : 0.0000
++                                        12 (Float) : 0.0000
++                                        13 (Float) : 0.0000
++                                        14 (Float) : 0.0000
++                                        15 (Float) : 0.0000
++                                    1 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    2 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                particleSystem (soft:CParticleSystem) : fx/light_sources/torches/torch_local_effect.w2p
++                                spawner (ptr:IFXSpawner) : CFXSpawnerComponent #8
++                        CFXSpawnerComponent #8 (CFXSpawnerComponent) : fx_fire_local_point
++                            CFXSpawnerComponent (CFXSpawnerComponent)
++                                componentName (CName) : fx_fire_local_point
++                                attach (Bool) : true
++                                percentage (Float) : 72.0000
++                2 (CEntityTemplateCookedEffect)
++                    name (CName) : fire_local_effect_cutscen
++                    buffer (SharedDataBuffer)
++                        Bufferdata (CByteArray) : 3541 bytes
++                        CFXDefinition #0 (CFXDefinition) : fire_local_effect_cutscen
++                            CFXDefinition (CFXDefinition)
++                                trackGroups (array:ptr:CFXTrackGroup)
++                                    0 (ptr:CFXTrackGroup) : CFXTrackGroup #1
++                                    1 (ptr:CFXTrackGroup) : CFXTrackGroup #6
++                                    2 (ptr:CFXTrackGroup) : CFXTrackGroup #10
++                                length (Float) : 3.0000
++                                loopStart (Float) : 0.2984
++                                loopEnd (Float) : 0.7088
++                                name (CName) : fire_local_effect_cutscen
++                                showDistance (Float) : 50.0000
++                                isLooped (Bool) : true
++                        CFXTrackGroup #1 (CFXTrackGroup) : flare
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "flare"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #2
++                                isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 179
++                                    Green (Uint8) : 132
++                                    Blue (Uint8) : 247
++                                    Alpha (Uint8) : 100
++                        CFXTrack #2 (CFXTrack) : df
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemFlare #3
++                                name (String) : "df"
++                        CFXTrackItemFlare #3 (CFXTrackItemFlare) : 
++                            CFXTrackItemFlare (CFXTrackItemFlare)
++                                timeBegin (Float) : 0.0085
++                                timeDuration (Float) : 4.6172
++                                buffername (CName) : 
++                                count (CDynamicInt) : 1
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        1 (Float) : 1.1500
++                                        2 (Float) : 1.1500
++                                        3 (Float) : 0.7100
++                                        4 (Float) : 0.0000
++                                        5 (Float) : 0.0000
++                                        6 (Float) : 0.0000
++                                        7 (Float) : 0.0000
++                                        8 (Float) : 0.0000
++                                        9 (Float) : 0.0000
++                                        10 (Float) : 0.0000
++                                        11 (Float) : 0.0000
++                                        12 (Float) : 0.0000
++                                        13 (Float) : 0.0000
++                                        14 (Float) : 0.0000
++                                        15 (Float) : 0.0000
++                                material (handle:CMaterialInstance) : CMaterialInstance #4
++                                parameters (SFlareParameters)
++                                    occlusionExtent (Float) : 0.3000
++                                    flareRadius (Float) : 2.0000
++                                    fadeInMaxSpeed (Float) : 9999.0000
++                                    fadeOutMaxSpeed (Float) : 9999.0000
++                                    fadeInAccel (Float) : 9999.0000
++                                    fadeOutAccel (Float) : 9999.0000
++                                spawner (ptr:IFXSpawner) : CFXSpawnerComponent #5
++                        CMaterialInstance #4 (CMaterialInstance) : 
++                            CMaterialInstance (CMaterialInstance)
++                                baseMaterial (handle:IMaterial) : fx/shaders/flares_fx_mat.w2mg
++                                InstanceParameters (array:CVariantSizeNameType)
++                                    color (Color)
++                                        Red (Uint8) : 255
++                                        Green (Uint8) : 154
++                                        Blue (Uint8) : 109
++                                        Alpha (Uint8) : 255
++                                    blend_far_end (Float) : 50.0000
++                                    blend_far_start (Float) : 30.0000
++                                    color_scale (Float) : 1.0000
++                        CFXSpawnerComponent #5 (CFXSpawnerComponent) : light_point
++                            CFXSpawnerComponent (CFXSpawnerComponent)
++                                componentName (CName) : light_point
++                                attach (Bool) : true
++                        CFXTrackGroup #6 (CFXTrackGroup) : light
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "light"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #7
++                                isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 148
++                                    Green (Uint8) : 253
++                                    Blue (Uint8) : 221
++                                    Alpha (Uint8) : 100
++                        CFXTrack #7 (CFXTrack) : asd
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemDynamicLight #8
++                                name (String) : "asd"
++                        CFXTrackItemDynamicLight #8 (CFXTrackItemDynamicLight) : DynamicLight
++                            CFXTrackItemDynamicLight (CFXTrackItemDynamicLight)
++                                timeBegin (Float) : -0.0278
++                                timeDuration (Float) : 3.0556
++                                buffername (CName) : DynamicLight
++                                count (CDynamicInt) : 2
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 0.8889
++                                        5 (Float) : 0.4444
++                                        6 (Float) : 0.0000
++                                        7 (Float) : 0.0000
++                                        8 (Float) : 0.0000
++                                        9 (Float) : 0.0000
++                                        10 (Float) : 0.0000
++                                        11 (Float) : 0.0000
++                                        12 (Float) : 0.0000
++                                        13 (Float) : 0.0000
++                                        14 (Float) : 0.0000
++                                        15 (Float) : 0.0000
++                                    1 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                radius (Float) : 2.5000
++                                brightness (Float) : 40.0000
++                                lightFlickering (SLightFlickering)
++                                    flickerStrength (Float) : 0.5000
++                                    flickerPeriod (Float) : 0.1000
++                                colorGroup (EEnvColorGroup) : ECG_FX_FireLight
++                                spawner (ptr:IFXSpawner) : CFXSimpleSpawner #9
++                        CFXSimpleSpawner #9 (CFXSimpleSpawner) : 
++                            CFXSimpleSpawner (CFXSimpleSpawner)
++                                slotNames (array:CName)
++                                    0 (CName) : light_point
++                        CFXTrackGroup #10 (CFXTrackGroup) : particle
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "particle"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #11
++                                isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 172
++                                    Green (Uint8) : 211
++                                    Blue (Uint8) : 152
++                                    Alpha (Uint8) : 100
++                        CFXTrack #11 (CFXTrack) : fx
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #12
++                                name (String) : "fx"
++                        CFXTrackItemParticles #12 (CFXTrackItemParticles) : Particles
++                            CFXTrackItemParticles (CFXTrackItemParticles)
++                                timeDuration (Float) : 3.0000
++                                buffername (CName) : Particles
++                                count (CDynamicInt) : 3
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 0.6009
++                                        5 (Float) : 0.0000
++                                        6 (Float) : 0.0000
++                                        7 (Float) : 0.0000
++                                        8 (Float) : 0.0000
++                                        9 (Float) : 0.0000
++                                        10 (Float) : 0.0000
++                                        11 (Float) : 0.0000
++                                        12 (Float) : 0.0000
++                                        13 (Float) : 0.0000
++                                        14 (Float) : 0.0000
++                                        15 (Float) : 0.0000
++                                    1 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    2 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                particleSystem (soft:CParticleSystem) : fx/light_sources/torches/torch_local_effect.w2p
++                                spawner (ptr:IFXSpawner) : CFXSpawnerComponent #13
++                        CFXSpawnerComponent #13 (CFXSpawnerComponent) : fx_fire_local_point
++                            CFXSpawnerComponent (CFXSpawnerComponent)
++                                componentName (CName) : fx_fire_local_point
++                                attach (Bool) : true
++                                percentage (Float) : 72.0000
+             cookedEffectsVersion (Uint32) : 1
+             Unk1 (Uint32) : 0
+     W3LightSource #1 (W3LightSource) : fire

@@ -1,0 +1,869 @@
+ 1 file changed, 365 insertions(+), 171 deletions(-)
+
+diff --git 1.32/dlc/bob/data/living_world/enemy_templates/honey_bear.w2ent.txt 4.00/dlc/bob/data/living_world/enemy_templates/honey_bear.w2ent.txt
+index 029bed0..93b0a6a 100644
+--- 1.32/dlc/bob/data/living_world/enemy_templates/honey_bear.w2ent.txt
++++ 4.00/dlc/bob/data/living_world/enemy_templates/honey_bear.w2ent.txt
+@@ -69,24 +69,24 @@
+                     componentName (CName) : bear_berserker
+                     boneName (CName) : jaw
+             templateParams (array:ptr:CEntityTemplateParam)
+-                0 (ptr:CEntityTemplateParam) : CBuffImmunityParam #19
+-                1 (ptr:CEntityTemplateParam) : CInventoryDefinition #20
+-                2 (ptr:CEntityTemplateParam) : CAIProfile #25
+-                3 (ptr:CEntityTemplateParam) : CCharacterStatsParam #26
+-                4 (ptr:CEntityTemplateParam) : CInventoryDefinition #27
+-                5 (ptr:CEntityTemplateParam) : CR4LootParam #30
+-                6 (ptr:CEntityTemplateParam) : CMonsterParam #31
+-                7 (ptr:CEntityTemplateParam) : CAnimGlobalParam #32
+-                8 (ptr:CEntityTemplateParam) : CAnimAnimsetsParam #33
+-                9 (ptr:CEntityTemplateParam) : CAIProfile #34
+-                10 (ptr:CEntityTemplateParam) : CCharacterControllerParam #37
+-                11 (ptr:CEntityTemplateParam) : CCharacterStatsParam #38
+-                12 (ptr:CEntityTemplateParam) : CAttackRangeParam #39
+-                13 (ptr:CEntityTemplateParam) : CAnimBehaviorsParam #49
+-                14 (ptr:CEntityTemplateParam) : CAnimConstraintsParam #50
+-                15 (ptr:CEntityTemplateParam) : CAIBaseTreeTemplateParam #51
+-                16 (ptr:CEntityTemplateParam) : CFocusSoundParam #98
+-                17 (ptr:CEntityTemplateParam) : CAnimGlobalParam #99
++                0 (ptr:CEntityTemplateParam) : CBuffImmunityParam #20
++                1 (ptr:CEntityTemplateParam) : CInventoryDefinition #21
++                2 (ptr:CEntityTemplateParam) : CAIProfile #26
++                3 (ptr:CEntityTemplateParam) : CCharacterStatsParam #27
++                4 (ptr:CEntityTemplateParam) : CInventoryDefinition #28
++                5 (ptr:CEntityTemplateParam) : CR4LootParam #31
++                6 (ptr:CEntityTemplateParam) : CMonsterParam #32
++                7 (ptr:CEntityTemplateParam) : CAnimGlobalParam #33
++                8 (ptr:CEntityTemplateParam) : CAnimAnimsetsParam #34
++                9 (ptr:CEntityTemplateParam) : CAIProfile #35
++                10 (ptr:CEntityTemplateParam) : CCharacterControllerParam #38
++                11 (ptr:CEntityTemplateParam) : CCharacterStatsParam #39
++                12 (ptr:CEntityTemplateParam) : CAttackRangeParam #40
++                13 (ptr:CEntityTemplateParam) : CAnimBehaviorsParam #50
++                14 (ptr:CEntityTemplateParam) : CAnimConstraintsParam #51
++                15 (ptr:CEntityTemplateParam) : CAIBaseTreeTemplateParam #52
++                16 (ptr:CEntityTemplateParam) : CFocusSoundParam #99
++                17 (ptr:CEntityTemplateParam) : CAnimGlobalParam #100
+             flatCompiledData (array:Uint8) : # array:2,0,Uint8
+                 CNewNPC #0 (CNewNPC) : PreviewEntity
+                     CNewNPC (CNewNPC)
+@@ -105,7 +105,8 @@
+                             6 (ptr:CComponent) : W3TargetingManagementComponent #15
+                             7 (ptr:CComponent) : CGameplayEffectsComponent #16
+                             8 (ptr:CComponent) : CEffectDummyComponent #10
+-                            9 (ptr:CComponent) : CSoundEmitterComponent #17
++                            9 (ptr:CComponent) : CWetnessComponent #17
++                            10 (ptr:CComponent) : CSoundEmitterComponent #18
+                         BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                             0 (SEntityBufferType1)
+                                 ComponentName (CName) : 
+@@ -377,7 +378,7 @@
+                     CDynamicColliderComponent (CDynamicColliderComponent)
+                         transform (EngineTransform)
+                             Scale_x (Float) : 2.2000
+-                            Scale_y (Float) : 1.6000
++                            Scale_y (Float) : 1.2000
+                             Scale_z (Float) : 1.7000
+                             X (Float) : 1.2000
+                             Y (Float) : -0.5000
+@@ -476,7 +477,16 @@
+                         name (String) : "CGameplayEffectsComponent0"
+                         graphPositionX (Int16) : 442
+                         graphPositionY (Int16) : 380
+-                CSoundEmitterComponent #17 (CSoundEmitterComponent) : CSoundEmitterComponent
++                CWetnessComponent #17 (CWetnessComponent) : CWetnessComponent0
++                    CWetnessComponent (CWetnessComponent)
++                        guid (CGUID) : 526b3e42-3fdf-482d-930a-d0145bd33f62
++                        AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++                        AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++                        name (String) : "CWetnessComponent0"
++                        graphPositionX (Int16) : 57
++                        graphPositionY (Int16) : 202
++                        blendOutFromRain (Float) : 20.0000
++                CSoundEmitterComponent #18 (CSoundEmitterComponent) : CSoundEmitterComponent
+                     guid (CGUID) : 481ebe7a-f7d0-4755-9dbc-5b5510c556b7
+                     AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                     AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -3449,7 +3459,7 @@
+                                         Green (Uint8) : 153
+                                         Blue (Uint8) : 88
+                                         Alpha (Uint8) : 255
+-                                    color_scale (Float) : 0.5000
++                                    color_scale (Float) : 0.3000
+                         CFXSpawnerComponent #5 (CFXSpawnerComponent) : bear_berserker
+                             CFXSpawnerComponent (CFXSpawnerComponent)
+                                 componentName (CName) : bear_berserker
+@@ -5290,7 +5300,7 @@
+                                 name (String) : "f"
+                         CFXTrackItemFlare #7 (CFXTrackItemFlare) : 
+                             CFXTrackItemFlare (CFXTrackItemFlare)
+-                                timeBegin (Float) : 0.0205
++                                timeBegin (Float) : 5.2221
+                                 timeDuration (Float) : 1.9822
+                                 buffername (CName) : 
+                                 count (CDynamicInt) : 1
+@@ -6319,6 +6329,182 @@
+                                     Z (Float) : 0.0000
+                                     W (Float) : 0.0000
+                                 parentSlotName (CName) : head
++                22 (CEntityTemplateCookedEffect)
++                    name (CName) : water_death
++                    buffer (SharedDataBuffer)
++                        Bufferdata (CByteArray) : 1497 bytes
++                        CFXDefinition #0 (CFXDefinition) : water_death
++                            CFXDefinition (CFXDefinition)
++                                trackGroups (array:ptr:CFXTrackGroup)
++                                    0 (ptr:CFXTrackGroup) : CFXTrackGroup #1
++                                length (Float) : 10.8133
++                                loopStart (Float) : 0.1515
++                                loopEnd (Float) : 0.3553
++                                name (CName) : water_death
++                        CFXTrackGroup #1 (CFXTrackGroup) : fx
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "fx"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #2
++                                isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 163
++                                    Green (Uint8) : 169
++                                    Blue (Uint8) : 167
++                                    Alpha (Uint8) : 100
++                        CFXTrack #2 (CFXTrack) : fx
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #3
++                                name (String) : "fx"
++                        CFXTrackItemParticles #3 (CFXTrackItemParticles) : Particles
++                            CFXTrackItemParticles (CFXTrackItemParticles)
++                                timeBegin (Float) : 0.0002
++                                timeDuration (Float) : 10.5552
++                                buffername (CName) : Particles
++                                count (CDynamicInt) : 3
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    1 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    2 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                particleSystem (soft:CParticleSystem) : fx/blood/standard_hit/water_blood_death.w2p
++                                spawner (ptr:IFXSpawner) : CFXWaterSpawner #4
++                        CFXWaterSpawner #4 (CFXWaterSpawner) : 
++                            CFXWaterSpawner (CFXWaterSpawner) : <CFXWaterSpawner>CFXWaterSpawner
++                23 (CEntityTemplateCookedEffect)
++                    name (CName) : water_hit_blood
++                    buffer (SharedDataBuffer)
++                        Bufferdata (CByteArray) : 1495 bytes
++                        CFXDefinition #0 (CFXDefinition) : water_hit_blood
++                            CFXDefinition (CFXDefinition)
++                                trackGroups (array:ptr:CFXTrackGroup)
++                                    0 (ptr:CFXTrackGroup) : CFXTrackGroup #1
++                                length (Float) : 10.8133
++                                loopStart (Float) : 0.1515
++                                loopEnd (Float) : 0.3553
++                                name (CName) : water_hit_blood
++                        CFXTrackGroup #1 (CFXTrackGroup) : fx
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "fx"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #2
++                                isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 163
++                                    Green (Uint8) : 169
++                                    Blue (Uint8) : 167
++                                    Alpha (Uint8) : 100
++                        CFXTrack #2 (CFXTrack) : fx
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #3
++                                name (String) : "fx"
++                        CFXTrackItemParticles #3 (CFXTrackItemParticles) : Particles
++                            CFXTrackItemParticles (CFXTrackItemParticles)
++                                timeBegin (Float) : 0.0002
++                                timeDuration (Float) : 10.5552
++                                buffername (CName) : Particles
++                                count (CDynamicInt) : 3
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    1 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    2 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                particleSystem (soft:CParticleSystem) : fx/blood/standard_hit/water_blood.w2p
++                                spawner (ptr:IFXSpawner) : CFXWaterSpawner #4
++                        CFXWaterSpawner #4 (CFXWaterSpawner) : 
++                            CFXWaterSpawner (CFXWaterSpawner) : <CFXWaterSpawner>CFXWaterSpawner
+             cookedEffectsVersion (Uint32) : 1
+             Unk1 (Uint32) : 0
+     CNewNPC #1 (CNewNPC) : 
+@@ -6337,7 +6523,8 @@
+                 6 (ptr:CComponent) : W3TargetingManagementComponent #16
+                 7 (ptr:CComponent) : CGameplayEffectsComponent #17
+                 8 (ptr:CComponent) : CEffectDummyComponent #11
+-                9 (ptr:CComponent) : CSoundEmitterComponent #18
++                9 (ptr:CComponent) : CWetnessComponent #18
++                10 (ptr:CComponent) : CSoundEmitterComponent #19
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+@@ -6605,7 +6792,7 @@
+         CDynamicColliderComponent (CDynamicColliderComponent)
+             transform (EngineTransform)
+                 Scale_x (Float) : 2.2000
+-                Scale_y (Float) : 1.6000
++                Scale_y (Float) : 1.2000
+                 Scale_z (Float) : 1.7000
+                 X (Float) : 1.2000
+                 Y (Float) : -0.5000
+@@ -6692,7 +6879,14 @@
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "CGameplayEffectsComponent0"
+-    CSoundEmitterComponent #18 (CSoundEmitterComponent) : CSoundEmitterComponent
++    CWetnessComponent #18 (CWetnessComponent) : CWetnessComponent0
++        CWetnessComponent (CWetnessComponent)
++            guid (CGUID) : 526b3e42-3fdf-482d-930a-d0145bd33f62
++            AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++            AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++            name (String) : "CWetnessComponent0"
++            blendOutFromRain (Float) : 20.0000
++    CSoundEmitterComponent #19 (CSoundEmitterComponent) : CSoundEmitterComponent
+         guid (CGUID) : 481ebe7a-f7d0-4755-9dbc-5b5510c556b7
+         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -6703,96 +6897,96 @@
+         banksDependency (array:CName)
+             0 (CName) : monster_bear.bnk
+         maxDistance (Float) : 100.0000
+-    CBuffImmunityParam #19 (CBuffImmunityParam) : immunes
++    CBuffImmunityParam #20 (CBuffImmunityParam) : immunes
+         CBuffImmunityParam (CBuffImmunityParam)
+             name (String) : "immunes"
+             overrideInherited (Bool) : true
+-    CInventoryDefinition #20 (CInventoryDefinition) : 
++    CInventoryDefinition #21 (CInventoryDefinition) : 
+         CInventoryDefinition (CInventoryDefinition)
+             entries (array:ptr:CInventoryDefinitionEntry)
+-                0 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #21
+-                1 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #23
+-    CInventoryDefinitionEntry #21 (CInventoryDefinitionEntry) : edibles
++                0 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #22
++                1 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #24
++    CInventoryDefinitionEntry #22 (CInventoryDefinitionEntry) : edibles
+         CInventoryDefinitionEntry (CInventoryDefinitionEntry)
+             category (CName) : edibles
+-            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #22
+-    CInventoryInitializerUniform #22 (CInventoryInitializerUniform) : Jar of Honey
++            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #23
++    CInventoryInitializerUniform #23 (CInventoryInitializerUniform) : Jar of Honey
+         CInventoryInitializerUniform (CInventoryInitializerUniform)
+             itemName (CName) : Jar of Honey
+-    CInventoryDefinitionEntry #23 (CInventoryDefinitionEntry) : edibles
++    CInventoryDefinitionEntry #24 (CInventoryDefinitionEntry) : edibles
+         CInventoryDefinitionEntry (CInventoryDefinitionEntry)
+             category (CName) : edibles
+             quantityMin (Uint32) : 3
+             quantityMax (Uint32) : 3
+-            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #24
+-    CInventoryInitializerUniform #24 (CInventoryInitializerUniform) : Honeycomb
++            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #25
++    CInventoryInitializerUniform #25 (CInventoryInitializerUniform) : Honeycomb
+         CInventoryInitializerUniform (CInventoryInitializerUniform)
+             itemName (CName) : Honeycomb
+-    CAIProfile #25 (CAIProfile) : AG_grizzly_bear
++    CAIProfile #26 (CAIProfile) : AG_grizzly_bear
+         CAIProfile (CAIProfile)
+             wasIncluded (Bool) : true
+             attitudeGroup (CName) : AG_grizzly_bear
+-    CCharacterStatsParam #26 (CCharacterStatsParam) : abilities
++    CCharacterStatsParam #27 (CCharacterStatsParam) : abilities
+         CCharacterStatsParam (CCharacterStatsParam)
+             wasIncluded (Bool) : true
+             name (String) : "abilities"
+             abilities (array:CName)
+                 0 (CName) : mon_bear_grizzly
+                 1 (CName) : BurnIgnore
+-    CInventoryDefinition #27 (CInventoryDefinition) : 
++    CInventoryDefinition #28 (CInventoryDefinition) : 
+         CInventoryDefinition (CInventoryDefinition)
+             wasIncluded (Bool) : true
+             entries (array:ptr:CInventoryDefinitionEntry)
+-                0 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #28
+-    CInventoryDefinitionEntry #28 (CInventoryDefinitionEntry) : monster_weapon
++                0 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #29
++    CInventoryDefinitionEntry #29 (CInventoryDefinitionEntry) : monster_weapon
+         CInventoryDefinitionEntry (CInventoryDefinitionEntry)
+             category (CName) : monster_weapon
+             isLootable (Bool) : false
+-            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #29
+-    CInventoryInitializerUniform #29 (CInventoryInitializerUniform) : mon_bear_grizzly_weapon
++            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #30
++    CInventoryInitializerUniform #30 (CInventoryInitializerUniform) : mon_bear_grizzly_weapon
+         CInventoryInitializerUniform (CInventoryInitializerUniform)
+             itemName (CName) : mon_bear_grizzly_weapon
+-    CR4LootParam #30 (CR4LootParam) : loot
++    CR4LootParam #31 (CR4LootParam) : loot
+         CR4LootParam (CR4LootParam)
+             wasIncluded (Bool) : true
+             name (String) : "loot"
+             containers (array:CR4LootContainerParam)
+                 0 (CR4LootContainerParam)
+                     name (CName) : _monster__Grizzly bear
+-    CMonsterParam #31 (CMonsterParam) : bear_monster_param
++    CMonsterParam #32 (CMonsterParam) : bear_monster_param
+         CMonsterParam (CMonsterParam)
+             wasIncluded (Bool) : true
+             name (String) : "bear_monster_param"
+             overrideInherited (Bool) : true
+             monsterCategory (Int32) : 4
+             soundMonsterName (CName) : Bear
+-    CAnimGlobalParam #32 (CAnimGlobalParam) : sfx_bear
++    CAnimGlobalParam #33 (CAnimGlobalParam) : sfx_bear
+         CAnimGlobalParam (CAnimGlobalParam)
+             wasIncluded (Bool) : true
+             sfxTag (CName) : sfx_bear
+-    CAnimAnimsetsParam #33 (CAnimAnimsetsParam) : bear
++    CAnimAnimsetsParam #34 (CAnimAnimsetsParam) : bear
+         CAnimAnimsetsParam (CAnimAnimsetsParam)
+             wasIncluded (Bool) : true
+             name (String) : "bear"
+             componentName (String) : "bear_berserker"
+             animationSets (array:handle:CSkeletalAnimationSet)
+                 0 (handle:CSkeletalAnimationSet) : animations/animals/bear/bear_animation.w2anims
+-    CAIProfile #34 (CAIProfile) : AG_bear_berserker
++    CAIProfile #35 (CAIProfile) : AG_bear_berserker
+         CAIProfile (CAIProfile)
+             wasIncluded (Bool) : true
+-            senseVisionParams (ptr:CAISenseParams) : CAISenseParams #35
+-            senseAbsoluteParams (ptr:CAISenseParams) : CAISenseParams #36
++            senseVisionParams (ptr:CAISenseParams) : CAISenseParams #36
++            senseAbsoluteParams (ptr:CAISenseParams) : CAISenseParams #37
+             attitudeGroup (CName) : AG_bear_berserker
+-    CAISenseParams #35 (CAISenseParams) : 
++    CAISenseParams #36 (CAISenseParams) : 
+         CAISenseParams (CAISenseParams)
+             rangeMax (Float) : 20.0000
+             rangeAngle (Float) : 240.0000
+-    CAISenseParams #36 (CAISenseParams) : 
++    CAISenseParams #37 (CAISenseParams) : 
+         CAISenseParams (CAISenseParams)
+             rangeMax (Float) : 3.0000
+             rangeAngle (Float) : 360.0000
+             testLOS (Bool) : false
+-    CCharacterControllerParam #37 (CCharacterControllerParam) : character_controller_params
++    CCharacterControllerParam #38 (CCharacterControllerParam) : character_controller_params
+         CCharacterControllerParam (CCharacterControllerParam)
+             wasIncluded (Bool) : true
+             name (String) : "character_controller_params"
+@@ -6830,28 +7024,28 @@
+                         W (Float) : 0.0000
+                     height (Float) : 2.0000
+                     radius (Float) : 0.5000
+-    CCharacterStatsParam #38 (CCharacterStatsParam) : abilities
++    CCharacterStatsParam #39 (CCharacterStatsParam) : abilities
+         CCharacterStatsParam (CCharacterStatsParam)
+             wasIncluded (Bool) : true
+             name (String) : "abilities"
+             abilities (array:CName)
+                 0 (CName) : mon_bear_base
+                 1 (CName) : Charge
+-    CAttackRangeParam #39 (CAttackRangeParam) : attack_range
++    CAttackRangeParam #40 (CAttackRangeParam) : attack_range
+         CAttackRangeParam (CAttackRangeParam)
+             wasIncluded (Bool) : true
+             name (String) : "attack_range"
+             attackRanges (array:ptr:CAIAttackRange)
+-                0 (ptr:CAIAttackRange) : CConeAttackRange #40
+-                1 (ptr:CAIAttackRange) : CBoxAttackRange #41
+-                2 (ptr:CAIAttackRange) : CConeAttackRange #42
+-                3 (ptr:CAIAttackRange) : CConeAttackRange #43
+-                4 (ptr:CAIAttackRange) : CConeAttackRange #44
+-                5 (ptr:CAIAttackRange) : CConeAttackRange #45
+-                6 (ptr:CAIAttackRange) : CBoxAttackRange #46
+-                7 (ptr:CAIAttackRange) : CConeAttackRange #47
+-                8 (ptr:CAIAttackRange) : CConeAttackRange #48
+-    CConeAttackRange #40 (CConeAttackRange) : basic_strike
++                0 (ptr:CAIAttackRange) : CConeAttackRange #41
++                1 (ptr:CAIAttackRange) : CBoxAttackRange #42
++                2 (ptr:CAIAttackRange) : CConeAttackRange #43
++                3 (ptr:CAIAttackRange) : CConeAttackRange #44
++                4 (ptr:CAIAttackRange) : CConeAttackRange #45
++                5 (ptr:CAIAttackRange) : CConeAttackRange #46
++                6 (ptr:CAIAttackRange) : CBoxAttackRange #47
++                7 (ptr:CAIAttackRange) : CConeAttackRange #48
++                8 (ptr:CAIAttackRange) : CConeAttackRange #49
++    CConeAttackRange #41 (CConeAttackRange) : basic_strike
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : basic_strike
+             rangeMax (Float) : 2.4000
+@@ -6862,7 +7056,7 @@
+                 Z (Float) : 1.0000
+                 W (Float) : 1.0000
+             rangeAngle (Float) : 90.0000
+-    CBoxAttackRange #41 (CBoxAttackRange) : bite
++    CBoxAttackRange #42 (CBoxAttackRange) : bite
+         CBoxAttackRange (CBoxAttackRange)
+             name (CName) : bite
+             rangeMax (Float) : 2.0000
+@@ -6872,7 +7066,7 @@
+                 Y (Float) : 0.5000
+                 Z (Float) : 1.0000
+                 W (Float) : 1.0000
+-    CConeAttackRange #42 (CConeAttackRange) : rightSide
++    CConeAttackRange #43 (CConeAttackRange) : rightSide
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : rightSide
+             rangeMax (Float) : 2.4000
+@@ -6884,7 +7078,7 @@
+                 Z (Float) : 1.0000
+                 W (Float) : 1.0000
+             rangeAngle (Float) : 90.0000
+-    CConeAttackRange #43 (CConeAttackRange) : leftSide
++    CConeAttackRange #44 (CConeAttackRange) : leftSide
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : leftSide
+             rangeMax (Float) : 2.4000
+@@ -6896,7 +7090,7 @@
+                 Z (Float) : 1.0000
+                 W (Float) : 1.0000
+             rangeAngle (Float) : 90.0000
+-    CConeAttackRange #44 (CConeAttackRange) : aoe_knockdown
++    CConeAttackRange #45 (CConeAttackRange) : aoe_knockdown
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : aoe_knockdown
+             rangeMax (Float) : 3.0000
+@@ -6907,7 +7101,7 @@
+                 Z (Float) : 0.0000
+                 W (Float) : 1.0000
+             rangeAngle (Float) : 270.0000
+-    CConeAttackRange #45 (CConeAttackRange) : stand_strike
++    CConeAttackRange #46 (CConeAttackRange) : stand_strike
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : stand_strike
+             rangeMax (Float) : 2.7000
+@@ -6917,7 +7111,7 @@
+                 Y (Float) : 0.5000
+                 Z (Float) : 1.0000
+                 W (Float) : 1.0000
+-    CBoxAttackRange #46 (CBoxAttackRange) : validJump
++    CBoxAttackRange #47 (CBoxAttackRange) : validJump
+         CBoxAttackRange (CBoxAttackRange)
+             name (CName) : validJump
+             rangeMax (Float) : 7.0000
+@@ -6929,20 +7123,20 @@
+                 W (Float) : 1.0000
+             checkLineOfSight (Bool) : true
+             rangeWidth (Float) : 2.0000
+-    CConeAttackRange #47 (CConeAttackRange) : closeRange
++    CConeAttackRange #48 (CConeAttackRange) : closeRange
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : closeRange
+             rangeMax (Float) : 3.0000
+             height (Float) : 2.0000
+             angleOffset (Float) : -40.0000
+             rangeAngle (Float) : 180.0000
+-    CConeAttackRange #48 (CConeAttackRange) : backRange
++    CConeAttackRange #49 (CConeAttackRange) : backRange
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : backRange
+             rangeMax (Float) : 3.6000
+             angleOffset (Float) : 120.0000
+             rangeAngle (Float) : 70.0000
+-    CAnimBehaviorsParam #49 (CAnimBehaviorsParam) : bear
++    CAnimBehaviorsParam #50 (CAnimBehaviorsParam) : bear
+         CAnimBehaviorsParam (CAnimBehaviorsParam)
+             wasIncluded (Bool) : true
+             name (String) : "bear"
+@@ -6954,206 +7148,206 @@
+                 1 (SBehaviorGraphInstanceSlot)
+                     instanceName (CName) : Cutscene
+                     graph (handle:CBehaviorGraph) : gameplay/behaviors/cutscene_graph.w2beh
+-    CAnimConstraintsParam #50 (CAnimConstraintsParam) : 
++    CAnimConstraintsParam #51 (CAnimConstraintsParam) : 
+         CAnimConstraintsParam (CAnimConstraintsParam)
+             wasIncluded (Bool) : true
+             graph (handle:CBehaviorGraph) : gameplay/behaviors/npc/behaviorgraph/monster_bear_constraints.w2beh
+-    CAIBaseTreeTemplateParam #51 (CAIBaseTreeTemplateParam) : 
++    CAIBaseTreeTemplateParam #52 (CAIBaseTreeTemplateParam) : 
+         CAIBaseTreeTemplateParam (CAIBaseTreeTemplateParam)
+             wasIncluded (Bool) : true
+-            aiBaseTree (handle:CAIBaseTree) : CAIMonsterBase #52
+-    CAIMonsterBase #52 (CAIMonsterBase) : 
++            aiBaseTree (handle:CAIBaseTree) : CAIMonsterBase #53
++    CAIMonsterBase #53 (CAIMonsterBase) : 
+         CAIMonsterBase (CAIMonsterBase)
+             tree (handle:CBehTree) : gameplay/trees/monster_base.w2behtree
+-            params (handle:CAIBaseMonsterDefaults) : CAIBearDefaults #53
+-    CAIBearDefaults #53 (CAIBearDefaults) : 
++            params (handle:CAIBaseMonsterDefaults) : CAIBearDefaults #54
++    CAIBearDefaults #54 (CAIBearDefaults) : 
+         CAIBearDefaults (CAIBearDefaults)
+-            spawnTree (handle:CAIMonsterSpawn) : CAIMonsterSpawnDefault #54
+-            tauntTree (handle:CAIMonsterTaunt) : CAIMonsterTaunt #56
+-            axiiTree (handle:CAIMonsterAxii) : CAIMonsterAxii #58
+-            idleDecoratorTree (handle:CAIMonsterIdleDecorator) : CAIMonsterIdleDecoratorBear #60
+-            combatTree (handle:CAIMonsterCombat) : CAIMonsterCombat #80
+-            deathTree (handle:CAIMonsterDeath) : CAIMonsterDeath #96
+-    CAIMonsterSpawnDefault #54 (CAIMonsterSpawnDefault) : 
++            spawnTree (handle:CAIMonsterSpawn) : CAIMonsterSpawnDefault #55
++            tauntTree (handle:CAIMonsterTaunt) : CAIMonsterTaunt #57
++            axiiTree (handle:CAIMonsterAxii) : CAIMonsterAxii #59
++            idleDecoratorTree (handle:CAIMonsterIdleDecorator) : CAIMonsterIdleDecoratorBear #61
++            combatTree (handle:CAIMonsterCombat) : CAIMonsterCombat #81
++            deathTree (handle:CAIMonsterDeath) : CAIMonsterDeath #97
++    CAIMonsterSpawnDefault #55 (CAIMonsterSpawnDefault) : 
+         CAIMonsterSpawnDefault (CAIMonsterSpawnDefault)
+             tree (handle:CBehTree) : gameplay/trees/monster_spawn_default.w2behtree
+-            params (handle:CAIMonsterSpawnParams) : CAIMonsterSpawnParams #55
+-    CAIMonsterSpawnParams #55 (CAIMonsterSpawnParams) : 
++            params (handle:CAIMonsterSpawnParams) : CAIMonsterSpawnParams #56
++    CAIMonsterSpawnParams #56 (CAIMonsterSpawnParams) : 
+         CAIMonsterSpawnParams (CAIMonsterSpawnParams)
+-    CAIMonsterTaunt #56 (CAIMonsterTaunt) : 
++    CAIMonsterTaunt #57 (CAIMonsterTaunt) : 
+         CAIMonsterTaunt (CAIMonsterTaunt)
+             tree (handle:CBehTree) : gameplay/trees/monster_basetaunt.w2behtree
+-            params (handle:CAIMonsterTauntParams) : CAIMonsterTauntParams #57
+-    CAIMonsterTauntParams #57 (CAIMonsterTauntParams) : 
++            params (handle:CAIMonsterTauntParams) : CAIMonsterTauntParams #58
++    CAIMonsterTauntParams #58 (CAIMonsterTauntParams) : 
+         CAIMonsterTauntParams (CAIMonsterTauntParams)
+-    CAIMonsterAxii #58 (CAIMonsterAxii) : 
++    CAIMonsterAxii #59 (CAIMonsterAxii) : 
+         CAIMonsterAxii (CAIMonsterAxii)
+             tree (handle:CBehTree) : gameplay/trees/monster_baseaxii.w2behtree
+-            params (handle:CAIMonsterAxiiParams) : CAIMonsterAxiiParams #59
+-    CAIMonsterAxiiParams #59 (CAIMonsterAxiiParams) : 
++            params (handle:CAIMonsterAxiiParams) : CAIMonsterAxiiParams #60
++    CAIMonsterAxiiParams #60 (CAIMonsterAxiiParams) : 
+         CAIMonsterAxiiParams (CAIMonsterAxiiParams)
+-    CAIMonsterIdleDecoratorBear #60 (CAIMonsterIdleDecoratorBear) : 
++    CAIMonsterIdleDecoratorBear #61 (CAIMonsterIdleDecoratorBear) : 
+         CAIMonsterIdleDecoratorBear (CAIMonsterIdleDecoratorBear)
+             tree (handle:CBehTree) : gameplay/trees/idle/monster_idle_decorator.w2behtree
+-            params (handle:CAIMonsterIdleDecoratorParams) : CAIMonsterIdleDecoratorParams #61
+-    CAIMonsterIdleDecoratorParams #61 (CAIMonsterIdleDecoratorParams) : 
++            params (handle:CAIMonsterIdleDecoratorParams) : CAIMonsterIdleDecoratorParams #62
++    CAIMonsterIdleDecoratorParams #62 (CAIMonsterIdleDecoratorParams) : 
+         CAIMonsterIdleDecoratorParams (CAIMonsterIdleDecoratorParams)
+-            reactionTree (handle:CAIMonsterReactionsTree) : CAIMonsterReactionsTree #62
+-            searchFoodTree (handle:CAIMonsterSearchFoodTree) : CAIMonsterSearchFoodTree #74
++            reactionTree (handle:CAIMonsterReactionsTree) : CAIMonsterReactionsTree #63
++            searchFoodTree (handle:CAIMonsterSearchFoodTree) : CAIMonsterSearchFoodTree #75
+             actions (array:handle:CAIMonsterIdleAction)
+-                0 (handle:CAIMonsterIdleAction) : CAIMonsterIdleOnGroundAndClean #76
+-                1 (handle:CAIMonsterIdleAction) : CAIMonsterIdleSleep #78
++                0 (handle:CAIMonsterIdleAction) : CAIMonsterIdleOnGroundAndClean #77
++                1 (handle:CAIMonsterIdleAction) : CAIMonsterIdleSleep #79
+             nightActions (array:handle:CAIMonsterIdleAction)
+-                0 (handle:CAIMonsterIdleAction) : CAIMonsterIdleSleep #78
+-    CAIMonsterReactionsTree #62 (CAIMonsterReactionsTree) : 
++                0 (handle:CAIMonsterIdleAction) : CAIMonsterIdleSleep #79
++    CAIMonsterReactionsTree #63 (CAIMonsterReactionsTree) : 
+         CAIMonsterReactionsTree (CAIMonsterReactionsTree)
+             tree (handle:CBehTree) : gameplay/trees/reactions/monster_base_reactions.w2behtree
+-            params (handle:CAIMonsterReactionsTreeParams) : CAIMonsterReactionsTreeParams #63
+-    CAIMonsterReactionsTreeParams #63 (CAIMonsterReactionsTreeParams) : 
++            params (handle:CAIMonsterReactionsTreeParams) : CAIMonsterReactionsTreeParams #64
++    CAIMonsterReactionsTreeParams #64 (CAIMonsterReactionsTreeParams) : 
+         CAIMonsterReactionsTreeParams (CAIMonsterReactionsTreeParams)
+             reactions (array:handle:CAIMonsterActionSubtree)
+-                0 (handle:CAIMonsterActionSubtree) : CAIActionSearchForTarget #64
+-                1 (handle:CAIMonsterActionSubtree) : CAIActionAllySearchesTarget #66
+-                2 (handle:CAIMonsterActionSubtree) : CAIActionPlayWithTarget #68
+-                3 (handle:CAIMonsterActionSubtree) : CAIActionMoveInPack #70
+-                4 (handle:CAIMonsterActionSubtree) : CAIActionRunWildInPack #72
+-    CAIActionSearchForTarget #64 (CAIActionSearchForTarget) : 
++                0 (handle:CAIMonsterActionSubtree) : CAIActionSearchForTarget #65
++                1 (handle:CAIMonsterActionSubtree) : CAIActionAllySearchesTarget #67
++                2 (handle:CAIMonsterActionSubtree) : CAIActionPlayWithTarget #69
++                3 (handle:CAIMonsterActionSubtree) : CAIActionMoveInPack #71
++                4 (handle:CAIMonsterActionSubtree) : CAIActionRunWildInPack #73
++    CAIActionSearchForTarget #65 (CAIActionSearchForTarget) : 
+         CAIActionSearchForTarget (CAIActionSearchForTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionSearchTarget #65
+-    CAINpcReactionSearchTarget #65 (CAINpcReactionSearchTarget) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionSearchTarget #66
++    CAINpcReactionSearchTarget #66 (CAINpcReactionSearchTarget) : 
+         CAINpcReactionSearchTarget (CAINpcReactionSearchTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_search_target.w2behtree
+-    CAIActionAllySearchesTarget #66 (CAIActionAllySearchesTarget) : 
++    CAIActionAllySearchesTarget #67 (CAIActionAllySearchesTarget) : 
+         CAIActionAllySearchesTarget (CAIActionAllySearchesTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionJoinSearchForTarget #67
+-    CAINpcReactionJoinSearchForTarget #67 (CAINpcReactionJoinSearchForTarget) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionJoinSearchForTarget #68
++    CAINpcReactionJoinSearchForTarget #68 (CAINpcReactionJoinSearchForTarget) : 
+         CAINpcReactionJoinSearchForTarget (CAINpcReactionJoinSearchForTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_join_search_for_target.w2behtree
+-    CAIActionPlayWithTarget #68 (CAIActionPlayWithTarget) : 
++    CAIActionPlayWithTarget #69 (CAIActionPlayWithTarget) : 
+         CAIActionPlayWithTarget (CAIActionPlayWithTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionPlayWithTarget #69
+-    CAINpcReactionPlayWithTarget #69 (CAINpcReactionPlayWithTarget) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionPlayWithTarget #70
++    CAINpcReactionPlayWithTarget #70 (CAINpcReactionPlayWithTarget) : 
+         CAINpcReactionPlayWithTarget (CAINpcReactionPlayWithTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_play_around.w2behtree
+-    CAIActionMoveInPack #70 (CAIActionMoveInPack) : 
++    CAIActionMoveInPack #71 (CAIActionMoveInPack) : 
+         CAIActionMoveInPack (CAIActionMoveInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionMoveInPack #71
+-    CAINpcReactionMoveInPack #71 (CAINpcReactionMoveInPack) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionMoveInPack #72
++    CAINpcReactionMoveInPack #72 (CAINpcReactionMoveInPack) : 
+         CAINpcReactionMoveInPack (CAINpcReactionMoveInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_move_in_pack.w2behtree
+-    CAIActionRunWildInPack #72 (CAIActionRunWildInPack) : 
++    CAIActionRunWildInPack #73 (CAIActionRunWildInPack) : 
+         CAIActionRunWildInPack (CAIActionRunWildInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionRunWildInPack #73
+-    CAINpcReactionRunWildInPack #73 (CAINpcReactionRunWildInPack) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionRunWildInPack #74
++    CAINpcReactionRunWildInPack #74 (CAINpcReactionRunWildInPack) : 
+         CAINpcReactionRunWildInPack (CAINpcReactionRunWildInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_run_wild_in_pack.w2behtree
+-    CAIMonsterSearchFoodTree #74 (CAIMonsterSearchFoodTree) : 
++    CAIMonsterSearchFoodTree #75 (CAIMonsterSearchFoodTree) : 
+         CAIMonsterSearchFoodTree (CAIMonsterSearchFoodTree)
+             tree (handle:CBehTree) : gameplay/trees/idle/monster_search_food_idle.w2behtree
+-            params (handle:CAIMonsterSearchFoodIdleParams) : CAIMonsterSearchFoodIdleParams #75
+-    CAIMonsterSearchFoodIdleParams #75 (CAIMonsterSearchFoodIdleParams) : 
++            params (handle:CAIMonsterSearchFoodIdleParams) : CAIMonsterSearchFoodIdleParams #76
++    CAIMonsterSearchFoodIdleParams #76 (CAIMonsterSearchFoodIdleParams) : 
+         CAIMonsterSearchFoodIdleParams (CAIMonsterSearchFoodIdleParams)
+             corpse (Bool) : true
+             meat (Bool) : true
+-    CAIMonsterIdleOnGroundAndClean #76 (CAIMonsterIdleOnGroundAndClean) : 
++    CAIMonsterIdleOnGroundAndClean #77 (CAIMonsterIdleOnGroundAndClean) : 
+         CAIMonsterIdleOnGroundAndClean (CAIMonsterIdleOnGroundAndClean)
+             tree (handle:CBehTree) : gameplay/trees/idle/monster_idle_action_slot.w2behtree
+-            params (handle:CAIMonsterIdleActionParams) : CAIMonsterIdleActionParams #77
+-    CAIMonsterIdleActionParams #77 (CAIMonsterIdleActionParams) : OnGroundAndClean
++            params (handle:CAIMonsterIdleActionParams) : CAIMonsterIdleActionParams #78
++    CAIMonsterIdleActionParams #78 (CAIMonsterIdleActionParams) : OnGroundAndClean
+         CAIMonsterIdleActionParams (CAIMonsterIdleActionParams)
+             cooldown (Float) : 100.0000
+             loopTime (Float) : 30.0000
+             actionName (CName) : OnGroundAndClean
+-    CAIMonsterIdleSleep #78 (CAIMonsterIdleSleep) : 
++    CAIMonsterIdleSleep #79 (CAIMonsterIdleSleep) : 
+         CAIMonsterIdleSleep (CAIMonsterIdleSleep)
+             tree (handle:CBehTree) : gameplay/trees/idle/monster_idle_action_slot.w2behtree
+-            params (handle:CAIMonsterIdleActionParams) : CAIMonsterIdleActionParams #79
+-    CAIMonsterIdleActionParams #79 (CAIMonsterIdleActionParams) : Sleep
++            params (handle:CAIMonsterIdleActionParams) : CAIMonsterIdleActionParams #80
++    CAIMonsterIdleActionParams #80 (CAIMonsterIdleActionParams) : Sleep
+         CAIMonsterIdleActionParams (CAIMonsterIdleActionParams)
+             cooldown (Float) : 200.0000
+             loopTime (Float) : 100.0000
+             actionName (CName) : Sleep
+-    CAIMonsterCombat #80 (CAIMonsterCombat) : 
++    CAIMonsterCombat #81 (CAIMonsterCombat) : 
+         CAIMonsterCombat (CAIMonsterCombat)
+             tree (handle:CBehTree) : gameplay/trees/monster_basecombat.w2behtree
+-            params (handle:CAIMonsterCombatParams) : CAIMonsterCombatParams #81
+-    CAIMonsterCombatParams #81 (CAIMonsterCombatParams) : MonsterHitReaction
++            params (handle:CAIMonsterCombatParams) : CAIMonsterCombatParams #82
++    CAIMonsterCombatParams #82 (CAIMonsterCombatParams) : MonsterHitReaction
+         CAIMonsterCombatParams (CAIMonsterCombatParams)
+-            combatLogicTree (handle:CAIMonsterCombatLogic) : CAIBearCombatLogic #82
+-            damageReactionTree (handle:CAIMonsterSimpleDamageReactionTree) : CAIMonsterDamageReactionTree #84
++            combatLogicTree (handle:CAIMonsterCombatLogic) : CAIBearCombatLogic #83
++            damageReactionTree (handle:CAIMonsterSimpleDamageReactionTree) : CAIMonsterDamageReactionTree #85
+             createHitReactionEvent (CName) : MonsterHitReaction
+-            criticalState (handle:CAINpcCriticalState) : CAINpcCriticalState #86
+-            reactionTree (handle:CAIMonsterCombatReactionsTree) : CAIMonsterCombatReactionsTree #88
+-    CAIBearCombatLogic #82 (CAIBearCombatLogic) : 
++            criticalState (handle:CAINpcCriticalState) : CAINpcCriticalState #87
++            reactionTree (handle:CAIMonsterCombatReactionsTree) : CAIMonsterCombatReactionsTree #89
++    CAIBearCombatLogic #83 (CAIBearCombatLogic) : 
+         CAIBearCombatLogic (CAIBearCombatLogic)
+             tree (handle:CBehTree) : gameplay/trees/monsters/monster_bear_berserker_logic.w2behtree
+-            params (handle:CAIMonsterCombatLogicParams) : CAIMonsterCombatLogicParams #83
+-    CAIMonsterCombatLogicParams #83 (CAIMonsterCombatLogicParams) : 
++            params (handle:CAIMonsterCombatLogicParams) : CAIMonsterCombatLogicParams #84
++    CAIMonsterCombatLogicParams #84 (CAIMonsterCombatLogicParams) : 
+         CAIMonsterCombatLogicParams (CAIMonsterCombatLogicParams) : <CAIMonsterCombatLogicParams>CAIMonsterCombatLogicParams
+-    CAIMonsterDamageReactionTree #84 (CAIMonsterDamageReactionTree) : 
++    CAIMonsterDamageReactionTree #85 (CAIMonsterDamageReactionTree) : 
+         CAIMonsterDamageReactionTree (CAIMonsterDamageReactionTree)
+             tree (handle:CBehTree) : gameplay/trees/monster_damage_reaction.w2behtree
+-            params (handle:CAIDamageReactionTreeParams) : CAIDamageReactionTreeParams #85
+-    CAIDamageReactionTreeParams #85 (CAIDamageReactionTreeParams) : 
++            params (handle:CAIDamageReactionTreeParams) : CAIDamageReactionTreeParams #86
++    CAIDamageReactionTreeParams #86 (CAIDamageReactionTreeParams) : 
+         CAIDamageReactionTreeParams (CAIDamageReactionTreeParams)
+             completeTaskAfterDisablingHitReaction (Bool) : true
+-    CAINpcCriticalState #86 (CAINpcCriticalState) : 
++    CAINpcCriticalState #87 (CAINpcCriticalState) : 
+         CAINpcCriticalState (CAINpcCriticalState)
+             tree (handle:CBehTree) : gameplay/trees/npc_critical_state.w2behtree
+-            params (handle:CAINpcCriticalStateParams) : CAINpcCriticalStateParams #87
+-    CAINpcCriticalStateParams #87 (CAINpcCriticalStateParams) : 
++            params (handle:CAINpcCriticalStateParams) : CAINpcCriticalStateParams #88
++    CAINpcCriticalStateParams #88 (CAINpcCriticalStateParams) : 
+         CAINpcCriticalStateParams (CAINpcCriticalStateParams)
+-    CAIMonsterCombatReactionsTree #88 (CAIMonsterCombatReactionsTree) : 
++    CAIMonsterCombatReactionsTree #89 (CAIMonsterCombatReactionsTree) : 
+         CAIMonsterCombatReactionsTree (CAIMonsterCombatReactionsTree)
+             tree (handle:CBehTree) : gameplay/trees/reactions/monster_base_reactions.w2behtree
+-            params (handle:CAIMonsterReactionsTreeParams) : CAIMonsterReactionsTreeParams #89
+-    CAIMonsterReactionsTreeParams #89 (CAIMonsterReactionsTreeParams) : 
++            params (handle:CAIMonsterReactionsTreeParams) : CAIMonsterReactionsTreeParams #90
++    CAIMonsterReactionsTreeParams #90 (CAIMonsterReactionsTreeParams) : 
+         CAIMonsterReactionsTreeParams (CAIMonsterReactionsTreeParams)
+             reactions (array:handle:CAIMonsterActionSubtree)
+-                0 (handle:CAIMonsterActionSubtree) : CAIActionLeadEscape #90
+-                1 (handle:CAIMonsterActionSubtree) : CAIActionLeadEscape #92
+-                2 (handle:CAIMonsterActionSubtree) : CAIActionEscapeInPack #94
+-    CAIActionLeadEscape #90 (CAIActionLeadEscape) : 
++                0 (handle:CAIMonsterActionSubtree) : CAIActionLeadEscape #91
++                1 (handle:CAIMonsterActionSubtree) : CAIActionLeadEscape #93
++                2 (handle:CAIMonsterActionSubtree) : CAIActionEscapeInPack #95
++    CAIActionLeadEscape #91 (CAIActionLeadEscape) : 
+         CAIActionLeadEscape (CAIActionLeadEscape)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionLeadEscape #91
+-    CAINpcReactionLeadEscape #91 (CAINpcReactionLeadEscape) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionLeadEscape #92
++    CAINpcReactionLeadEscape #92 (CAINpcReactionLeadEscape) : 
+         CAINpcReactionLeadEscape (CAINpcReactionLeadEscape)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_monster_lead_escape.w2behtree
+-    CAIActionLeadEscape #92 (CAIActionLeadEscape) : FearsomeEvent
++    CAIActionLeadEscape #93 (CAIActionLeadEscape) : FearsomeEvent
+         CAIActionLeadEscape (CAIActionLeadEscape)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionLeadEscape #93
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionLeadEscape #94
+             actionEventName (CName) : FearsomeEvent
+             saveReactionTargetUnder (CName) : FearsomeEventSource
+-    CAINpcReactionLeadEscape #93 (CAINpcReactionLeadEscape) : 
++    CAINpcReactionLeadEscape #94 (CAINpcReactionLeadEscape) : 
+         CAINpcReactionLeadEscape (CAINpcReactionLeadEscape)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_monster_lead_escape.w2behtree
+-    CAIActionEscapeInPack #94 (CAIActionEscapeInPack) : 
++    CAIActionEscapeInPack #95 (CAIActionEscapeInPack) : 
+         CAIActionEscapeInPack (CAIActionEscapeInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionEscapeInPack #95
+-    CAINpcReactionEscapeInPack #95 (CAINpcReactionEscapeInPack) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionEscapeInPack #96
++    CAINpcReactionEscapeInPack #96 (CAINpcReactionEscapeInPack) : 
+         CAINpcReactionEscapeInPack (CAINpcReactionEscapeInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_monster_escape_in_pack.w2behtree
+-    CAIMonsterDeath #96 (CAIMonsterDeath) : 
++    CAIMonsterDeath #97 (CAIMonsterDeath) : 
+         CAIMonsterDeath (CAIMonsterDeath)
+             tree (handle:CBehTree) : gameplay/trees/death/death.w2behtree
+-            params (handle:CAINpcDeathParams) : CAIMonsterDeathParams #97
+-    CAIMonsterDeathParams #97 (CAIMonsterDeathParams) : 
++            params (handle:CAINpcDeathParams) : CAIMonsterDeathParams #98
++    CAIMonsterDeathParams #98 (CAIMonsterDeathParams) : 
+         CAIMonsterDeathParams (CAIMonsterDeathParams)
+-    CFocusSoundParam #98 (CFocusSoundParam) : Focus_Sound
++    CFocusSoundParam #99 (CFocusSoundParam) : Focus_Sound
+         CFocusSoundParam (CFocusSoundParam)
+             wasIncluded (Bool) : true
+             name (String) : "Focus_Sound"
+             eventStart (CName) : monster_bear_focus_100m_start
+             eventStop (CName) : monster_bear_focus_100m_stop
+-    CAnimGlobalParam #99 (CAnimGlobalParam) : sfx_bear
++    CAnimGlobalParam #100 (CAnimGlobalParam) : sfx_bear
+         CAnimGlobalParam (CAnimGlobalParam)
+             wasIncluded (Bool) : true
+             sfxTag (CName) : sfx_bear

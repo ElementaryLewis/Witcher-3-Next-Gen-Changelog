@@ -1,0 +1,509 @@
+ 1 file changed, 223 insertions(+), 87 deletions(-)
+
+diff --git 1.32/characters/npc_entities/animals/rooster.w2ent.txt 4.00/characters/npc_entities/animals/rooster.w2ent.txt
+index 5b22275..04ec60e 100644
+--- 1.32/characters/npc_entities/animals/rooster.w2ent.txt
++++ 4.00/characters/npc_entities/animals/rooster.w2ent.txt
+@@ -20,16 +20,16 @@
+             usedAppearances (array:CName)
+                 0 (CName) : rooster
+             templateParams (array:ptr:CEntityTemplateParam)
+-                0 (ptr:CEntityTemplateParam) : CCharacterControllerParam #6
+-                1 (ptr:CEntityTemplateParam) : CCharacterStatsParam #7
+-                2 (ptr:CEntityTemplateParam) : CAIProfile #8
+-                3 (ptr:CEntityTemplateParam) : CInventoryDefinition #9
+-                4 (ptr:CEntityTemplateParam) : CAIProfile #12
+-                5 (ptr:CEntityTemplateParam) : CAIBaseTreeTemplateParam #15
+-                6 (ptr:CEntityTemplateParam) : CAnimBehaviorsParam #38
+-                7 (ptr:CEntityTemplateParam) : CAnimAnimsetsParam #39
+-                8 (ptr:CEntityTemplateParam) : CCharacterControllerParam #40
+-                9 (ptr:CEntityTemplateParam) : CMonsterParam #41
++                0 (ptr:CEntityTemplateParam) : CCharacterControllerParam #8
++                1 (ptr:CEntityTemplateParam) : CCharacterStatsParam #9
++                2 (ptr:CEntityTemplateParam) : CAIProfile #10
++                3 (ptr:CEntityTemplateParam) : CInventoryDefinition #11
++                4 (ptr:CEntityTemplateParam) : CAIProfile #14
++                5 (ptr:CEntityTemplateParam) : CAIBaseTreeTemplateParam #17
++                6 (ptr:CEntityTemplateParam) : CAnimBehaviorsParam #40
++                7 (ptr:CEntityTemplateParam) : CAnimAnimsetsParam #41
++                8 (ptr:CEntityTemplateParam) : CCharacterControllerParam #42
++                9 (ptr:CEntityTemplateParam) : CMonsterParam #43
+             flatCompiledData (array:Uint8) : # array:2,0,Uint8
+                 CNewNPC #0 (CNewNPC) : PreviewEntity
+                     CNewNPC (CNewNPC)
+@@ -42,9 +42,10 @@
+                         name (String) : "PreviewEntity"
+                         Components (array:ptr:CComponent)
+                             0 (ptr:CComponent) : CMovingPhysicalAgentComponent #1
+-                            1 (ptr:CComponent) : CAppearanceComponent #2
+-                            2 (ptr:CComponent) : CInventoryComponent #3
+-                            3 (ptr:CComponent) : CSoundEmitterComponent #4
++                            1 (ptr:CComponent) : CAppearanceComponent #4
++                            2 (ptr:CComponent) : CInventoryComponent #5
++                            3 (ptr:CComponent) : CDynamicColliderComponent #3
++                            4 (ptr:CComponent) : CSoundEmitterComponent #6
+                         BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                             0 (SEntityBufferType1)
+                                 ComponentName (CName) : 
+@@ -60,7 +61,8 @@
+                             Scale_z (Float) : 1.5000
+                         guid (CGUID) : 43a4c293-f511-4e03-b504-f4482947ca24
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+-                        AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++                        AttachmentsChild (array:handle:IAttachment)
++                            0 (handle:IAttachment) : CHardAttachment #2
+                         name (String) : "rooster_base"
+                         graphPositionX (Int16) : 195
+                         graphPositionY (Int16) : 109
+@@ -72,7 +74,30 @@
+                                 instanceName (CName) : Exploration
+                                 graph (handle:CBehaviorGraph) : gameplay/behaviors/animals/behaviorgraph/animal_exploration.w2beh
+                         steeringBehavior (handle:CMoveSteeringBehavior) : gameplay/behaviors/npc/steering/animation_steering_fast.w2steer
+-                CAppearanceComponent #2 (CAppearanceComponent) : Appearance
++                CHardAttachment #2 (CHardAttachment) : 
++                    CHardAttachment (CHardAttachment)
++                        parent (ptr:CNode) : CMovingPhysicalAgentComponent #1
++                        child (ptr:CNode) : CDynamicColliderComponent #3
++                CDynamicColliderComponent #3 (CDynamicColliderComponent) : grassCollider
++                    CDynamicColliderComponent (CDynamicColliderComponent)
++                        transform (EngineTransform)
++                            Scale_x (Float) : 0.7000
++                            Scale_y (Float) : 0.7000
++                            Scale_z (Float) : 1.1000
++                            X (Float) : 0.0000
++                            Y (Float) : 0.0000
++                            Z (Float) : 0.2000
++                        transformParent (ptr:CHardAttachment) : CHardAttachment #2
++                        guid (CGUID) : baab00f2-b841-42df-916d-db3bae66bd39
++                        AttachmentsReference (array:handle:IAttachment)
++                            0 (handle:IAttachment) : CHardAttachment #2
++                        AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++                        name (String) : "grassCollider"
++                        graphPositionX (Int16) : 300
++                        graphPositionY (Int16) : 217
++                        useInWaterNormal (Bool) : false
++                        useInGrassDisplacement (Bool) : true
++                CAppearanceComponent #4 (CAppearanceComponent) : Appearance
+                     CAppearanceComponent (CAppearanceComponent)
+                         guid (CGUID) : 5ea41c73-c3ec-4cd8-8b32-813e36620cb9
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -99,7 +124,7 @@
+                                         childName (CName) : t_01__rooster
+                                         Data (CBufferVLQInt32:IReferencable)
+                                             0 (CMeshSkinningAttachment)
+-                CInventoryComponent #3 (CInventoryComponent) : CInventoryComponent0
++                CInventoryComponent #5 (CInventoryComponent) : CInventoryComponent0
+                     CInventoryComponent (CInventoryComponent)
+                         guid (CGUID) : a375ab48-af0a-4c60-bdac-35b4118cc810
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -108,7 +133,7 @@
+                         graphPositionX (Int16) : -240
+                         graphPositionY (Int16) : 69
+                         containerTemplate (handle:CEntityTemplate) : items/remains/remains__monster_01/remains__monster_01.w2ent
+-                CSoundEmitterComponent #4 (CSoundEmitterComponent) : CSoundEmitterComponent
++                CSoundEmitterComponent #6 (CSoundEmitterComponent) : CSoundEmitterComponent
+                     guid (CGUID) : adf0f35a-2c8f-4c97-b5d6-81cde35442c4
+                     AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                     AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -1632,7 +1657,7 @@
+                                 name (String) : "f"
+                         CFXTrackItemFlare #7 (CFXTrackItemFlare) : 
+                             CFXTrackItemFlare (CFXTrackItemFlare)
+-                                timeBegin (Float) : 0.0205
++                                timeBegin (Float) : 5.3134
+                                 timeDuration (Float) : 1.9822
+                                 buffername (CName) : 
+                                 count (CDynamicInt) : 1
+@@ -1899,6 +1924,94 @@
+                                 material (handle:IMaterial) : fx/gameplay/states/freezing/freezing_shader_old.w2mg
+                                 drawOriginal (Bool) : true
+                                 forceMeshAlternatives (Bool) : true
++                9 (CEntityTemplateCookedEffect)
++                    name (CName) : water_hit_blood
++                    buffer (SharedDataBuffer)
++                        Bufferdata (CByteArray) : 1495 bytes
++                        CFXDefinition #0 (CFXDefinition) : water_hit_blood
++                            CFXDefinition (CFXDefinition)
++                                trackGroups (array:ptr:CFXTrackGroup)
++                                    0 (ptr:CFXTrackGroup) : CFXTrackGroup #1
++                                length (Float) : 10.8133
++                                loopStart (Float) : 0.1515
++                                loopEnd (Float) : 0.3553
++                                name (CName) : water_hit_blood
++                        CFXTrackGroup #1 (CFXTrackGroup) : fx
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "fx"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #2
++                                isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 163
++                                    Green (Uint8) : 169
++                                    Blue (Uint8) : 167
++                                    Alpha (Uint8) : 100
++                        CFXTrack #2 (CFXTrack) : fx
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #3
++                                name (String) : "fx"
++                        CFXTrackItemParticles #3 (CFXTrackItemParticles) : Particles
++                            CFXTrackItemParticles (CFXTrackItemParticles)
++                                timeBegin (Float) : 0.0002
++                                timeDuration (Float) : 10.5552
++                                buffername (CName) : Particles
++                                count (CDynamicInt) : 3
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    1 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    2 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                particleSystem (soft:CParticleSystem) : fx/blood/standard_hit/water_blood.w2p
++                                spawner (ptr:IFXSpawner) : CFXWaterSpawner #4
++                        CFXWaterSpawner #4 (CFXWaterSpawner) : 
++                            CFXWaterSpawner (CFXWaterSpawner) : <CFXWaterSpawner>CFXWaterSpawner
+             cookedEffectsVersion (Uint32) : 1
+             Unk1 (Uint32) : 0
+     CNewNPC #1 (CNewNPC) : 
+@@ -1911,9 +2024,10 @@
+             streamingDistance (Uint8) : 0
+             Components (array:ptr:CComponent)
+                 0 (ptr:CComponent) : CMovingPhysicalAgentComponent #2
+-                1 (ptr:CComponent) : CAppearanceComponent #3
+-                2 (ptr:CComponent) : CInventoryComponent #4
+-                3 (ptr:CComponent) : CSoundEmitterComponent #5
++                1 (ptr:CComponent) : CAppearanceComponent #5
++                2 (ptr:CComponent) : CInventoryComponent #6
++                3 (ptr:CComponent) : CDynamicColliderComponent #4
++                4 (ptr:CComponent) : CSoundEmitterComponent #7
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+@@ -1929,7 +2043,8 @@
+                 Scale_z (Float) : 1.5000
+             guid (CGUID) : 43a4c293-f511-4e03-b504-f4482947ca24
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+-            AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++            AttachmentsChild (array:handle:IAttachment)
++                0 (handle:IAttachment) : CHardAttachment #3
+             name (String) : "rooster_base"
+             skeleton (handle:CSkeleton) : characters/base_entities/rooster_base/rooster_base.w2rig
+             animationSets (array:handle:CSkeletalAnimationSet)
+@@ -1939,7 +2054,28 @@
+                     instanceName (CName) : Exploration
+                     graph (handle:CBehaviorGraph) : gameplay/behaviors/animals/behaviorgraph/animal_exploration.w2beh
+             steeringBehavior (handle:CMoveSteeringBehavior) : gameplay/behaviors/npc/steering/animation_steering_fast.w2steer
+-    CAppearanceComponent #3 (CAppearanceComponent) : Appearance
++    CHardAttachment #3 (CHardAttachment) : 
++        CHardAttachment (CHardAttachment)
++            parent (ptr:CNode) : CMovingPhysicalAgentComponent #2
++            child (ptr:CNode) : CDynamicColliderComponent #4
++    CDynamicColliderComponent #4 (CDynamicColliderComponent) : grassCollider
++        CDynamicColliderComponent (CDynamicColliderComponent)
++            transform (EngineTransform)
++                Scale_x (Float) : 0.7000
++                Scale_y (Float) : 0.7000
++                Scale_z (Float) : 1.1000
++                X (Float) : 0.0000
++                Y (Float) : 0.0000
++                Z (Float) : 0.2000
++            transformParent (ptr:CHardAttachment) : CHardAttachment #3
++            guid (CGUID) : baab00f2-b841-42df-916d-db3bae66bd39
++            AttachmentsReference (array:handle:IAttachment)
++                0 (handle:IAttachment) : CHardAttachment #3
++            AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++            name (String) : "grassCollider"
++            useInWaterNormal (Bool) : false
++            useInGrassDisplacement (Bool) : true
++    CAppearanceComponent #5 (CAppearanceComponent) : Appearance
+         CAppearanceComponent (CAppearanceComponent)
+             guid (CGUID) : 5ea41c73-c3ec-4cd8-8b32-813e36620cb9
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -1964,14 +2100,14 @@
+                             childName (CName) : t_01__rooster
+                             Data (CBufferVLQInt32:IReferencable)
+                                 0 (CMeshSkinningAttachment)
+-    CInventoryComponent #4 (CInventoryComponent) : CInventoryComponent0
++    CInventoryComponent #6 (CInventoryComponent) : CInventoryComponent0
+         CInventoryComponent (CInventoryComponent)
+             guid (CGUID) : a375ab48-af0a-4c60-bdac-35b4118cc810
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "CInventoryComponent0"
+             containerTemplate (handle:CEntityTemplate) : items/remains/remains__monster_01/remains__monster_01.w2ent
+-    CSoundEmitterComponent #5 (CSoundEmitterComponent) : CSoundEmitterComponent
++    CSoundEmitterComponent #7 (CSoundEmitterComponent) : CSoundEmitterComponent
+         guid (CGUID) : adf0f35a-2c8f-4c97-b5d6-81cde35442c4
+         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -1980,143 +2116,143 @@
+         banksDependency (array:CName)
+             0 (CName) : animals_chicken.bnk
+         maxDistance (Float) : 40.0000
+-    CCharacterControllerParam #6 (CCharacterControllerParam) : rooster_character_controller_params
++    CCharacterControllerParam #8 (CCharacterControllerParam) : rooster_character_controller_params
+         CCharacterControllerParam (CCharacterControllerParam)
+             name (String) : "rooster_character_controller_params"
+-    CCharacterStatsParam #7 (CCharacterStatsParam) : rooster_params
++    CCharacterStatsParam #9 (CCharacterStatsParam) : rooster_params
+         CCharacterStatsParam (CCharacterStatsParam)
+             name (String) : "rooster_params"
+             abilities (array:CName)
+                 0 (CName) : animal_default_animal
+-    CAIProfile #8 (CAIProfile) : animals_peacefull
++    CAIProfile #10 (CAIProfile) : animals_peacefull
+         CAIProfile (CAIProfile)
+             attitudeGroup (CName) : animals_peacefull
+-    CInventoryDefinition #9 (CInventoryDefinition) : 
++    CInventoryDefinition #11 (CInventoryDefinition) : 
+         CInventoryDefinition (CInventoryDefinition)
+             entries (array:ptr:CInventoryDefinitionEntry)
+-                0 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #10
+-    CInventoryDefinitionEntry #10 (CInventoryDefinitionEntry) : edibles
++                0 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #12
++    CInventoryDefinitionEntry #12 (CInventoryDefinitionEntry) : edibles
+         CInventoryDefinitionEntry (CInventoryDefinitionEntry)
+             category (CName) : edibles
+             quantityMin (Uint32) : 2
+             quantityMax (Uint32) : 2
+-            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #11
+-    CInventoryInitializerUniform #11 (CInventoryInitializerUniform) : Chicken leg
++            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #13
++    CInventoryInitializerUniform #13 (CInventoryInitializerUniform) : Chicken leg
+         CInventoryInitializerUniform (CInventoryInitializerUniform)
+             itemName (CName) : Chicken leg
+-    CAIProfile #12 (CAIProfile) : 
++    CAIProfile #14 (CAIProfile) : 
+         CAIProfile (CAIProfile)
+             wasIncluded (Bool) : true
+-            senseVisionParams (ptr:CAISenseParams) : CAISenseParams #13
+-            senseAbsoluteParams (ptr:CAISenseParams) : CAISenseParams #14
+-    CAISenseParams #13 (CAISenseParams) : 
++            senseVisionParams (ptr:CAISenseParams) : CAISenseParams #15
++            senseAbsoluteParams (ptr:CAISenseParams) : CAISenseParams #16
++    CAISenseParams #15 (CAISenseParams) : 
+         CAISenseParams (CAISenseParams)
+             rangeAngle (Float) : 360.0000
+             detectOnlyHostiles (Bool) : false
+-    CAISenseParams #14 (CAISenseParams) : 
++    CAISenseParams #16 (CAISenseParams) : 
+         CAISenseParams (CAISenseParams)
+             rangeMax (Float) : 3.0000
+             rangeAngle (Float) : 360.0000
+-    CAIBaseTreeTemplateParam #15 (CAIBaseTreeTemplateParam) : 
++    CAIBaseTreeTemplateParam #17 (CAIBaseTreeTemplateParam) : 
+         CAIBaseTreeTemplateParam (CAIBaseTreeTemplateParam)
+             wasIncluded (Bool) : true
+-            aiBaseTree (handle:CAIBaseTree) : CAIAnimalBase #16
+-    CAIAnimalBase #16 (CAIAnimalBase) : 
++            aiBaseTree (handle:CAIBaseTree) : CAIAnimalBase #18
++    CAIAnimalBase #18 (CAIAnimalBase) : 
+         CAIAnimalBase (CAIAnimalBase)
+             tree (handle:CBehTree) : gameplay/trees/animal_base.w2behtree
+-            params (handle:CAIAnimalDefaults) : CAIRoosterDefaults #17
+-    CAIRoosterDefaults #17 (CAIRoosterDefaults) : 
++            params (handle:CAIAnimalDefaults) : CAIRoosterDefaults #19
++    CAIRoosterDefaults #19 (CAIRoosterDefaults) : 
+         CAIRoosterDefaults (CAIRoosterDefaults)
+-            combatTree (handle:CAIAnimalCombat) : CAIAnimalCombatRooster #18
+-            idleDecoratorTree (handle:CAIMonsterIdleDecorator) : CAIMonsterIdleDecorator #19
+-            charmedTree (handle:CAIAnimalCharmed) : CAIAnimalCharmed #35
+-            deathTree (handle:CAIAnimalDeath) : CAIAnimalDeath #36
+-    CAIAnimalCombatRooster #18 (CAIAnimalCombatRooster) : 
++            combatTree (handle:CAIAnimalCombat) : CAIAnimalCombatRooster #20
++            idleDecoratorTree (handle:CAIMonsterIdleDecorator) : CAIMonsterIdleDecorator #21
++            charmedTree (handle:CAIAnimalCharmed) : CAIAnimalCharmed #37
++            deathTree (handle:CAIAnimalDeath) : CAIAnimalDeath #38
++    CAIAnimalCombatRooster #20 (CAIAnimalCombatRooster) : 
+         CAIAnimalCombatRooster (CAIAnimalCombatRooster)
+             tree (handle:CBehTree) : gameplay/trees/combat/animal_combat.w2behtree
+             maxTolerableTargetDistance (Float) : 4.0000
+             maxFleeRunDistance (Float) : 5.0000
+             maxFleeWalkDistance (Float) : 4.0000
+-    CAIMonsterIdleDecorator #19 (CAIMonsterIdleDecorator) : 
++    CAIMonsterIdleDecorator #21 (CAIMonsterIdleDecorator) : 
+         CAIMonsterIdleDecorator (CAIMonsterIdleDecorator)
+             tree (handle:CBehTree) : gameplay/trees/idle/monster_idle_decorator.w2behtree
+-            params (handle:CAIMonsterIdleDecoratorParams) : CAIMonsterIdleDecoratorParams #20
+-    CAIMonsterIdleDecoratorParams #20 (CAIMonsterIdleDecoratorParams) : 
++            params (handle:CAIMonsterIdleDecoratorParams) : CAIMonsterIdleDecoratorParams #22
++    CAIMonsterIdleDecoratorParams #22 (CAIMonsterIdleDecoratorParams) : 
+         CAIMonsterIdleDecoratorParams (CAIMonsterIdleDecoratorParams)
+-            reactionTree (handle:CAIMonsterReactionsTree) : CAIMonsterReactionsTree #21
+-            searchFoodTree (handle:CAIMonsterSearchFoodTree) : CAIMonsterSearchFoodTree #31
++            reactionTree (handle:CAIMonsterReactionsTree) : CAIMonsterReactionsTree #23
++            searchFoodTree (handle:CAIMonsterSearchFoodTree) : CAIMonsterSearchFoodTree #33
+             actions (array:handle:CAIMonsterIdleAction)
+-                0 (handle:CAIMonsterIdleAction) : CAIMonsterIdleEat #33
+-    CAIMonsterReactionsTree #21 (CAIMonsterReactionsTree) : 
++                0 (handle:CAIMonsterIdleAction) : CAIMonsterIdleEat #35
++    CAIMonsterReactionsTree #23 (CAIMonsterReactionsTree) : 
+         CAIMonsterReactionsTree (CAIMonsterReactionsTree)
+             tree (handle:CBehTree) : gameplay/trees/reactions/monster_base_reactions.w2behtree
+-            params (handle:CAIMonsterReactionsTreeParams) : CAIMonsterReactionsTreeParams #22
+-    CAIMonsterReactionsTreeParams #22 (CAIMonsterReactionsTreeParams) : 
++            params (handle:CAIMonsterReactionsTreeParams) : CAIMonsterReactionsTreeParams #24
++    CAIMonsterReactionsTreeParams #24 (CAIMonsterReactionsTreeParams) : 
+         CAIMonsterReactionsTreeParams (CAIMonsterReactionsTreeParams)
+             reactions (array:handle:CAIMonsterActionSubtree)
+-                0 (handle:CAIMonsterActionSubtree) : CAIActionSearchForTarget #23
+-                1 (handle:CAIMonsterActionSubtree) : CAIActionAllySearchesTarget #25
+-                2 (handle:CAIMonsterActionSubtree) : CAIActionPlayWithTarget #27
+-                3 (handle:CAIMonsterActionSubtree) : CAIActionMoveInPack #29
+-    CAIActionSearchForTarget #23 (CAIActionSearchForTarget) : 
++                0 (handle:CAIMonsterActionSubtree) : CAIActionSearchForTarget #25
++                1 (handle:CAIMonsterActionSubtree) : CAIActionAllySearchesTarget #27
++                2 (handle:CAIMonsterActionSubtree) : CAIActionPlayWithTarget #29
++                3 (handle:CAIMonsterActionSubtree) : CAIActionMoveInPack #31
++    CAIActionSearchForTarget #25 (CAIActionSearchForTarget) : 
+         CAIActionSearchForTarget (CAIActionSearchForTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionSearchTarget #24
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionSearchTarget #26
+             reactionPriority (Int32) : 100
+-    CAINpcReactionSearchTarget #24 (CAINpcReactionSearchTarget) : 
++    CAINpcReactionSearchTarget #26 (CAINpcReactionSearchTarget) : 
+         CAINpcReactionSearchTarget (CAINpcReactionSearchTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_search_target.w2behtree
+-    CAIActionAllySearchesTarget #25 (CAIActionAllySearchesTarget) : 
++    CAIActionAllySearchesTarget #27 (CAIActionAllySearchesTarget) : 
+         CAIActionAllySearchesTarget (CAIActionAllySearchesTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionJoinSearchForTarget #26
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionJoinSearchForTarget #28
+             reactionPriority (Int32) : 100
+-    CAINpcReactionJoinSearchForTarget #26 (CAINpcReactionJoinSearchForTarget) : 
++    CAINpcReactionJoinSearchForTarget #28 (CAINpcReactionJoinSearchForTarget) : 
+         CAINpcReactionJoinSearchForTarget (CAINpcReactionJoinSearchForTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_join_search_for_target.w2behtree
+-    CAIActionPlayWithTarget #27 (CAIActionPlayWithTarget) : 
++    CAIActionPlayWithTarget #29 (CAIActionPlayWithTarget) : 
+         CAIActionPlayWithTarget (CAIActionPlayWithTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionPlayWithTarget #28
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionPlayWithTarget #30
+             reactionPriority (Int32) : 100
+-    CAINpcReactionPlayWithTarget #28 (CAINpcReactionPlayWithTarget) : 
++    CAINpcReactionPlayWithTarget #30 (CAINpcReactionPlayWithTarget) : 
+         CAINpcReactionPlayWithTarget (CAINpcReactionPlayWithTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_play_around.w2behtree
+-    CAIActionMoveInPack #29 (CAIActionMoveInPack) : 
++    CAIActionMoveInPack #31 (CAIActionMoveInPack) : 
+         CAIActionMoveInPack (CAIActionMoveInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionMoveInPack #30
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionMoveInPack #32
+             reactionPriority (Int32) : 100
+-    CAINpcReactionMoveInPack #30 (CAINpcReactionMoveInPack) : 
++    CAINpcReactionMoveInPack #32 (CAINpcReactionMoveInPack) : 
+         CAINpcReactionMoveInPack (CAINpcReactionMoveInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_move_in_pack.w2behtree
+-    CAIMonsterSearchFoodTree #31 (CAIMonsterSearchFoodTree) : 
++    CAIMonsterSearchFoodTree #33 (CAIMonsterSearchFoodTree) : 
+         CAIMonsterSearchFoodTree (CAIMonsterSearchFoodTree)
+             tree (handle:CBehTree) : gameplay/trees/idle/monster_search_food_idle.w2behtree
+-            params (handle:CAIMonsterSearchFoodIdleParams) : CAIMonsterSearchFoodIdleParams #32
+-    CAIMonsterSearchFoodIdleParams #32 (CAIMonsterSearchFoodIdleParams) : 
++            params (handle:CAIMonsterSearchFoodIdleParams) : CAIMonsterSearchFoodIdleParams #34
++    CAIMonsterSearchFoodIdleParams #34 (CAIMonsterSearchFoodIdleParams) : 
+         CAIMonsterSearchFoodIdleParams (CAIMonsterSearchFoodIdleParams)
+             vegetable (Bool) : true
+-    CAIMonsterIdleEat #33 (CAIMonsterIdleEat) : 
++    CAIMonsterIdleEat #35 (CAIMonsterIdleEat) : 
+         CAIMonsterIdleEat (CAIMonsterIdleEat)
+             tree (handle:CBehTree) : gameplay/trees/idle/monster_idle_action_slot.w2behtree
+-            params (handle:CAIMonsterIdleActionParams) : CAIMonsterIdleActionParams #34
+-    CAIMonsterIdleActionParams #34 (CAIMonsterIdleActionParams) : Eat
++            params (handle:CAIMonsterIdleActionParams) : CAIMonsterIdleActionParams #36
++    CAIMonsterIdleActionParams #36 (CAIMonsterIdleActionParams) : Eat
+         CAIMonsterIdleActionParams (CAIMonsterIdleActionParams)
+             cooldown (Float) : 4.0000
+             loopTime (Float) : 10.0000
+             actionName (CName) : Eat
+-    CAIAnimalCharmed #35 (CAIAnimalCharmed) : 
++    CAIAnimalCharmed #37 (CAIAnimalCharmed) : 
+         CAIAnimalCharmed (CAIAnimalCharmed)
+             tree (handle:CBehTree) : gameplay/trees/idle/animal_charmed_idle.w2behtree
+-    CAIAnimalDeath #36 (CAIAnimalDeath) : 
++    CAIAnimalDeath #38 (CAIAnimalDeath) : 
+         CAIAnimalDeath (CAIAnimalDeath)
+             tree (handle:CBehTree) : gameplay/trees/death/death.w2behtree
+-            params (handle:CAINpcDeathParams) : CAIAnimalDeathParams #37
+-    CAIAnimalDeathParams #37 (CAIAnimalDeathParams) : 
++            params (handle:CAINpcDeathParams) : CAIAnimalDeathParams #39
++    CAIAnimalDeathParams #39 (CAIAnimalDeathParams) : 
+         CAIAnimalDeathParams (CAIAnimalDeathParams)
+             disableCollisionOnAnim (Bool) : true
+-    CAnimBehaviorsParam #38 (CAnimBehaviorsParam) : rooster
++    CAnimBehaviorsParam #40 (CAnimBehaviorsParam) : rooster
+         CAnimBehaviorsParam (CAnimBehaviorsParam)
+             wasIncluded (Bool) : true
+             name (String) : "rooster"
+@@ -2125,20 +2261,20 @@
+                 0 (SBehaviorGraphInstanceSlot)
+                     instanceName (CName) : Exploration
+                     graph (handle:CBehaviorGraph) : gameplay/behaviors/animals/behaviorgraph/animal_exploration.w2beh
+-    CAnimAnimsetsParam #39 (CAnimAnimsetsParam) : rooster
++    CAnimAnimsetsParam #41 (CAnimAnimsetsParam) : rooster
+         CAnimAnimsetsParam (CAnimAnimsetsParam)
+             wasIncluded (Bool) : true
+             name (String) : "rooster"
+             animationSets (array:handle:CSkeletalAnimationSet)
+                 0 (handle:CSkeletalAnimationSet) : animations/animals/rooster/rooster_animation.w2anims
+-    CCharacterControllerParam #40 (CCharacterControllerParam) : rooster_character_controler_params
++    CCharacterControllerParam #42 (CCharacterControllerParam) : rooster_character_controler_params
+         CCharacterControllerParam (CCharacterControllerParam)
+             wasIncluded (Bool) : true
+             name (String) : "rooster_character_controler_params"
+             height (Float) : 0.8000
+             physicalRadius (Float) : 0.1700
+             interactionPriorityEnum (EInteractionPriority) : IP_Prio_0
+-    CMonsterParam #41 (CMonsterParam) : monster_params
++    CMonsterParam #43 (CMonsterParam) : monster_params
+         CMonsterParam (CMonsterParam)
+             wasIncluded (Bool) : true
+             name (String) : "monster_params"

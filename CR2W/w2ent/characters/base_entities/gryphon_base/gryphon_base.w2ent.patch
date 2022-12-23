@@ -1,0 +1,1112 @@
+ 1 file changed, 399 insertions(+), 233 deletions(-)
+
+diff --git 1.32/characters/base_entities/gryphon_base/gryphon_base.w2ent.txt 4.00/characters/base_entities/gryphon_base/gryphon_base.w2ent.txt
+index 5460585..5447baf 100644
+--- 1.32/characters/base_entities/gryphon_base/gryphon_base.w2ent.txt
++++ 4.00/characters/base_entities/gryphon_base/gryphon_base.w2ent.txt
+@@ -50,19 +50,19 @@
+                         Yaw (Float) : 90.0000
+                         Roll (Float) : 90.0000
+             templateParams (array:ptr:CEntityTemplateParam)
+-                0 (ptr:CEntityTemplateParam) : CAnimBehaviorsParam #20
+-                1 (ptr:CEntityTemplateParam) : CAIProfile #21
+-                2 (ptr:CEntityTemplateParam) : CCharacterStatsParam #24
+-                3 (ptr:CEntityTemplateParam) : CAutoEffectsParam #25
+-                4 (ptr:CEntityTemplateParam) : CAttackRangeParam #26
+-                5 (ptr:CEntityTemplateParam) : CAnimAnimsetsParam #37
+-                6 (ptr:CEntityTemplateParam) : CMonsterParam #38
+-                7 (ptr:CEntityTemplateParam) : CCharacterControllerParam #39
+-                8 (ptr:CEntityTemplateParam) : CAnimConstraintsParam #40
+-                9 (ptr:CEntityTemplateParam) : CBuffImmunityParam #41
+-                10 (ptr:CEntityTemplateParam) : CAIBaseTreeTemplateParam #42
+-                11 (ptr:CEntityTemplateParam) : CEntityDismemberment #90
+-                12 (ptr:CEntityTemplateParam) : CBloodTrailEffect #93
++                0 (ptr:CEntityTemplateParam) : CAnimBehaviorsParam #24
++                1 (ptr:CEntityTemplateParam) : CAIProfile #25
++                2 (ptr:CEntityTemplateParam) : CCharacterStatsParam #28
++                3 (ptr:CEntityTemplateParam) : CAutoEffectsParam #29
++                4 (ptr:CEntityTemplateParam) : CAttackRangeParam #30
++                5 (ptr:CEntityTemplateParam) : CAnimAnimsetsParam #41
++                6 (ptr:CEntityTemplateParam) : CMonsterParam #42
++                7 (ptr:CEntityTemplateParam) : CCharacterControllerParam #43
++                8 (ptr:CEntityTemplateParam) : CAnimConstraintsParam #44
++                9 (ptr:CEntityTemplateParam) : CBuffImmunityParam #45
++                10 (ptr:CEntityTemplateParam) : CAIBaseTreeTemplateParam #46
++                11 (ptr:CEntityTemplateParam) : CEntityDismemberment #94
++                12 (ptr:CEntityTemplateParam) : CBloodTrailEffect #97
+             flatCompiledData (array:Uint8) : # array:2,0,Uint8
+                 CNewNPC #0 (CNewNPC) : PreviewEntity
+                     CNewNPC (CNewNPC)
+@@ -72,22 +72,24 @@
+                         name (String) : "PreviewEntity"
+                         Components (array:ptr:CComponent)
+                             0 (ptr:CComponent) : CMovingPhysicalAgentComponent #1
+-                            1 (ptr:CComponent) : CInventoryComponent #13
+-                            2 (ptr:CComponent) : CEffectDummyComponent #14
++                            1 (ptr:CComponent) : CInventoryComponent #16
++                            2 (ptr:CComponent) : CEffectDummyComponent #17
+                             3 (ptr:CComponent) : CPhantomComponent #3
+                             4 (ptr:CComponent) : CDynamicColliderComponent #5
+-                            5 (ptr:CComponent) : CDynamicColliderComponent #7
+-                            6 (ptr:CComponent) : W3WindEffectOnGroundComponent #15
+-                            7 (ptr:CComponent) : CDynamicColliderComponent #9
+-                            8 (ptr:CComponent) : CDismembermentComponent #16
+-                            9 (ptr:CComponent) : CGameplayEffectsComponent #17
+-                            10 (ptr:CComponent) : CEffectDummyComponent #11
+-                            11 (ptr:CComponent) : CSoundEmitterComponent #18
++                            5 (ptr:CComponent) : CDynamicColliderComponent #8
++                            6 (ptr:CComponent) : W3WindEffectOnGroundComponent #18
++                            7 (ptr:CComponent) : CDynamicColliderComponent #11
++                            8 (ptr:CComponent) : CDismembermentComponent #19
++                            9 (ptr:CComponent) : CGameplayEffectsComponent #20
++                            10 (ptr:CComponent) : CEffectDummyComponent #14
++                            11 (ptr:CComponent) : CWetnessComponent #21
++                            12 (ptr:CComponent) : CSoundEmitterComponent #22
+                         BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                             0 (SEntityBufferType1)
+                                 ComponentName (CName) : 
+                         BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+-                        idTag (IdTag) :  2d580a5e-e623-4cb3-8d8c-f9c743a78637
++                        idTag (IdTag) :  76199fe2-d6e4-4106-a668-39080dd3b996
++                        displayName (LocalizedString) : 1222781
+                 CMovingPhysicalAgentComponent #1 (CMovingPhysicalAgentComponent) : Character
+                     CMovingPhysicalAgentComponent (CMovingPhysicalAgentComponent)
+                         guid (CGUID) : f64e11f2-3018-4d02-8ea3-f187487a4661
+@@ -95,9 +97,9 @@
+                         AttachmentsChild (array:handle:IAttachment)
+                             0 (handle:IAttachment) : CHardAttachment #2
+                             1 (handle:IAttachment) : CHardAttachment #4
+-                            2 (handle:IAttachment) : CHardAttachment #6
+-                            3 (handle:IAttachment) : CHardAttachment #8
+-                            4 (handle:IAttachment) : CHardAttachment #10
++                            2 (handle:IAttachment) : CHardAttachment #7
++                            3 (handle:IAttachment) : CHardAttachment #10
++                            4 (handle:IAttachment) : CHardAttachment #13
+                         name (String) : "Character"
+                         graphPositionX (Int16) : 273
+                         graphPositionY (Int16) : 42
+@@ -148,82 +150,111 @@
+                             Z (Float) : 1.3000
+                             W (Float) : 0.0000
+                         onTriggerEnteredScriptEvent (CName) : OnActorCollision
+-                CHardAttachment #4 (CHardAttachment) : 
++                CHardAttachment #4 (CHardAttachment) : r_wingtip
+                     CHardAttachment (CHardAttachment)
+                         parent (ptr:CNode) : CMovingPhysicalAgentComponent #1
+                         child (ptr:CNode) : CDynamicColliderComponent #5
++                        parentSlotName (CName) : r_wingtip
++                        parentSlot (ptr:ISlot) : CSkeletonBoneSlot #6
+                 CDynamicColliderComponent #5 (CDynamicColliderComponent) : r_palm_dyncoll
+                     CDynamicColliderComponent (CDynamicColliderComponent)
++                        transform (EngineTransform)
++                            Scale_x (Float) : 1.5000
++                            Scale_y (Float) : 0.8000
++                            Scale_z (Float) : 0.7000
++                            X (Float) : 0.4000
++                            Y (Float) : 0.0000
++                            Z (Float) : 0.0000
+                         transformParent (ptr:CHardAttachment) : CHardAttachment #4
+                         guid (CGUID) : 08ef8173-21a0-465d-8fda-42808c615621
+                         AttachmentsReference (array:handle:IAttachment)
+                             0 (handle:IAttachment) : CHardAttachment #4
+                         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         name (String) : "r_palm_dyncoll"
+-                        graphPositionX (Int16) : 417
+-                        graphPositionY (Int16) : 201
++                        graphPositionX (Int16) : 445
++                        graphPositionY (Int16) : 276
+                         useInGrassDisplacement (Bool) : true
+-                CHardAttachment #6 (CHardAttachment) : 
++                CSkeletonBoneSlot #6 (CSkeletonBoneSlot) : 
++                    CSkeletonBoneSlot (CSkeletonBoneSlot)
++                        boneIndex (Uint32) : 59
++                CHardAttachment #7 (CHardAttachment) : l_wingtip
+                     CHardAttachment (CHardAttachment)
+                         parent (ptr:CNode) : CMovingPhysicalAgentComponent #1
+-                        child (ptr:CNode) : CDynamicColliderComponent #7
+-                CDynamicColliderComponent #7 (CDynamicColliderComponent) : l_palm_dyncoll
++                        child (ptr:CNode) : CDynamicColliderComponent #8
++                        parentSlotName (CName) : l_wingtip
++                        parentSlot (ptr:ISlot) : CSkeletonBoneSlot #9
++                CDynamicColliderComponent #8 (CDynamicColliderComponent) : l_palm_dyncoll
+                     CDynamicColliderComponent (CDynamicColliderComponent)
+-                        transformParent (ptr:CHardAttachment) : CHardAttachment #6
++                        transform (EngineTransform)
++                            Scale_x (Float) : 1.5000
++                            Scale_y (Float) : 0.8000
++                            Scale_z (Float) : 0.7000
++                            X (Float) : 0.4000
++                            Y (Float) : 0.0000
++                            Z (Float) : 0.0000
++                        transformParent (ptr:CHardAttachment) : CHardAttachment #7
+                         guid (CGUID) : fd5d7fd8-e045-4ba2-bdf7-417590aab1ad
+                         AttachmentsReference (array:handle:IAttachment)
+-                            0 (handle:IAttachment) : CHardAttachment #6
++                            0 (handle:IAttachment) : CHardAttachment #7
+                         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         name (String) : "l_palm_dyncoll"
+-                        graphPositionX (Int16) : 416
+-                        graphPositionY (Int16) : 242
++                        graphPositionX (Int16) : 308
++                        graphPositionY (Int16) : 285
+                         useInGrassDisplacement (Bool) : true
+-                CHardAttachment #8 (CHardAttachment) : 
++                CSkeletonBoneSlot #9 (CSkeletonBoneSlot) : 
++                    CSkeletonBoneSlot (CSkeletonBoneSlot)
++                        boneIndex (Uint32) : 86
++                CHardAttachment #10 (CHardAttachment) : spine1
+                     CHardAttachment (CHardAttachment)
+                         parent (ptr:CNode) : CMovingPhysicalAgentComponent #1
+-                        child (ptr:CNode) : CDynamicColliderComponent #9
+-                CDynamicColliderComponent #9 (CDynamicColliderComponent) : body
++                        child (ptr:CNode) : CDynamicColliderComponent #11
++                        parentSlotName (CName) : spine1
++                        parentSlot (ptr:ISlot) : CSkeletonBoneSlot #12
++                CDynamicColliderComponent #11 (CDynamicColliderComponent) : body
+                     CDynamicColliderComponent (CDynamicColliderComponent)
+                         transform (EngineTransform)
+-                            Scale_x (Float) : 4.0000
+-                            Scale_y (Float) : 2.0000
+-                            Scale_z (Float) : 2.0000
++                            Scale_x (Float) : 3.5000
++                            Scale_y (Float) : 1.5000
++                            Scale_z (Float) : 1.7000
+                             X (Float) : 0.0000
+                             Y (Float) : 1.0000
+                             Z (Float) : 0.0000
+-                        transformParent (ptr:CHardAttachment) : CHardAttachment #8
++                        transformParent (ptr:CHardAttachment) : CHardAttachment #10
+                         guid (CGUID) : e3076844-7d01-4181-9e9c-8ff6185090e7
+                         AttachmentsReference (array:handle:IAttachment)
+-                            0 (handle:IAttachment) : CHardAttachment #8
++                            0 (handle:IAttachment) : CHardAttachment #10
+                         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         name (String) : "body"
+                         graphPositionX (Int16) : 138
+                         graphPositionY (Int16) : 191
+                         useInGrassDisplacement (Bool) : true
+-                CHardAttachment #10 (CHardAttachment) : l_shoulder
++                CSkeletonBoneSlot #12 (CSkeletonBoneSlot) : 
++                    CSkeletonBoneSlot (CSkeletonBoneSlot)
++                        boneIndex (Uint32) : 8
++                CHardAttachment #13 (CHardAttachment) : l_shoulder
+                     CHardAttachment (CHardAttachment)
+                         parent (ptr:CNode) : CMovingPhysicalAgentComponent #1
+-                        child (ptr:CNode) : CEffectDummyComponent #11
++                        child (ptr:CNode) : CEffectDummyComponent #14
+                         parentSlotName (CName) : l_shoulder
+-                        parentSlot (ptr:ISlot) : CSkeletonBoneSlot #12
+-                CEffectDummyComponent #11 (CEffectDummyComponent) : torso3effect
++                        parentSlot (ptr:ISlot) : CSkeletonBoneSlot #15
++                CEffectDummyComponent #14 (CEffectDummyComponent) : torso3effect
+                     CEffectDummyComponent (CEffectDummyComponent)
+                         transform (EngineTransform)
+                             Pitch (Float) : 270.2222
+                             Yaw (Float) : 8.9717
+                             Roll (Float) : 90.5309
+-                        transformParent (ptr:CHardAttachment) : CHardAttachment #10
++                        transformParent (ptr:CHardAttachment) : CHardAttachment #13
+                         guid (CGUID) : de7f2727-34cc-41ac-898e-5fabcf829ab5
+                         AttachmentsReference (array:handle:IAttachment)
+-                            0 (handle:IAttachment) : CHardAttachment #10
++                            0 (handle:IAttachment) : CHardAttachment #13
+                         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         name (String) : "torso3effect"
+                         graphPositionX (Int16) : 49
+                         graphPositionY (Int16) : 147
+-                CSkeletonBoneSlot #12 (CSkeletonBoneSlot) : 
++                CSkeletonBoneSlot #15 (CSkeletonBoneSlot) : 
+                     CSkeletonBoneSlot (CSkeletonBoneSlot)
+                         boneIndex (Uint32) : 81
+-                CInventoryComponent #13 (CInventoryComponent) : CInventoryComponent0
++                CInventoryComponent #16 (CInventoryComponent) : CInventoryComponent0
+                     CInventoryComponent (CInventoryComponent)
+                         guid (CGUID) : 2c1298a7-36c3-49c3-8099-e7b6ee05bb0f
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -232,7 +263,7 @@
+                         graphPositionX (Int16) : 224
+                         graphPositionY (Int16) : -46
+                         containerTemplate (handle:CEntityTemplate) : items/remains/remains__monster_01/remains__monster_01.w2ent
+-                CEffectDummyComponent #14 (CEffectDummyComponent) : CEffectDummyComponent0
++                CEffectDummyComponent #17 (CEffectDummyComponent) : CEffectDummyComponent0
+                     CEffectDummyComponent (CEffectDummyComponent)
+                         transform (EngineTransform)
+                             X (Float) : 0.0000
+@@ -244,7 +275,7 @@
+                         name (String) : "CEffectDummyComponent0"
+                         graphPositionX (Int16) : 231
+                         graphPositionY (Int16) : -6
+-                W3WindEffectOnGroundComponent #15 (W3WindEffectOnGroundComponent) : W3WindEffectOnGroundComponent0
++                W3WindEffectOnGroundComponent #18 (W3WindEffectOnGroundComponent) : W3WindEffectOnGroundComponent0
+                     W3WindEffectOnGroundComponent (W3WindEffectOnGroundComponent)
+                         guid (CGUID) : e545f45d-35af-4b73-a430-675a54a8bc05
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -257,7 +288,7 @@
+                         activeAtStart (Bool) : false
+                         playOnAnimEvent (Bool) : true
+                         effectTemplate (handle:CEntityTemplate) : fx/monsters/gryphon/fly/gryphon_ground.w2ent
+-                CDismembermentComponent #16 (CDismembermentComponent) : CDismembermentComponent0
++                CDismembermentComponent #19 (CDismembermentComponent) : CDismembermentComponent0
+                     CDismembermentComponent (CDismembermentComponent)
+                         guid (CGUID) : f1e60778-7684-46f6-beb4-f1429cc28f02
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -265,7 +296,7 @@
+                         name (String) : "CDismembermentComponent0"
+                         graphPositionX (Int16) : -231
+                         graphPositionY (Int16) : 101
+-                CGameplayEffectsComponent #17 (CGameplayEffectsComponent) : CGameplayEffectsComponent0
++                CGameplayEffectsComponent #20 (CGameplayEffectsComponent) : CGameplayEffectsComponent0
+                     CGameplayEffectsComponent (CGameplayEffectsComponent)
+                         guid (CGUID) : ac47fa17-49ac-4920-aa86-a3e8369a0c39
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -273,7 +304,16 @@
+                         name (String) : "CGameplayEffectsComponent0"
+                         graphPositionX (Int16) : -44
+                         graphPositionY (Int16) : -75
+-                CSoundEmitterComponent #18 (CSoundEmitterComponent) : CSoundEmitterComponent0
++                CWetnessComponent #21 (CWetnessComponent) : CWetnessComponent0
++                    CWetnessComponent (CWetnessComponent)
++                        guid (CGUID) : 14464a6e-0e8e-44b5-a4cc-94bbe463ba48
++                        AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++                        AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++                        name (String) : "CWetnessComponent0"
++                        graphPositionX (Int16) : 34
++                        graphPositionY (Int16) : 59
++                        blendOutFromRain (Float) : 20.0000
++                CSoundEmitterComponent #22 (CSoundEmitterComponent) : CSoundEmitterComponent0
+                     CSoundEmitterComponent (CSoundEmitterComponent)
+                         guid (CGUID) : 15cb93f4-ee18-4490-b56d-1d93300c4f23
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -6074,7 +6114,7 @@
+                                 name (String) : "f"
+                         CFXTrackItemFlare #7 (CFXTrackItemFlare) : 
+                             CFXTrackItemFlare (CFXTrackItemFlare)
+-                                timeBegin (Float) : 0.0205
++                                timeBegin (Float) : 5.4959
+                                 timeDuration (Float) : 1.9822
+                                 buffername (CName) : 
+                                 count (CDynamicInt) : 1
+@@ -7298,6 +7338,94 @@
+                                     Z (Float) : 0.0000
+                                     W (Float) : 0.0000
+                                 parentSlotName (CName) : head
++                30 (CEntityTemplateCookedEffect)
++                    name (CName) : water_hit_blood
++                    buffer (SharedDataBuffer)
++                        Bufferdata (CByteArray) : 1495 bytes
++                        CFXDefinition #0 (CFXDefinition) : water_hit_blood
++                            CFXDefinition (CFXDefinition)
++                                trackGroups (array:ptr:CFXTrackGroup)
++                                    0 (ptr:CFXTrackGroup) : CFXTrackGroup #1
++                                length (Float) : 10.8133
++                                loopStart (Float) : 0.1515
++                                loopEnd (Float) : 0.3553
++                                name (CName) : water_hit_blood
++                        CFXTrackGroup #1 (CFXTrackGroup) : fx
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "fx"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #2
++                                isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 163
++                                    Green (Uint8) : 169
++                                    Blue (Uint8) : 167
++                                    Alpha (Uint8) : 100
++                        CFXTrack #2 (CFXTrack) : fx
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #3
++                                name (String) : "fx"
++                        CFXTrackItemParticles #3 (CFXTrackItemParticles) : Particles
++                            CFXTrackItemParticles (CFXTrackItemParticles)
++                                timeBegin (Float) : 0.0002
++                                timeDuration (Float) : 10.5552
++                                buffername (CName) : Particles
++                                count (CDynamicInt) : 3
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    1 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    2 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                particleSystem (soft:CParticleSystem) : fx/blood/standard_hit/water_blood.w2p
++                                spawner (ptr:IFXSpawner) : CFXWaterSpawner #4
++                        CFXWaterSpawner #4 (CFXWaterSpawner) : 
++                            CFXWaterSpawner (CFXWaterSpawner) : <CFXWaterSpawner>CFXWaterSpawner
+             cookedEffectsVersion (Uint32) : 1
+             Unk1 (Uint32) : 0
+     CNewNPC #1 (CNewNPC) : 
+@@ -7307,22 +7435,24 @@
+             streamingDistance (Uint8) : 0
+             Components (array:ptr:CComponent)
+                 0 (ptr:CComponent) : CMovingPhysicalAgentComponent #2
+-                1 (ptr:CComponent) : CInventoryComponent #14
+-                2 (ptr:CComponent) : CEffectDummyComponent #15
++                1 (ptr:CComponent) : CInventoryComponent #17
++                2 (ptr:CComponent) : CEffectDummyComponent #18
+                 3 (ptr:CComponent) : CPhantomComponent #4
+                 4 (ptr:CComponent) : CDynamicColliderComponent #6
+-                5 (ptr:CComponent) : CDynamicColliderComponent #8
+-                6 (ptr:CComponent) : W3WindEffectOnGroundComponent #16
+-                7 (ptr:CComponent) : CDynamicColliderComponent #10
+-                8 (ptr:CComponent) : CDismembermentComponent #17
+-                9 (ptr:CComponent) : CGameplayEffectsComponent #18
+-                10 (ptr:CComponent) : CEffectDummyComponent #12
+-                11 (ptr:CComponent) : CSoundEmitterComponent #19
++                5 (ptr:CComponent) : CDynamicColliderComponent #9
++                6 (ptr:CComponent) : W3WindEffectOnGroundComponent #19
++                7 (ptr:CComponent) : CDynamicColliderComponent #12
++                8 (ptr:CComponent) : CDismembermentComponent #20
++                9 (ptr:CComponent) : CGameplayEffectsComponent #21
++                10 (ptr:CComponent) : CEffectDummyComponent #15
++                11 (ptr:CComponent) : CWetnessComponent #22
++                12 (ptr:CComponent) : CSoundEmitterComponent #23
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+-            idTag (IdTag) :  2d580a5e-e623-4cb3-8d8c-f9c743a78637
++            idTag (IdTag) :  76199fe2-d6e4-4106-a668-39080dd3b996
++            displayName (LocalizedString) : 1222781
+     CMovingPhysicalAgentComponent #2 (CMovingPhysicalAgentComponent) : Character
+         CMovingPhysicalAgentComponent (CMovingPhysicalAgentComponent)
+             guid (CGUID) : f64e11f2-3018-4d02-8ea3-f187487a4661
+@@ -7330,9 +7460,9 @@
+             AttachmentsChild (array:handle:IAttachment)
+                 0 (handle:IAttachment) : CHardAttachment #3
+                 1 (handle:IAttachment) : CHardAttachment #5
+-                2 (handle:IAttachment) : CHardAttachment #7
+-                3 (handle:IAttachment) : CHardAttachment #9
+-                4 (handle:IAttachment) : CHardAttachment #11
++                2 (handle:IAttachment) : CHardAttachment #8
++                3 (handle:IAttachment) : CHardAttachment #11
++                4 (handle:IAttachment) : CHardAttachment #14
+             name (String) : "Character"
+             ragdoll (handle:CRagdoll) : characters/base_entities/gryphon_base/gryphon_ragdoll.w2ragdoll
+             skeleton (handle:CSkeleton) : characters/base_entities/gryphon_base/gryphon_base.w2rig
+@@ -7379,12 +7509,21 @@
+                 Z (Float) : 1.3000
+                 W (Float) : 0.0000
+             onTriggerEnteredScriptEvent (CName) : OnActorCollision
+-    CHardAttachment #5 (CHardAttachment) : 
++    CHardAttachment #5 (CHardAttachment) : r_wingtip
+         CHardAttachment (CHardAttachment)
+             parent (ptr:CNode) : CMovingPhysicalAgentComponent #2
+             child (ptr:CNode) : CDynamicColliderComponent #6
++            parentSlotName (CName) : r_wingtip
++            parentSlot (ptr:ISlot) : CSkeletonBoneSlot #7
+     CDynamicColliderComponent #6 (CDynamicColliderComponent) : r_palm_dyncoll
+         CDynamicColliderComponent (CDynamicColliderComponent)
++            transform (EngineTransform)
++                Scale_x (Float) : 1.5000
++                Scale_y (Float) : 0.8000
++                Scale_z (Float) : 0.7000
++                X (Float) : 0.4000
++                Y (Float) : 0.0000
++                Z (Float) : 0.0000
+             transformParent (ptr:CHardAttachment) : CHardAttachment #5
+             guid (CGUID) : 08ef8173-21a0-465d-8fda-42808c615621
+             AttachmentsReference (array:handle:IAttachment)
+@@ -7392,68 +7531,88 @@
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "r_palm_dyncoll"
+             useInGrassDisplacement (Bool) : true
+-    CHardAttachment #7 (CHardAttachment) : 
++    CSkeletonBoneSlot #7 (CSkeletonBoneSlot) : 
++        CSkeletonBoneSlot (CSkeletonBoneSlot)
++            boneIndex (Uint32) : 59
++    CHardAttachment #8 (CHardAttachment) : l_wingtip
+         CHardAttachment (CHardAttachment)
+             parent (ptr:CNode) : CMovingPhysicalAgentComponent #2
+-            child (ptr:CNode) : CDynamicColliderComponent #8
+-    CDynamicColliderComponent #8 (CDynamicColliderComponent) : l_palm_dyncoll
++            child (ptr:CNode) : CDynamicColliderComponent #9
++            parentSlotName (CName) : l_wingtip
++            parentSlot (ptr:ISlot) : CSkeletonBoneSlot #10
++    CDynamicColliderComponent #9 (CDynamicColliderComponent) : l_palm_dyncoll
+         CDynamicColliderComponent (CDynamicColliderComponent)
+-            transformParent (ptr:CHardAttachment) : CHardAttachment #7
++            transform (EngineTransform)
++                Scale_x (Float) : 1.5000
++                Scale_y (Float) : 0.8000
++                Scale_z (Float) : 0.7000
++                X (Float) : 0.4000
++                Y (Float) : 0.0000
++                Z (Float) : 0.0000
++            transformParent (ptr:CHardAttachment) : CHardAttachment #8
+             guid (CGUID) : fd5d7fd8-e045-4ba2-bdf7-417590aab1ad
+             AttachmentsReference (array:handle:IAttachment)
+-                0 (handle:IAttachment) : CHardAttachment #7
++                0 (handle:IAttachment) : CHardAttachment #8
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "l_palm_dyncoll"
+             useInGrassDisplacement (Bool) : true
+-    CHardAttachment #9 (CHardAttachment) : 
++    CSkeletonBoneSlot #10 (CSkeletonBoneSlot) : 
++        CSkeletonBoneSlot (CSkeletonBoneSlot)
++            boneIndex (Uint32) : 86
++    CHardAttachment #11 (CHardAttachment) : spine1
+         CHardAttachment (CHardAttachment)
+             parent (ptr:CNode) : CMovingPhysicalAgentComponent #2
+-            child (ptr:CNode) : CDynamicColliderComponent #10
+-    CDynamicColliderComponent #10 (CDynamicColliderComponent) : body
++            child (ptr:CNode) : CDynamicColliderComponent #12
++            parentSlotName (CName) : spine1
++            parentSlot (ptr:ISlot) : CSkeletonBoneSlot #13
++    CDynamicColliderComponent #12 (CDynamicColliderComponent) : body
+         CDynamicColliderComponent (CDynamicColliderComponent)
+             transform (EngineTransform)
+-                Scale_x (Float) : 4.0000
+-                Scale_y (Float) : 2.0000
+-                Scale_z (Float) : 2.0000
++                Scale_x (Float) : 3.5000
++                Scale_y (Float) : 1.5000
++                Scale_z (Float) : 1.7000
+                 X (Float) : 0.0000
+                 Y (Float) : 1.0000
+                 Z (Float) : 0.0000
+-            transformParent (ptr:CHardAttachment) : CHardAttachment #9
++            transformParent (ptr:CHardAttachment) : CHardAttachment #11
+             guid (CGUID) : e3076844-7d01-4181-9e9c-8ff6185090e7
+             AttachmentsReference (array:handle:IAttachment)
+-                0 (handle:IAttachment) : CHardAttachment #9
++                0 (handle:IAttachment) : CHardAttachment #11
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "body"
+             useInGrassDisplacement (Bool) : true
+-    CHardAttachment #11 (CHardAttachment) : l_shoulder
++    CSkeletonBoneSlot #13 (CSkeletonBoneSlot) : 
++        CSkeletonBoneSlot (CSkeletonBoneSlot)
++            boneIndex (Uint32) : 8
++    CHardAttachment #14 (CHardAttachment) : l_shoulder
+         CHardAttachment (CHardAttachment)
+             parent (ptr:CNode) : CMovingPhysicalAgentComponent #2
+-            child (ptr:CNode) : CEffectDummyComponent #12
++            child (ptr:CNode) : CEffectDummyComponent #15
+             parentSlotName (CName) : l_shoulder
+-            parentSlot (ptr:ISlot) : CSkeletonBoneSlot #13
+-    CEffectDummyComponent #12 (CEffectDummyComponent) : torso3effect
++            parentSlot (ptr:ISlot) : CSkeletonBoneSlot #16
++    CEffectDummyComponent #15 (CEffectDummyComponent) : torso3effect
+         CEffectDummyComponent (CEffectDummyComponent)
+             transform (EngineTransform)
+                 Pitch (Float) : 270.2222
+                 Yaw (Float) : 8.9717
+                 Roll (Float) : 90.5309
+-            transformParent (ptr:CHardAttachment) : CHardAttachment #11
++            transformParent (ptr:CHardAttachment) : CHardAttachment #14
+             guid (CGUID) : de7f2727-34cc-41ac-898e-5fabcf829ab5
+             AttachmentsReference (array:handle:IAttachment)
+-                0 (handle:IAttachment) : CHardAttachment #11
++                0 (handle:IAttachment) : CHardAttachment #14
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "torso3effect"
+-    CSkeletonBoneSlot #13 (CSkeletonBoneSlot) : 
++    CSkeletonBoneSlot #16 (CSkeletonBoneSlot) : 
+         CSkeletonBoneSlot (CSkeletonBoneSlot)
+             boneIndex (Uint32) : 81
+-    CInventoryComponent #14 (CInventoryComponent) : CInventoryComponent0
++    CInventoryComponent #17 (CInventoryComponent) : CInventoryComponent0
+         CInventoryComponent (CInventoryComponent)
+             guid (CGUID) : 2c1298a7-36c3-49c3-8099-e7b6ee05bb0f
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "CInventoryComponent0"
+             containerTemplate (handle:CEntityTemplate) : items/remains/remains__monster_01/remains__monster_01.w2ent
+-    CEffectDummyComponent #15 (CEffectDummyComponent) : CEffectDummyComponent0
++    CEffectDummyComponent #18 (CEffectDummyComponent) : CEffectDummyComponent0
+         CEffectDummyComponent (CEffectDummyComponent)
+             transform (EngineTransform)
+                 X (Float) : 0.0000
+@@ -7463,7 +7622,7 @@
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "CEffectDummyComponent0"
+-    W3WindEffectOnGroundComponent #16 (W3WindEffectOnGroundComponent) : W3WindEffectOnGroundComponent0
++    W3WindEffectOnGroundComponent #19 (W3WindEffectOnGroundComponent) : W3WindEffectOnGroundComponent0
+         W3WindEffectOnGroundComponent (W3WindEffectOnGroundComponent)
+             guid (CGUID) : e545f45d-35af-4b73-a430-675a54a8bc05
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -7474,19 +7633,26 @@
+             activeAtStart (Bool) : false
+             playOnAnimEvent (Bool) : true
+             effectTemplate (handle:CEntityTemplate) : fx/monsters/gryphon/fly/gryphon_ground.w2ent
+-    CDismembermentComponent #17 (CDismembermentComponent) : CDismembermentComponent0
++    CDismembermentComponent #20 (CDismembermentComponent) : CDismembermentComponent0
+         CDismembermentComponent (CDismembermentComponent)
+             guid (CGUID) : f1e60778-7684-46f6-beb4-f1429cc28f02
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "CDismembermentComponent0"
+-    CGameplayEffectsComponent #18 (CGameplayEffectsComponent) : CGameplayEffectsComponent0
++    CGameplayEffectsComponent #21 (CGameplayEffectsComponent) : CGameplayEffectsComponent0
+         CGameplayEffectsComponent (CGameplayEffectsComponent)
+             guid (CGUID) : ac47fa17-49ac-4920-aa86-a3e8369a0c39
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "CGameplayEffectsComponent0"
+-    CSoundEmitterComponent #19 (CSoundEmitterComponent) : CSoundEmitterComponent0
++    CWetnessComponent #22 (CWetnessComponent) : CWetnessComponent0
++        CWetnessComponent (CWetnessComponent)
++            guid (CGUID) : 14464a6e-0e8e-44b5-a4cc-94bbe463ba48
++            AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++            AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++            name (String) : "CWetnessComponent0"
++            blendOutFromRain (Float) : 20.0000
++    CSoundEmitterComponent #23 (CSoundEmitterComponent) : CSoundEmitterComponent0
+         CSoundEmitterComponent (CSoundEmitterComponent)
+             guid (CGUID) : 15cb93f4-ee18-4490-b56d-1d93300c4f23
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -7494,7 +7660,7 @@
+             name (String) : "CSoundEmitterComponent0"
+             isStreamed (Bool) : false
+             maxDistance (Float) : 31.0000
+-    CAnimBehaviorsParam #20 (CAnimBehaviorsParam) : monster
++    CAnimBehaviorsParam #24 (CAnimBehaviorsParam) : monster
+         CAnimBehaviorsParam (CAnimBehaviorsParam)
+             name (String) : "monster"
+             componentName (String) : "Character"
+@@ -7511,51 +7677,51 @@
+                 3 (SBehaviorGraphInstanceSlot)
+                     instanceName (CName) : Cutscene
+                     graph (handle:CBehaviorGraph) : gameplay/behaviors/cutscene_graph.w2beh
+-    CAIProfile #21 (CAIProfile) : monsters
++    CAIProfile #25 (CAIProfile) : monsters
+         CAIProfile (CAIProfile)
+-            senseVisionParams (ptr:CAISenseParams) : CAISenseParams #22
+-            senseAbsoluteParams (ptr:CAISenseParams) : CAISenseParams #23
++            senseVisionParams (ptr:CAISenseParams) : CAISenseParams #26
++            senseAbsoluteParams (ptr:CAISenseParams) : CAISenseParams #27
+             attitudeGroup (CName) : monsters
+-    CAISenseParams #22 (CAISenseParams) : 
++    CAISenseParams #26 (CAISenseParams) : 
+         CAISenseParams (CAISenseParams)
+             rangeMax (Float) : 30.0000
+             rangeAngle (Float) : 360.0000
+             height (Float) : 4.0000
+-    CAISenseParams #23 (CAISenseParams) : 
++    CAISenseParams #27 (CAISenseParams) : 
+         CAISenseParams (CAISenseParams)
+             rangeMax (Float) : 3.0000
+             rangeAngle (Float) : 360.0000
+             height (Float) : 4.0000
+             testLOS (Bool) : false
+-    CCharacterStatsParam #24 (CCharacterStatsParam) : gryphon_base_abilities
++    CCharacterStatsParam #28 (CCharacterStatsParam) : gryphon_base_abilities
+         CCharacterStatsParam (CCharacterStatsParam)
+             name (String) : "gryphon_base_abilities"
+             abilities (array:CName)
+                 0 (CName) : mon_type_huge
+                 1 (CName) : Flying
+                 2 (CName) : mon_gryphon_base
+-    CAutoEffectsParam #25 (CAutoEffectsParam) : gryphon_base_autobuffs
++    CAutoEffectsParam #29 (CAutoEffectsParam) : gryphon_base_autobuffs
+         CAutoEffectsParam (CAutoEffectsParam)
+             name (String) : "gryphon_base_autobuffs"
+             autoEffects (array:CName)
+                 0 (CName) : AutoVitalityRegen
+                 1 (CName) : AutoStaminaRegen
+                 2 (CName) : AutoMoraleRegen
+-    CAttackRangeParam #26 (CAttackRangeParam) : gryphon_base_attack_ranges
++    CAttackRangeParam #30 (CAttackRangeParam) : gryphon_base_attack_ranges
+         CAttackRangeParam (CAttackRangeParam)
+             name (String) : "gryphon_base_attack_ranges"
+             attackRanges (array:ptr:CAIAttackRange)
+-                0 (ptr:CAIAttackRange) : CConeAttackRange #27
+-                1 (ptr:CAIAttackRange) : CConeAttackRange #28
+-                2 (ptr:CAIAttackRange) : CConeAttackRange #29
+-                3 (ptr:CAIAttackRange) : CConeAttackRange #30
+-                4 (ptr:CAIAttackRange) : CBoxAttackRange #31
+-                5 (ptr:CAIAttackRange) : CConeAttackRange #32
+-                6 (ptr:CAIAttackRange) : CBoxAttackRange #33
+-                7 (ptr:CAIAttackRange) : CBoxAttackRange #34
+-                8 (ptr:CAIAttackRange) : CBoxAttackRange #35
+-                9 (ptr:CAIAttackRange) : CConeAttackRange #36
+-    CConeAttackRange #27 (CConeAttackRange) : base
++                0 (ptr:CAIAttackRange) : CConeAttackRange #31
++                1 (ptr:CAIAttackRange) : CConeAttackRange #32
++                2 (ptr:CAIAttackRange) : CConeAttackRange #33
++                3 (ptr:CAIAttackRange) : CConeAttackRange #34
++                4 (ptr:CAIAttackRange) : CBoxAttackRange #35
++                5 (ptr:CAIAttackRange) : CConeAttackRange #36
++                6 (ptr:CAIAttackRange) : CBoxAttackRange #37
++                7 (ptr:CAIAttackRange) : CBoxAttackRange #38
++                8 (ptr:CAIAttackRange) : CBoxAttackRange #39
++                9 (ptr:CAIAttackRange) : CConeAttackRange #40
++    CConeAttackRange #31 (CConeAttackRange) : base
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : base
+             rangeMax (Float) : 3.5000
+@@ -7566,19 +7732,19 @@
+                 Z (Float) : -1.0000
+                 W (Float) : 1.0000
+             rangeAngle (Float) : 70.0000
+-    CConeAttackRange #28 (CConeAttackRange) : directionalLeft
++    CConeAttackRange #32 (CConeAttackRange) : directionalLeft
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : directionalLeft
+             rangeMax (Float) : 4.0000
+             height (Float) : 2.0000
+             angleOffset (Float) : 90.0000
+-    CConeAttackRange #29 (CConeAttackRange) : directionalRight
++    CConeAttackRange #33 (CConeAttackRange) : directionalRight
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : directionalRight
+             rangeMax (Float) : 4.0000
+             height (Float) : 2.0000
+             angleOffset (Float) : -90.0000
+-    CConeAttackRange #30 (CConeAttackRange) : areaOfEffect
++    CConeAttackRange #34 (CConeAttackRange) : areaOfEffect
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : areaOfEffect
+             rangeMax (Float) : 3.0000
+@@ -7589,7 +7755,7 @@
+                 Z (Float) : 1.5000
+                 W (Float) : 1.0000
+             rangeAngle (Float) : 360.0000
+-    CBoxAttackRange #31 (CBoxAttackRange) : validAirDash
++    CBoxAttackRange #35 (CBoxAttackRange) : validAirDash
+         CBoxAttackRange (CBoxAttackRange)
+             name (CName) : validAirDash
+             rangeMax (Float) : 2.0000
+@@ -7600,13 +7766,13 @@
+                 Z (Float) : -4.2000
+                 W (Float) : 1.0000
+             rangeWidth (Float) : 12.0000
+-    CConeAttackRange #32 (CConeAttackRange) : wideAreaOfEffect
++    CConeAttackRange #36 (CConeAttackRange) : wideAreaOfEffect
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : wideAreaOfEffect
+             rangeMax (Float) : 30.0000
+             height (Float) : 6.0000
+             rangeAngle (Float) : 360.0000
+-    CBoxAttackRange #33 (CBoxAttackRange) : beak
++    CBoxAttackRange #37 (CBoxAttackRange) : beak
+         CBoxAttackRange (CBoxAttackRange)
+             name (CName) : beak
+             rangeMax (Float) : 3.5000
+@@ -7618,7 +7784,7 @@
+                 W (Float) : 1.0000
+             useHeadOrientation (Bool) : true
+             rangeWidth (Float) : 1.5000
+-    CBoxAttackRange #34 (CBoxAttackRange) : validAirDashPursue
++    CBoxAttackRange #38 (CBoxAttackRange) : validAirDashPursue
+         CBoxAttackRange (CBoxAttackRange)
+             name (CName) : validAirDashPursue
+             rangeMax (Float) : 2.0000
+@@ -7629,7 +7795,7 @@
+                 Z (Float) : -4.2000
+                 W (Float) : 1.0000
+             rangeWidth (Float) : 12.0000
+-    CBoxAttackRange #35 (CBoxAttackRange) : claws
++    CBoxAttackRange #39 (CBoxAttackRange) : claws
+         CBoxAttackRange (CBoxAttackRange)
+             name (CName) : claws
+             rangeMax (Float) : 2.0000
+@@ -7640,7 +7806,7 @@
+                 Z (Float) : -0.4000
+                 W (Float) : 1.0000
+             rangeWidth (Float) : 2.0000
+-    CConeAttackRange #36 (CConeAttackRange) : takeOff
++    CConeAttackRange #40 (CConeAttackRange) : takeOff
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : takeOff
+             rangeMax (Float) : 4.0000
+@@ -7651,18 +7817,18 @@
+                 Z (Float) : 1.0000
+                 W (Float) : 1.0000
+             rangeAngle (Float) : 180.0000
+-    CAnimAnimsetsParam #37 (CAnimAnimsetsParam) : gryphon
++    CAnimAnimsetsParam #41 (CAnimAnimsetsParam) : gryphon
+         CAnimAnimsetsParam (CAnimAnimsetsParam)
+             name (String) : "gryphon"
+             componentName (String) : "Character"
+             animationSets (array:handle:CSkeletalAnimationSet)
+                 0 (handle:CSkeletalAnimationSet) : animations/monsters/monster_gryphon.w2anims
+-    CMonsterParam #38 (CMonsterParam) : gryphon_base_monster_params
++    CMonsterParam #42 (CMonsterParam) : gryphon_base_monster_params
+         CMonsterParam (CMonsterParam)
+             name (String) : "gryphon_base_monster_params"
+             monsterCategory (Int32) : 9
+             soundMonsterName (CName) : Gryphon
+-    CCharacterControllerParam #39 (CCharacterControllerParam) : gryphon_character_controller
++    CCharacterControllerParam #43 (CCharacterControllerParam) : gryphon_character_controller
+         CCharacterControllerParam (CCharacterControllerParam)
+             name (String) : "gryphon_character_controller"
+             height (Float) : 1.5000
+@@ -7727,10 +7893,10 @@
+                     height (Float) : 2.0000
+                     radius (Float) : 1.0000
+             significance (Float) : 7.0000
+-    CAnimConstraintsParam #40 (CAnimConstraintsParam) : 
++    CAnimConstraintsParam #44 (CAnimConstraintsParam) : 
+         CAnimConstraintsParam (CAnimConstraintsParam)
+             graph (handle:CBehaviorGraph) : gameplay/behaviors/npc/behaviorgraph/monster_gryphon_constraints.w2beh
+-    CBuffImmunityParam #41 (CBuffImmunityParam) : gryphon_buff_immunity
++    CBuffImmunityParam #45 (CBuffImmunityParam) : gryphon_buff_immunity
+         CBuffImmunityParam (CBuffImmunityParam)
+             name (String) : "gryphon_buff_immunity"
+             immunityTo (array:Int32)
+@@ -7738,200 +7904,200 @@
+                 1 (Int32) : 5
+                 2 (Int32) : 11
+                 3 (Int32) : 45
+-    CAIBaseTreeTemplateParam #42 (CAIBaseTreeTemplateParam) : 
++    CAIBaseTreeTemplateParam #46 (CAIBaseTreeTemplateParam) : 
+         CAIBaseTreeTemplateParam (CAIBaseTreeTemplateParam)
+-            aiBaseTree (handle:CAIBaseTree) : CAIMonsterBase #43
+-    CAIMonsterBase #43 (CAIMonsterBase) : 
++            aiBaseTree (handle:CAIBaseTree) : CAIMonsterBase #47
++    CAIMonsterBase #47 (CAIMonsterBase) : 
+         CAIMonsterBase (CAIMonsterBase)
+             tree (handle:CBehTree) : gameplay/trees/monster_base.w2behtree
+-            params (handle:CAIBaseMonsterDefaults) : CAIGryphonDefaults #44
+-    CAIGryphonDefaults #44 (CAIGryphonDefaults) : 
++            params (handle:CAIBaseMonsterDefaults) : CAIGryphonDefaults #48
++    CAIGryphonDefaults #48 (CAIGryphonDefaults) : 
+         CAIGryphonDefaults (CAIGryphonDefaults)
+-            spawnTree (handle:CAIMonsterSpawn) : CAIMonsterSpawnFlying #45
+-            tauntTree (handle:CAIMonsterTaunt) : CAIMonsterTaunt #47
+-            axiiTree (handle:CAIMonsterAxii) : CAIMonsterAxii #49
+-            idleDecoratorTree (handle:CAIMonsterIdleDecorator) : CAIMonsterIdleDecoratorGryphon #51
+-            combatTree (handle:CAIFlyingMonsterCombat) : CAIFlyingMonsterCombat #71
+-            deathTree (handle:CAIFlyingMonsterDeath) : CAIFlyingMonsterDeath #87
+-            flyingWander (handle:CAISubTree) : CAIDynamicFlyingWanderGryphon #89
+-    CAIMonsterSpawnFlying #45 (CAIMonsterSpawnFlying) : 
++            spawnTree (handle:CAIMonsterSpawn) : CAIMonsterSpawnFlying #49
++            tauntTree (handle:CAIMonsterTaunt) : CAIMonsterTaunt #51
++            axiiTree (handle:CAIMonsterAxii) : CAIMonsterAxii #53
++            idleDecoratorTree (handle:CAIMonsterIdleDecorator) : CAIMonsterIdleDecoratorGryphon #55
++            combatTree (handle:CAIFlyingMonsterCombat) : CAIFlyingMonsterCombat #75
++            deathTree (handle:CAIFlyingMonsterDeath) : CAIFlyingMonsterDeath #91
++            flyingWander (handle:CAISubTree) : CAIDynamicFlyingWanderGryphon #93
++    CAIMonsterSpawnFlying #49 (CAIMonsterSpawnFlying) : 
+         CAIMonsterSpawnFlying (CAIMonsterSpawnFlying)
+             tree (handle:CBehTree) : gameplay/trees/monster_spawn_flying.w2behtree
+-            params (handle:CAIMonsterSpawnParams) : CAIMonsterSpawnParams #46
+-    CAIMonsterSpawnParams #46 (CAIMonsterSpawnParams) : 
++            params (handle:CAIMonsterSpawnParams) : CAIMonsterSpawnParams #50
++    CAIMonsterSpawnParams #50 (CAIMonsterSpawnParams) : 
+         CAIMonsterSpawnParams (CAIMonsterSpawnParams)
+-    CAIMonsterTaunt #47 (CAIMonsterTaunt) : 
++    CAIMonsterTaunt #51 (CAIMonsterTaunt) : 
+         CAIMonsterTaunt (CAIMonsterTaunt)
+             tree (handle:CBehTree) : gameplay/trees/monster_basetaunt.w2behtree
+-            params (handle:CAIMonsterTauntParams) : CAIMonsterTauntParams #48
+-    CAIMonsterTauntParams #48 (CAIMonsterTauntParams) : 
++            params (handle:CAIMonsterTauntParams) : CAIMonsterTauntParams #52
++    CAIMonsterTauntParams #52 (CAIMonsterTauntParams) : 
+         CAIMonsterTauntParams (CAIMonsterTauntParams)
+-    CAIMonsterAxii #49 (CAIMonsterAxii) : 
++    CAIMonsterAxii #53 (CAIMonsterAxii) : 
+         CAIMonsterAxii (CAIMonsterAxii)
+             tree (handle:CBehTree) : gameplay/trees/monster_baseaxii.w2behtree
+-            params (handle:CAIMonsterAxiiParams) : CAIMonsterAxiiParams #50
+-    CAIMonsterAxiiParams #50 (CAIMonsterAxiiParams) : 
++            params (handle:CAIMonsterAxiiParams) : CAIMonsterAxiiParams #54
++    CAIMonsterAxiiParams #54 (CAIMonsterAxiiParams) : 
+         CAIMonsterAxiiParams (CAIMonsterAxiiParams)
+             canFly (Bool) : true
+             landingGroundOffset (Float) : 7.0000
+-    CAIMonsterIdleDecoratorGryphon #51 (CAIMonsterIdleDecoratorGryphon) : 
++    CAIMonsterIdleDecoratorGryphon #55 (CAIMonsterIdleDecoratorGryphon) : 
+         CAIMonsterIdleDecoratorGryphon (CAIMonsterIdleDecoratorGryphon)
+             tree (handle:CBehTree) : gameplay/trees/idle/monster_idle_decorator.w2behtree
+-            params (handle:CAIMonsterIdleDecoratorParams) : CAIMonsterIdleDecoratorParams #52
+-    CAIMonsterIdleDecoratorParams #52 (CAIMonsterIdleDecoratorParams) : 
++            params (handle:CAIMonsterIdleDecoratorParams) : CAIMonsterIdleDecoratorParams #56
++    CAIMonsterIdleDecoratorParams #56 (CAIMonsterIdleDecoratorParams) : 
+         CAIMonsterIdleDecoratorParams (CAIMonsterIdleDecoratorParams)
+-            reactionTree (handle:CAIMonsterReactionsTree) : CAIMonsterReactionsTree #53
+-            searchFoodTree (handle:CAIMonsterSearchFoodTree) : CAIMonsterSearchFoodTree #65
++            reactionTree (handle:CAIMonsterReactionsTree) : CAIMonsterReactionsTree #57
++            searchFoodTree (handle:CAIMonsterSearchFoodTree) : CAIMonsterSearchFoodTree #69
+             actions (array:handle:CAIMonsterIdleAction)
+-                0 (handle:CAIMonsterIdleAction) : CAIMonsterIdleGrowl #67
+-                1 (handle:CAIMonsterIdleAction) : CAIMonsterIdleWings #69
+-    CAIMonsterReactionsTree #53 (CAIMonsterReactionsTree) : 
++                0 (handle:CAIMonsterIdleAction) : CAIMonsterIdleGrowl #71
++                1 (handle:CAIMonsterIdleAction) : CAIMonsterIdleWings #73
++    CAIMonsterReactionsTree #57 (CAIMonsterReactionsTree) : 
+         CAIMonsterReactionsTree (CAIMonsterReactionsTree)
+             tree (handle:CBehTree) : gameplay/trees/reactions/monster_base_reactions.w2behtree
+-            params (handle:CAIMonsterReactionsTreeParams) : CAIMonsterReactionsTreeParams #54
+-    CAIMonsterReactionsTreeParams #54 (CAIMonsterReactionsTreeParams) : 
++            params (handle:CAIMonsterReactionsTreeParams) : CAIMonsterReactionsTreeParams #58
++    CAIMonsterReactionsTreeParams #58 (CAIMonsterReactionsTreeParams) : 
+         CAIMonsterReactionsTreeParams (CAIMonsterReactionsTreeParams)
+             reactions (array:handle:CAIMonsterActionSubtree)
+-                0 (handle:CAIMonsterActionSubtree) : CAIActionSearchForTarget #55
+-                1 (handle:CAIMonsterActionSubtree) : CAIActionAllySearchesTarget #57
+-                2 (handle:CAIMonsterActionSubtree) : CAIActionPlayWithTarget #59
+-                3 (handle:CAIMonsterActionSubtree) : CAIActionMoveInPack #61
+-                4 (handle:CAIMonsterActionSubtree) : CAIActionRunWildInPack #63
+-    CAIActionSearchForTarget #55 (CAIActionSearchForTarget) : 
++                0 (handle:CAIMonsterActionSubtree) : CAIActionSearchForTarget #59
++                1 (handle:CAIMonsterActionSubtree) : CAIActionAllySearchesTarget #61
++                2 (handle:CAIMonsterActionSubtree) : CAIActionPlayWithTarget #63
++                3 (handle:CAIMonsterActionSubtree) : CAIActionMoveInPack #65
++                4 (handle:CAIMonsterActionSubtree) : CAIActionRunWildInPack #67
++    CAIActionSearchForTarget #59 (CAIActionSearchForTarget) : 
+         CAIActionSearchForTarget (CAIActionSearchForTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionSearchTarget #56
+-    CAINpcReactionSearchTarget #56 (CAINpcReactionSearchTarget) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionSearchTarget #60
++    CAINpcReactionSearchTarget #60 (CAINpcReactionSearchTarget) : 
+         CAINpcReactionSearchTarget (CAINpcReactionSearchTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_search_target.w2behtree
+-    CAIActionAllySearchesTarget #57 (CAIActionAllySearchesTarget) : 
++    CAIActionAllySearchesTarget #61 (CAIActionAllySearchesTarget) : 
+         CAIActionAllySearchesTarget (CAIActionAllySearchesTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionJoinSearchForTarget #58
+-    CAINpcReactionJoinSearchForTarget #58 (CAINpcReactionJoinSearchForTarget) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionJoinSearchForTarget #62
++    CAINpcReactionJoinSearchForTarget #62 (CAINpcReactionJoinSearchForTarget) : 
+         CAINpcReactionJoinSearchForTarget (CAINpcReactionJoinSearchForTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_join_search_for_target.w2behtree
+-    CAIActionPlayWithTarget #59 (CAIActionPlayWithTarget) : 
++    CAIActionPlayWithTarget #63 (CAIActionPlayWithTarget) : 
+         CAIActionPlayWithTarget (CAIActionPlayWithTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionPlayWithTarget #60
+-    CAINpcReactionPlayWithTarget #60 (CAINpcReactionPlayWithTarget) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionPlayWithTarget #64
++    CAINpcReactionPlayWithTarget #64 (CAINpcReactionPlayWithTarget) : 
+         CAINpcReactionPlayWithTarget (CAINpcReactionPlayWithTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_play_around.w2behtree
+-    CAIActionMoveInPack #61 (CAIActionMoveInPack) : 
++    CAIActionMoveInPack #65 (CAIActionMoveInPack) : 
+         CAIActionMoveInPack (CAIActionMoveInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionMoveInPack #62
+-    CAINpcReactionMoveInPack #62 (CAINpcReactionMoveInPack) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionMoveInPack #66
++    CAINpcReactionMoveInPack #66 (CAINpcReactionMoveInPack) : 
+         CAINpcReactionMoveInPack (CAINpcReactionMoveInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_move_in_pack.w2behtree
+-    CAIActionRunWildInPack #63 (CAIActionRunWildInPack) : 
++    CAIActionRunWildInPack #67 (CAIActionRunWildInPack) : 
+         CAIActionRunWildInPack (CAIActionRunWildInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionRunWildInPack #64
+-    CAINpcReactionRunWildInPack #64 (CAINpcReactionRunWildInPack) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionRunWildInPack #68
++    CAINpcReactionRunWildInPack #68 (CAINpcReactionRunWildInPack) : 
+         CAINpcReactionRunWildInPack (CAINpcReactionRunWildInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_run_wild_in_pack.w2behtree
+-    CAIMonsterSearchFoodTree #65 (CAIMonsterSearchFoodTree) : 
++    CAIMonsterSearchFoodTree #69 (CAIMonsterSearchFoodTree) : 
+         CAIMonsterSearchFoodTree (CAIMonsterSearchFoodTree)
+             tree (handle:CBehTree) : gameplay/trees/idle/monster_search_food_idle.w2behtree
+-            params (handle:CAIMonsterSearchFoodIdleParams) : CAIMonsterSearchFoodIdleParams #66
+-    CAIMonsterSearchFoodIdleParams #66 (CAIMonsterSearchFoodIdleParams) : 
++            params (handle:CAIMonsterSearchFoodIdleParams) : CAIMonsterSearchFoodIdleParams #70
++    CAIMonsterSearchFoodIdleParams #70 (CAIMonsterSearchFoodIdleParams) : 
+         CAIMonsterSearchFoodIdleParams (CAIMonsterSearchFoodIdleParams)
+             meat (Bool) : true
+             landHeight (Float) : 6.0000
+-    CAIMonsterIdleGrowl #67 (CAIMonsterIdleGrowl) : 
++    CAIMonsterIdleGrowl #71 (CAIMonsterIdleGrowl) : 
+         CAIMonsterIdleGrowl (CAIMonsterIdleGrowl)
+             tree (handle:CBehTree) : gameplay/trees/idle/monster_idle_action_slot.w2behtree
+-            params (handle:CAIMonsterIdleActionParams) : CAIMonsterIdleActionParams #68
+-    CAIMonsterIdleActionParams #68 (CAIMonsterIdleActionParams) : Growl
++            params (handle:CAIMonsterIdleActionParams) : CAIMonsterIdleActionParams #72
++    CAIMonsterIdleActionParams #72 (CAIMonsterIdleActionParams) : Growl
+         CAIMonsterIdleActionParams (CAIMonsterIdleActionParams)
+             actionName (CName) : Growl
+-    CAIMonsterIdleWings #69 (CAIMonsterIdleWings) : 
++    CAIMonsterIdleWings #73 (CAIMonsterIdleWings) : 
+         CAIMonsterIdleWings (CAIMonsterIdleWings)
+             tree (handle:CBehTree) : gameplay/trees/idle/monster_idle_action_slot.w2behtree
+-            params (handle:CAIMonsterIdleActionParams) : CAIMonsterIdleActionParams #70
+-    CAIMonsterIdleActionParams #70 (CAIMonsterIdleActionParams) : Wings
++            params (handle:CAIMonsterIdleActionParams) : CAIMonsterIdleActionParams #74
++    CAIMonsterIdleActionParams #74 (CAIMonsterIdleActionParams) : Wings
+         CAIMonsterIdleActionParams (CAIMonsterIdleActionParams)
+             actionName (CName) : Wings
+-    CAIFlyingMonsterCombat #71 (CAIFlyingMonsterCombat) : 
++    CAIFlyingMonsterCombat #75 (CAIFlyingMonsterCombat) : 
+         CAIFlyingMonsterCombat (CAIFlyingMonsterCombat)
+             tree (handle:CBehTree) : gameplay/trees/monster_basecombat.w2behtree
+-            params (handle:CAIFlyingMonsterCombatParams) : CAIFlyingMonsterCombatParams #72
+-    CAIFlyingMonsterCombatParams #72 (CAIFlyingMonsterCombatParams) : 
++            params (handle:CAIFlyingMonsterCombatParams) : CAIFlyingMonsterCombatParams #76
++    CAIFlyingMonsterCombatParams #76 (CAIFlyingMonsterCombatParams) : 
+         CAIFlyingMonsterCombatParams (CAIFlyingMonsterCombatParams)
+-            combatLogicTree (handle:CAIMonsterCombatLogic) : CAIGryphonCombatLogic #73
+-            damageReactionTree (handle:CAIMonsterSimpleDamageReactionTree) : CAIMonsterDamageReactionTree #75
+-            criticalState (handle:CAINpcCriticalStateFlying) : CAINpcCriticalStateFlying #77
+-            reactionTree (handle:CAIMonsterCombatReactionsTree) : CAIMonsterCombatReactionsTree #79
+-    CAIGryphonCombatLogic #73 (CAIGryphonCombatLogic) : 
++            combatLogicTree (handle:CAIMonsterCombatLogic) : CAIGryphonCombatLogic #77
++            damageReactionTree (handle:CAIMonsterSimpleDamageReactionTree) : CAIMonsterDamageReactionTree #79
++            criticalState (handle:CAINpcCriticalStateFlying) : CAINpcCriticalStateFlying #81
++            reactionTree (handle:CAIMonsterCombatReactionsTree) : CAIMonsterCombatReactionsTree #83
++    CAIGryphonCombatLogic #77 (CAIGryphonCombatLogic) : 
+         CAIGryphonCombatLogic (CAIGryphonCombatLogic)
+             tree (handle:CBehTree) : gameplay/trees/monsters/monster_gryphon_logic.w2behtree
+-            params (handle:CAIMonsterCombatLogicParams) : CAIMonsterCombatLogicParams #74
+-    CAIMonsterCombatLogicParams #74 (CAIMonsterCombatLogicParams) : 
++            params (handle:CAIMonsterCombatLogicParams) : CAIMonsterCombatLogicParams #78
++    CAIMonsterCombatLogicParams #78 (CAIMonsterCombatLogicParams) : 
+         CAIMonsterCombatLogicParams (CAIMonsterCombatLogicParams) : <CAIMonsterCombatLogicParams>CAIMonsterCombatLogicParams
+-    CAIMonsterDamageReactionTree #75 (CAIMonsterDamageReactionTree) : 
++    CAIMonsterDamageReactionTree #79 (CAIMonsterDamageReactionTree) : 
+         CAIMonsterDamageReactionTree (CAIMonsterDamageReactionTree)
+             tree (handle:CBehTree) : gameplay/trees/monster_damage_reaction.w2behtree
+-            params (handle:CAIDamageReactionTreeParams) : CAIDamageReactionTreeParams #76
+-    CAIDamageReactionTreeParams #76 (CAIDamageReactionTreeParams) : 
++            params (handle:CAIDamageReactionTreeParams) : CAIDamageReactionTreeParams #80
++    CAIDamageReactionTreeParams #80 (CAIDamageReactionTreeParams) : 
+         CAIDamageReactionTreeParams (CAIDamageReactionTreeParams)
+             completeTaskAfterDisablingHitReaction (Bool) : true
+-    CAINpcCriticalStateFlying #77 (CAINpcCriticalStateFlying) : 
++    CAINpcCriticalStateFlying #81 (CAINpcCriticalStateFlying) : 
+         CAINpcCriticalStateFlying (CAINpcCriticalStateFlying)
+             tree (handle:CBehTree) : gameplay/trees/npc_critical_state_flying.w2behtree
+-            params (handle:CAINpcCriticalStateParams) : CAINpcCriticalStateParams #78
+-    CAINpcCriticalStateParams #78 (CAINpcCriticalStateParams) : 
++            params (handle:CAINpcCriticalStateParams) : CAINpcCriticalStateParams #82
++    CAINpcCriticalStateParams #82 (CAINpcCriticalStateParams) : 
+         CAINpcCriticalStateParams (CAINpcCriticalStateParams)
+-    CAIMonsterCombatReactionsTree #79 (CAIMonsterCombatReactionsTree) : 
++    CAIMonsterCombatReactionsTree #83 (CAIMonsterCombatReactionsTree) : 
+         CAIMonsterCombatReactionsTree (CAIMonsterCombatReactionsTree)
+             tree (handle:CBehTree) : gameplay/trees/reactions/monster_base_reactions.w2behtree
+-            params (handle:CAIMonsterReactionsTreeParams) : CAIMonsterReactionsTreeParams #80
+-    CAIMonsterReactionsTreeParams #80 (CAIMonsterReactionsTreeParams) : 
++            params (handle:CAIMonsterReactionsTreeParams) : CAIMonsterReactionsTreeParams #84
++    CAIMonsterReactionsTreeParams #84 (CAIMonsterReactionsTreeParams) : 
+         CAIMonsterReactionsTreeParams (CAIMonsterReactionsTreeParams)
+             reactions (array:handle:CAIMonsterActionSubtree)
+-                0 (handle:CAIMonsterActionSubtree) : CAIActionLeadEscape #81
+-                1 (handle:CAIMonsterActionSubtree) : CAIActionLeadEscape #83
+-                2 (handle:CAIMonsterActionSubtree) : CAIActionEscapeInPack #85
++                0 (handle:CAIMonsterActionSubtree) : CAIActionLeadEscape #85
++                1 (handle:CAIMonsterActionSubtree) : CAIActionLeadEscape #87
++                2 (handle:CAIMonsterActionSubtree) : CAIActionEscapeInPack #89
+             canFly (Bool) : true
+-    CAIActionLeadEscape #81 (CAIActionLeadEscape) : 
++    CAIActionLeadEscape #85 (CAIActionLeadEscape) : 
+         CAIActionLeadEscape (CAIActionLeadEscape)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionLeadEscape #82
+-    CAINpcReactionLeadEscape #82 (CAINpcReactionLeadEscape) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionLeadEscape #86
++    CAINpcReactionLeadEscape #86 (CAINpcReactionLeadEscape) : 
+         CAINpcReactionLeadEscape (CAINpcReactionLeadEscape)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_monster_lead_escape.w2behtree
+-    CAIActionLeadEscape #83 (CAIActionLeadEscape) : FearsomeEvent
++    CAIActionLeadEscape #87 (CAIActionLeadEscape) : FearsomeEvent
+         CAIActionLeadEscape (CAIActionLeadEscape)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionLeadEscape #84
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionLeadEscape #88
+             actionEventName (CName) : FearsomeEvent
+             saveReactionTargetUnder (CName) : FearsomeEventSource
+-    CAINpcReactionLeadEscape #84 (CAINpcReactionLeadEscape) : 
++    CAINpcReactionLeadEscape #88 (CAINpcReactionLeadEscape) : 
+         CAINpcReactionLeadEscape (CAINpcReactionLeadEscape)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_monster_lead_escape.w2behtree
+-    CAIActionEscapeInPack #85 (CAIActionEscapeInPack) : 
++    CAIActionEscapeInPack #89 (CAIActionEscapeInPack) : 
+         CAIActionEscapeInPack (CAIActionEscapeInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionEscapeInPack #86
+-    CAINpcReactionEscapeInPack #86 (CAINpcReactionEscapeInPack) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionEscapeInPack #90
++    CAINpcReactionEscapeInPack #90 (CAINpcReactionEscapeInPack) : 
+         CAINpcReactionEscapeInPack (CAINpcReactionEscapeInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_monster_escape_in_pack.w2behtree
+-    CAIFlyingMonsterDeath #87 (CAIFlyingMonsterDeath) : 
++    CAIFlyingMonsterDeath #91 (CAIFlyingMonsterDeath) : 
+         CAIFlyingMonsterDeath (CAIFlyingMonsterDeath)
+             tree (handle:CBehTree) : gameplay/trees/death/flying_death.w2behtree
+-            params (handle:CAINpcDeathParams) : CAIFlyingMonsterDeathParams #88
+-    CAIFlyingMonsterDeathParams #88 (CAIFlyingMonsterDeathParams) : 
++            params (handle:CAINpcDeathParams) : CAIFlyingMonsterDeathParams #92
++    CAIFlyingMonsterDeathParams #92 (CAIFlyingMonsterDeathParams) : 
+         CAIFlyingMonsterDeathParams (CAIFlyingMonsterDeathParams)
+-    CAIDynamicFlyingWanderGryphon #89 (CAIDynamicFlyingWanderGryphon) : 
++    CAIDynamicFlyingWanderGryphon #93 (CAIDynamicFlyingWanderGryphon) : 
+         CAIDynamicFlyingWanderGryphon (CAIDynamicFlyingWanderGryphon)
+             tree (handle:CBehTree) : gameplay/trees/idle/dynamic_flying_wander.w2behtree
+-    CEntityDismemberment #90 (CEntityDismemberment) : 
++    CEntityDismemberment #94 (CEntityDismemberment) : 
+         CEntityDismemberment (CEntityDismemberment)
+             wounds (array:ptr:CDismembermentWound)
+-                0 (ptr:CDismembermentWound) : CDismembermentWound #91
+-                1 (ptr:CDismembermentWound) : CDismembermentWound #92
+-    CDismembermentWound #91 (CDismembermentWound) : cockatrice_trophy_head
++                0 (ptr:CDismembermentWound) : CDismembermentWound #95
++                1 (ptr:CDismembermentWound) : CDismembermentWound #96
++    CDismembermentWound #95 (CDismembermentWound) : cockatrice_trophy_head
+         CDismembermentWound (CDismembermentWound)
+             name (CName) : cockatrice_trophy_head
+             transform (EngineTransform)
+@@ -7959,7 +8125,7 @@
+                     Y (Float) : 0.7000
+                 depthScale (Float) : 2.0000
+                 applyToFillMesh (Bool) : false
+-    CDismembermentWound #92 (CDismembermentWound) : gryphon_trophy_head
++    CDismembermentWound #96 (CDismembermentWound) : gryphon_trophy_head
+         CDismembermentWound (CDismembermentWound)
+             name (CName) : gryphon_trophy_head
+             transform (EngineTransform)
+@@ -7990,7 +8156,7 @@
+                 normalFadeBias (Float) : 0.0200
+                 normalFadeScale (Float) : 3.3000
+                 applyToFillMesh (Bool) : false
+-    CBloodTrailEffect #93 (CBloodTrailEffect) : blood_trail
++    CBloodTrailEffect #97 (CBloodTrailEffect) : blood_trail
+         CBloodTrailEffect (CBloodTrailEffect)
+             name (String) : "blood_trail"
+             effect (CName) : default_blood_trail

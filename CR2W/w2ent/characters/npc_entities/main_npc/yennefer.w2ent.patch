@@ -1,0 +1,1028 @@
+ 1 file changed, 307 insertions(+), 231 deletions(-)
+
+diff --git 1.32/characters/npc_entities/main_npc/yennefer.w2ent.txt 4.00/characters/npc_entities/main_npc/yennefer.w2ent.txt
+index d85ce7a..e01270f 100644
+--- 1.32/characters/npc_entities/main_npc/yennefer.w2ent.txt
++++ 4.00/characters/npc_entities/main_npc/yennefer.w2ent.txt
+@@ -10,18 +10,23 @@
+                     overriddenProperties (array:CName)
+                         0 (CName) : movementAdjustor
+                 1 (SEntityTemplateOverride)
++                    componentName (CName) : dyng_pendant_01_wa__yennefer
++                    className (CName) : CAnimDangleComponent
++                    overriddenProperties (array:CName)
++                        0 (CName) : constraint
++                2 (SEntityTemplateOverride)
+                     componentName (CName) : mimic component
+                     className (CName) : CMimicComponent
+                     overriddenProperties (array:CName)
+                         0 (CName) : skeleton
+                         1 (CName) : animationSets
+                         2 (CName) : behaviorInstanceSlots
+-                2 (SEntityTemplateOverride)
++                3 (SEntityTemplateOverride)
+                     componentName (CName) : normalblend
+                     className (CName) : CNormalBlendComponent
+                     overriddenProperties (array:CName)
+                         0 (CName) : normalBlendAreas
+-                3 (SEntityTemplateOverride)
++                4 (SEntityTemplateOverride)
+                     componentName (CName) : CSoundEmitterComponent0
+                     className (CName) : CSoundEmitterComponent
+                     overriddenProperties (array:CName)
+@@ -476,6 +481,14 @@
+                         0 (handle:CEntityTemplate) : characters/models/main_npc/yennefer/h_01_wa__yennefer.w2ent
+                         1 (handle:CEntityTemplate) : characters/models/main_npc/yennefer/twals_01_wa__body_notcensored.w2ent
+                         2 (handle:CEntityTemplate) : characters/models/crowd_npc/lingerie/legs/l_01a_wa__lingerie_slim.w2ent
++                12 (CEntityAppearance)
++                    name (CName) : yennefer_nilf_patrol
++                    includedTemplates (array:handle:CEntityTemplate)
++                        0 (handle:CEntityTemplate) : characters/models/main_npc/yennefer/h_01_wa__yennefer.w2ent
++                        1 (handle:CEntityTemplate) : characters/models/main_npc/yennefer/l_02_wa__yennefer.w2ent
++                        2 (handle:CEntityTemplate) : characters/models/main_npc/yennefer/pendant_01_wa__yennefer.w2ent
++                        3 (handle:CEntityTemplate) : characters/models/main_npc/yennefer/b_03_wa_yennefer.w2ent
++                        4 (handle:CEntityTemplate) : characters/models/main_npc/yennefer/c_01_wa__yennefer.w2ent
+             usedAppearances (array:CName)
+                 0 (CName) : yennefer_gown
+                 1 (CName) : yennefer_travel_outfit
+@@ -487,6 +500,7 @@
+                 7 (CName) : yennefer_naked_no_hair
+                 8 (CName) : yennefer_naked_panties
+                 9 (CName) : yennefer_naked_no_hair_arabic
++                10 (CName) : yennefer_nilf_patrol
+             slots (array:EntitySlot)
+                 0 (EntitySlot)
+                     name (CName) : fx_cast_push
+@@ -658,12 +672,23 @@
+                         hue (Uint16) : 130
+                         saturation (Int8) : -95
+                         luminance (Int8) : 49
++                2 (SEntityTemplateColoringEntry)
++                    appearance (CName) : yennefer_nilf_patrol
++                    componentName (CName) : l1_01_wa__priscilla
++                    colorShift1 (CColorShift)
++                        hue (Uint16) : 346
++                        saturation (Int8) : -100
++                        luminance (Int8) : -46
++                    colorShift2 (CColorShift)
++                        hue (Uint16) : 326
++                        saturation (Int8) : -12
++                        luminance (Int8) : 1
+             flatCompiledData (array:Uint8) : # array:2,0,Uint8
+                 CNewNPC #0 (CNewNPC) : PreviewEntity
+                     CNewNPC (CNewNPC)
+                         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+-                        streamingDistance (Uint8) : 14
++                        streamingDistance (Uint8) : 52
+                         name (String) : "PreviewEntity"
+                         Components (array:ptr:CComponent)
+                             0 (ptr:CComponent) : CAppearanceComponent #1
+@@ -687,8 +712,10 @@
+                             0 (SEntityBufferType1)
+                                 ComponentName (CName) : 
+                         BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+-                        idTag (IdTag) :  83e0a03a-56b7-4ce1-aa2c-bc1e9d5392fb
++                        idTag (IdTag) :  3f9e7769-03cf-4493-8587-2acc6349c6aa
+                         displayName (LocalizedString) : 163363
++                        useHiResShadows (Bool) : true
++                        keepUseHiResShadows (Bool) : true
+                 CAppearanceComponent #1 (CAppearanceComponent) : Appearances
+                     CAppearanceComponent (CAppearanceComponent)
+                         guid (CGUID) : b064841e-44f4-494b-822b-e2390c080e0c
+@@ -701,7 +728,7 @@
+                         attachmentReplacements (SAttachmentReplacements)
+                             replacements (array:SAttachmentReplacement)
+                                 0 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CDropPhysicsComponent0_A9119BB6-4BE56CA2-C3D5D5B7-FAE5A075
++                                    oldName (CName) : proxy_CDropPhysicsComponent0_58DA528C-4AAE4891-DE527E92-4BA527C5
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CDropPhysicsComponent0
+                                     newClass (CName) : CDropPhysicsComponent
+@@ -746,72 +773,72 @@
+                                     newName (CName) : CDropPhysicsComponent0
+                                     newClass (CName) : CDropPhysicsComponent
+                                 9 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_talk_A442596F-482A82C2-6992FA9F-A8E42AD2
++                                    oldName (CName) : proxy_talk_80C579BF-4BED79D3-6D3968B2-815C7888
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : talk
+                                     newClass (CName) : CInteractionComponent
+                                 10 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_inventory_0CB04E2B-4ABDDB93-11EC95A1-C665004F
++                                    oldName (CName) : proxy_inventory_1FFC275E-4DA36709-D21E5EB5-ABA3C4C3
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : inventory
+                                     newClass (CName) : CInventoryComponent
+                                 11 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_Finish_731E9BBA-4986E38D-838241B8-36DCDDBC
++                                    oldName (CName) : proxy_Finish_2CE9AE9B-4EBFDE46-F9F77096-80BFF22A
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : Finish
+                                     newClass (CName) : CInteractionComponent
+                                 12 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_Dismemberment_2FC60FEE-469DB829-58204C8B-A0AF0A08
++                                    oldName (CName) : proxy_Dismemberment_BEAF825A-4C9F519E-DB1D71AB-327F56D8
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : Dismemberment
+                                     newClass (CName) : CDismembermentComponent
+                                 13 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_follow_B580A85B-4A20123D-97D465B5-A14A0E3A
++                                    oldName (CName) : proxy_follow_DA0FFE7C-40E5F332-5F9C2BA0-1C00827A
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : follow
+                                     newClass (CName) : CInteractionComponent
+                                 14 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_woman_average_shadowmesh_EABAF8B9-4CA9690B-7DCA56A0-2204D29E
++                                    oldName (CName) : proxy_woman_average_shadowmesh_FA123395-4E33AC5D-5508378C-C06E7A28
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : woman_average_shadowmesh
+                                     newClass (CName) : CMeshComponent
+                                 15 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_grassCollider_200D2E2B-46365F19-4083859C-B0BB2663
++                                    oldName (CName) : proxy_grassCollider_4CF35BFE-4A390CF4-9CFA9191-539CE7A8
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : grassCollider
+                                     newClass (CName) : CDynamicColliderComponent
+                                 16 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CReactionSceneActorComponent0_B0440327-43596698-32CF869D-B6D51218
++                                    oldName (CName) : proxy_CReactionSceneActorComponent0_2F5A9161-4C10E453-855B97B7-333FCB08
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CReactionSceneActorComponent0
+                                     newClass (CName) : CReactionSceneActorComponent
+                                 17 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_h_wa__neck_transition_BA1FB32A-47B8F733-96CC8E9D-E8EEFD17
++                                    oldName (CName) : proxy_h_wa__neck_transition_5AF66F25-4BBF51A0-B7C47881-DA93A44D
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : h_wa__neck_transition
+                                     newClass (CName) : CMeshComponent
+                                 18 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CR4HumanoidCombatComponent0_C2E84393-46783D28-BEF25EA3-93D3109B
++                                    oldName (CName) : proxy_CR4HumanoidCombatComponent0_69B4F119-4A2D0183-0A250E95-0A595588
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CR4HumanoidCombatComponent0
+                                     newClass (CName) : CR4HumanoidCombatComponent
+                                 19 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_torso3effect_FACCF09F-442406D2-B9CE3997-8529DF0E
++                                    oldName (CName) : proxy_torso3effect_135DB0B3-47AB4B3F-C37CEFAC-BCCD4372
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : torso3effect
+                                     newClass (CName) : CEffectDummyComponent
+                                 20 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CGameplayEffectsComponent0_5B7CE4AB-48099FD1-66FF39AA-F14DBDE4
++                                    oldName (CName) : proxy_CGameplayEffectsComponent0_058D3AB4-471C9EE0-EDAB7E80-1E33E7DC
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CGameplayEffectsComponent0
+                                     newClass (CName) : CGameplayEffectsComponent
+                                 21 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_wetness_6CEC7BFF-48BE947A-370C1BB9-99DBEAA2
++                                    oldName (CName) : proxy_wetness_43ACBD8C-4CD484D9-D2F646B9-E2EE60BA
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : wetness
+                                     newClass (CName) : CWetnessComponent
+                                 22 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CDropPhysicsComponent0_01B0BD58-4EA35795-E37539BD-21EC5D77
++                                    oldName (CName) : proxy_CDropPhysicsComponent0_A3BAF48F-4E5C836C-F9855886-52C1FC3E
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CDropPhysicsComponent0
+                                     newClass (CName) : CDropPhysicsComponent
+@@ -1078,38 +1105,6 @@
+                                         Data (CBufferVLQInt32:IReferencable)
+                                             0 (CAnimatedAttachment)
+                             7 (SAppearanceAttachments)
+-                                appearance (CName) : __q401_yennefer_puke
+-                                attachments (array:SAppearanceAttachment)
+-                                    0 (SAppearanceAttachment)
+-                                        parentClass (CName) : CMovingPhysicalAgentComponent
+-                                        parentName (CName) : woman_base
+-                                        childClass (CName) : CMimicComponent
+-                                        childName (CName) : mimic component
+-                                        Data (CBufferVLQInt32:IReferencable)
+-                                            0 (CAnimatedAttachment)
+-                                                parentSlotName (CName) : torso2
+-                                    1 (SAppearanceAttachment)
+-                                        parentClass (CName) : CMovingPhysicalAgentComponent
+-                                        parentName (CName) : woman_base
+-                                        childClass (CName) : CAnimDangleComponent
+-                                        childName (CName) : c_03_wa__yennefer_dyng
+-                                        Data (CBufferVLQInt32:IReferencable)
+-                                            0 (CAnimatedAttachment)
+-                                    2 (SAppearanceAttachment)
+-                                        parentClass (CName) : CMovingPhysicalAgentComponent
+-                                        parentName (CName) : woman_base
+-                                        childClass (CName) : CMeshComponent
+-                                        childName (CName) : collar_02_wa__yennefer
+-                                        Data (CBufferVLQInt32:IReferencable)
+-                                            0 (CMeshSkinningAttachment)
+-                                    3 (SAppearanceAttachment)
+-                                        parentClass (CName) : CMovingPhysicalAgentComponent
+-                                        parentName (CName) : woman_base
+-                                        childClass (CName) : CAnimDangleComponent
+-                                        childName (CName) : dyng_pendant_01_wa__yennefer
+-                                        Data (CBufferVLQInt32:IReferencable)
+-                                            0 (CAnimatedAttachment)
+-                            8 (SAppearanceAttachments)
+                                 appearance (CName) : yennefer_lingerie
+                                 attachments (array:SAppearanceAttachment)
+                                     0 (SAppearanceAttachment)
+@@ -1141,7 +1136,7 @@
+                                         childName (CName) : breast_constraint_type_1
+                                         Data (CBufferVLQInt32:IReferencable)
+                                             0 (CAnimatedAttachment)
+-                            9 (SAppearanceAttachments)
++                            8 (SAppearanceAttachments)
+                                 appearance (CName) : yennefer_naked_no_hair
+                                 attachments (array:SAppearanceAttachment)
+                                     0 (SAppearanceAttachment)
+@@ -1159,7 +1154,7 @@
+                                         childName (CName) : breast_constraint_type_1
+                                         Data (CBufferVLQInt32:IReferencable)
+                                             0 (CAnimatedAttachment)
+-                            10 (SAppearanceAttachments)
++                            9 (SAppearanceAttachments)
+                                 appearance (CName) : yennefer_naked_panties
+                                 attachments (array:SAppearanceAttachment)
+                                     0 (SAppearanceAttachment)
+@@ -1191,7 +1186,7 @@
+                                         childName (CName) : breast_constraint_type_1
+                                         Data (CBufferVLQInt32:IReferencable)
+                                             0 (CAnimatedAttachment)
+-                            11 (SAppearanceAttachments)
++                            10 (SAppearanceAttachments)
+                                 appearance (CName) : yennefer_no_pendant
+                                 attachments (array:SAppearanceAttachment)
+                                     0 (SAppearanceAttachment)
+@@ -1216,8 +1211,26 @@
+                                         childName (CName) : breast_constraint_type_1
+                                         Data (CBufferVLQInt32:IReferencable)
+                                             0 (CAnimatedAttachment)
++                            11 (SAppearanceAttachments)
++                                appearance (CName) : yennefer_naked_no_hair_arabic
++                                attachments (array:SAppearanceAttachment)
++                                    0 (SAppearanceAttachment)
++                                        parentClass (CName) : CMovingPhysicalAgentComponent
++                                        parentName (CName) : woman_base
++                                        childClass (CName) : CMimicComponent
++                                        childName (CName) : mimic component
++                                        Data (CBufferVLQInt32:IReferencable)
++                                            0 (CAnimatedAttachment)
++                                                parentSlotName (CName) : torso2
++                                    1 (SAppearanceAttachment)
++                                        parentClass (CName) : CMovingPhysicalAgentComponent
++                                        parentName (CName) : woman_base
++                                        childClass (CName) : CAnimDangleComponent
++                                        childName (CName) : breast_constraint_type_1
++                                        Data (CBufferVLQInt32:IReferencable)
++                                            0 (CAnimatedAttachment)
+                             12 (SAppearanceAttachments)
+-                                appearance (CName) : yennefer_travel_outfit
++                                appearance (CName) : yennefer_naked
+                                 attachments (array:SAppearanceAttachment)
+                                     0 (SAppearanceAttachment)
+                                         parentClass (CName) : CMovingPhysicalAgentComponent
+@@ -1231,31 +1244,10 @@
+                                         parentClass (CName) : CMovingPhysicalAgentComponent
+                                         parentName (CName) : woman_base
+                                         childClass (CName) : CAnimDangleComponent
+-                                        childName (CName) : dyng_pendant_01_wa__yennefer
++                                        childName (CName) : breast_constraint_type_1
+                                         Data (CBufferVLQInt32:IReferencable)
+                                             0 (CAnimatedAttachment)
+                                     2 (SAppearanceAttachment)
+-                                        parentClass (CName) : CMovingPhysicalAgentComponent
+-                                        parentName (CName) : woman_base
+-                                        childClass (CName) : CMeshComponent
+-                                        childName (CName) : body_02_wa__yennefer
+-                                        Data (CBufferVLQInt32:IReferencable)
+-                                            0 (CMeshSkinningAttachment)
+-                                    3 (SAppearanceAttachment)
+-                                        parentClass (CName) : CMovingPhysicalAgentComponent
+-                                        parentName (CName) : woman_base
+-                                        childClass (CName) : CMeshComponent
+-                                        childName (CName) : fur_01_wa__yennefer
+-                                        Data (CBufferVLQInt32:IReferencable)
+-                                            0 (CMeshSkinningAttachment)
+-                                    4 (SAppearanceAttachment)
+-                                        parentClass (CName) : CMovingPhysicalAgentComponent
+-                                        parentName (CName) : woman_base
+-                                        childClass (CName) : CMeshComponent
+-                                        childName (CName) : n_01_wa__yennefer_body
+-                                        Data (CBufferVLQInt32:IReferencable)
+-                                            0 (CMeshSkinningAttachment)
+-                                    5 (SAppearanceAttachment)
+                                         parentClass (CName) : CMovingPhysicalAgentComponent
+                                         parentName (CName) : woman_base
+                                         childClass (CName) : CAnimDangleComponent
+@@ -1263,9 +1255,16 @@
+                                         Data (CBufferVLQInt32:IReferencable)
+                                             0 (CAnimatedAttachment)
+                             13 (SAppearanceAttachments)
+-                                appearance (CName) : yennefer_naked_no_hair_arabic
++                                appearance (CName) : yennefer_hooded_02
+                                 attachments (array:SAppearanceAttachment)
+                                     0 (SAppearanceAttachment)
++                                        parentClass (CName) : CMovingPhysicalAgentComponent
++                                        parentName (CName) : woman_base
++                                        childClass (CName) : CAnimDangleComponent
++                                        childName (CName) : c_03_wa__yennefer_dyng
++                                        Data (CBufferVLQInt32:IReferencable)
++                                            0 (CAnimatedAttachment)
++                                    1 (SAppearanceAttachment)
+                                         parentClass (CName) : CMovingPhysicalAgentComponent
+                                         parentName (CName) : woman_base
+                                         childClass (CName) : CMimicComponent
+@@ -1273,17 +1272,24 @@
+                                         Data (CBufferVLQInt32:IReferencable)
+                                             0 (CAnimatedAttachment)
+                                                 parentSlotName (CName) : torso2
+-                                    1 (SAppearanceAttachment)
++                                    2 (SAppearanceAttachment)
+                                         parentClass (CName) : CMovingPhysicalAgentComponent
+                                         parentName (CName) : woman_base
+                                         childClass (CName) : CAnimDangleComponent
+-                                        childName (CName) : breast_constraint_type_1
++                                        childName (CName) : dyng_pendant_01_wa__yennefer
+                                         Data (CBufferVLQInt32:IReferencable)
+                                             0 (CAnimatedAttachment)
+                             14 (SAppearanceAttachments)
+-                                appearance (CName) : yennefer_naked
++                                appearance (CName) : yennefer_nilf_patrol
+                                 attachments (array:SAppearanceAttachment)
+                                     0 (SAppearanceAttachment)
++                                        parentClass (CName) : CMovingPhysicalAgentComponent
++                                        parentName (CName) : woman_base
++                                        childClass (CName) : CAnimDangleComponent
++                                        childName (CName) : c_03_wa__yennefer_dyng
++                                        Data (CBufferVLQInt32:IReferencable)
++                                            0 (CAnimatedAttachment)
++                                    1 (SAppearanceAttachment)
+                                         parentClass (CName) : CMovingPhysicalAgentComponent
+                                         parentName (CName) : woman_base
+                                         childClass (CName) : CMimicComponent
+@@ -1291,28 +1297,42 @@
+                                         Data (CBufferVLQInt32:IReferencable)
+                                             0 (CAnimatedAttachment)
+                                                 parentSlotName (CName) : torso2
+-                                    1 (SAppearanceAttachment)
+-                                        parentClass (CName) : CMovingPhysicalAgentComponent
+-                                        parentName (CName) : woman_base
+-                                        childClass (CName) : CAnimDangleComponent
+-                                        childName (CName) : breast_constraint_type_1
+-                                        Data (CBufferVLQInt32:IReferencable)
+-                                            0 (CAnimatedAttachment)
+                                     2 (SAppearanceAttachment)
+                                         parentClass (CName) : CMovingPhysicalAgentComponent
+                                         parentName (CName) : woman_base
+                                         childClass (CName) : CAnimDangleComponent
+-                                        childName (CName) : c_03_wa__yennefer_dyng
++                                        childName (CName) : dyng_pendant_01_wa__yennefer
+                                         Data (CBufferVLQInt32:IReferencable)
+                                             0 (CAnimatedAttachment)
++                                    3 (SAppearanceAttachment)
++                                        parentClass (CName) : CMovingPhysicalAgentComponent
++                                        parentName (CName) : woman_base
++                                        childClass (CName) : CMeshComponent
++                                        childName (CName) : body_02_wa__yennefer
++                                        Data (CBufferVLQInt32:IReferencable)
++                                            0 (CMeshSkinningAttachment)
++                                    4 (SAppearanceAttachment)
++                                        parentClass (CName) : CMovingPhysicalAgentComponent
++                                        parentName (CName) : woman_base
++                                        childClass (CName) : CMeshComponent
++                                        childName (CName) : fur_01_wa__yennefer
++                                        Data (CBufferVLQInt32:IReferencable)
++                                            0 (CMeshSkinningAttachment)
++                                    5 (SAppearanceAttachment)
++                                        parentClass (CName) : CMovingPhysicalAgentComponent
++                                        parentName (CName) : woman_base
++                                        childClass (CName) : CMeshComponent
++                                        childName (CName) : n_01_wa__yennefer_body
++                                        Data (CBufferVLQInt32:IReferencable)
++                                            0 (CMeshSkinningAttachment)
+                             15 (SAppearanceAttachments)
+-                                appearance (CName) : yennefer_hooded_02
++                                appearance (CName) : __q401_yennefer_puke
+                                 attachments (array:SAppearanceAttachment)
+                                     0 (SAppearanceAttachment)
+                                         parentClass (CName) : CMovingPhysicalAgentComponent
+                                         parentName (CName) : woman_base
+                                         childClass (CName) : CAnimDangleComponent
+-                                        childName (CName) : c_03_wa__yennefer_dyng
++                                        childName (CName) : dyng_pendant_01_wa__yennefer
+                                         Data (CBufferVLQInt32:IReferencable)
+                                             0 (CAnimatedAttachment)
+                                     1 (SAppearanceAttachment)
+@@ -1327,9 +1347,16 @@
+                                         parentClass (CName) : CMovingPhysicalAgentComponent
+                                         parentName (CName) : woman_base
+                                         childClass (CName) : CAnimDangleComponent
+-                                        childName (CName) : dyng_pendant_01_wa__yennefer
++                                        childName (CName) : c_03_wa__yennefer_dyng
+                                         Data (CBufferVLQInt32:IReferencable)
+                                             0 (CAnimatedAttachment)
++                                    3 (SAppearanceAttachment)
++                                        parentClass (CName) : CMovingPhysicalAgentComponent
++                                        parentName (CName) : woman_base
++                                        childClass (CName) : CMeshComponent
++                                        childName (CName) : collar_02_wa__yennefer
++                                        Data (CBufferVLQInt32:IReferencable)
++                                            0 (CMeshSkinningAttachment)
+                 CMovingPhysicalAgentComponent #2 (CMovingPhysicalAgentComponent) : woman_base
+                     CMovingPhysicalAgentComponent (CMovingPhysicalAgentComponent)
+                         guid (CGUID) : 03769f20-805b-4267-af65-3d0e0436f104
+@@ -1367,17 +1394,6 @@
+                         isStreamed (Bool) : false
+                         graphPositionX (Int16) : 238
+                         graphPositionY (Int16) : 73
+-                        boundingBox (Box)
+-                            Min (Vector)
+-                                X (Float) : 340282300000000000000000000000000000000.0000
+-                                Y (Float) : 340282300000000000000000000000000000000.0000
+-                                Z (Float) : 340282300000000000000000000000000000000.0000
+-                                W (Float) : 1.0000
+-                            Max (Vector)
+-                                X (Float) : NAN
+-                                Y (Float) : NAN
+-                                Z (Float) : NAN
+-                                W (Float) : 1.0000
+                         drawableFlags (EDrawableFlags) : DF_CastShadows,DF_CastShadowsWhenNotVisible,DF_IsCharacterShadowFallback
+                         lightChannels (ELightChannel) : LC_Characters
+                         mesh (handle:CMesh) : characters/models/common/shadowmesh/woman_average_shadowmesh.w2mesh
+@@ -1391,7 +1407,7 @@
+                     CDynamicColliderComponent (CDynamicColliderComponent)
+                         transform (EngineTransform)
+                             Scale_x (Float) : 1.0000
+-                            Scale_y (Float) : 1.8000
++                            Scale_y (Float) : 1.6000
+                             Scale_z (Float) : 1.0000
+                             X (Float) : 0.0000
+                             Y (Float) : 0.2000
+@@ -1424,17 +1440,6 @@
+                         isStreamed (Bool) : false
+                         graphPositionX (Int16) : 245
+                         graphPositionY (Int16) : 28
+-                        boundingBox (Box)
+-                            Min (Vector)
+-                                X (Float) : 340282300000000000000000000000000000000.0000
+-                                Y (Float) : 340282300000000000000000000000000000000.0000
+-                                Z (Float) : 340282300000000000000000000000000000000.0000
+-                                W (Float) : 1.0000
+-                            Max (Vector)
+-                                X (Float) : NAN
+-                                Y (Float) : NAN
+-                                Z (Float) : NAN
+-                                W (Float) : 1.0000
+                         lightChannels (ELightChannel) : LC_Characters
+                         mesh (handle:CMesh) : characters/models/common/woman_average/body/model/h_wa__neck_transition.w2mesh
+                 CHardAttachment #10 (CHardAttachment) : torso2
+@@ -9472,7 +9477,7 @@
+                                 name (String) : "f"
+                         CFXTrackItemFlare #7 (CFXTrackItemFlare) : 
+                             CFXTrackItemFlare (CFXTrackItemFlare)
+-                                timeBegin (Float) : 0.0116
++                                timeBegin (Float) : 5.7464
+                                 timeDuration (Float) : 1.9822
+                                 buffername (CName) : 
+                                 count (CDynamicInt) : 1
+@@ -11262,7 +11267,7 @@
+                 35 (CEntityTemplateCookedEffect)
+                     name (CName) : igni_burn_hit
+                     buffer (SharedDataBuffer)
+-                        Bufferdata (CByteArray) : 2644 bytes
++                        Bufferdata (CByteArray) : 2675 bytes
+                         CFXDefinition #0 (CFXDefinition) : igni_burn_hit
+                             CFXDefinition (CFXDefinition)
+                                 trackGroups (array:ptr:CFXTrackGroup)
+@@ -11368,6 +11373,7 @@
+                                     Blue (Uint8) : 22
+                                     Alpha (Uint8) : 255
+                                 radius (Float) : 3.0000
++                                brightness (Float) : 0.5000
+                                 autoHideDistance (Float) : 45.0000
+                                 colorGroup (EEnvColorGroup) : ECG_FX_FireLight
+                                 spawner (ptr:IFXSpawner) : CFXSpawnerComponent #8
+@@ -14520,7 +14526,7 @@
+                 46 (CEntityTemplateCookedEffect)
+                     name (CName) : critical_burning
+                     buffer (SharedDataBuffer)
+-                        Bufferdata (CByteArray) : 6476 bytes
++                        Bufferdata (CByteArray) : 6539 bytes
+                         CFXDefinition #0 (CFXDefinition) : critical_burning
+                             CFXDefinition (CFXDefinition)
+                                 trackGroups (array:ptr:CFXTrackGroup)
+@@ -14592,6 +14598,7 @@
+                                         Green (Uint8) : 140
+                                         Blue (Uint8) : 80
+                                         Alpha (Uint8) : 255
++                                    color_scale (Float) : 0.3000
+                         CFXSpawnerComponent #5 (CFXSpawnerComponent) : woman_base
+                             CFXSpawnerComponent (CFXSpawnerComponent)
+                                 componentName (CName) : woman_base
+@@ -14669,6 +14676,7 @@
+                                     Blue (Uint8) : 61
+                                     Alpha (Uint8) : 255
+                                 radius (Float) : 6.0000
++                                brightness (Float) : 0.5000
+                                 lightFlickering (SLightFlickering)
+                                     flickerStrength (Float) : 0.7000
+                                     flickerPeriod (Float) : 0.1000
+@@ -17039,13 +17047,101 @@
+                                 componentName (CName) : woman_base
+                                 attach (Bool) : true
+                                 parentSlotName (CName) : pelvis
++                55 (CEntityTemplateCookedEffect)
++                    name (CName) : water_hit_blood
++                    buffer (SharedDataBuffer)
++                        Bufferdata (CByteArray) : 1495 bytes
++                        CFXDefinition #0 (CFXDefinition) : water_hit_blood
++                            CFXDefinition (CFXDefinition)
++                                trackGroups (array:ptr:CFXTrackGroup)
++                                    0 (ptr:CFXTrackGroup) : CFXTrackGroup #1
++                                length (Float) : 10.8133
++                                loopStart (Float) : 0.1515
++                                loopEnd (Float) : 0.3553
++                                name (CName) : water_hit_blood
++                        CFXTrackGroup #1 (CFXTrackGroup) : fx
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "fx"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #2
++                                isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 163
++                                    Green (Uint8) : 169
++                                    Blue (Uint8) : 167
++                                    Alpha (Uint8) : 100
++                        CFXTrack #2 (CFXTrack) : fx
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #3
++                                name (String) : "fx"
++                        CFXTrackItemParticles #3 (CFXTrackItemParticles) : Particles
++                            CFXTrackItemParticles (CFXTrackItemParticles)
++                                timeBegin (Float) : 0.0002
++                                timeDuration (Float) : 10.5552
++                                buffername (CName) : Particles
++                                count (CDynamicInt) : 3
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    1 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    2 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                particleSystem (soft:CParticleSystem) : fx/blood/standard_hit/water_blood.w2p
++                                spawner (ptr:IFXSpawner) : CFXWaterSpawner #4
++                        CFXWaterSpawner #4 (CFXWaterSpawner) : 
++                            CFXWaterSpawner (CFXWaterSpawner) : <CFXWaterSpawner>CFXWaterSpawner
+             cookedEffectsVersion (Uint32) : 1
+             Unk1 (Uint32) : 0
+     CNewNPC #1 (CNewNPC) : 
+         CNewNPC (CNewNPC)
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+-            streamingDistance (Uint8) : 14
++            streamingDistance (Uint8) : 52
+             Components (array:ptr:CComponent)
+                 0 (ptr:CComponent) : CAppearanceComponent #2
+                 1 (ptr:CComponent) : CMovingPhysicalAgentComponent #3
+@@ -17068,8 +17164,10 @@
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+-            idTag (IdTag) :  83e0a03a-56b7-4ce1-aa2c-bc1e9d5392fb
++            idTag (IdTag) :  3f9e7769-03cf-4493-8587-2acc6349c6aa
+             displayName (LocalizedString) : 163363
++            useHiResShadows (Bool) : true
++            keepUseHiResShadows (Bool) : true
+     CAppearanceComponent #2 (CAppearanceComponent) : Appearances
+         CAppearanceComponent (CAppearanceComponent)
+             guid (CGUID) : b064841e-44f4-494b-822b-e2390c080e0c
+@@ -17080,7 +17178,7 @@
+             attachmentReplacements (SAttachmentReplacements)
+                 replacements (array:SAttachmentReplacement)
+                     0 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CDropPhysicsComponent0_A9119BB6-4BE56CA2-C3D5D5B7-FAE5A075
++                        oldName (CName) : proxy_CDropPhysicsComponent0_58DA528C-4AAE4891-DE527E92-4BA527C5
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CDropPhysicsComponent0
+                         newClass (CName) : CDropPhysicsComponent
+@@ -17125,72 +17223,72 @@
+                         newName (CName) : CDropPhysicsComponent0
+                         newClass (CName) : CDropPhysicsComponent
+                     9 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_talk_A442596F-482A82C2-6992FA9F-A8E42AD2
++                        oldName (CName) : proxy_talk_80C579BF-4BED79D3-6D3968B2-815C7888
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : talk
+                         newClass (CName) : CInteractionComponent
+                     10 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_inventory_0CB04E2B-4ABDDB93-11EC95A1-C665004F
++                        oldName (CName) : proxy_inventory_1FFC275E-4DA36709-D21E5EB5-ABA3C4C3
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : inventory
+                         newClass (CName) : CInventoryComponent
+                     11 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_Finish_731E9BBA-4986E38D-838241B8-36DCDDBC
++                        oldName (CName) : proxy_Finish_2CE9AE9B-4EBFDE46-F9F77096-80BFF22A
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : Finish
+                         newClass (CName) : CInteractionComponent
+                     12 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_Dismemberment_2FC60FEE-469DB829-58204C8B-A0AF0A08
++                        oldName (CName) : proxy_Dismemberment_BEAF825A-4C9F519E-DB1D71AB-327F56D8
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : Dismemberment
+                         newClass (CName) : CDismembermentComponent
+                     13 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_follow_B580A85B-4A20123D-97D465B5-A14A0E3A
++                        oldName (CName) : proxy_follow_DA0FFE7C-40E5F332-5F9C2BA0-1C00827A
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : follow
+                         newClass (CName) : CInteractionComponent
+                     14 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_woman_average_shadowmesh_EABAF8B9-4CA9690B-7DCA56A0-2204D29E
++                        oldName (CName) : proxy_woman_average_shadowmesh_FA123395-4E33AC5D-5508378C-C06E7A28
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : woman_average_shadowmesh
+                         newClass (CName) : CMeshComponent
+                     15 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_grassCollider_200D2E2B-46365F19-4083859C-B0BB2663
++                        oldName (CName) : proxy_grassCollider_4CF35BFE-4A390CF4-9CFA9191-539CE7A8
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : grassCollider
+                         newClass (CName) : CDynamicColliderComponent
+                     16 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CReactionSceneActorComponent0_B0440327-43596698-32CF869D-B6D51218
++                        oldName (CName) : proxy_CReactionSceneActorComponent0_2F5A9161-4C10E453-855B97B7-333FCB08
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CReactionSceneActorComponent0
+                         newClass (CName) : CReactionSceneActorComponent
+                     17 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_h_wa__neck_transition_BA1FB32A-47B8F733-96CC8E9D-E8EEFD17
++                        oldName (CName) : proxy_h_wa__neck_transition_5AF66F25-4BBF51A0-B7C47881-DA93A44D
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : h_wa__neck_transition
+                         newClass (CName) : CMeshComponent
+                     18 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CR4HumanoidCombatComponent0_C2E84393-46783D28-BEF25EA3-93D3109B
++                        oldName (CName) : proxy_CR4HumanoidCombatComponent0_69B4F119-4A2D0183-0A250E95-0A595588
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CR4HumanoidCombatComponent0
+                         newClass (CName) : CR4HumanoidCombatComponent
+                     19 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_torso3effect_FACCF09F-442406D2-B9CE3997-8529DF0E
++                        oldName (CName) : proxy_torso3effect_135DB0B3-47AB4B3F-C37CEFAC-BCCD4372
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : torso3effect
+                         newClass (CName) : CEffectDummyComponent
+                     20 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CGameplayEffectsComponent0_5B7CE4AB-48099FD1-66FF39AA-F14DBDE4
++                        oldName (CName) : proxy_CGameplayEffectsComponent0_058D3AB4-471C9EE0-EDAB7E80-1E33E7DC
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CGameplayEffectsComponent0
+                         newClass (CName) : CGameplayEffectsComponent
+                     21 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_wetness_6CEC7BFF-48BE947A-370C1BB9-99DBEAA2
++                        oldName (CName) : proxy_wetness_43ACBD8C-4CD484D9-D2F646B9-E2EE60BA
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : wetness
+                         newClass (CName) : CWetnessComponent
+                     22 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CDropPhysicsComponent0_01B0BD58-4EA35795-E37539BD-21EC5D77
++                        oldName (CName) : proxy_CDropPhysicsComponent0_A3BAF48F-4E5C836C-F9855886-52C1FC3E
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CDropPhysicsComponent0
+                         newClass (CName) : CDropPhysicsComponent
+@@ -17457,38 +17555,6 @@
+                             Data (CBufferVLQInt32:IReferencable)
+                                 0 (CAnimatedAttachment)
+                 7 (SAppearanceAttachments)
+-                    appearance (CName) : __q401_yennefer_puke
+-                    attachments (array:SAppearanceAttachment)
+-                        0 (SAppearanceAttachment)
+-                            parentClass (CName) : CMovingPhysicalAgentComponent
+-                            parentName (CName) : woman_base
+-                            childClass (CName) : CMimicComponent
+-                            childName (CName) : mimic component
+-                            Data (CBufferVLQInt32:IReferencable)
+-                                0 (CAnimatedAttachment)
+-                                    parentSlotName (CName) : torso2
+-                        1 (SAppearanceAttachment)
+-                            parentClass (CName) : CMovingPhysicalAgentComponent
+-                            parentName (CName) : woman_base
+-                            childClass (CName) : CAnimDangleComponent
+-                            childName (CName) : c_03_wa__yennefer_dyng
+-                            Data (CBufferVLQInt32:IReferencable)
+-                                0 (CAnimatedAttachment)
+-                        2 (SAppearanceAttachment)
+-                            parentClass (CName) : CMovingPhysicalAgentComponent
+-                            parentName (CName) : woman_base
+-                            childClass (CName) : CMeshComponent
+-                            childName (CName) : collar_02_wa__yennefer
+-                            Data (CBufferVLQInt32:IReferencable)
+-                                0 (CMeshSkinningAttachment)
+-                        3 (SAppearanceAttachment)
+-                            parentClass (CName) : CMovingPhysicalAgentComponent
+-                            parentName (CName) : woman_base
+-                            childClass (CName) : CAnimDangleComponent
+-                            childName (CName) : dyng_pendant_01_wa__yennefer
+-                            Data (CBufferVLQInt32:IReferencable)
+-                                0 (CAnimatedAttachment)
+-                8 (SAppearanceAttachments)
+                     appearance (CName) : yennefer_lingerie
+                     attachments (array:SAppearanceAttachment)
+                         0 (SAppearanceAttachment)
+@@ -17520,7 +17586,7 @@
+                             childName (CName) : breast_constraint_type_1
+                             Data (CBufferVLQInt32:IReferencable)
+                                 0 (CAnimatedAttachment)
+-                9 (SAppearanceAttachments)
++                8 (SAppearanceAttachments)
+                     appearance (CName) : yennefer_naked_no_hair
+                     attachments (array:SAppearanceAttachment)
+                         0 (SAppearanceAttachment)
+@@ -17538,7 +17604,7 @@
+                             childName (CName) : breast_constraint_type_1
+                             Data (CBufferVLQInt32:IReferencable)
+                                 0 (CAnimatedAttachment)
+-                10 (SAppearanceAttachments)
++                9 (SAppearanceAttachments)
+                     appearance (CName) : yennefer_naked_panties
+                     attachments (array:SAppearanceAttachment)
+                         0 (SAppearanceAttachment)
+@@ -17570,7 +17636,7 @@
+                             childName (CName) : breast_constraint_type_1
+                             Data (CBufferVLQInt32:IReferencable)
+                                 0 (CAnimatedAttachment)
+-                11 (SAppearanceAttachments)
++                10 (SAppearanceAttachments)
+                     appearance (CName) : yennefer_no_pendant
+                     attachments (array:SAppearanceAttachment)
+                         0 (SAppearanceAttachment)
+@@ -17595,8 +17661,26 @@
+                             childName (CName) : breast_constraint_type_1
+                             Data (CBufferVLQInt32:IReferencable)
+                                 0 (CAnimatedAttachment)
++                11 (SAppearanceAttachments)
++                    appearance (CName) : yennefer_naked_no_hair_arabic
++                    attachments (array:SAppearanceAttachment)
++                        0 (SAppearanceAttachment)
++                            parentClass (CName) : CMovingPhysicalAgentComponent
++                            parentName (CName) : woman_base
++                            childClass (CName) : CMimicComponent
++                            childName (CName) : mimic component
++                            Data (CBufferVLQInt32:IReferencable)
++                                0 (CAnimatedAttachment)
++                                    parentSlotName (CName) : torso2
++                        1 (SAppearanceAttachment)
++                            parentClass (CName) : CMovingPhysicalAgentComponent
++                            parentName (CName) : woman_base
++                            childClass (CName) : CAnimDangleComponent
++                            childName (CName) : breast_constraint_type_1
++                            Data (CBufferVLQInt32:IReferencable)
++                                0 (CAnimatedAttachment)
+                 12 (SAppearanceAttachments)
+-                    appearance (CName) : yennefer_travel_outfit
++                    appearance (CName) : yennefer_naked
+                     attachments (array:SAppearanceAttachment)
+                         0 (SAppearanceAttachment)
+                             parentClass (CName) : CMovingPhysicalAgentComponent
+@@ -17610,31 +17694,10 @@
+                             parentClass (CName) : CMovingPhysicalAgentComponent
+                             parentName (CName) : woman_base
+                             childClass (CName) : CAnimDangleComponent
+-                            childName (CName) : dyng_pendant_01_wa__yennefer
++                            childName (CName) : breast_constraint_type_1
+                             Data (CBufferVLQInt32:IReferencable)
+                                 0 (CAnimatedAttachment)
+                         2 (SAppearanceAttachment)
+-                            parentClass (CName) : CMovingPhysicalAgentComponent
+-                            parentName (CName) : woman_base
+-                            childClass (CName) : CMeshComponent
+-                            childName (CName) : body_02_wa__yennefer
+-                            Data (CBufferVLQInt32:IReferencable)
+-                                0 (CMeshSkinningAttachment)
+-                        3 (SAppearanceAttachment)
+-                            parentClass (CName) : CMovingPhysicalAgentComponent
+-                            parentName (CName) : woman_base
+-                            childClass (CName) : CMeshComponent
+-                            childName (CName) : fur_01_wa__yennefer
+-                            Data (CBufferVLQInt32:IReferencable)
+-                                0 (CMeshSkinningAttachment)
+-                        4 (SAppearanceAttachment)
+-                            parentClass (CName) : CMovingPhysicalAgentComponent
+-                            parentName (CName) : woman_base
+-                            childClass (CName) : CMeshComponent
+-                            childName (CName) : n_01_wa__yennefer_body
+-                            Data (CBufferVLQInt32:IReferencable)
+-                                0 (CMeshSkinningAttachment)
+-                        5 (SAppearanceAttachment)
+                             parentClass (CName) : CMovingPhysicalAgentComponent
+                             parentName (CName) : woman_base
+                             childClass (CName) : CAnimDangleComponent
+@@ -17642,9 +17705,16 @@
+                             Data (CBufferVLQInt32:IReferencable)
+                                 0 (CAnimatedAttachment)
+                 13 (SAppearanceAttachments)
+-                    appearance (CName) : yennefer_naked_no_hair_arabic
++                    appearance (CName) : yennefer_hooded_02
+                     attachments (array:SAppearanceAttachment)
+                         0 (SAppearanceAttachment)
++                            parentClass (CName) : CMovingPhysicalAgentComponent
++                            parentName (CName) : woman_base
++                            childClass (CName) : CAnimDangleComponent
++                            childName (CName) : c_03_wa__yennefer_dyng
++                            Data (CBufferVLQInt32:IReferencable)
++                                0 (CAnimatedAttachment)
++                        1 (SAppearanceAttachment)
+                             parentClass (CName) : CMovingPhysicalAgentComponent
+                             parentName (CName) : woman_base
+                             childClass (CName) : CMimicComponent
+@@ -17652,17 +17722,24 @@
+                             Data (CBufferVLQInt32:IReferencable)
+                                 0 (CAnimatedAttachment)
+                                     parentSlotName (CName) : torso2
+-                        1 (SAppearanceAttachment)
++                        2 (SAppearanceAttachment)
+                             parentClass (CName) : CMovingPhysicalAgentComponent
+                             parentName (CName) : woman_base
+                             childClass (CName) : CAnimDangleComponent
+-                            childName (CName) : breast_constraint_type_1
++                            childName (CName) : dyng_pendant_01_wa__yennefer
+                             Data (CBufferVLQInt32:IReferencable)
+                                 0 (CAnimatedAttachment)
+                 14 (SAppearanceAttachments)
+-                    appearance (CName) : yennefer_naked
++                    appearance (CName) : yennefer_nilf_patrol
+                     attachments (array:SAppearanceAttachment)
+                         0 (SAppearanceAttachment)
++                            parentClass (CName) : CMovingPhysicalAgentComponent
++                            parentName (CName) : woman_base
++                            childClass (CName) : CAnimDangleComponent
++                            childName (CName) : c_03_wa__yennefer_dyng
++                            Data (CBufferVLQInt32:IReferencable)
++                                0 (CAnimatedAttachment)
++                        1 (SAppearanceAttachment)
+                             parentClass (CName) : CMovingPhysicalAgentComponent
+                             parentName (CName) : woman_base
+                             childClass (CName) : CMimicComponent
+@@ -17670,28 +17747,42 @@
+                             Data (CBufferVLQInt32:IReferencable)
+                                 0 (CAnimatedAttachment)
+                                     parentSlotName (CName) : torso2
+-                        1 (SAppearanceAttachment)
+-                            parentClass (CName) : CMovingPhysicalAgentComponent
+-                            parentName (CName) : woman_base
+-                            childClass (CName) : CAnimDangleComponent
+-                            childName (CName) : breast_constraint_type_1
+-                            Data (CBufferVLQInt32:IReferencable)
+-                                0 (CAnimatedAttachment)
+                         2 (SAppearanceAttachment)
+                             parentClass (CName) : CMovingPhysicalAgentComponent
+                             parentName (CName) : woman_base
+                             childClass (CName) : CAnimDangleComponent
+-                            childName (CName) : c_03_wa__yennefer_dyng
++                            childName (CName) : dyng_pendant_01_wa__yennefer
+                             Data (CBufferVLQInt32:IReferencable)
+                                 0 (CAnimatedAttachment)
++                        3 (SAppearanceAttachment)
++                            parentClass (CName) : CMovingPhysicalAgentComponent
++                            parentName (CName) : woman_base
++                            childClass (CName) : CMeshComponent
++                            childName (CName) : body_02_wa__yennefer
++                            Data (CBufferVLQInt32:IReferencable)
++                                0 (CMeshSkinningAttachment)
++                        4 (SAppearanceAttachment)
++                            parentClass (CName) : CMovingPhysicalAgentComponent
++                            parentName (CName) : woman_base
++                            childClass (CName) : CMeshComponent
++                            childName (CName) : fur_01_wa__yennefer
++                            Data (CBufferVLQInt32:IReferencable)
++                                0 (CMeshSkinningAttachment)
++                        5 (SAppearanceAttachment)
++                            parentClass (CName) : CMovingPhysicalAgentComponent
++                            parentName (CName) : woman_base
++                            childClass (CName) : CMeshComponent
++                            childName (CName) : n_01_wa__yennefer_body
++                            Data (CBufferVLQInt32:IReferencable)
++                                0 (CMeshSkinningAttachment)
+                 15 (SAppearanceAttachments)
+-                    appearance (CName) : yennefer_hooded_02
++                    appearance (CName) : __q401_yennefer_puke
+                     attachments (array:SAppearanceAttachment)
+                         0 (SAppearanceAttachment)
+                             parentClass (CName) : CMovingPhysicalAgentComponent
+                             parentName (CName) : woman_base
+                             childClass (CName) : CAnimDangleComponent
+-                            childName (CName) : c_03_wa__yennefer_dyng
++                            childName (CName) : dyng_pendant_01_wa__yennefer
+                             Data (CBufferVLQInt32:IReferencable)
+                                 0 (CAnimatedAttachment)
+                         1 (SAppearanceAttachment)
+@@ -17706,9 +17797,16 @@
+                             parentClass (CName) : CMovingPhysicalAgentComponent
+                             parentName (CName) : woman_base
+                             childClass (CName) : CAnimDangleComponent
+-                            childName (CName) : dyng_pendant_01_wa__yennefer
++                            childName (CName) : c_03_wa__yennefer_dyng
+                             Data (CBufferVLQInt32:IReferencable)
+                                 0 (CAnimatedAttachment)
++                        3 (SAppearanceAttachment)
++                            parentClass (CName) : CMovingPhysicalAgentComponent
++                            parentName (CName) : woman_base
++                            childClass (CName) : CMeshComponent
++                            childName (CName) : collar_02_wa__yennefer
++                            Data (CBufferVLQInt32:IReferencable)
++                                0 (CMeshSkinningAttachment)
+     CMovingPhysicalAgentComponent #3 (CMovingPhysicalAgentComponent) : woman_base
+         CMovingPhysicalAgentComponent (CMovingPhysicalAgentComponent)
+             guid (CGUID) : 03769f20-805b-4267-af65-3d0e0436f104
+@@ -17742,17 +17840,6 @@
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "woman_average_shadowmesh"
+             isStreamed (Bool) : false
+-            boundingBox (Box)
+-                Min (Vector)
+-                    X (Float) : 340282300000000000000000000000000000000.0000
+-                    Y (Float) : 340282300000000000000000000000000000000.0000
+-                    Z (Float) : 340282300000000000000000000000000000000.0000
+-                    W (Float) : 1.0000
+-                Max (Vector)
+-                    X (Float) : NAN
+-                    Y (Float) : NAN
+-                    Z (Float) : NAN
+-                    W (Float) : 1.0000
+             drawableFlags (EDrawableFlags) : DF_CastShadows,DF_CastShadowsWhenNotVisible,DF_IsCharacterShadowFallback
+             lightChannels (ELightChannel) : LC_Characters
+             mesh (handle:CMesh) : characters/models/common/shadowmesh/woman_average_shadowmesh.w2mesh
+@@ -17766,7 +17853,7 @@
+         CDynamicColliderComponent (CDynamicColliderComponent)
+             transform (EngineTransform)
+                 Scale_x (Float) : 1.0000
+-                Scale_y (Float) : 1.8000
++                Scale_y (Float) : 1.6000
+                 Scale_z (Float) : 1.0000
+                 X (Float) : 0.0000
+                 Y (Float) : 0.2000
+@@ -17795,17 +17882,6 @@
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "h_wa__neck_transition"
+             isStreamed (Bool) : false
+-            boundingBox (Box)
+-                Min (Vector)
+-                    X (Float) : 340282300000000000000000000000000000000.0000
+-                    Y (Float) : 340282300000000000000000000000000000000.0000
+-                    Z (Float) : 340282300000000000000000000000000000000.0000
+-                    W (Float) : 1.0000
+-                Max (Vector)
+-                    X (Float) : NAN
+-                    Y (Float) : NAN
+-                    Z (Float) : NAN
+-                    W (Float) : 1.0000
+             lightChannels (ELightChannel) : LC_Characters
+             mesh (handle:CMesh) : characters/models/common/woman_average/body/model/h_wa__neck_transition.w2mesh
+     CHardAttachment #11 (CHardAttachment) : torso2

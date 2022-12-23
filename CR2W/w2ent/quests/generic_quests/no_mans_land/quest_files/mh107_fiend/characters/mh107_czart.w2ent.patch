@@ -1,0 +1,1565 @@
+ 1 file changed, 708 insertions(+), 296 deletions(-)
+
+diff --git 1.32/quests/generic_quests/no_mans_land/quest_files/mh107_fiend/characters/mh107_czart.w2ent.txt 4.00/quests/generic_quests/no_mans_land/quest_files/mh107_fiend/characters/mh107_czart.w2ent.txt
+index 7fa01eb..d36c759 100644
+--- 1.32/quests/generic_quests/no_mans_land/quest_files/mh107_fiend/characters/mh107_czart.w2ent.txt
++++ 4.00/quests/generic_quests/no_mans_land/quest_files/mh107_fiend/characters/mh107_czart.w2ent.txt
+@@ -153,31 +153,31 @@
+                         Yaw (Float) : 0.0000
+                         Roll (Float) : 0.0000
+             templateParams (array:ptr:CEntityTemplateParam)
+-                0 (ptr:CEntityTemplateParam) : CAIProfile #34
+-                1 (ptr:CEntityTemplateParam) : CInventoryDefinition #35
+-                2 (ptr:CEntityTemplateParam) : CCharacterStatsParam #38
+-                3 (ptr:CEntityTemplateParam) : CAnimGlobalParam #39
+-                4 (ptr:CEntityTemplateParam) : CFocusSoundParam #40
+-                5 (ptr:CEntityTemplateParam) : CAIProfile #41
+-                6 (ptr:CEntityTemplateParam) : CCharacterStatsParam #42
+-                7 (ptr:CEntityTemplateParam) : CInventoryDefinition #43
+-                8 (ptr:CEntityTemplateParam) : CR4LootParam #54
+-                9 (ptr:CEntityTemplateParam) : CEntityDismemberment #55
+-                10 (ptr:CEntityTemplateParam) : CAnimGlobalParam #56
+-                11 (ptr:CEntityTemplateParam) : CAnimBehaviorsParam #57
+-                12 (ptr:CEntityTemplateParam) : CAIProfile #58
+-                13 (ptr:CEntityTemplateParam) : CAnimAnimsetsParam #61
+-                14 (ptr:CEntityTemplateParam) : CAutoEffectsParam #62
+-                15 (ptr:CEntityTemplateParam) : CAttackRangeParam #63
+-                16 (ptr:CEntityTemplateParam) : CMonsterParam #69
+-                17 (ptr:CEntityTemplateParam) : CCharacterControllerParam #70
+-                18 (ptr:CEntityTemplateParam) : CBuffImmunityParam #71
+-                19 (ptr:CEntityTemplateParam) : CAnimConstraintsParam #72
+-                20 (ptr:CEntityTemplateParam) : CAIBaseTreeTemplateParam #73
+-                21 (ptr:CEntityTemplateParam) : CEntityDismemberment #120
+-                22 (ptr:CEntityTemplateParam) : CFocusSoundParam #123
+-                23 (ptr:CEntityTemplateParam) : CAnimGlobalParam #124
+-                24 (ptr:CEntityTemplateParam) : CBloodTrailEffect #125
++                0 (ptr:CEntityTemplateParam) : CAIProfile #35
++                1 (ptr:CEntityTemplateParam) : CInventoryDefinition #36
++                2 (ptr:CEntityTemplateParam) : CCharacterStatsParam #39
++                3 (ptr:CEntityTemplateParam) : CAnimGlobalParam #40
++                4 (ptr:CEntityTemplateParam) : CFocusSoundParam #41
++                5 (ptr:CEntityTemplateParam) : CAIProfile #42
++                6 (ptr:CEntityTemplateParam) : CCharacterStatsParam #43
++                7 (ptr:CEntityTemplateParam) : CInventoryDefinition #44
++                8 (ptr:CEntityTemplateParam) : CR4LootParam #55
++                9 (ptr:CEntityTemplateParam) : CEntityDismemberment #56
++                10 (ptr:CEntityTemplateParam) : CAnimGlobalParam #57
++                11 (ptr:CEntityTemplateParam) : CAnimBehaviorsParam #58
++                12 (ptr:CEntityTemplateParam) : CAIProfile #59
++                13 (ptr:CEntityTemplateParam) : CAnimAnimsetsParam #62
++                14 (ptr:CEntityTemplateParam) : CAutoEffectsParam #63
++                15 (ptr:CEntityTemplateParam) : CAttackRangeParam #64
++                16 (ptr:CEntityTemplateParam) : CMonsterParam #70
++                17 (ptr:CEntityTemplateParam) : CCharacterControllerParam #71
++                18 (ptr:CEntityTemplateParam) : CBuffImmunityParam #72
++                19 (ptr:CEntityTemplateParam) : CAnimConstraintsParam #73
++                20 (ptr:CEntityTemplateParam) : CAIBaseTreeTemplateParam #74
++                21 (ptr:CEntityTemplateParam) : CEntityDismemberment #121
++                22 (ptr:CEntityTemplateParam) : CFocusSoundParam #124
++                23 (ptr:CEntityTemplateParam) : CAnimGlobalParam #125
++                24 (ptr:CEntityTemplateParam) : CBloodTrailEffect #126
+             flatCompiledData (array:Uint8) : # array:2,0,Uint8
+                 W3MonsterHuntNPC #0 (W3MonsterHuntNPC) : PreviewEntity
+                     W3MonsterHuntNPC (W3MonsterHuntNPC)
+@@ -205,7 +205,8 @@
+                             13 (ptr:CComponent) : CPhantomComponent #23
+                             14 (ptr:CComponent) : CGameplayEffectsComponent #31
+                             15 (ptr:CComponent) : CPhantomComponent #25
+-                            16 (ptr:CComponent) : CSoundEmitterComponent #32
++                            16 (ptr:CComponent) : CWetnessComponent #32
++                            17 (ptr:CComponent) : CSoundEmitterComponent #33
+                         BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                             0 (SEntityBufferType1)
+                                 ComponentName (CName) : 
+@@ -248,6 +249,9 @@
+                             1 (SBehaviorGraphInstanceSlot)
+                                 instanceName (CName) : Cutscene
+                                 graph (handle:CBehaviorGraph) : gameplay/behaviors/cutscene_graph.w2beh
++                            2 (SBehaviorGraphInstanceSlot)
++                                instanceName (CName) : StoryScene
++                                graph (handle:CBehaviorGraph) : gameplay/behaviors/pc/behaviorgraph/pc_dialog.w2beh
+                         steeringBehavior (handle:CMoveSteeringBehavior) : gameplay/behaviors/npc/steering/animation_steering_bies.w2steer
+                 CHardAttachment #2 (CHardAttachment) : pelvis
+                     CHardAttachment (CHardAttachment)
+@@ -338,7 +342,7 @@
+                 CDynamicColliderComponent #12 (CDynamicColliderComponent) : pelvis_coll
+                     CDynamicColliderComponent (CDynamicColliderComponent)
+                         transform (EngineTransform)
+-                            Scale_x (Float) : 2.0000
++                            Scale_x (Float) : 1.5000
+                             Scale_y (Float) : 2.7000
+                             Scale_z (Float) : 1.4000
+                             X (Float) : -0.8000
+@@ -366,9 +370,9 @@
+                 CDynamicColliderComponent #15 (CDynamicColliderComponent) : r_hand_coll
+                     CDynamicColliderComponent (CDynamicColliderComponent)
+                         transform (EngineTransform)
+-                            Scale_x (Float) : 1.5000
+-                            Scale_y (Float) : 1.5000
+-                            Scale_z (Float) : 1.5000
++                            Scale_x (Float) : 1.1000
++                            Scale_y (Float) : 1.1000
++                            Scale_z (Float) : 1.1000
+                         transformParent (ptr:CHardAttachment) : CHardAttachment #14
+                         guid (CGUID) : a7be6c79-61c2-4b97-8ed7-0a99ef697a66
+                         AttachmentsReference (array:handle:IAttachment)
+@@ -390,9 +394,9 @@
+                 CDynamicColliderComponent #18 (CDynamicColliderComponent) : l_hand_coll
+                     CDynamicColliderComponent (CDynamicColliderComponent)
+                         transform (EngineTransform)
+-                            Scale_x (Float) : 1.5000
+-                            Scale_y (Float) : 1.5000
+-                            Scale_z (Float) : 1.5000
++                            Scale_x (Float) : 1.1000
++                            Scale_y (Float) : 1.1000
++                            Scale_z (Float) : 1.1000
+                         transformParent (ptr:CHardAttachment) : CHardAttachment #17
+                         guid (CGUID) : 869b8659-ebe4-4cb1-939b-d56716dc44b8
+                         AttachmentsReference (array:handle:IAttachment)
+@@ -503,131 +507,136 @@
+                         attachmentReplacements (SAttachmentReplacements)
+                             replacements (array:SAttachmentReplacement)
+                                 0 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CInventoryComponent0_A88DE8C5-42FD410B-A9330683-F86A3660
++                                    oldName (CName) : proxy_CInventoryComponent0_C1177A86-43935D49-718E1382-E8919C05
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CInventoryComponent0
+                                     newClass (CName) : CInventoryComponent
+                                 1 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_torso3effect_59F9E644-40D80A3C-8F8ACBA0-67D7E464
++                                    oldName (CName) : proxy_torso3effect_F7467C28-4C854317-19BE36AD-924BA10C
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : torso3effect
+                                     newClass (CName) : CEffectDummyComponent
+                                 2 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_pelvis_coll_C2B0B314-4C0ED068-B0F07EA7-40CAE6CB
++                                    oldName (CName) : proxy_pelvis_coll_48F30631-48F5CEC3-BE08D8A6-259F36F2
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : pelvis_coll
+                                     newClass (CName) : CDynamicColliderComponent
+                                 3 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_r_hand_coll_B76717E4-48FFFBC3-03109BAA-96FB789B
++                                    oldName (CName) : proxy_r_hand_coll_B4944F17-4A77ECBC-8C35438F-204C414C
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : r_hand_coll
+                                     newClass (CName) : CDynamicColliderComponent
+                                 4 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_l_hand_coll_DB76A2FC-47DE9C94-5E32AF82-56814AD0
++                                    oldName (CName) : proxy_l_hand_coll_EA064631-43880242-45617385-A47439D6
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : l_hand_coll
+                                     newClass (CName) : CDynamicColliderComponent
+                                 5 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CCreatureDataComponent0_A53E8168-48C6BE4C-47080A9F-DE2B7954
++                                    oldName (CName) : proxy_CCreatureDataComponent0_8F748878-4816D5D5-4CC9A49F-16EAE552
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CCreatureDataComponent0
+                                     newClass (CName) : CCreatureDataComponent
+                                 6 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CDismembermentComponent0_31A51E5F-4B3C062D-0E3D7FA5-E4C3A953
++                                    oldName (CName) : proxy_CDismembermentComponent0_63C85109-403D64AF-E36E00BE-835D4F3D
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CDismembermentComponent0
+                                     newClass (CName) : CDismembermentComponent
+                                 7 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_ActorCollision_7DB3ADE2-44F082C7-4199659A-D202C389
++                                    oldName (CName) : proxy_ActorCollision_5B4029A9-423373B3-BC3BB0AD-84556C3B
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : ActorCollision
+                                     newClass (CName) : CPhantomComponent
+                                 8 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_ObstacleCollision_D9886F17-427D29A2-51F38AA3-C7D92800
++                                    oldName (CName) : proxy_ObstacleCollision_F4DF92B5-450232BC-08121EBE-3A886881
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : ObstacleCollision
+                                     newClass (CName) : CPhantomComponent
+                                 9 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CGameplayEffectsComponent0_6E1E5258-447CBE5D-700AADA1-C6BDC621
++                                    oldName (CName) : proxy_CGameplayEffectsComponent0_6590525D-42F2FB59-464B688E-F954CED9
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CGameplayEffectsComponent0
+                                     newClass (CName) : CGameplayEffectsComponent
+                                 10 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CSoundEmitterComponent_01154ED8-40EADD09-98D0E986-31642A67
++                                    oldName (CName) : proxy_ObstacleProbe_74E16B2B-4A2D1F68-F8F34984-3148952A
+                                     oldClass (CName) : CExternalProxyComponent
+-                                    newName (CName) : CSoundEmitterComponent
+-                                    newClass (CName) : CSoundEmitterComponent
++                                    newName (CName) : ObstacleProbe
++                                    newClass (CName) : CPhantomComponent
+                                 11 (SAttachmentReplacement)
++                                    oldName (CName) : proxy_CSoundEmitterComponent_672FC7E5-4B8B7684-EEEB8CA7-FC40A97B
++                                    oldClass (CName) : CExternalProxyComponent
++                                    newName (CName) : CSoundEmitterComponent
++                                    newClass (CName) : CSoundEmitterComponent
++                                12 (SAttachmentReplacement)
+                                     oldName (CName) : proxy_CEffectDummyComponent1_67169239-4E24801C-0530EEB9-A5576454
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CEffectDummyComponent1
+                                     newClass (CName) : CEffectDummyComponent
+-                                12 (SAttachmentReplacement)
++                                13 (SAttachmentReplacement)
+                                     oldName (CName) : proxy_CPhantomComponent0_DC7517C8-4473B155-EC46DCB1-15ED0561
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CPhantomComponent0
+                                     newClass (CName) : CPhantomComponent
+-                                13 (SAttachmentReplacement)
++                                14 (SAttachmentReplacement)
+                                     oldName (CName) : proxy_CCreatureDataComponent1_F5707C6A-49EC1523-E2CA9B86-6AB416C4
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CCreatureDataComponent1
+                                     newClass (CName) : CCreatureDataComponent
+-                                14 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_i_01__czart_2F861E4E-42298B17-6E4A4993-9D0E95C5
+-                                    oldClass (CName) : CExternalProxyComponent
+-                                    newName (CName) : proxy_i_01__czart_C2958AB2-4FFB9A15-0FF7D79F-D4A587E3
+-                                    newClass (CName) : CExternalProxyComponent
+                                 15 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_t_02__czart_94DB1005-44DDA69F-DD8C3C81-3504D04A
++                                    oldName (CName) : proxy_i_01__czart_2F861E4E-42298B17-6E4A4993-9D0E95C5
+                                     oldClass (CName) : CExternalProxyComponent
+-                                    newName (CName) : proxy_t_02__czart_E9D7A7B4-4FFA46E0-7376BEB4-C48CFC21
++                                    newName (CName) : proxy_i_01__czart_2146DE45-4E22D4E8-A11F24AD-C8E27977
+                                     newClass (CName) : CExternalProxyComponent
+                                 16 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_torso3effect_A57A2019-46690E9E-29CFC4B1-9770D739
++                                    oldName (CName) : proxy_t_02__czart_94DB1005-44DDA69F-DD8C3C81-3504D04A
+                                     oldClass (CName) : CExternalProxyComponent
+-                                    newName (CName) : torso3effect
+-                                    newClass (CName) : CEffectDummyComponent
++                                    newName (CName) : proxy_t_02__czart_4387FD42-4D5B8643-AD553D8A-DA9BFAED
++                                    newClass (CName) : CExternalProxyComponent
+                                 17 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_pelvis_coll_22800190-49633079-AA1653A4-7642CAD5
++                                    oldName (CName) : proxy_torso3effect_A57A2019-46690E9E-29CFC4B1-9770D739
+                                     oldClass (CName) : CExternalProxyComponent
+-                                    newName (CName) : pelvis_coll
+-                                    newClass (CName) : CDynamicColliderComponent
++                                    newName (CName) : torso3effect
++                                    newClass (CName) : CEffectDummyComponent
+                                 18 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_r_hand_coll_A7CF83A7-48FF5666-2909AE9F-CF43D754
++                                    oldName (CName) : proxy_pelvis_coll_22800190-49633079-AA1653A4-7642CAD5
+                                     oldClass (CName) : CExternalProxyComponent
+-                                    newName (CName) : r_hand_coll
++                                    newName (CName) : pelvis_coll
+                                     newClass (CName) : CDynamicColliderComponent
+                                 19 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_l_hand_coll_844BB3E2-4970EE31-0390F79C-0043DFAD
++                                    oldName (CName) : proxy_r_hand_coll_A7CF83A7-48FF5666-2909AE9F-CF43D754
+                                     oldClass (CName) : CExternalProxyComponent
+-                                    newName (CName) : l_hand_coll
++                                    newName (CName) : r_hand_coll
+                                     newClass (CName) : CDynamicColliderComponent
+                                 20 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CCreatureDataComponent0_1E23F20C-4E5A9C79-75ED5B9F-A0CD6AEB
++                                    oldName (CName) : proxy_l_hand_coll_844BB3E2-4970EE31-0390F79C-0043DFAD
+                                     oldClass (CName) : CExternalProxyComponent
+-                                    newName (CName) : CCreatureDataComponent0
+-                                    newClass (CName) : CCreatureDataComponent
++                                    newName (CName) : l_hand_coll
++                                    newClass (CName) : CDynamicColliderComponent
+                                 21 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CDismembermentComponent0_1B0ADCA1-465A7C71-4D1EE7B7-DF33ADCB
++                                    oldName (CName) : proxy_CCreatureDataComponent0_1E23F20C-4E5A9C79-75ED5B9F-A0CD6AEB
+                                     oldClass (CName) : CExternalProxyComponent
+-                                    newName (CName) : CDismembermentComponent0
+-                                    newClass (CName) : CDismembermentComponent
++                                    newName (CName) : CCreatureDataComponent0
++                                    newClass (CName) : CCreatureDataComponent
+                                 22 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_ActorCollision_17CAE4D7-4CB995DE-14DCC8A2-97E1483C
++                                    oldName (CName) : proxy_CDismembermentComponent0_1B0ADCA1-465A7C71-4D1EE7B7-DF33ADCB
+                                     oldClass (CName) : CExternalProxyComponent
+-                                    newName (CName) : ActorCollision
+-                                    newClass (CName) : CPhantomComponent
++                                    newName (CName) : CDismembermentComponent0
++                                    newClass (CName) : CDismembermentComponent
+                                 23 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_ObstacleCollision_5F49C884-49E70ED6-6735E99A-5EACD852
++                                    oldName (CName) : proxy_ActorCollision_17CAE4D7-4CB995DE-14DCC8A2-97E1483C
+                                     oldClass (CName) : CExternalProxyComponent
+-                                    newName (CName) : ObstacleCollision
++                                    newName (CName) : ActorCollision
+                                     newClass (CName) : CPhantomComponent
+                                 24 (SAttachmentReplacement)
+-                                    oldName (CName) : proxy_CGameplayEffectsComponent0_78143247-41ED11D2-31789FB5-9206C6B5
++                                    oldName (CName) : proxy_ObstacleCollision_5F49C884-49E70ED6-6735E99A-5EACD852
+                                     oldClass (CName) : CExternalProxyComponent
+-                                    newName (CName) : CGameplayEffectsComponent0
+-                                    newClass (CName) : CGameplayEffectsComponent
++                                    newName (CName) : ObstacleCollision
++                                    newClass (CName) : CPhantomComponent
+                                 25 (SAttachmentReplacement)
++                                    oldName (CName) : proxy_CGameplayEffectsComponent0_78143247-41ED11D2-31789FB5-9206C6B5
++                                    oldClass (CName) : CExternalProxyComponent
++                                    newName (CName) : CGameplayEffectsComponent0
++                                    newClass (CName) : CGameplayEffectsComponent
++                                26 (SAttachmentReplacement)
+                                     oldName (CName) : proxy_CSoundEmitterComponent_014062F5-4609FC0F-8A6C1AA8-609388F2
+                                     oldClass (CName) : CExternalProxyComponent
+                                     newName (CName) : CSoundEmitterComponent
+@@ -688,7 +697,16 @@
+                         name (String) : "CGameplayEffectsComponent0"
+                         graphPositionX (Int16) : -17
+                         graphPositionY (Int16) : -54
+-                CSoundEmitterComponent #32 (CSoundEmitterComponent) : CSoundEmitterComponent
++                CWetnessComponent #32 (CWetnessComponent) : CWetnessComponent0
++                    CWetnessComponent (CWetnessComponent)
++                        guid (CGUID) : c4714d4d-2eec-4835-887b-6b8854f45e8c
++                        AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++                        AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++                        name (String) : "CWetnessComponent0"
++                        graphPositionX (Int16) : 153
++                        graphPositionY (Int16) : 44
++                        blendOutFromRain (Float) : 20.0000
++                CSoundEmitterComponent #33 (CSoundEmitterComponent) : CSoundEmitterComponent
+                     guid (CGUID) : 80008102-2c44-4959-b7a4-75fdf9e8ffaf
+                     AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+                     AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -6904,6 +6922,381 @@
+                                     Z (Float) : 0.0000
+                                     W (Float) : 0.0000
+                                 parentSlotName (CName) : head
++                24 (CEntityTemplateCookedEffect)
++                    name (CName) : water_death
++                    buffer (SharedDataBuffer)
++                        Bufferdata (CByteArray) : 1497 bytes
++                        CFXDefinition #0 (CFXDefinition) : water_death
++                            CFXDefinition (CFXDefinition)
++                                trackGroups (array:ptr:CFXTrackGroup)
++                                    0 (ptr:CFXTrackGroup) : CFXTrackGroup #1
++                                length (Float) : 10.8133
++                                loopStart (Float) : 0.1515
++                                loopEnd (Float) : 0.3553
++                                name (CName) : water_death
++                        CFXTrackGroup #1 (CFXTrackGroup) : fx
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "fx"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #2
++                                isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 163
++                                    Green (Uint8) : 169
++                                    Blue (Uint8) : 167
++                                    Alpha (Uint8) : 100
++                        CFXTrack #2 (CFXTrack) : fx
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #3
++                                name (String) : "fx"
++                        CFXTrackItemParticles #3 (CFXTrackItemParticles) : Particles
++                            CFXTrackItemParticles (CFXTrackItemParticles)
++                                timeBegin (Float) : 0.0002
++                                timeDuration (Float) : 10.5552
++                                buffername (CName) : Particles
++                                count (CDynamicInt) : 3
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    1 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    2 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                particleSystem (soft:CParticleSystem) : fx/blood/standard_hit/water_blood_death.w2p
++                                spawner (ptr:IFXSpawner) : CFXWaterSpawner #4
++                        CFXWaterSpawner #4 (CFXWaterSpawner) : 
++                            CFXWaterSpawner (CFXWaterSpawner) : <CFXWaterSpawner>CFXWaterSpawner
++                25 (CEntityTemplateCookedEffect)
++                    name (CName) : water_hit_blood
++                    buffer (SharedDataBuffer)
++                        Bufferdata (CByteArray) : 1495 bytes
++                        CFXDefinition #0 (CFXDefinition) : water_hit_blood
++                            CFXDefinition (CFXDefinition)
++                                trackGroups (array:ptr:CFXTrackGroup)
++                                    0 (ptr:CFXTrackGroup) : CFXTrackGroup #1
++                                length (Float) : 10.8133
++                                loopStart (Float) : 0.1515
++                                loopEnd (Float) : 0.3553
++                                name (CName) : water_hit_blood
++                        CFXTrackGroup #1 (CFXTrackGroup) : fx
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "fx"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #2
++                                isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 163
++                                    Green (Uint8) : 169
++                                    Blue (Uint8) : 167
++                                    Alpha (Uint8) : 100
++                        CFXTrack #2 (CFXTrack) : fx
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #3
++                                name (String) : "fx"
++                        CFXTrackItemParticles #3 (CFXTrackItemParticles) : Particles
++                            CFXTrackItemParticles (CFXTrackItemParticles)
++                                timeBegin (Float) : 0.0002
++                                timeDuration (Float) : 10.5552
++                                buffername (CName) : Particles
++                                count (CDynamicInt) : 3
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    1 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                    2 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 1.0000
++                                        5 (Float) : 1.0000
++                                        6 (Float) : 1.0000
++                                        7 (Float) : 1.0000
++                                        8 (Float) : 1.0000
++                                        9 (Float) : 1.0000
++                                        10 (Float) : 1.0000
++                                        11 (Float) : 1.0000
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                particleSystem (soft:CParticleSystem) : fx/blood/standard_hit/water_blood.w2p
++                                spawner (ptr:IFXSpawner) : CFXWaterSpawner #4
++                        CFXWaterSpawner #4 (CFXWaterSpawner) : 
++                            CFXWaterSpawner (CFXWaterSpawner) : <CFXWaterSpawner>CFXWaterSpawner
++                26 (CEntityTemplateCookedEffect)
++                    name (CName) : axii_confusion
++                    buffer (SharedDataBuffer)
++                        Bufferdata (CByteArray) : 3237 bytes
++                        CFXDefinition #0 (CFXDefinition) : axii_confusion
++                            CFXDefinition (CFXDefinition)
++                                trackGroups (array:ptr:CFXTrackGroup)
++                                    0 (ptr:CFXTrackGroup) : CFXTrackGroup #1
++                                    1 (ptr:CFXTrackGroup) : CFXTrackGroup #5
++                                    2 (ptr:CFXTrackGroup) : CFXTrackGroup #10
++                                length (Float) : 4.0121
++                                loopStart (Float) : 0.6277
++                                loopEnd (Float) : 0.9074
++                                name (CName) : axii_confusion
++                                showDistance (Float) : 70.0000
++                                isLooped (Bool) : true
++                        CFXTrackGroup #1 (CFXTrackGroup) : sounds
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "sounds"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #2
++                                isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 245
++                                    Green (Uint8) : 166
++                                    Blue (Uint8) : 165
++                                    Alpha (Uint8) : 100
++                        CFXTrack #2 (CFXTrack) : sfx
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemSoundEvent #3
++                                    1 (ptr:CFXTrackItem) : CFXTrackItemSoundEvent #4
++                                name (String) : "sfx"
++                        CFXTrackItemSoundEvent #3 (CFXTrackItemSoundEvent) : 
++                            CFXTrackItemSoundEvent (CFXTrackItemSoundEvent)
++                                timeBegin (Float) : 0.0010
++                                buffername (CName) : 
++                                count (CDynamicInt) : 0
++                                unk (Uint8) : 0
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat) : 0
++                                soundEventName (StringAnsi) : sign_axii_target_confusion_loop
++                        CFXTrackItemSoundEvent #4 (CFXTrackItemSoundEvent) : 
++                            CFXTrackItemSoundEvent (CFXTrackItemSoundEvent)
++                                timeBegin (Float) : 1.0107
++                                buffername (CName) : 
++                                count (CDynamicInt) : 0
++                                unk (Uint8) : 0
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat) : 0
++                                soundEventName (StringAnsi) : sign_axii_target_confusion_loop_end
++                        CFXTrackGroup #5 (CFXTrackGroup) : light
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "light"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #6
++                                isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 252
++                                    Green (Uint8) : 206
++                                    Blue (Uint8) : 223
++                                    Alpha (Uint8) : 100
++                        CFXTrack #6 (CFXTrack) : f
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemFlare #7
++                                name (String) : "f"
++                        CFXTrackItemFlare #7 (CFXTrackItemFlare) : 
++                            CFXTrackItemFlare (CFXTrackItemFlare)
++                                timeBegin (Float) : 5.2221
++                                timeDuration (Float) : 1.9822
++                                buffername (CName) : 
++                                count (CDynamicInt) : 1
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        1 (Float) : 0.6423
++                                        2 (Float) : 1.1768
++                                        3 (Float) : 1.4261
++                                        4 (Float) : 1.6754
++                                        5 (Float) : 1.8000
++                                        6 (Float) : 1.8000
++                                        7 (Float) : 1.8000
++                                        8 (Float) : 1.8000
++                                        9 (Float) : 1.4111
++                                        10 (Float) : 0.9407
++                                        11 (Float) : 0.4704
++                                        12 (Float) : 0.0000
++                                        13 (Float) : 0.0000
++                                        14 (Float) : 0.0000
++                                        15 (Float) : 0.0000
++                                material (handle:CMaterialInstance) : CMaterialInstance #8
++                                parameters (SFlareParameters)
++                                    occlusionExtent (Float) : 0.3000
++                                    flareRadius (Float) : 1.3500
++                                    fadeInMaxSpeed (Float) : 122.0000
++                                    fadeInAccel (Float) : 1222.0000
++                                spawner (ptr:IFXSpawner) : CFXSpawnerComponent #9
++                        CMaterialInstance #8 (CMaterialInstance) : 
++                            CMaterialInstance (CMaterialInstance)
++                                baseMaterial (handle:IMaterial) : fx/shaders/flares_fx_mat.w2mg
++                                InstanceParameters (array:CVariantSizeNameType)
++                                    color (Color)
++                                        Red (Uint8) : 254
++                                        Green (Uint8) : 255
++                                        Blue (Uint8) : 243
++                                        Alpha (Uint8) : 255
++                                    blend_far_end (Float) : 120.0000
++                                    blend_far_start (Float) : 60.0000
++                        CFXSpawnerComponent #9 (CFXSpawnerComponent) : bear_berserker
++                            CFXSpawnerComponent (CFXSpawnerComponent)
++                                componentName (CName) : bear_berserker
++                                copyRotation (Bool) : false
++                                attach (Bool) : true
++                                relativePosition (Vector)
++                                    X (Float) : 0.1000
++                                    Y (Float) : 0.0000
++                                    Z (Float) : 0.0000
++                                    W (Float) : 0.0000
++                                parentSlotName (CName) : head
++                        CFXTrackGroup #10 (CFXTrackGroup) : particle
++                            CFXTrackGroup (CFXTrackGroup)
++                                name (String) : "particle"
++                                tracks (array:ptr:CFXTrack)
++                                    0 (ptr:CFXTrack) : CFXTrack #11
++                                isExpanded (Bool) : true
++                                trackGroupColor (Color)
++                                    Red (Uint8) : 171
++                                    Green (Uint8) : 182
++                                    Blue (Uint8) : 241
++                                    Alpha (Uint8) : 100
++                        CFXTrack #11 (CFXTrack) : after
++                            CFXTrack (CFXTrack)
++                                trackItems (array:ptr:CFXTrackItem)
++                                    0 (ptr:CFXTrackItem) : CFXTrackItemParticles #12
++                                name (String) : "after"
++                        CFXTrackItemParticles #12 (CFXTrackItemParticles) : Particles
++                            CFXTrackItemParticles (CFXTrackItemParticles)
++                                timeBegin (Float) : 0.0480
++                                timeDuration (Float) : 4.0116
++                                buffername (CName) : Particles
++                                count (CDynamicInt) : 3
++                                unk (Uint8) : 1
++                                buffer (CCompressedBuffer:CBufferUInt16:CFloat)
++                                    0 (CBufferUInt16:CFloat)
++                                        1 (Float) : 0.6275
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 0.5592
++                                        5 (Float) : 0.0000
++                                        6 (Float) : 0.0000
++                                        7 (Float) : 0.0000
++                                        8 (Float) : 0.0000
++                                        9 (Float) : 0.0000
++                                        10 (Float) : 0.0000
++                                        11 (Float) : 0.0000
++                                        12 (Float) : 0.0000
++                                        13 (Float) : 0.0000
++                                        14 (Float) : 0.0000
++                                        15 (Float) : 0.0000
++                                    1 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        2 (Float) : 1.0000
++                                        3 (Float) : 1.0000
++                                        4 (Float) : 0.7407
++                                        5 (Float) : 0.3704
++                                        6 (Float) : 0.0000
++                                        7 (Float) : 0.0000
++                                        8 (Float) : 0.0000
++                                        9 (Float) : 0.0000
++                                        10 (Float) : 0.0000
++                                        11 (Float) : 0.0000
++                                        12 (Float) : 0.0000
++                                        13 (Float) : 0.0000
++                                        14 (Float) : 0.0000
++                                        15 (Float) : 0.0000
++                                    2 (CBufferUInt16:CFloat)
++                                        0 (Float) : 1.0000
++                                        1 (Float) : 0.8207
++                                        2 (Float) : 0.6414
++                                        3 (Float) : 0.6000
++                                        4 (Float) : 0.6000
++                                        5 (Float) : 0.6482
++                                        6 (Float) : 0.6985
++                                        7 (Float) : 0.7487
++                                        8 (Float) : 0.7990
++                                        9 (Float) : 0.8492
++                                        10 (Float) : 0.8995
++                                        11 (Float) : 0.9497
++                                        12 (Float) : 1.0000
++                                        13 (Float) : 1.0000
++                                        14 (Float) : 1.0000
++                                        15 (Float) : 1.0000
++                                particleSystem (soft:CParticleSystem) : fx/signs/axii/ver_1/axii_confusion_head_big.w2p
++                                spawner (ptr:IFXSpawner) : CFXSpawnerComponent #13
++                        CFXSpawnerComponent #13 (CFXSpawnerComponent) : head
++                            CFXSpawnerComponent (CFXSpawnerComponent)
++                                componentName (CName) : head
++                                copyRotation (Bool) : false
++                                attach (Bool) : true
++                                parentSlotName (CName) : head
+             cookedEffectsVersion (Uint32) : 1
+             Unk1 (Uint32) : 0
+     W3MonsterHuntNPC #1 (W3MonsterHuntNPC) : mus_monster_hunt_nml_combat
+@@ -6931,7 +7324,8 @@
+                 13 (ptr:CComponent) : CPhantomComponent #24
+                 14 (ptr:CComponent) : CGameplayEffectsComponent #32
+                 15 (ptr:CComponent) : CPhantomComponent #26
+-                16 (ptr:CComponent) : CSoundEmitterComponent #33
++                16 (ptr:CComponent) : CWetnessComponent #33
++                17 (ptr:CComponent) : CSoundEmitterComponent #34
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+@@ -6972,6 +7366,9 @@
+                 1 (SBehaviorGraphInstanceSlot)
+                     instanceName (CName) : Cutscene
+                     graph (handle:CBehaviorGraph) : gameplay/behaviors/cutscene_graph.w2beh
++                2 (SBehaviorGraphInstanceSlot)
++                    instanceName (CName) : StoryScene
++                    graph (handle:CBehaviorGraph) : gameplay/behaviors/pc/behaviorgraph/pc_dialog.w2beh
+             steeringBehavior (handle:CMoveSteeringBehavior) : gameplay/behaviors/npc/steering/animation_steering_bies.w2steer
+     CHardAttachment #3 (CHardAttachment) : pelvis
+         CHardAttachment (CHardAttachment)
+@@ -7056,7 +7453,7 @@
+     CDynamicColliderComponent #13 (CDynamicColliderComponent) : pelvis_coll
+         CDynamicColliderComponent (CDynamicColliderComponent)
+             transform (EngineTransform)
+-                Scale_x (Float) : 2.0000
++                Scale_x (Float) : 1.5000
+                 Scale_y (Float) : 2.7000
+                 Scale_z (Float) : 1.4000
+                 X (Float) : -0.8000
+@@ -7082,9 +7479,9 @@
+     CDynamicColliderComponent #16 (CDynamicColliderComponent) : r_hand_coll
+         CDynamicColliderComponent (CDynamicColliderComponent)
+             transform (EngineTransform)
+-                Scale_x (Float) : 1.5000
+-                Scale_y (Float) : 1.5000
+-                Scale_z (Float) : 1.5000
++                Scale_x (Float) : 1.1000
++                Scale_y (Float) : 1.1000
++                Scale_z (Float) : 1.1000
+             transformParent (ptr:CHardAttachment) : CHardAttachment #15
+             guid (CGUID) : a7be6c79-61c2-4b97-8ed7-0a99ef697a66
+             AttachmentsReference (array:handle:IAttachment)
+@@ -7104,9 +7501,9 @@
+     CDynamicColliderComponent #19 (CDynamicColliderComponent) : l_hand_coll
+         CDynamicColliderComponent (CDynamicColliderComponent)
+             transform (EngineTransform)
+-                Scale_x (Float) : 1.5000
+-                Scale_y (Float) : 1.5000
+-                Scale_z (Float) : 1.5000
++                Scale_x (Float) : 1.1000
++                Scale_y (Float) : 1.1000
++                Scale_z (Float) : 1.1000
+             transformParent (ptr:CHardAttachment) : CHardAttachment #18
+             guid (CGUID) : 869b8659-ebe4-4cb1-939b-d56716dc44b8
+             AttachmentsReference (array:handle:IAttachment)
+@@ -7207,131 +7604,136 @@
+             attachmentReplacements (SAttachmentReplacements)
+                 replacements (array:SAttachmentReplacement)
+                     0 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CInventoryComponent0_A88DE8C5-42FD410B-A9330683-F86A3660
++                        oldName (CName) : proxy_CInventoryComponent0_C1177A86-43935D49-718E1382-E8919C05
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CInventoryComponent0
+                         newClass (CName) : CInventoryComponent
+                     1 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_torso3effect_59F9E644-40D80A3C-8F8ACBA0-67D7E464
++                        oldName (CName) : proxy_torso3effect_F7467C28-4C854317-19BE36AD-924BA10C
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : torso3effect
+                         newClass (CName) : CEffectDummyComponent
+                     2 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_pelvis_coll_C2B0B314-4C0ED068-B0F07EA7-40CAE6CB
++                        oldName (CName) : proxy_pelvis_coll_48F30631-48F5CEC3-BE08D8A6-259F36F2
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : pelvis_coll
+                         newClass (CName) : CDynamicColliderComponent
+                     3 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_r_hand_coll_B76717E4-48FFFBC3-03109BAA-96FB789B
++                        oldName (CName) : proxy_r_hand_coll_B4944F17-4A77ECBC-8C35438F-204C414C
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : r_hand_coll
+                         newClass (CName) : CDynamicColliderComponent
+                     4 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_l_hand_coll_DB76A2FC-47DE9C94-5E32AF82-56814AD0
++                        oldName (CName) : proxy_l_hand_coll_EA064631-43880242-45617385-A47439D6
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : l_hand_coll
+                         newClass (CName) : CDynamicColliderComponent
+                     5 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CCreatureDataComponent0_A53E8168-48C6BE4C-47080A9F-DE2B7954
++                        oldName (CName) : proxy_CCreatureDataComponent0_8F748878-4816D5D5-4CC9A49F-16EAE552
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CCreatureDataComponent0
+                         newClass (CName) : CCreatureDataComponent
+                     6 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CDismembermentComponent0_31A51E5F-4B3C062D-0E3D7FA5-E4C3A953
++                        oldName (CName) : proxy_CDismembermentComponent0_63C85109-403D64AF-E36E00BE-835D4F3D
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CDismembermentComponent0
+                         newClass (CName) : CDismembermentComponent
+                     7 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_ActorCollision_7DB3ADE2-44F082C7-4199659A-D202C389
++                        oldName (CName) : proxy_ActorCollision_5B4029A9-423373B3-BC3BB0AD-84556C3B
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : ActorCollision
+                         newClass (CName) : CPhantomComponent
+                     8 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_ObstacleCollision_D9886F17-427D29A2-51F38AA3-C7D92800
++                        oldName (CName) : proxy_ObstacleCollision_F4DF92B5-450232BC-08121EBE-3A886881
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : ObstacleCollision
+                         newClass (CName) : CPhantomComponent
+                     9 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CGameplayEffectsComponent0_6E1E5258-447CBE5D-700AADA1-C6BDC621
++                        oldName (CName) : proxy_CGameplayEffectsComponent0_6590525D-42F2FB59-464B688E-F954CED9
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CGameplayEffectsComponent0
+                         newClass (CName) : CGameplayEffectsComponent
+                     10 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CSoundEmitterComponent_01154ED8-40EADD09-98D0E986-31642A67
++                        oldName (CName) : proxy_ObstacleProbe_74E16B2B-4A2D1F68-F8F34984-3148952A
+                         oldClass (CName) : CExternalProxyComponent
+-                        newName (CName) : CSoundEmitterComponent
+-                        newClass (CName) : CSoundEmitterComponent
++                        newName (CName) : ObstacleProbe
++                        newClass (CName) : CPhantomComponent
+                     11 (SAttachmentReplacement)
++                        oldName (CName) : proxy_CSoundEmitterComponent_672FC7E5-4B8B7684-EEEB8CA7-FC40A97B
++                        oldClass (CName) : CExternalProxyComponent
++                        newName (CName) : CSoundEmitterComponent
++                        newClass (CName) : CSoundEmitterComponent
++                    12 (SAttachmentReplacement)
+                         oldName (CName) : proxy_CEffectDummyComponent1_67169239-4E24801C-0530EEB9-A5576454
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CEffectDummyComponent1
+                         newClass (CName) : CEffectDummyComponent
+-                    12 (SAttachmentReplacement)
++                    13 (SAttachmentReplacement)
+                         oldName (CName) : proxy_CPhantomComponent0_DC7517C8-4473B155-EC46DCB1-15ED0561
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CPhantomComponent0
+                         newClass (CName) : CPhantomComponent
+-                    13 (SAttachmentReplacement)
++                    14 (SAttachmentReplacement)
+                         oldName (CName) : proxy_CCreatureDataComponent1_F5707C6A-49EC1523-E2CA9B86-6AB416C4
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CCreatureDataComponent1
+                         newClass (CName) : CCreatureDataComponent
+-                    14 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_i_01__czart_2F861E4E-42298B17-6E4A4993-9D0E95C5
+-                        oldClass (CName) : CExternalProxyComponent
+-                        newName (CName) : proxy_i_01__czart_C2958AB2-4FFB9A15-0FF7D79F-D4A587E3
+-                        newClass (CName) : CExternalProxyComponent
+                     15 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_t_02__czart_94DB1005-44DDA69F-DD8C3C81-3504D04A
++                        oldName (CName) : proxy_i_01__czart_2F861E4E-42298B17-6E4A4993-9D0E95C5
+                         oldClass (CName) : CExternalProxyComponent
+-                        newName (CName) : proxy_t_02__czart_E9D7A7B4-4FFA46E0-7376BEB4-C48CFC21
++                        newName (CName) : proxy_i_01__czart_2146DE45-4E22D4E8-A11F24AD-C8E27977
+                         newClass (CName) : CExternalProxyComponent
+                     16 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_torso3effect_A57A2019-46690E9E-29CFC4B1-9770D739
++                        oldName (CName) : proxy_t_02__czart_94DB1005-44DDA69F-DD8C3C81-3504D04A
+                         oldClass (CName) : CExternalProxyComponent
+-                        newName (CName) : torso3effect
+-                        newClass (CName) : CEffectDummyComponent
++                        newName (CName) : proxy_t_02__czart_4387FD42-4D5B8643-AD553D8A-DA9BFAED
++                        newClass (CName) : CExternalProxyComponent
+                     17 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_pelvis_coll_22800190-49633079-AA1653A4-7642CAD5
++                        oldName (CName) : proxy_torso3effect_A57A2019-46690E9E-29CFC4B1-9770D739
+                         oldClass (CName) : CExternalProxyComponent
+-                        newName (CName) : pelvis_coll
+-                        newClass (CName) : CDynamicColliderComponent
++                        newName (CName) : torso3effect
++                        newClass (CName) : CEffectDummyComponent
+                     18 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_r_hand_coll_A7CF83A7-48FF5666-2909AE9F-CF43D754
++                        oldName (CName) : proxy_pelvis_coll_22800190-49633079-AA1653A4-7642CAD5
+                         oldClass (CName) : CExternalProxyComponent
+-                        newName (CName) : r_hand_coll
++                        newName (CName) : pelvis_coll
+                         newClass (CName) : CDynamicColliderComponent
+                     19 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_l_hand_coll_844BB3E2-4970EE31-0390F79C-0043DFAD
++                        oldName (CName) : proxy_r_hand_coll_A7CF83A7-48FF5666-2909AE9F-CF43D754
+                         oldClass (CName) : CExternalProxyComponent
+-                        newName (CName) : l_hand_coll
++                        newName (CName) : r_hand_coll
+                         newClass (CName) : CDynamicColliderComponent
+                     20 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CCreatureDataComponent0_1E23F20C-4E5A9C79-75ED5B9F-A0CD6AEB
++                        oldName (CName) : proxy_l_hand_coll_844BB3E2-4970EE31-0390F79C-0043DFAD
+                         oldClass (CName) : CExternalProxyComponent
+-                        newName (CName) : CCreatureDataComponent0
+-                        newClass (CName) : CCreatureDataComponent
++                        newName (CName) : l_hand_coll
++                        newClass (CName) : CDynamicColliderComponent
+                     21 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CDismembermentComponent0_1B0ADCA1-465A7C71-4D1EE7B7-DF33ADCB
++                        oldName (CName) : proxy_CCreatureDataComponent0_1E23F20C-4E5A9C79-75ED5B9F-A0CD6AEB
+                         oldClass (CName) : CExternalProxyComponent
+-                        newName (CName) : CDismembermentComponent0
+-                        newClass (CName) : CDismembermentComponent
++                        newName (CName) : CCreatureDataComponent0
++                        newClass (CName) : CCreatureDataComponent
+                     22 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_ActorCollision_17CAE4D7-4CB995DE-14DCC8A2-97E1483C
++                        oldName (CName) : proxy_CDismembermentComponent0_1B0ADCA1-465A7C71-4D1EE7B7-DF33ADCB
+                         oldClass (CName) : CExternalProxyComponent
+-                        newName (CName) : ActorCollision
+-                        newClass (CName) : CPhantomComponent
++                        newName (CName) : CDismembermentComponent0
++                        newClass (CName) : CDismembermentComponent
+                     23 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_ObstacleCollision_5F49C884-49E70ED6-6735E99A-5EACD852
++                        oldName (CName) : proxy_ActorCollision_17CAE4D7-4CB995DE-14DCC8A2-97E1483C
+                         oldClass (CName) : CExternalProxyComponent
+-                        newName (CName) : ObstacleCollision
++                        newName (CName) : ActorCollision
+                         newClass (CName) : CPhantomComponent
+                     24 (SAttachmentReplacement)
+-                        oldName (CName) : proxy_CGameplayEffectsComponent0_78143247-41ED11D2-31789FB5-9206C6B5
++                        oldName (CName) : proxy_ObstacleCollision_5F49C884-49E70ED6-6735E99A-5EACD852
+                         oldClass (CName) : CExternalProxyComponent
+-                        newName (CName) : CGameplayEffectsComponent0
+-                        newClass (CName) : CGameplayEffectsComponent
++                        newName (CName) : ObstacleCollision
++                        newClass (CName) : CPhantomComponent
+                     25 (SAttachmentReplacement)
++                        oldName (CName) : proxy_CGameplayEffectsComponent0_78143247-41ED11D2-31789FB5-9206C6B5
++                        oldClass (CName) : CExternalProxyComponent
++                        newName (CName) : CGameplayEffectsComponent0
++                        newClass (CName) : CGameplayEffectsComponent
++                    26 (SAttachmentReplacement)
+                         oldName (CName) : proxy_CSoundEmitterComponent_014062F5-4609FC0F-8A6C1AA8-609388F2
+                         oldClass (CName) : CExternalProxyComponent
+                         newName (CName) : CSoundEmitterComponent
+@@ -7382,7 +7784,14 @@
+             AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+             name (String) : "CGameplayEffectsComponent0"
+-    CSoundEmitterComponent #33 (CSoundEmitterComponent) : CSoundEmitterComponent
++    CWetnessComponent #33 (CWetnessComponent) : CWetnessComponent0
++        CWetnessComponent (CWetnessComponent)
++            guid (CGUID) : c4714d4d-2eec-4835-887b-6b8854f45e8c
++            AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++            AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
++            name (String) : "CWetnessComponent0"
++            blendOutFromRain (Float) : 20.0000
++    CSoundEmitterComponent #34 (CSoundEmitterComponent) : CSoundEmitterComponent
+         guid (CGUID) : 80008102-2c44-4959-b7a4-75fdf9e8ffaf
+         AttachmentsReference (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+         AttachmentsChild (array:handle:IAttachment) : # array:0,0,handle:IAttachment
+@@ -7393,40 +7802,40 @@
+         banksDependency (array:CName)
+             0 (CName) : monster_bies.bnk
+         maxDistance (Float) : 160.0000
+-    CAIProfile #34 (CAIProfile) : friendly_to_player
++    CAIProfile #35 (CAIProfile) : friendly_to_player
+         CAIProfile (CAIProfile)
+             attitudeGroup (CName) : friendly_to_player
+-    CInventoryDefinition #35 (CInventoryDefinition) : 
++    CInventoryDefinition #36 (CInventoryDefinition) : 
+         CInventoryDefinition (CInventoryDefinition)
+             entries (array:ptr:CInventoryDefinitionEntry)
+-                0 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #36
+-    CInventoryDefinitionEntry #36 (CInventoryDefinitionEntry) : trophy
++                0 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #37
++    CInventoryDefinitionEntry #37 (CInventoryDefinitionEntry) : trophy
+         CInventoryDefinitionEntry (CInventoryDefinitionEntry)
+             category (CName) : trophy
+-            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #37
+-    CInventoryInitializerUniform #37 (CInventoryInitializerUniform) : mh107_czart_trophy
++            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #38
++    CInventoryInitializerUniform #38 (CInventoryInitializerUniform) : mh107_czart_trophy
+         CInventoryInitializerUniform (CInventoryInitializerUniform)
+             itemName (CName) : mh107_czart_trophy
+-    CCharacterStatsParam #38 (CCharacterStatsParam) : extra_modifiers
++    CCharacterStatsParam #39 (CCharacterStatsParam) : extra_modifiers
+         CCharacterStatsParam (CCharacterStatsParam)
+             name (String) : "extra_modifiers"
+             abilities (array:CName)
+                 0 (CName) : MiniBoss
+                 1 (CName) : qmh210_lamia
+-    CAnimGlobalParam #39 (CAnimGlobalParam) : sfx_bies
++    CAnimGlobalParam #40 (CAnimGlobalParam) : sfx_bies
+         CAnimGlobalParam (CAnimGlobalParam)
+             sfxTag (CName) : sfx_bies
+-    CFocusSoundParam #40 (CFocusSoundParam) : FocusSound
++    CFocusSoundParam #41 (CFocusSoundParam) : FocusSound
+         CFocusSoundParam (CFocusSoundParam)
+             name (String) : "FocusSound"
+             eventStart (CName) : monster_bies_focus_100m_start
+             eventStop (CName) : monster_bies_focus_100m_stop
+             visualEffectBoneName (CName) : head
+-    CAIProfile #41 (CAIProfile) : AG_fiend
++    CAIProfile #42 (CAIProfile) : AG_fiend
+         CAIProfile (CAIProfile)
+             wasIncluded (Bool) : true
+             attitudeGroup (CName) : AG_fiend
+-    CCharacterStatsParam #42 (CCharacterStatsParam) : bies_czart_abilities
++    CCharacterStatsParam #43 (CCharacterStatsParam) : bies_czart_abilities
+         CCharacterStatsParam (CCharacterStatsParam)
+             wasIncluded (Bool) : true
+             name (String) : "bies_czart_abilities"
+@@ -7438,75 +7847,75 @@
+                 3 (CName) : InstantKillImmune
+                 4 (CName) : DisableFinishers
+                 5 (CName) : mon_bies_base
+-    CInventoryDefinition #43 (CInventoryDefinition) : 
++    CInventoryDefinition #44 (CInventoryDefinition) : 
+         CInventoryDefinition (CInventoryDefinition)
+             wasIncluded (Bool) : true
+             entries (array:ptr:CInventoryDefinitionEntry)
+-                0 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #44
+-                1 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #46
+-                2 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #48
+-                3 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #50
+-                4 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #52
+-    CInventoryDefinitionEntry #44 (CInventoryDefinitionEntry) : monster_weapon
++                0 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #45
++                1 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #47
++                2 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #49
++                3 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #51
++                4 (ptr:CInventoryDefinitionEntry) : CInventoryDefinitionEntry #53
++    CInventoryDefinitionEntry #45 (CInventoryDefinitionEntry) : monster_weapon
+         CInventoryDefinitionEntry (CInventoryDefinitionEntry)
+             category (CName) : monster_weapon
+             isMount (Bool) : true
+             isLootable (Bool) : false
+-            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #45
+-    CInventoryInitializerUniform #45 (CInventoryInitializerUniform) : mon_czart_basic_weapon
++            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #46
++    CInventoryInitializerUniform #46 (CInventoryInitializerUniform) : mon_czart_basic_weapon
+         CInventoryInitializerUniform (CInventoryInitializerUniform)
+             itemName (CName) : mon_czart_basic_weapon
+-    CInventoryDefinitionEntry #46 (CInventoryDefinitionEntry) : monster_weapon
++    CInventoryDefinitionEntry #47 (CInventoryDefinitionEntry) : monster_weapon
+         CInventoryDefinitionEntry (CInventoryDefinitionEntry)
+             category (CName) : monster_weapon
+             isMount (Bool) : true
+             isLootable (Bool) : false
+-            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #47
+-    CInventoryInitializerUniform #47 (CInventoryInitializerUniform) : mon_czart_r_claw_weapon
++            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #48
++    CInventoryInitializerUniform #48 (CInventoryInitializerUniform) : mon_czart_r_claw_weapon
+         CInventoryInitializerUniform (CInventoryInitializerUniform)
+             itemName (CName) : mon_czart_r_claw_weapon
+-    CInventoryDefinitionEntry #48 (CInventoryDefinitionEntry) : monster_weapon
++    CInventoryDefinitionEntry #49 (CInventoryDefinitionEntry) : monster_weapon
+         CInventoryDefinitionEntry (CInventoryDefinitionEntry)
+             category (CName) : monster_weapon
+             isMount (Bool) : true
+             isLootable (Bool) : false
+-            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #49
+-    CInventoryInitializerUniform #49 (CInventoryInitializerUniform) : mon_czart_l_claw_weapon
++            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #50
++    CInventoryInitializerUniform #50 (CInventoryInitializerUniform) : mon_czart_l_claw_weapon
+         CInventoryInitializerUniform (CInventoryInitializerUniform)
+             itemName (CName) : mon_czart_l_claw_weapon
+-    CInventoryDefinitionEntry #50 (CInventoryDefinitionEntry) : silversword
++    CInventoryDefinitionEntry #51 (CInventoryDefinitionEntry) : silversword
+         CInventoryDefinitionEntry (CInventoryDefinitionEntry)
+             category (CName) : silversword
+-            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #51
+-    CInventoryInitializerUniform #51 (CInventoryInitializerUniform) : Azurewrath
++            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #52
++    CInventoryInitializerUniform #52 (CInventoryInitializerUniform) : Azurewrath
+         CInventoryInitializerUniform (CInventoryInitializerUniform)
+             itemName (CName) : Azurewrath
+-    CInventoryDefinitionEntry #52 (CInventoryDefinitionEntry) : alchemy_ingredient
++    CInventoryDefinitionEntry #53 (CInventoryDefinitionEntry) : alchemy_ingredient
+         CInventoryDefinitionEntry (CInventoryDefinitionEntry)
+             category (CName) : alchemy_ingredient
+-            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #53
+-    CInventoryInitializerUniform #53 (CInventoryInitializerUniform) : Czart mutagen
++            initializer (ptr:IInventoryInitializer) : CInventoryInitializerUniform #54
++    CInventoryInitializerUniform #54 (CInventoryInitializerUniform) : Czart mutagen
+         CInventoryInitializerUniform (CInventoryInitializerUniform)
+             itemName (CName) : Czart mutagen
+-    CR4LootParam #54 (CR4LootParam) : loot
++    CR4LootParam #55 (CR4LootParam) : loot
+         CR4LootParam (CR4LootParam)
+             wasIncluded (Bool) : true
+             name (String) : "loot"
+             containers (array:CR4LootContainerParam)
+                 0 (CR4LootContainerParam)
+                     name (CName) : _monster__Czart
+-    CEntityDismemberment #55 (CEntityDismemberment) : 
++    CEntityDismemberment #56 (CEntityDismemberment) : 
+         CEntityDismemberment (CEntityDismemberment)
+             wasIncluded (Bool) : true
+             disabledWounds (array:SDismembermentWoundFilter)
+                 0 (SDismembermentWoundFilter)
+                     wound (CName) : bies_trophy_head
+                     appearance (CName) : mh107_czart
+-    CAnimGlobalParam #56 (CAnimGlobalParam) : sfx_bies
++    CAnimGlobalParam #57 (CAnimGlobalParam) : sfx_bies
+         CAnimGlobalParam (CAnimGlobalParam)
+             wasIncluded (Bool) : true
+             sfxTag (CName) : sfx_bies
+-    CAnimBehaviorsParam #57 (CAnimBehaviorsParam) : monster
++    CAnimBehaviorsParam #58 (CAnimBehaviorsParam) : monster
+         CAnimBehaviorsParam (CAnimBehaviorsParam)
+             wasIncluded (Bool) : true
+             name (String) : "monster"
+@@ -7518,28 +7927,31 @@
+                 1 (SBehaviorGraphInstanceSlot)
+                     instanceName (CName) : Cutscene
+                     graph (handle:CBehaviorGraph) : gameplay/behaviors/cutscene_graph.w2beh
+-    CAIProfile #58 (CAIProfile) : monsters
++                2 (SBehaviorGraphInstanceSlot)
++                    instanceName (CName) : StoryScene
++                    graph (handle:CBehaviorGraph) : gameplay/behaviors/pc/behaviorgraph/pc_dialog.w2beh
++    CAIProfile #59 (CAIProfile) : monsters
+         CAIProfile (CAIProfile)
+             wasIncluded (Bool) : true
+-            senseVisionParams (ptr:CAISenseParams) : CAISenseParams #59
+-            senseAbsoluteParams (ptr:CAISenseParams) : CAISenseParams #60
++            senseVisionParams (ptr:CAISenseParams) : CAISenseParams #60
++            senseAbsoluteParams (ptr:CAISenseParams) : CAISenseParams #61
+             attitudeGroup (CName) : monsters
+-    CAISenseParams #59 (CAISenseParams) : 
+-        CAISenseParams (CAISenseParams)
+-            rangeMax (Float) : 20.0000
+-            rangeAngle (Float) : 360.0000
+     CAISenseParams #60 (CAISenseParams) : 
++        CAISenseParams (CAISenseParams)
++            rangeMax (Float) : 20.0000
++            rangeAngle (Float) : 360.0000
++    CAISenseParams #61 (CAISenseParams) : 
+         CAISenseParams (CAISenseParams)
+             rangeMax (Float) : 3.0000
+             rangeAngle (Float) : 360.0000
+             testLOS (Bool) : false
+-    CAnimAnimsetsParam #61 (CAnimAnimsetsParam) : bies
++    CAnimAnimsetsParam #62 (CAnimAnimsetsParam) : bies
+         CAnimAnimsetsParam (CAnimAnimsetsParam)
+             wasIncluded (Bool) : true
+             name (String) : "bies"
+             animationSets (array:handle:CSkeletalAnimationSet)
+                 0 (handle:CSkeletalAnimationSet) : animations/monsters/monster_bies.w2anims
+-    CAutoEffectsParam #62 (CAutoEffectsParam) : bies_base_autobuffs
++    CAutoEffectsParam #63 (CAutoEffectsParam) : bies_base_autobuffs
+         CAutoEffectsParam (CAutoEffectsParam)
+             wasIncluded (Bool) : true
+             name (String) : "bies_base_autobuffs"
+@@ -7547,17 +7959,17 @@
+                 0 (CName) : AutoEssenceRegen
+                 1 (CName) : AutoStaminaRegen
+                 2 (CName) : AutoMoraleRegen
+-    CAttackRangeParam #63 (CAttackRangeParam) : attack_ranges
++    CAttackRangeParam #64 (CAttackRangeParam) : attack_ranges
+         CAttackRangeParam (CAttackRangeParam)
+             wasIncluded (Bool) : true
+             name (String) : "attack_ranges"
+             attackRanges (array:ptr:CAIAttackRange)
+-                0 (ptr:CAIAttackRange) : CConeAttackRange #64
+-                1 (ptr:CAIAttackRange) : CBoxAttackRange #65
+-                2 (ptr:CAIAttackRange) : CConeAttackRange #66
+-                3 (ptr:CAIAttackRange) : CConeAttackRange #67
+-                4 (ptr:CAIAttackRange) : CBoxAttackRange #68
+-    CConeAttackRange #64 (CConeAttackRange) : base
++                0 (ptr:CAIAttackRange) : CConeAttackRange #65
++                1 (ptr:CAIAttackRange) : CBoxAttackRange #66
++                2 (ptr:CAIAttackRange) : CConeAttackRange #67
++                3 (ptr:CAIAttackRange) : CConeAttackRange #68
++                4 (ptr:CAIAttackRange) : CBoxAttackRange #69
++    CConeAttackRange #65 (CConeAttackRange) : base
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : base
+             rangeMax (Float) : 3.5000
+@@ -7567,7 +7979,7 @@
+                 Y (Float) : 0.0000
+                 Z (Float) : 1.5000
+                 W (Float) : 1.0000
+-    CBoxAttackRange #65 (CBoxAttackRange) : bite
++    CBoxAttackRange #66 (CBoxAttackRange) : bite
+         CBoxAttackRange (CBoxAttackRange)
+             name (CName) : bite
+             rangeMax (Float) : 3.0000
+@@ -7578,7 +7990,7 @@
+                 Z (Float) : 1.5000
+                 W (Float) : 1.0000
+             rangeWidth (Float) : 1.5000
+-    CConeAttackRange #66 (CConeAttackRange) : SlowMo
++    CConeAttackRange #67 (CConeAttackRange) : SlowMo
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : SlowMo
+             rangeMax (Float) : 3.5000
+@@ -7589,7 +8001,7 @@
+                 Z (Float) : 1.5000
+                 W (Float) : 1.0000
+             rangeAngle (Float) : 90.0000
+-    CConeAttackRange #67 (CConeAttackRange) : horns
++    CConeAttackRange #68 (CConeAttackRange) : horns
+         CConeAttackRange (CConeAttackRange)
+             name (CName) : horns
+             rangeMax (Float) : 3.0000
+@@ -7600,7 +8012,7 @@
+                 Z (Float) : 1.5000
+                 W (Float) : 1.0000
+             rangeAngle (Float) : 80.0000
+-    CBoxAttackRange #68 (CBoxAttackRange) : charge
++    CBoxAttackRange #69 (CBoxAttackRange) : charge
+         CBoxAttackRange (CBoxAttackRange)
+             name (CName) : charge
+             rangeMax (Float) : 4.0000
+@@ -7611,13 +8023,13 @@
+                 Z (Float) : 1.5000
+                 W (Float) : 1.0000
+             rangeWidth (Float) : 2.0000
+-    CMonsterParam #69 (CMonsterParam) : bies_base_monster_params
++    CMonsterParam #70 (CMonsterParam) : bies_base_monster_params
+         CMonsterParam (CMonsterParam)
+             wasIncluded (Bool) : true
+             name (String) : "bies_base_monster_params"
+             monsterCategory (Int32) : 1
+             soundMonsterName (CName) : Bies
+-    CCharacterControllerParam #70 (CCharacterControllerParam) : bies_base_character_controller
++    CCharacterControllerParam #71 (CCharacterControllerParam) : bies_base_character_controller
+         CCharacterControllerParam (CCharacterControllerParam)
+             wasIncluded (Bool) : true
+             name (String) : "bies_base_character_controller"
+@@ -7644,7 +8056,7 @@
+                     height (Float) : 0.5000
+                     radius (Float) : 1.0000
+             significance (Float) : 6.0000
+-    CBuffImmunityParam #71 (CBuffImmunityParam) : buff_immunity
++    CBuffImmunityParam #72 (CBuffImmunityParam) : buff_immunity
+         CBuffImmunityParam (CBuffImmunityParam)
+             wasIncluded (Bool) : true
+             name (String) : "buff_immunity"
+@@ -7654,201 +8066,201 @@
+                 2 (Int32) : 7
+                 3 (Int32) : 11
+                 4 (Int32) : 45
+-    CAnimConstraintsParam #72 (CAnimConstraintsParam) : 
++    CAnimConstraintsParam #73 (CAnimConstraintsParam) : 
+         CAnimConstraintsParam (CAnimConstraintsParam)
+             wasIncluded (Bool) : true
+             graph (handle:CBehaviorGraph) : gameplay/behaviors/npc/behaviorgraph/monster_bies_constraints.w2beh
+-    CAIBaseTreeTemplateParam #73 (CAIBaseTreeTemplateParam) : 
++    CAIBaseTreeTemplateParam #74 (CAIBaseTreeTemplateParam) : 
+         CAIBaseTreeTemplateParam (CAIBaseTreeTemplateParam)
+             wasIncluded (Bool) : true
+-            aiBaseTree (handle:CAIBaseTree) : CAIMonsterBase #74
+-    CAIMonsterBase #74 (CAIMonsterBase) : 
++            aiBaseTree (handle:CAIBaseTree) : CAIMonsterBase #75
++    CAIMonsterBase #75 (CAIMonsterBase) : 
+         CAIMonsterBase (CAIMonsterBase)
+             tree (handle:CBehTree) : gameplay/trees/monster_base.w2behtree
+-            params (handle:CAIBaseMonsterDefaults) : CAIBiesDefaults #75
+-    CAIBiesDefaults #75 (CAIBiesDefaults) : 
++            params (handle:CAIBaseMonsterDefaults) : CAIBiesDefaults #76
++    CAIBiesDefaults #76 (CAIBiesDefaults) : 
+         CAIBiesDefaults (CAIBiesDefaults)
+-            spawnTree (handle:CAIMonsterSpawn) : CAIMonsterSpawnDefault #76
+-            tauntTree (handle:CAIMonsterTaunt) : CAIMonsterTaunt #78
+-            axiiTree (handle:CAIMonsterAxii) : CAIMonsterAxii #80
+-            idleDecoratorTree (handle:CAIMonsterIdleDecorator) : CAIMonsterIdleDecoratorBies #82
+-            combatTree (handle:CAIMonsterCombat) : CAIMonsterCombat #102
+-            deathTree (handle:CAIMonsterDeath) : CAIMonsterDeath #118
+-    CAIMonsterSpawnDefault #76 (CAIMonsterSpawnDefault) : 
++            spawnTree (handle:CAIMonsterSpawn) : CAIMonsterSpawnDefault #77
++            tauntTree (handle:CAIMonsterTaunt) : CAIMonsterTaunt #79
++            axiiTree (handle:CAIMonsterAxii) : CAIMonsterAxii #81
++            idleDecoratorTree (handle:CAIMonsterIdleDecorator) : CAIMonsterIdleDecoratorBies #83
++            combatTree (handle:CAIMonsterCombat) : CAIMonsterCombat #103
++            deathTree (handle:CAIMonsterDeath) : CAIMonsterDeath #119
++    CAIMonsterSpawnDefault #77 (CAIMonsterSpawnDefault) : 
+         CAIMonsterSpawnDefault (CAIMonsterSpawnDefault)
+             tree (handle:CBehTree) : gameplay/trees/monster_spawn_default.w2behtree
+-            params (handle:CAIMonsterSpawnParams) : CAIMonsterSpawnParams #77
+-    CAIMonsterSpawnParams #77 (CAIMonsterSpawnParams) : 
++            params (handle:CAIMonsterSpawnParams) : CAIMonsterSpawnParams #78
++    CAIMonsterSpawnParams #78 (CAIMonsterSpawnParams) : 
+         CAIMonsterSpawnParams (CAIMonsterSpawnParams)
+-    CAIMonsterTaunt #78 (CAIMonsterTaunt) : 
++    CAIMonsterTaunt #79 (CAIMonsterTaunt) : 
+         CAIMonsterTaunt (CAIMonsterTaunt)
+             tree (handle:CBehTree) : gameplay/trees/monster_basetaunt.w2behtree
+-            params (handle:CAIMonsterTauntParams) : CAIMonsterTauntParams #79
+-    CAIMonsterTauntParams #79 (CAIMonsterTauntParams) : 
++            params (handle:CAIMonsterTauntParams) : CAIMonsterTauntParams #80
++    CAIMonsterTauntParams #80 (CAIMonsterTauntParams) : 
+         CAIMonsterTauntParams (CAIMonsterTauntParams)
+-    CAIMonsterAxii #80 (CAIMonsterAxii) : 
++    CAIMonsterAxii #81 (CAIMonsterAxii) : 
+         CAIMonsterAxii (CAIMonsterAxii)
+             tree (handle:CBehTree) : gameplay/trees/monster_baseaxii.w2behtree
+-            params (handle:CAIMonsterAxiiParams) : CAIMonsterAxiiParams #81
+-    CAIMonsterAxiiParams #81 (CAIMonsterAxiiParams) : 
++            params (handle:CAIMonsterAxiiParams) : CAIMonsterAxiiParams #82
++    CAIMonsterAxiiParams #82 (CAIMonsterAxiiParams) : 
+         CAIMonsterAxiiParams (CAIMonsterAxiiParams)
+-    CAIMonsterIdleDecoratorBies #82 (CAIMonsterIdleDecoratorBies) : 
++    CAIMonsterIdleDecoratorBies #83 (CAIMonsterIdleDecoratorBies) : 
+         CAIMonsterIdleDecoratorBies (CAIMonsterIdleDecoratorBies)
+             tree (handle:CBehTree) : gameplay/trees/idle/monster_idle_decorator.w2behtree
+-            params (handle:CAIMonsterIdleDecoratorParams) : CAIMonsterIdleDecoratorParams #83
+-    CAIMonsterIdleDecoratorParams #83 (CAIMonsterIdleDecoratorParams) : 
++            params (handle:CAIMonsterIdleDecoratorParams) : CAIMonsterIdleDecoratorParams #84
++    CAIMonsterIdleDecoratorParams #84 (CAIMonsterIdleDecoratorParams) : 
+         CAIMonsterIdleDecoratorParams (CAIMonsterIdleDecoratorParams)
+-            reactionTree (handle:CAIMonsterReactionsTree) : CAIMonsterReactionsTree #84
+-            searchFoodTree (handle:CAIMonsterSearchFoodTree) : CAIMonsterSearchFoodTree #98
++            reactionTree (handle:CAIMonsterReactionsTree) : CAIMonsterReactionsTree #85
++            searchFoodTree (handle:CAIMonsterSearchFoodTree) : CAIMonsterSearchFoodTree #99
+             actions (array:handle:CAIMonsterIdleAction)
+-                0 (handle:CAIMonsterIdleAction) : CAIMonsterIdleHowl #100
+-    CAIMonsterReactionsTree #84 (CAIMonsterReactionsTree) : 
++                0 (handle:CAIMonsterIdleAction) : CAIMonsterIdleHowl #101
++    CAIMonsterReactionsTree #85 (CAIMonsterReactionsTree) : 
+         CAIMonsterReactionsTree (CAIMonsterReactionsTree)
+             tree (handle:CBehTree) : gameplay/trees/reactions/monster_base_reactions.w2behtree
+-            params (handle:CAIMonsterReactionsTreeParams) : CAIMonsterReactionsTreeParams #85
+-    CAIMonsterReactionsTreeParams #85 (CAIMonsterReactionsTreeParams) : 
++            params (handle:CAIMonsterReactionsTreeParams) : CAIMonsterReactionsTreeParams #86
++    CAIMonsterReactionsTreeParams #86 (CAIMonsterReactionsTreeParams) : 
+         CAIMonsterReactionsTreeParams (CAIMonsterReactionsTreeParams)
+             reactions (array:handle:CAIMonsterActionSubtree)
+-                0 (handle:CAIMonsterActionSubtree) : CAIActionSearchForTarget #86
+-                1 (handle:CAIMonsterActionSubtree) : CAIActionAllySearchesTarget #88
+-                2 (handle:CAIMonsterActionSubtree) : CAIActionPlayWithTarget #90
+-                3 (handle:CAIMonsterActionSubtree) : CAIActionMoveInPack #92
+-                4 (handle:CAIMonsterActionSubtree) : CAIActionRunWildInPack #94
+-                5 (handle:CAIMonsterActionSubtree) : CAIActionMoveToLure #96
+-    CAIActionSearchForTarget #86 (CAIActionSearchForTarget) : 
++                0 (handle:CAIMonsterActionSubtree) : CAIActionSearchForTarget #87
++                1 (handle:CAIMonsterActionSubtree) : CAIActionAllySearchesTarget #89
++                2 (handle:CAIMonsterActionSubtree) : CAIActionPlayWithTarget #91
++                3 (handle:CAIMonsterActionSubtree) : CAIActionMoveInPack #93
++                4 (handle:CAIMonsterActionSubtree) : CAIActionRunWildInPack #95
++                5 (handle:CAIMonsterActionSubtree) : CAIActionMoveToLure #97
++    CAIActionSearchForTarget #87 (CAIActionSearchForTarget) : 
+         CAIActionSearchForTarget (CAIActionSearchForTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionSearchTarget #87
+-    CAINpcReactionSearchTarget #87 (CAINpcReactionSearchTarget) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionSearchTarget #88
++    CAINpcReactionSearchTarget #88 (CAINpcReactionSearchTarget) : 
+         CAINpcReactionSearchTarget (CAINpcReactionSearchTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_search_target.w2behtree
+-    CAIActionAllySearchesTarget #88 (CAIActionAllySearchesTarget) : 
++    CAIActionAllySearchesTarget #89 (CAIActionAllySearchesTarget) : 
+         CAIActionAllySearchesTarget (CAIActionAllySearchesTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionJoinSearchForTarget #89
+-    CAINpcReactionJoinSearchForTarget #89 (CAINpcReactionJoinSearchForTarget) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionJoinSearchForTarget #90
++    CAINpcReactionJoinSearchForTarget #90 (CAINpcReactionJoinSearchForTarget) : 
+         CAINpcReactionJoinSearchForTarget (CAINpcReactionJoinSearchForTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_join_search_for_target.w2behtree
+-    CAIActionPlayWithTarget #90 (CAIActionPlayWithTarget) : 
++    CAIActionPlayWithTarget #91 (CAIActionPlayWithTarget) : 
+         CAIActionPlayWithTarget (CAIActionPlayWithTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionPlayWithTarget #91
+-    CAINpcReactionPlayWithTarget #91 (CAINpcReactionPlayWithTarget) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionPlayWithTarget #92
++    CAINpcReactionPlayWithTarget #92 (CAINpcReactionPlayWithTarget) : 
+         CAINpcReactionPlayWithTarget (CAINpcReactionPlayWithTarget)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_play_around.w2behtree
+-    CAIActionMoveInPack #92 (CAIActionMoveInPack) : 
++    CAIActionMoveInPack #93 (CAIActionMoveInPack) : 
+         CAIActionMoveInPack (CAIActionMoveInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionMoveInPack #93
+-    CAINpcReactionMoveInPack #93 (CAINpcReactionMoveInPack) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionMoveInPack #94
++    CAINpcReactionMoveInPack #94 (CAINpcReactionMoveInPack) : 
+         CAINpcReactionMoveInPack (CAINpcReactionMoveInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_move_in_pack.w2behtree
+-    CAIActionRunWildInPack #94 (CAIActionRunWildInPack) : 
++    CAIActionRunWildInPack #95 (CAIActionRunWildInPack) : 
+         CAIActionRunWildInPack (CAIActionRunWildInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionRunWildInPack #95
+-    CAINpcReactionRunWildInPack #95 (CAINpcReactionRunWildInPack) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionRunWildInPack #96
++    CAINpcReactionRunWildInPack #96 (CAINpcReactionRunWildInPack) : 
+         CAINpcReactionRunWildInPack (CAINpcReactionRunWildInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_run_wild_in_pack.w2behtree
+-    CAIActionMoveToLure #96 (CAIActionMoveToLure) : 
++    CAIActionMoveToLure #97 (CAIActionMoveToLure) : 
+         CAIActionMoveToLure (CAIActionMoveToLure)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionMoveToLure #97
+-    CAINpcReactionMoveToLure #97 (CAINpcReactionMoveToLure) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionMoveToLure #98
++    CAINpcReactionMoveToLure #98 (CAINpcReactionMoveToLure) : 
+         CAINpcReactionMoveToLure (CAINpcReactionMoveToLure)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_monster_move_to_lure.w2behtree
+-    CAIMonsterSearchFoodTree #98 (CAIMonsterSearchFoodTree) : 
++    CAIMonsterSearchFoodTree #99 (CAIMonsterSearchFoodTree) : 
+         CAIMonsterSearchFoodTree (CAIMonsterSearchFoodTree)
+             tree (handle:CBehTree) : gameplay/trees/idle/monster_search_food_idle.w2behtree
+-            params (handle:CAIMonsterSearchFoodIdleParams) : CAIMonsterSearchFoodIdleParams #99
+-    CAIMonsterSearchFoodIdleParams #99 (CAIMonsterSearchFoodIdleParams) : 
++            params (handle:CAIMonsterSearchFoodIdleParams) : CAIMonsterSearchFoodIdleParams #100
++    CAIMonsterSearchFoodIdleParams #100 (CAIMonsterSearchFoodIdleParams) : 
+         CAIMonsterSearchFoodIdleParams (CAIMonsterSearchFoodIdleParams)
+             vegetable (Bool) : true
+-    CAIMonsterIdleHowl #100 (CAIMonsterIdleHowl) : 
++    CAIMonsterIdleHowl #101 (CAIMonsterIdleHowl) : 
+         CAIMonsterIdleHowl (CAIMonsterIdleHowl)
+             tree (handle:CBehTree) : gameplay/trees/idle/monster_idle_action_howl.w2behtree
+-            params (handle:CAIMonsterIdleActionParams) : CAIMonsterIdleActionParams #101
+-    CAIMonsterIdleActionParams #101 (CAIMonsterIdleActionParams) : 
++            params (handle:CAIMonsterIdleActionParams) : CAIMonsterIdleActionParams #102
++    CAIMonsterIdleActionParams #102 (CAIMonsterIdleActionParams) : 
+         CAIMonsterIdleActionParams (CAIMonsterIdleActionParams)
+             cooldown (Float) : 60.0000
+             loopTime (Float) : 5.0000
+-    CAIMonsterCombat #102 (CAIMonsterCombat) : 
++    CAIMonsterCombat #103 (CAIMonsterCombat) : 
+         CAIMonsterCombat (CAIMonsterCombat)
+             tree (handle:CBehTree) : gameplay/trees/monster_basecombat.w2behtree
+-            params (handle:CAIMonsterCombatParams) : CAIMonsterCombatParams #103
+-    CAIMonsterCombatParams #103 (CAIMonsterCombatParams) : MonsterHitReaction
++            params (handle:CAIMonsterCombatParams) : CAIMonsterCombatParams #104
++    CAIMonsterCombatParams #104 (CAIMonsterCombatParams) : MonsterHitReaction
+         CAIMonsterCombatParams (CAIMonsterCombatParams)
+-            combatLogicTree (handle:CAIMonsterCombatLogic) : CAIBiesCombatLogic #104
+-            damageReactionTree (handle:CAIMonsterSimpleDamageReactionTree) : CAIMonsterDamageReactionTree #106
++            combatLogicTree (handle:CAIMonsterCombatLogic) : CAIBiesCombatLogic #105
++            damageReactionTree (handle:CAIMonsterSimpleDamageReactionTree) : CAIMonsterDamageReactionTree #107
+             reachabilityTolerance (Float) : 4.0000
+             createHitReactionEvent (CName) : MonsterHitReaction
+-            criticalState (handle:CAINpcCriticalState) : CAINpcCriticalState #108
+-            reactionTree (handle:CAIMonsterCombatReactionsTree) : CAIMonsterCombatReactionsTree #110
+-    CAIBiesCombatLogic #104 (CAIBiesCombatLogic) : 
++            criticalState (handle:CAINpcCriticalState) : CAINpcCriticalState #109
++            reactionTree (handle:CAIMonsterCombatReactionsTree) : CAIMonsterCombatReactionsTree #111
++    CAIBiesCombatLogic #105 (CAIBiesCombatLogic) : 
+         CAIBiesCombatLogic (CAIBiesCombatLogic)
+             tree (handle:CBehTree) : gameplay/trees/monsters/monster_bies_logic.w2behtree
+-            params (handle:CAIMonsterCombatLogicParams) : CAIMonsterCombatLogicParams #105
+-    CAIMonsterCombatLogicParams #105 (CAIMonsterCombatLogicParams) : 
++            params (handle:CAIMonsterCombatLogicParams) : CAIMonsterCombatLogicParams #106
++    CAIMonsterCombatLogicParams #106 (CAIMonsterCombatLogicParams) : 
+         CAIMonsterCombatLogicParams (CAIMonsterCombatLogicParams) : <CAIMonsterCombatLogicParams>CAIMonsterCombatLogicParams
+-    CAIMonsterDamageReactionTree #106 (CAIMonsterDamageReactionTree) : 
++    CAIMonsterDamageReactionTree #107 (CAIMonsterDamageReactionTree) : 
+         CAIMonsterDamageReactionTree (CAIMonsterDamageReactionTree)
+             tree (handle:CBehTree) : gameplay/trees/monster_damage_reaction.w2behtree
+-            params (handle:CAIDamageReactionTreeParams) : CAIDamageReactionTreeParams #107
+-    CAIDamageReactionTreeParams #107 (CAIDamageReactionTreeParams) : 
++            params (handle:CAIDamageReactionTreeParams) : CAIDamageReactionTreeParams #108
++    CAIDamageReactionTreeParams #108 (CAIDamageReactionTreeParams) : 
+         CAIDamageReactionTreeParams (CAIDamageReactionTreeParams)
+             completeTaskAfterDisablingHitReaction (Bool) : true
+-    CAINpcCriticalState #108 (CAINpcCriticalState) : 
++    CAINpcCriticalState #109 (CAINpcCriticalState) : 
+         CAINpcCriticalState (CAINpcCriticalState)
+             tree (handle:CBehTree) : gameplay/trees/npc_critical_state.w2behtree
+-            params (handle:CAINpcCriticalStateParams) : CAINpcCriticalStateParams #109
+-    CAINpcCriticalStateParams #109 (CAINpcCriticalStateParams) : 
++            params (handle:CAINpcCriticalStateParams) : CAINpcCriticalStateParams #110
++    CAINpcCriticalStateParams #110 (CAINpcCriticalStateParams) : 
+         CAINpcCriticalStateParams (CAINpcCriticalStateParams)
+-    CAIMonsterCombatReactionsTree #110 (CAIMonsterCombatReactionsTree) : 
++    CAIMonsterCombatReactionsTree #111 (CAIMonsterCombatReactionsTree) : 
+         CAIMonsterCombatReactionsTree (CAIMonsterCombatReactionsTree)
+             tree (handle:CBehTree) : gameplay/trees/reactions/monster_base_reactions.w2behtree
+-            params (handle:CAIMonsterReactionsTreeParams) : CAIMonsterReactionsTreeParams #111
+-    CAIMonsterReactionsTreeParams #111 (CAIMonsterReactionsTreeParams) : 
++            params (handle:CAIMonsterReactionsTreeParams) : CAIMonsterReactionsTreeParams #112
++    CAIMonsterReactionsTreeParams #112 (CAIMonsterReactionsTreeParams) : 
+         CAIMonsterReactionsTreeParams (CAIMonsterReactionsTreeParams)
+             reactions (array:handle:CAIMonsterActionSubtree)
+-                0 (handle:CAIMonsterActionSubtree) : CAIActionLeadEscape #112
+-                1 (handle:CAIMonsterActionSubtree) : CAIActionLeadEscape #114
+-                2 (handle:CAIMonsterActionSubtree) : CAIActionEscapeInPack #116
+-    CAIActionLeadEscape #112 (CAIActionLeadEscape) : 
++                0 (handle:CAIMonsterActionSubtree) : CAIActionLeadEscape #113
++                1 (handle:CAIMonsterActionSubtree) : CAIActionLeadEscape #115
++                2 (handle:CAIMonsterActionSubtree) : CAIActionEscapeInPack #117
++    CAIActionLeadEscape #113 (CAIActionLeadEscape) : 
+         CAIActionLeadEscape (CAIActionLeadEscape)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionLeadEscape #113
+-    CAINpcReactionLeadEscape #113 (CAINpcReactionLeadEscape) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionLeadEscape #114
++    CAINpcReactionLeadEscape #114 (CAINpcReactionLeadEscape) : 
+         CAINpcReactionLeadEscape (CAINpcReactionLeadEscape)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_monster_lead_escape.w2behtree
+-    CAIActionLeadEscape #114 (CAIActionLeadEscape) : FearsomeEvent
++    CAIActionLeadEscape #115 (CAIActionLeadEscape) : FearsomeEvent
+         CAIActionLeadEscape (CAIActionLeadEscape)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionLeadEscape #115
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionLeadEscape #116
+             actionEventName (CName) : FearsomeEvent
+             saveReactionTargetUnder (CName) : FearsomeEventSource
+-    CAINpcReactionLeadEscape #115 (CAINpcReactionLeadEscape) : 
++    CAINpcReactionLeadEscape #116 (CAINpcReactionLeadEscape) : 
+         CAINpcReactionLeadEscape (CAINpcReactionLeadEscape)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_monster_lead_escape.w2behtree
+-    CAIActionEscapeInPack #116 (CAIActionEscapeInPack) : 
++    CAIActionEscapeInPack #117 (CAIActionEscapeInPack) : 
+         CAIActionEscapeInPack (CAIActionEscapeInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/npc_reaction.w2behtree
+-            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionEscapeInPack #117
+-    CAINpcReactionEscapeInPack #117 (CAINpcReactionEscapeInPack) : 
++            reactionLogicTree (handle:CAINpcReaction) : CAINpcReactionEscapeInPack #118
++    CAINpcReactionEscapeInPack #118 (CAINpcReactionEscapeInPack) : 
+         CAINpcReactionEscapeInPack (CAINpcReactionEscapeInPack)
+             tree (handle:CBehTree) : gameplay/trees/reactions/reaction_monster_escape_in_pack.w2behtree
+-    CAIMonsterDeath #118 (CAIMonsterDeath) : 
++    CAIMonsterDeath #119 (CAIMonsterDeath) : 
+         CAIMonsterDeath (CAIMonsterDeath)
+             tree (handle:CBehTree) : gameplay/trees/death/death.w2behtree
+-            params (handle:CAINpcDeathParams) : CAIMonsterDeathParams #119
+-    CAIMonsterDeathParams #119 (CAIMonsterDeathParams) : 
++            params (handle:CAINpcDeathParams) : CAIMonsterDeathParams #120
++    CAIMonsterDeathParams #120 (CAIMonsterDeathParams) : 
+         CAIMonsterDeathParams (CAIMonsterDeathParams)
+-    CEntityDismemberment #120 (CEntityDismemberment) : 
++    CEntityDismemberment #121 (CEntityDismemberment) : 
+         CEntityDismemberment (CEntityDismemberment)
+             wasIncluded (Bool) : true
+             wounds (array:ptr:CDismembermentWound)
+-                0 (ptr:CDismembermentWound) : CDismembermentWound #121
+-                1 (ptr:CDismembermentWound) : CDismembermentWound #122
+-    CDismembermentWound #121 (CDismembermentWound) : bies_trophy_head
++                0 (ptr:CDismembermentWound) : CDismembermentWound #122
++                1 (ptr:CDismembermentWound) : CDismembermentWound #123
++    CDismembermentWound #122 (CDismembermentWound) : bies_trophy_head
+         CDismembermentWound (CDismembermentWound)
+             name (CName) : bies_trophy_head
+             transform (EngineTransform)
+@@ -7873,7 +8285,7 @@
+                         Alpha (Uint8) : 0
+                 depthScale (Float) : 2.3000
+                 applyToFillMesh (Bool) : false
+-    CDismembermentWound #122 (CDismembermentWound) : czart_trophy_head
++    CDismembermentWound #123 (CDismembermentWound) : czart_trophy_head
+         CDismembermentWound (CDismembermentWound)
+             name (CName) : czart_trophy_head
+             transform (EngineTransform)
+@@ -7907,17 +8319,17 @@
+                 normalFadeBias (Float) : -0.3500
+                 normalFadeScale (Float) : 3.0000
+                 applyToFillMesh (Bool) : false
+-    CFocusSoundParam #123 (CFocusSoundParam) : Focus_Sound
++    CFocusSoundParam #124 (CFocusSoundParam) : Focus_Sound
+         CFocusSoundParam (CFocusSoundParam)
+             wasIncluded (Bool) : true
+             name (String) : "Focus_Sound"
+             eventStart (CName) : monster_bies_focus_100m_start
+             eventStop (CName) : monster_bies_focus_100m_stop
+-    CAnimGlobalParam #124 (CAnimGlobalParam) : sfx_bies
++    CAnimGlobalParam #125 (CAnimGlobalParam) : sfx_bies
+         CAnimGlobalParam (CAnimGlobalParam)
+             wasIncluded (Bool) : true
+             sfxTag (CName) : sfx_bies
+-    CBloodTrailEffect #125 (CBloodTrailEffect) : blood_trail
++    CBloodTrailEffect #126 (CBloodTrailEffect) : blood_trail
+         CBloodTrailEffect (CBloodTrailEffect)
+             wasIncluded (Bool) : true
+             name (String) : "blood_trail"
