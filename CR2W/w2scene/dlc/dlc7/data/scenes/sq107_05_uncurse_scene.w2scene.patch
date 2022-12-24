@@ -1,0 +1,580 @@
+ 1 file changed, 99 insertions(+), 130 deletions(-)
+
+diff --git 1.32/dlc/dlc7/data/scenes/sq107_05_uncurse_scene.w2scene.txt 4.00/dlc/dlc7/data/scenes/sq107_05_uncurse_scene.w2scene.txt
+index 0f0bbac..5b3370b 100644
+--- 1.32/dlc/dlc7/data/scenes/sq107_05_uncurse_scene.w2scene.txt
++++ 4.00/dlc/dlc7/data/scenes/sq107_05_uncurse_scene.w2scene.txt
+@@ -10,14 +10,13 @@
+             sectionIDCounter (Uint32) : 1
+             sceneId (Uint32) : 96534085
+             sceneTemplates (array:ptr:CStorySceneActor)
+-                0 (ptr:CStorySceneActor) : CStorySceneActor #58
+-                1 (ptr:CStorySceneActor) : CStorySceneActor #59
+-                2 (ptr:CStorySceneActor) : CStorySceneActor #60
++                0 (ptr:CStorySceneActor) : CStorySceneActor #57
++                1 (ptr:CStorySceneActor) : CStorySceneActor #58
+             sceneProps (array:ptr:CStorySceneProp)
+-                0 (ptr:CStorySceneProp) : CStorySceneProp #61
+-                1 (ptr:CStorySceneProp) : CStorySceneProp #62
++                0 (ptr:CStorySceneProp) : CStorySceneProp #59
++                1 (ptr:CStorySceneProp) : CStorySceneProp #60
+             dialogsetInstances (array:ptr:CStorySceneDialogsetInstance)
+-                0 (ptr:CStorySceneDialogsetInstance) : CStorySceneDialogsetInstance #63
++                0 (ptr:CStorySceneDialogsetInstance) : CStorySceneDialogsetInstance #61
+             cameraDefinitions (array:StorySceneCameraDefinition)
+                 0 (StorySceneCameraDefinition)
+                     cameraName (CName) : 1_2_medium_ext
+@@ -2138,14 +2137,12 @@
+             nextLinkElement (ptr:CStorySceneLinkElement) : CStorySceneSection #2
+             voicetagMappings (array:CStorySceneVoicetagMapping)
+                 0 (CStorySceneVoicetagMapping)
+-                    actorOptional (Bool) : true
+                 1 (CStorySceneVoicetagMapping)
+-                    voicetag (CName) : GERALT
+-                2 (CStorySceneVoicetagMapping)
+                     voicetag (CName) : VERDEN PEASANT 03
+-                3 (CStorySceneVoicetagMapping)
+-                    voicetag (CName) : PIG
++                2 (CStorySceneVoicetagMapping)
++                    voicetag (CName) : GERALT
+             dialogsetInstanceName (CName) : dialogset_1_vs_2.w2dset
++            blockSceneArea (Bool) : false
+             isGameplay (Bool) : false
+     CStorySceneSection #2 (CStorySceneSection) : something
+         CStorySceneSection (CStorySceneSection)
+@@ -2210,7 +2207,6 @@
+                 48 (ptr:CStorySceneEventInfo) : CStorySceneEventInfo #54
+                 49 (ptr:CStorySceneEventInfo) : CStorySceneEventInfo #55
+                 50 (ptr:CStorySceneEventInfo) : CStorySceneEventInfo #56
+-                51 (ptr:CStorySceneEventInfo) : CStorySceneEventInfo #57
+             sectionId (Uint32) : 1
+             sectionName (String) : "something"
+             sceneEventElements (array:CVariantSizeType)
+@@ -2269,11 +2265,13 @@
+                         cameraAdjustVersion (Uint8) : 2
+                 1 (CStorySceneEventLookAt)
+                     eventName (String) : "Lookat"
++                    isMuted (Bool) : true
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+                     GUID (CGUID) : 3bf29316-fb58-4368-bb0d-84519fe324e9
+                     linkParentGUID (CGUID) : 95878490-3efd-4ba4-80bb-14409ccd12d0
+                     actor (CName) : GERALT
+                     target (CName) : PIG
++                    type (EDialogLookAtType) : DLT_StaticPoint
+                 2 (CStorySceneEventLookAt)
+                     eventName (String) : "Lookat"
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -3168,20 +3166,13 @@
+                                 13 (Uint32) : 2
+                                 14 (Uint32) : 2
+                 25 (CStorySceneEventLookAt)
+-                    eventName (String) : "Lookat"
+-                    startPosition (Float) : 0.2201
+-                    sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+-                    GUID (CGUID) : b99db406-b5e9-494d-baab-f16e846adb79
+-                    actor (CName) : PIG
+-                    enabled (Bool) : false
+-                26 (CStorySceneEventLookAt)
+                     eventName (String) : "Lookat"
+                     startPosition (Float) : 0.2248
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+                     GUID (CGUID) : fdccef3f-e308-4659-a49a-06f351746856
+                     actor (CName) : GERALT
+                     enabled (Bool) : false
+-                27 (CStorySceneEventCustomCamera)
++                26 (CStorySceneEventCustomCamera)
+                     eventName (String) : "CustomCamera"
+                     startPosition (Float) : 0.4759
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -3223,7 +3214,7 @@
+                             focalLength (Float) : 5.9771
+                             distance (Float) : 0.1905
+                         cameraAdjustVersion (Uint8) : 2
+-                28 (CStorySceneEventOverridePlacement)
++                27 (CStorySceneEventOverridePlacement)
+                     eventName (String) : "Placement event"
+                     startPosition (Float) : 0.2451
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -3238,7 +3229,7 @@
+                         X (Float) : 4.6000
+                         Y (Float) : -1.0500
+                         Z (Float) : 0.0000
+-                29 (CStorySceneEventAnimation)
++                28 (CStorySceneEventAnimation)
+                     eventName (String) : "enter calm front"
+                     startPosition (Float) : 0.2451
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -3289,7 +3280,7 @@
+                         value type (ECurveValueType) : CVT_Float
+                         type (ECurveBaseType) : CT_Segmented
+                         is looped (Bool) : false
+-                30 (CStorySceneEventOverridePlacement)
++                29 (CStorySceneEventOverridePlacement)
+                     eventName (String) : "Placement event"
+                     startPosition (Float) : 0.4759
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -3303,7 +3294,7 @@
+                         X (Float) : 4.1500
+                         Y (Float) : -0.7600
+                         Z (Float) : 0.0000
+-                31 (CStorySceneEventLookAt)
++                30 (CStorySceneEventLookAt)
+                     eventName (String) : "Lookat"
+                     startPosition (Float) : 0.4921
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -3317,7 +3308,7 @@
+                         Y (Float) : 2.0000
+                         Z (Float) : 1.7500
+                         W (Float) : 1.0000
+-                32 (CStorySceneEventLookAt)
++                31 (CStorySceneEventLookAt)
+                     eventName (String) : "Lookat"
+                     startPosition (Float) : 0.4856
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -3332,7 +3323,7 @@
+                         Y (Float) : 2.0000
+                         Z (Float) : 1.7500
+                         W (Float) : 1.0000
+-                33 (CStorySceneEventLookAt)
++                32 (CStorySceneEventLookAt)
+                     eventName (String) : "Lookat"
+                     startPosition (Float) : 0.4394
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -3345,7 +3336,7 @@
+                         Y (Float) : 2.0000
+                         Z (Float) : 1.7500
+                         W (Float) : 1.0000
+-                34 (CStorySceneEventLookAt)
++                33 (CStorySceneEventLookAt)
+                     eventName (String) : "Lookat"
+                     startPosition (Float) : 0.5395
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -3353,7 +3344,7 @@
+                     actor (CName) : VERDEN PEASANT 03
+                     target (CName) : GERALT
+                     speed (Float) : 0.7000
+-                35 (CStorySceneEventLookAt)
++                34 (CStorySceneEventLookAt)
+                     eventName (String) : "Lookat"
+                     startPosition (Float) : 0.5626
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -3362,7 +3353,7 @@
+                     actor (CName) : GERALT
+                     target (CName) : VERDEN PEASANT 03
+                     speed (Float) : 0.7000
+-                36 (CStorySceneEventCustomCamera)
++                35 (CStorySceneEventCustomCamera)
+                     eventName (String) : "CustomCamera"
+                     startPosition (Float) : 0.5626
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -3403,7 +3394,7 @@
+                         dof (ApertureDofParams)
+                             focalLength (Float) : 5.9771
+                             distance (Float) : 0.1905
+-                37 (CStorySceneEventCustomCamera)
++                36 (CStorySceneEventCustomCamera)
+                     eventName (String) : "CustomCamera"
+                     startPosition (Float) : 0.5893
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -3443,7 +3434,7 @@
+                             focalLength (Float) : 36.8112
+                             distance (Float) : 3.0366
+                         cameraAdjustVersion (Uint8) : 2
+-                38 (CStorySceneEventCameraInterpolation)
++                37 (CStorySceneEventCameraInterpolation)
+                     eventName (String) : "interpolation event"
+                     startPosition (Float) : 0.5626
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -3696,7 +3687,7 @@
+                                 12 (Uint32) : 2
+                                 13 (Uint32) : 2
+                                 14 (Uint32) : 2
+-                39 (CStorySceneEventAnimation)
++                38 (CStorySceneEventAnimation)
+                     eventName (String) : "turn 90 left"
+                     startPosition (Float) : 0.5957
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -3749,7 +3740,7 @@
+                         value type (ECurveValueType) : CVT_Float
+                         type (ECurveBaseType) : CT_Segmented
+                         is looped (Bool) : false
+-                40 (CStorySceneEventCustomCamera)
++                39 (CStorySceneEventCustomCamera)
+                     eventName (String) : "CustomCamera"
+                     startPosition (Float) : 0.6312
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -3789,7 +3780,7 @@
+                             focalLength (Float) : 28.7678
+                             distance (Float) : 4.0081
+                         cameraAdjustVersion (Uint8) : 2
+-                41 (CStorySceneEventCustomCamera)
++                40 (CStorySceneEventCustomCamera)
+                     eventName (String) : "CustomCamera"
+                     startPosition (Float) : 0.9684
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -3829,7 +3820,7 @@
+                             focalLength (Float) : 28.7678
+                             distance (Float) : 4.0081
+                         cameraAdjustVersion (Uint8) : 2
+-                42 (CStorySceneEventCameraInterpolation)
++                41 (CStorySceneEventCameraInterpolation)
+                     eventName (String) : "interpolation event"
+                     startPosition (Float) : 0.6312
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -4082,7 +4073,7 @@
+                                 12 (Uint32) : 2
+                                 13 (Uint32) : 2
+                                 14 (Uint32) : 2
+-                43 (CStorySceneEventFade)
++                42 (CStorySceneEventFade)
+                     eventName (String) : "Fade"
+                     startPosition (Float) : 0.0397
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -4090,14 +4081,14 @@
+                     linkParentGUID (CGUID) : 95878490-3efd-4ba4-80bb-14409ccd12d0
+                     linkParentTimeOffset (Float) : 1.2852
+                     duration (Float) : 3.8220
+-                44 (CStorySceneEventFade)
++                43 (CStorySceneEventFade)
+                     eventName (String) : "Fade"
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+                     GUID (CGUID) : 76a75ab5-11c0-4bc2-99c1-53cf2e5d5554
+                     linkParentGUID (CGUID) : 95878490-3efd-4ba4-80bb-14409ccd12d0
+                     duration (Float) : 0.0000
+                     in (Bool) : false
+-                45 (CStorySceneEventLookAt)
++                44 (CStorySceneEventLookAt)
+                     eventName (String) : "Lookat"
+                     startPosition (Float) : 0.6468
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -4109,7 +4100,7 @@
+                         Y (Float) : 2.0000
+                         Z (Float) : 1.7500
+                         W (Float) : 1.0000
+-                46 (CStorySceneEventAnimation)
++                45 (CStorySceneEventAnimation)
+                     eventName (String) : "turn 180 right"
+                     startPosition (Float) : 0.6235
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -4162,7 +4153,7 @@
+                         value type (ECurveValueType) : CVT_Float
+                         type (ECurveBaseType) : CT_Segmented
+                         is looped (Bool) : false
+-                47 (CStorySceneEventLookAt)
++                46 (CStorySceneEventLookAt)
+                     eventName (String) : "Lookat"
+                     startPosition (Float) : 0.6706
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -4174,7 +4165,7 @@
+                         Y (Float) : 2.0000
+                         Z (Float) : 2.4500
+                         W (Float) : 1.0000
+-                48 (CStorySceneEventLookAt)
++                47 (CStorySceneEventLookAt)
+                     eventName (String) : "Lookat"
+                     startPosition (Float) : 0.7890
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -4186,7 +4177,7 @@
+                         Y (Float) : 2.0000
+                         Z (Float) : 1.7500
+                         W (Float) : 1.0000
+-                49 (CStorySceneEventAnimation)
++                48 (CStorySceneEventAnimation)
+                     eventName (String) : "turn 180 left"
+                     startPosition (Float) : 0.7948
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -4239,14 +4230,14 @@
+                         value type (ECurveValueType) : CVT_Float
+                         type (ECurveBaseType) : CT_Segmented
+                         is looped (Bool) : false
+-                50 (CStorySceneEventLookAt)
++                49 (CStorySceneEventLookAt)
+                     eventName (String) : "Lookat"
+                     startPosition (Float) : 0.8298
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+                     GUID (CGUID) : db92f688-251b-4098-935d-85e2b040bae8
+                     actor (CName) : VERDEN PEASANT 03
+                     target (CName) : GERALT
+-                51 (CStorySceneEventFade)
++                50 (CStorySceneEventFade)
+                     eventName (String) : "Fade"
+                     startPosition (Float) : 0.9132
+                     sceneElement (ptr:CStorySceneElement) : CStoryScenePauseElement #5
+@@ -4288,33 +4279,32 @@
+                 22 (CGUID) : 44fc6144-51fa-488b-b7a5-e253c03cc51c
+                 23 (CGUID) : 5518de04-75ac-4b96-9a58-99ea055b20a7
+                 24 (CGUID) : 40be745d-86c2-45fb-91cc-53391cab381c
+-                25 (CGUID) : b99db406-b5e9-494d-baab-f16e846adb79
+-                26 (CGUID) : fdccef3f-e308-4659-a49a-06f351746856
+-                27 (CGUID) : 6fa1c561-2e79-4597-90d4-042451bf244c
+-                28 (CGUID) : 4854bc03-a09b-479e-9f4d-4555915fd937
+-                29 (CGUID) : bd634d08-c51b-479f-b513-f1b2bf200448
+-                30 (CGUID) : 7f67c101-2122-49e3-91e3-0d3931a8a63c
+-                31 (CGUID) : 4631fbec-0365-4359-996a-97aa0be15b95
+-                32 (CGUID) : 18c95f63-db80-42a3-9f60-4939b6a21ee5
+-                33 (CGUID) : 419b37ed-a922-44f7-82ca-bf60c516697d
+-                34 (CGUID) : 7995a5c1-85b8-4dc9-b5bc-1785c4d0e602
+-                35 (CGUID) : b5c9aced-14da-4790-826e-94bc27978737
+-                36 (CGUID) : a5033073-5599-4b2d-ac6d-a81daa9ba867
+-                37 (CGUID) : 3e602253-fe28-449c-a3a3-ed62e9d1cf34
+-                38 (CGUID) : 7be7ed25-4897-4e70-a6ea-2c3e929f2825
+-                39 (CGUID) : 1f847f0b-faed-4334-82e4-4d8e3d2c6383
+-                40 (CGUID) : 9093eecc-3a35-496b-a6a4-9ce73207fdcb
+-                41 (CGUID) : 402d64b3-d56d-47ad-9d39-f0cbc45f6e9d
+-                42 (CGUID) : 83c25d00-fdfc-45f2-af14-f3782af5348f
+-                43 (CGUID) : dfe88295-a58c-4671-83df-eb05fabb1607
+-                44 (CGUID) : 76a75ab5-11c0-4bc2-99c1-53cf2e5d5554
+-                45 (CGUID) : 201a5267-bc60-4f46-98ef-bd944338221d
+-                46 (CGUID) : efb5303a-9a72-4cc0-894a-0ca6f3a3206a
+-                47 (CGUID) : e3e488d7-6f93-46a8-9e45-408a753185d9
+-                48 (CGUID) : ff2dc7f7-4ccc-442b-9852-53a16f8cf877
+-                49 (CGUID) : 39559ef7-b592-4c37-9716-767b971d1ca9
+-                50 (CGUID) : db92f688-251b-4098-935d-85e2b040bae8
+-                51 (CGUID) : a82eda2e-a800-4e7f-8009-3d6a28b7d615
++                25 (CGUID) : fdccef3f-e308-4659-a49a-06f351746856
++                26 (CGUID) : 6fa1c561-2e79-4597-90d4-042451bf244c
++                27 (CGUID) : 4854bc03-a09b-479e-9f4d-4555915fd937
++                28 (CGUID) : bd634d08-c51b-479f-b513-f1b2bf200448
++                29 (CGUID) : 7f67c101-2122-49e3-91e3-0d3931a8a63c
++                30 (CGUID) : 4631fbec-0365-4359-996a-97aa0be15b95
++                31 (CGUID) : 18c95f63-db80-42a3-9f60-4939b6a21ee5
++                32 (CGUID) : 419b37ed-a922-44f7-82ca-bf60c516697d
++                33 (CGUID) : 7995a5c1-85b8-4dc9-b5bc-1785c4d0e602
++                34 (CGUID) : b5c9aced-14da-4790-826e-94bc27978737
++                35 (CGUID) : a5033073-5599-4b2d-ac6d-a81daa9ba867
++                36 (CGUID) : 3e602253-fe28-449c-a3a3-ed62e9d1cf34
++                37 (CGUID) : 7be7ed25-4897-4e70-a6ea-2c3e929f2825
++                38 (CGUID) : 1f847f0b-faed-4334-82e4-4d8e3d2c6383
++                39 (CGUID) : 9093eecc-3a35-496b-a6a4-9ce73207fdcb
++                40 (CGUID) : 402d64b3-d56d-47ad-9d39-f0cbc45f6e9d
++                41 (CGUID) : 83c25d00-fdfc-45f2-af14-f3782af5348f
++                42 (CGUID) : dfe88295-a58c-4671-83df-eb05fabb1607
++                43 (CGUID) : 76a75ab5-11c0-4bc2-99c1-53cf2e5d5554
++                44 (CGUID) : 201a5267-bc60-4f46-98ef-bd944338221d
++                45 (CGUID) : efb5303a-9a72-4cc0-894a-0ca6f3a3206a
++                46 (CGUID) : e3e488d7-6f93-46a8-9e45-408a753185d9
++                47 (CGUID) : ff2dc7f7-4ccc-442b-9852-53a16f8cf877
++                48 (CGUID) : 39559ef7-b592-4c37-9716-767b971d1ca9
++                49 (CGUID) : db92f688-251b-4098-935d-85e2b040bae8
++                50 (CGUID) : a82eda2e-a800-4e7f-8009-3d6a28b7d615
+             elementInfo (array:CStorySceneSectionVariantElementInfo)
+                 0 (CStorySceneSectionVariantElementInfo)
+                     elementId (String) : "PauseElement_3"
+@@ -4425,153 +4415,146 @@
+             eventGuid (CGUID) : 40be745d-86c2-45fb-91cc-53391cab381c
+             sectionVariantId (Uint32) : 0
+     CStorySceneEventInfo #31 (CStorySceneEventInfo) : 
+-        CStorySceneEventInfo (CStorySceneEventInfo)
+-            eventGuid (CGUID) : b99db406-b5e9-494d-baab-f16e846adb79
+-            sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #32 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : fdccef3f-e308-4659-a49a-06f351746856
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #33 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #32 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : 6fa1c561-2e79-4597-90d4-042451bf244c
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #34 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #33 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : 4854bc03-a09b-479e-9f4d-4555915fd937
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #35 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #34 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : bd634d08-c51b-479f-b513-f1b2bf200448
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #36 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #35 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : 7f67c101-2122-49e3-91e3-0d3931a8a63c
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #37 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #36 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : 4631fbec-0365-4359-996a-97aa0be15b95
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #38 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #37 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : 18c95f63-db80-42a3-9f60-4939b6a21ee5
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #39 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #38 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : 419b37ed-a922-44f7-82ca-bf60c516697d
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #40 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #39 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : 7995a5c1-85b8-4dc9-b5bc-1785c4d0e602
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #41 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #40 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : b5c9aced-14da-4790-826e-94bc27978737
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #42 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #41 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : a5033073-5599-4b2d-ac6d-a81daa9ba867
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #43 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #42 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : 3e602253-fe28-449c-a3a3-ed62e9d1cf34
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #44 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #43 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : 7be7ed25-4897-4e70-a6ea-2c3e929f2825
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #45 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #44 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : 1f847f0b-faed-4334-82e4-4d8e3d2c6383
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #46 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #45 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : 9093eecc-3a35-496b-a6a4-9ce73207fdcb
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #47 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #46 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : 402d64b3-d56d-47ad-9d39-f0cbc45f6e9d
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #48 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #47 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : 83c25d00-fdfc-45f2-af14-f3782af5348f
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #49 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #48 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : dfe88295-a58c-4671-83df-eb05fabb1607
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #50 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #49 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : 76a75ab5-11c0-4bc2-99c1-53cf2e5d5554
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #51 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #50 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : 201a5267-bc60-4f46-98ef-bd944338221d
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #52 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #51 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : efb5303a-9a72-4cc0-894a-0ca6f3a3206a
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #53 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #52 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : e3e488d7-6f93-46a8-9e45-408a753185d9
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #54 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #53 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : ff2dc7f7-4ccc-442b-9852-53a16f8cf877
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #55 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #54 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : 39559ef7-b592-4c37-9716-767b971d1ca9
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #56 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #55 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : db92f688-251b-4098-935d-85e2b040bae8
+             sectionVariantId (Uint32) : 0
+-    CStorySceneEventInfo #57 (CStorySceneEventInfo) : 
++    CStorySceneEventInfo #56 (CStorySceneEventInfo) : 
+         CStorySceneEventInfo (CStorySceneEventInfo)
+             eventGuid (CGUID) : a82eda2e-a800-4e7f-8009-3d6a28b7d615
+             sectionVariantId (Uint32) : 0
+-    CStorySceneActor #58 (CStorySceneActor) : GERALT
++    CStorySceneActor #57 (CStorySceneActor) : GERALT
+         CStorySceneActor (CStorySceneActor)
+             id (CName) : GERALT
+             actorTags (TagList)
+                 tags (CBufferVLQInt32:CName)
+                     0 (CName) : PLAYER
+             entityTemplate (soft:CEntityTemplate) : gameplay/templates/characters/player/player.w2ent
+-    CStorySceneActor #59 (CStorySceneActor) : VERDEN PEASANT 03
++    CStorySceneActor #58 (CStorySceneActor) : VERDEN PEASANT 03
+         CStorySceneActor (CStorySceneActor)
+             id (CName) : VERDEN PEASANT 03
+             actorTags (TagList)
+                 tags (CBufferVLQInt32:CName)
+                     0 (CName) : sq107_fool
+             entityTemplate (soft:CEntityTemplate) : dlc/dlc7/data/characters/sq107_fool.w2ent
+-    CStorySceneActor #60 (CStorySceneActor) : PIG
+-        CStorySceneActor (CStorySceneActor)
+-            id (CName) : PIG
+-            actorTags (TagList)
+-                tags (CBufferVLQInt32:CName)
+-                    0 (CName) : sq107_vault_pig
+-    CStorySceneProp #61 (CStorySceneProp) : effects
++    CStorySceneProp #59 (CStorySceneProp) : effects
+         CStorySceneProp (CStorySceneProp)
+             id (CName) : effects
+             entityTemplate (soft:CEntityTemplate) : dlc/dlc7/data/fx/quest/sq107/sq107_pigs_uncurse.w2ent
+-    CStorySceneProp #62 (CStorySceneProp) : glow_eyes
++            resetBehaviorGraph (Bool) : false
++            useMimics (Bool) : false
++    CStorySceneProp #60 (CStorySceneProp) : glow_eyes
+         CStorySceneProp (CStorySceneProp)
+             id (CName) : glow_eyes
+             entityTemplate (soft:CEntityTemplate) : dlc/dlc7/data/fx/quest/sq107/sq107_pigs_uncurse.w2ent
+-    CStorySceneDialogsetInstance #63 (CStorySceneDialogsetInstance) : gameplay\dialogsets\dialogset_1_vs_2.w2dset
++            resetBehaviorGraph (Bool) : false
++            useMimics (Bool) : false
++    CStorySceneDialogsetInstance #61 (CStorySceneDialogsetInstance) : gameplay\dialogsets\dialogset_1_vs_2.w2dset
+         CStorySceneDialogsetInstance (CStorySceneDialogsetInstance)
+             name (CName) : dialogset_1_vs_2.w2dset
+             slots (array:ptr:CStorySceneDialogsetSlot)
+-                0 (ptr:CStorySceneDialogsetSlot) : CStorySceneDialogsetSlot #64
+-                1 (ptr:CStorySceneDialogsetSlot) : CStorySceneDialogsetSlot #65
+-                2 (ptr:CStorySceneDialogsetSlot) : CStorySceneDialogsetSlot #66
++                0 (ptr:CStorySceneDialogsetSlot) : CStorySceneDialogsetSlot #62
++                1 (ptr:CStorySceneDialogsetSlot) : CStorySceneDialogsetSlot #63
+             placementTag (TagList)
+                 tags (CBufferVLQInt32:CName)
+                     0 (CName) : sq107_scene_uncurse
+             path (String) : "gameplay/dialogsets/dialogset_1_vs_2.w2dset"
+-    CStorySceneDialogsetSlot #64 (CStorySceneDialogsetSlot) : slot1
++    CStorySceneDialogsetSlot #62 (CStorySceneDialogsetSlot) : slot1
+         CStorySceneDialogsetSlot (CStorySceneDialogsetSlot)
+             slotNumber (Uint32) : 1
+             slotName (CName) : slot1
+@@ -4585,7 +4568,7 @@
+             actorName (CName) : GERALT
+             actorMimicsEmotionalState (CName) : Determined
+             ID (CGUID) : 919e356e-e14f-42f7-8407-ec558347df0e
+-    CStorySceneDialogsetSlot #65 (CStorySceneDialogsetSlot) : slot2
++    CStorySceneDialogsetSlot #63 (CStorySceneDialogsetSlot) : slot2
+         CStorySceneDialogsetSlot (CStorySceneDialogsetSlot)
+             slotNumber (Uint32) : 2
+             slotName (CName) : slot2
+@@ -4599,17 +4582,3 @@
+             actorName (CName) : VERDEN PEASANT 03
+             actorMimicsEmotionalState (CName) : Proud
+             ID (CGUID) : 63d46ed1-e6aa-43cb-b88e-4e16f2a48ef7
+-    CStorySceneDialogsetSlot #66 (CStorySceneDialogsetSlot) : slot3
+-        CStorySceneDialogsetSlot (CStorySceneDialogsetSlot)
+-            slotNumber (Uint32) : 3
+-            slotName (CName) : slot3
+-            slotPlacement (EngineTransform)
+-                Pitch (Float) : 0.0000
+-                Yaw (Float) : 0.0000
+-                Roll (Float) : 283.0000
+-                X (Float) : 2.5000
+-                Y (Float) : -6.4000
+-                Z (Float) : 0.0000
+-            actorName (CName) : PIG
+-            actorMimicsEmotionalState (CName) : Happy
+-            ID (CGUID) : c48a7cde-a983-4eb2-a0de-97e8afdbf84c
