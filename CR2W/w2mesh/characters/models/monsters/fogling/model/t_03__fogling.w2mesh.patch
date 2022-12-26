@@ -1,0 +1,415 @@
+ 1 file changed, 292 insertions(+), 82 deletions(-)
+
+diff --git 1.32/characters/models/monsters/fogling/model/t_03__fogling.w2mesh.txt 4.00/characters/models/monsters/fogling/model/t_03__fogling.w2mesh.txt
+index d055724..eec2947 100644
+--- 1.32/characters/models/monsters/fogling/model/t_03__fogling.w2mesh.txt
++++ 4.00/characters/models/monsters/fogling/model/t_03__fogling.w2mesh.txt
+@@ -2,12 +2,15 @@
+         CMesh (CMesh)
+             materials (array:handle:IMaterial)
+                 0 (handle:IMaterial) : CMaterialInstance #1
++                1 (handle:IMaterial) : CMaterialInstance #2
++                2 (handle:IMaterial) : CMaterialInstance #3
++                3 (handle:IMaterial) : CMaterialInstance #4
+             boundingBox (Box)
+                 Min (Vector)
+                     X (Float) : -1.1499
+                     Y (Float) : -0.4015
+                     Z (Float) : -0.0114
+-                    W (Float) : 1.0000
++                    W (Float) : 0.0000
+                 Max (Vector)
+                     X (Float) : 1.1535
+                     Y (Float) : 0.6177
+@@ -471,7 +474,9 @@
+                 vertexBufferSize (Uint32) : 654256
+                 indexBufferSize (Uint32) : 221244
+                 indexBufferOffset (Uint32) : 654336
+-            soundInfo (ptr:SMeshSoundInfo) : SMeshSoundInfo #2
++                blasBuffer (DeferredDataBuffer)
++                    Bufferdata (Int16) : 0
++            soundInfo (ptr:SMeshSoundInfo) : SMeshSoundInfo #5
+             internalVersion (Uint8) : 2
+             ChunkgroupIndeces (CBufferVLQInt32:CPaddedBuffer:CUInt16)
+                 0 (CPaddedBuffer:CUInt16)
+@@ -2031,88 +2036,160 @@
+                 0 (Uint32) : 1
+                 1 (Uint32) : 0
+                 2 (Uint32) : 39
+-                3 (Uint32) : 21
+-                4 (Uint32) : 36
+-                5 (Uint32) : 28
+-                6 (Uint32) : 37
+-                7 (Uint32) : 11
+-                8 (Uint32) : 12
+-                9 (Uint32) : 29
+-                10 (Uint32) : 60
+-                11 (Uint32) : 67
+-                12 (Uint32) : 75
+-                13 (Uint32) : 50
+-                14 (Uint32) : 76
+-                15 (Uint32) : 51
+-                16 (Uint32) : 68
+-                17 (Uint32) : 40
+-                18 (Uint32) : 78
+-                19 (Uint32) : 32
+-                20 (Uint32) : 4
+-                21 (Uint32) : 71
+-                22 (Uint32) : 19
+-                23 (Uint32) : 43
+-                24 (Uint32) : 79
+-                25 (Uint32) : 80
+-                26 (Uint32) : 31
+-                27 (Uint32) : 3
+-                28 (Uint32) : 30
+-                29 (Uint32) : 6
+-                30 (Uint32) : 7
+-                31 (Uint32) : 5
+-                32 (Uint32) : 58
+-                33 (Uint32) : 45
+-                34 (Uint32) : 46
+-                35 (Uint32) : 69
+-                36 (Uint32) : 70
+-                37 (Uint32) : 44
+-                38 (Uint32) : 59
+-                39 (Uint32) : 49
+-                40 (Uint32) : 48
+-                41 (Uint32) : 9
+-                42 (Uint32) : 77
+-                43 (Uint32) : 57
+-                44 (Uint32) : 56
+-                45 (Uint32) : 55
+-                46 (Uint32) : 54
+-                47 (Uint32) : 61
+-                48 (Uint32) : 52
+-                49 (Uint32) : 53
+-                50 (Uint32) : 72
+-                51 (Uint32) : 73
+-                52 (Uint32) : 74
+-                53 (Uint32) : 64
+-                54 (Uint32) : 65
+-                55 (Uint32) : 66
+-                56 (Uint32) : 14
+-                57 (Uint32) : 13
+-                58 (Uint32) : 15
+-                59 (Uint32) : 8
+-                60 (Uint32) : 2
+-                61 (Uint32) : 22
+-                62 (Uint32) : 25
+-                63 (Uint32) : 16
+-                64 (Uint32) : 23
+-                65 (Uint32) : 24
+-                66 (Uint32) : 27
+-                67 (Uint32) : 26
+-                68 (Uint32) : 33
+-                69 (Uint32) : 34
+-                70 (Uint32) : 17
+-                71 (Uint32) : 18
+-                72 (Uint32) : 47
+-                73 (Uint32) : 41
+-                74 (Uint32) : 42
+-                75 (Uint32) : 62
+-                76 (Uint32) : 63
+-                77 (Uint32) : 10
+-                78 (Uint32) : 38
+-                79 (Uint32) : 20
+-                80 (Uint32) : 35
++                3 (Uint32) : 60
++                4 (Uint32) : 67
++                5 (Uint32) : 75
++                6 (Uint32) : 50
++                7 (Uint32) : 76
++                8 (Uint32) : 51
++                9 (Uint32) : 68
++                10 (Uint32) : 21
++                11 (Uint32) : 36
++                12 (Uint32) : 28
++                13 (Uint32) : 37
++                14 (Uint32) : 11
++                15 (Uint32) : 12
++                16 (Uint32) : 29
++                17 (Uint32) : 80
++                18 (Uint32) : 79
++                19 (Uint32) : 69
++                20 (Uint32) : 70
++                21 (Uint32) : 44
++                22 (Uint32) : 45
++                23 (Uint32) : 59
++                24 (Uint32) : 49
++                25 (Uint32) : 48
++                26 (Uint32) : 9
++                27 (Uint32) : 77
++                28 (Uint32) : 46
++                29 (Uint32) : 58
++                30 (Uint32) : 71
++                31 (Uint32) : 40
++                32 (Uint32) : 43
++                33 (Uint32) : 32
++                34 (Uint32) : 78
++                35 (Uint32) : 4
++                36 (Uint32) : 5
++                37 (Uint32) : 20
++                38 (Uint32) : 10
++                39 (Uint32) : 38
++                40 (Uint32) : 6
++                41 (Uint32) : 30
++                42 (Uint32) : 31
++                43 (Uint32) : 7
++                44 (Uint32) : 3
++                45 (Uint32) : 19
++                46 (Uint32) : 57
++                47 (Uint32) : 56
++                48 (Uint32) : 55
++                49 (Uint32) : 54
++                50 (Uint32) : 61
++                51 (Uint32) : 52
++                52 (Uint32) : 53
++                53 (Uint32) : 72
++                54 (Uint32) : 73
++                55 (Uint32) : 74
++                56 (Uint32) : 64
++                57 (Uint32) : 65
++                58 (Uint32) : 66
++                59 (Uint32) : 42
++                60 (Uint32) : 62
++                61 (Uint32) : 63
++                62 (Uint32) : 41
++                63 (Uint32) : 47
++                64 (Uint32) : 27
++                65 (Uint32) : 26
++                66 (Uint32) : 25
++                67 (Uint32) : 15
++                68 (Uint32) : 22
++                69 (Uint32) : 14
++                70 (Uint32) : 13
++                71 (Uint32) : 33
++                72 (Uint32) : 16
++                73 (Uint32) : 23
++                74 (Uint32) : 24
++                75 (Uint32) : 2
++                76 (Uint32) : 8
++                77 (Uint32) : 35
++                78 (Uint32) : 34
++                79 (Uint32) : 17
++                80 (Uint32) : 18
+     CMaterialInstance #1 (CMaterialInstance) : 
+         CMaterialInstance (CMaterialInstance)
+-            baseMaterial (handle:IMaterial) : fx/shaders/characters/pbr_std_tint_mask_det_dissolve.w2mg
++            baseMaterial (handle:IMaterial) : fx/shaders/characters/pbr_skin_dissolve.w2mg
+             enableMask (Bool) : true
++            InstanceParameters (array:CVariantSizeNameType)
++                ad_color_1 (Float) : 0.0000
++                add_color2 (Float) : 0.0000
++                add_color_3 (Float) : 0.0000
++                addvalue (Float) : 3.0000
++                Ambient (handle:ITexture) : characters/models/monsters/fogling/model/t_01__fogling_a01.xbm
++                AntiLightbleedScale (Float) : 0.2000
++                AntiLightbleedUpOffFront (Float) : 0.0000
++                AntiLightbleedUpOffRound (Float) : 0.0000
++                AntiLightbleedUseRounded (Float) : 1.0000
++                DetailAlbedoPower (Float) : 5.0000
++                DetailNormal (handle:ITexture) : characters/models/common/textures/detailmaps_pbr/detailmap_skin_07.xbm
++                DetailPower (Float) : 1.5000
++                DetailRange (Float) : 20.0000
++                DetailTile (Vector)
++                    X (Float) : 10.0000
++                    Y (Float) : 20.0000
++                    Z (Float) : 1.0000
++                    W (Float) : 1.0000
++                Diffuse (handle:ITexture) : characters/models/monsters/fogling/model/t_01__fogling_d03.xbm
++                DiffuseBumpinessAngleExp (Float) : 0.3000
++                DiffuseBumpinessSteepLight (Float) : 0.3000
++                DiffuseBumpinessStraightLight (Float) : 0.5000
++                disappear_appear (Float) : 0.0000
++                EnvProbeBumpiness (Float) : 1.0000
++                mask (handle:ITexture) : fx/textures/noise/noise01.xbm
++                Normal (handle:ITexture) : characters/models/monsters/fogling/model/t_01__fogling_n01.xbm
++                ReflectionGainScale (Float) : 0.4000
++                Roughness2Bias (Float) : 0.1000
++                RoughnessBias (Float) : 0.0000
++                RSpecBase (Float) : 0.0500
++                RSpecBase2 (Float) : 0.0000
++                RSpecPower2 (Float) : 1.0000
++                RSpecScale (Float) : 0.1500
++                RSpecScale2 (Float) : 0.0300
++                SpecularColor (Color)
++                    Red (Uint8) : 198
++                    Green (Uint8) : 255
++                    Blue (Uint8) : 255
++                    Alpha (Uint8) : 255
++                SpecularColor2 (Color)
++                    Red (Uint8) : 240
++                    Green (Uint8) : 244
++                    Blue (Uint8) : 255
++                    Alpha (Uint8) : 255
++                SSAOImpact (Float) : 3.0000
++                SSS_CoarseColor (Color)
++                    Red (Uint8) : 173
++                    Green (Uint8) : 16
++                    Blue (Uint8) : 6
++                    Alpha (Uint8) : 255
++                SSS_CoarseColorInvRange (Float) : 0.7000
++                SSS_CoarseWrapBase (Float) : 0.7000
++                SSS_CoarseWrapScale (Float) : 0.2000
++                SSS_DetailColorBleed (Color)
++                    Red (Uint8) : 206
++                    Green (Uint8) : 106
++                    Blue (Uint8) : 114
++                    Alpha (Uint8) : 255
++                SSS_DiffuseDistribPow (Float) : 2.0000
++                SSS_DiffuseScale (Float) : 1.2000
++                TranslucencyFresnel (Float) : 1.2000
++                TranslucencyFresnelGain (Float) : 0.2000
++                VarianceColor (Color)
++                    Red (Uint8) : 128
++                    Green (Uint8) : 128
++                    Blue (Uint8) : 128
++                    Alpha (Uint8) : 255
++                VarianceOffset (Float) : 1.0000
++    CMaterialInstance #2 (CMaterialInstance) : 
++        CMaterialInstance (CMaterialInstance)
++            baseMaterial (handle:IMaterial) : fx/shaders/characters/pbr_std_tint_mask_det_dissolve.w2mg
+             InstanceParameters (array:CVariantSizeNameType)
+                 Normal (handle:ITexture) : characters/models/monsters/fogling/model/t_01__fogling_n01.xbm
+                 Diffuse (handle:ITexture) : characters/models/monsters/fogling/model/t_01__fogling_d03.xbm
+@@ -2134,6 +2211,139 @@
+                     Z (Float) : 1.0000
+                     W (Float) : 1.0000
+                 DetailRange (Float) : 5.0000
+-    SMeshSoundInfo #2 (SMeshSoundInfo) : generic
++    CMaterialInstance #3 (CMaterialInstance) : 
++        CMaterialInstance (CMaterialInstance)
++            baseMaterial (handle:IMaterial) : engine/materials/graphs/pbr_skin.w2mg
++            InstanceParameters (array:CVariantSizeNameType)
++                Ambient (handle:ITexture) : characters/models/monsters/fogling/model/t_01__fogling_a01.xbm
++                AntiLightbleedScale (Float) : 0.2000
++                AntiLightbleedUpOffFront (Float) : 0.0000
++                AntiLightbleedUpOffRound (Float) : 0.0000
++                AntiLightbleedUseRounded (Float) : 1.0000
++                DetailAlbedoPower (Float) : 5.0000
++                DetailNormal (handle:ITexture) : characters/models/common/textures/detailmaps_pbr/detailmap_skin_07.xbm
++                DetailPower (Float) : 1.5000
++                DetailRange (Float) : 20.0000
++                DetailTile (Vector)
++                    X (Float) : 10.0000
++                    Y (Float) : 20.0000
++                    Z (Float) : 1.0000
++                    W (Float) : 1.0000
++                Diffuse (handle:ITexture) : characters/models/monsters/fogling/model/t_01__fogling_d03.xbm
++                DiffuseBumpinessAngleExp (Float) : 0.3000
++                DiffuseBumpinessSteepLight (Float) : 0.3000
++                DiffuseBumpinessStraightLight (Float) : 0.5000
++                EnvProbeBumpiness (Float) : 1.0000
++                Normal (handle:ITexture) : characters/models/monsters/fogling/model/t_01__fogling_n01.xbm
++                ReflectionGainScale (Float) : 0.4000
++                Roughness2Bias (Float) : 0.1000
++                RoughnessBias (Float) : 0.0000
++                RSpecBase (Float) : 0.0500
++                RSpecBase2 (Float) : 0.0000
++                RSpecPower2 (Float) : 1.0000
++                RSpecScale (Float) : 0.1500
++                RSpecScale2 (Float) : 0.0300
++                SpecularColor (Color)
++                    Red (Uint8) : 198
++                    Green (Uint8) : 255
++                    Blue (Uint8) : 255
++                    Alpha (Uint8) : 255
++                SpecularColor2 (Color)
++                    Red (Uint8) : 240
++                    Green (Uint8) : 244
++                    Blue (Uint8) : 255
++                    Alpha (Uint8) : 255
++                SSAOImpact (Float) : 3.0000
++                SSS_CoarseColor (Color)
++                    Red (Uint8) : 173
++                    Green (Uint8) : 16
++                    Blue (Uint8) : 6
++                    Alpha (Uint8) : 255
++                SSS_CoarseColorInvRange (Float) : 0.7000
++                SSS_CoarseWrapBase (Float) : 0.7000
++                SSS_CoarseWrapScale (Float) : 0.2000
++                SSS_DetailColorBleed (Color)
++                    Red (Uint8) : 206
++                    Green (Uint8) : 109
++                    Blue (Uint8) : 173
++                    Alpha (Uint8) : 255
++                SSS_DiffuseDistribPow (Float) : 1.0000
++                SSS_DiffuseScale (Float) : 1.2000
++                TranslucencyFresnel (Float) : 1.2000
++                TranslucencyFresnelGain (Float) : 0.2000
++                VarianceColor (Color)
++                    Red (Uint8) : 128
++                    Green (Uint8) : 128
++                    Blue (Uint8) : 128
++                    Alpha (Uint8) : 255
++                VarianceOffset (Float) : 1.0000
++    CMaterialInstance #4 (CMaterialInstance) : 
++        CMaterialInstance (CMaterialInstance)
++            baseMaterial (handle:IMaterial) : engine/materials/graphs/pbr_skin.w2mg
++            InstanceParameters (array:CVariantSizeNameType)
++                Ambient (handle:ITexture) : characters/models/monsters/fogling/model/t_01__fogling_a01.xbm
++                AntiLightbleedScale (Float) : 0.2000
++                AntiLightbleedUpOffFront (Float) : 0.0000
++                AntiLightbleedUpOffRound (Float) : 0.0000
++                AntiLightbleedUseRounded (Float) : 1.0000
++                DetailAlbedoPower (Float) : 5.0000
++                DetailNormal (handle:ITexture) : characters/models/common/textures/detailmaps_pbr/detailmap_skin_07.xbm
++                DetailPower (Float) : 1.5000
++                DetailRange (Float) : 20.0000
++                DetailTile (Vector)
++                    X (Float) : 10.0000
++                    Y (Float) : 20.0000
++                    Z (Float) : 1.0000
++                    W (Float) : 1.0000
++                Diffuse (handle:ITexture) : characters/models/monsters/fogling/model/t_01__fogling_d03.xbm
++                DiffuseBumpinessAngleExp (Float) : 0.3000
++                DiffuseBumpinessSteepLight (Float) : 0.3000
++                DiffuseBumpinessStraightLight (Float) : 0.5000
++                EnvProbeBumpiness (Float) : 1.0000
++                Normal (handle:ITexture) : characters/models/monsters/fogling/model/t_01__fogling_n01.xbm
++                ReflectionGainScale (Float) : 0.4000
++                Roughness2Bias (Float) : 0.1000
++                RoughnessBias (Float) : 0.0000
++                RSpecBase (Float) : 0.0500
++                RSpecBase2 (Float) : 0.0000
++                RSpecPower2 (Float) : 1.0000
++                RSpecScale (Float) : 0.1500
++                RSpecScale2 (Float) : 0.0300
++                SpecularColor (Color)
++                    Red (Uint8) : 198
++                    Green (Uint8) : 255
++                    Blue (Uint8) : 255
++                    Alpha (Uint8) : 255
++                SpecularColor2 (Color)
++                    Red (Uint8) : 240
++                    Green (Uint8) : 244
++                    Blue (Uint8) : 255
++                    Alpha (Uint8) : 255
++                SSAOImpact (Float) : 1.0000
++                SSS_CoarseColor (Color)
++                    Red (Uint8) : 173
++                    Green (Uint8) : 16
++                    Blue (Uint8) : 6
++                    Alpha (Uint8) : 255
++                SSS_CoarseColorInvRange (Float) : 1.5000
++                SSS_CoarseWrapBase (Float) : 0.3000
++                SSS_CoarseWrapScale (Float) : 0.3000
++                SSS_DetailColorBleed (Color)
++                    Red (Uint8) : 206
++                    Green (Uint8) : 109
++                    Blue (Uint8) : 173
++                    Alpha (Uint8) : 255
++                SSS_DiffuseDistribPow (Float) : 2.0000
++                SSS_DiffuseScale (Float) : 1.5000
++                TranslucencyFresnel (Float) : 1.2000
++                TranslucencyFresnelGain (Float) : 0.2000
++                VarianceColor (Color)
++                    Red (Uint8) : 128
++                    Green (Uint8) : 128
++                    Blue (Uint8) : 128
++                    Alpha (Uint8) : 255
++                VarianceOffset (Float) : 1.0000
++    SMeshSoundInfo #5 (SMeshSoundInfo) : generic
+         SMeshSoundInfo (SMeshSoundInfo)
+             soundTypeIdentification (CName) : generic
++            soundSizeIdentification (CName) : default

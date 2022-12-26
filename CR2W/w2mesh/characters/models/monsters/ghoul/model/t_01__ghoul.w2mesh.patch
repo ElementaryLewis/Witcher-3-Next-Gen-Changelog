@@ -1,0 +1,420 @@
+ 1 file changed, 246 insertions(+), 111 deletions(-)
+
+diff --git 1.32/characters/models/monsters/ghoul/model/t_01__ghoul.w2mesh.txt 4.00/characters/models/monsters/ghoul/model/t_01__ghoul.w2mesh.txt
+index 1769c49..fdd290f 100644
+--- 1.32/characters/models/monsters/ghoul/model/t_01__ghoul.w2mesh.txt
++++ 4.00/characters/models/monsters/ghoul/model/t_01__ghoul.w2mesh.txt
+@@ -3,14 +3,16 @@
+             materials (array:handle:IMaterial)
+                 0 (handle:IMaterial) : CMaterialInstance #1
+                 1 (handle:IMaterial) : CMaterialInstance #2
++                2 (handle:IMaterial) : CMaterialInstance #3
++                3 (handle:IMaterial) : CMaterialInstance #4
+             boundingBox (Box)
+                 Min (Vector)
+                     X (Float) : -0.6110
+                     Y (Float) : -0.8026
+                     Z (Float) : -0.0092
+-                    W (Float) : 1.0000
++                    W (Float) : 0.0000
+                 Max (Vector)
+-                    X (Float) : 0.6091
++                    X (Float) : 0.6090
+                     Y (Float) : 0.8345
+                     Z (Float) : 1.2071
+                     W (Float) : 1.0000
+@@ -24,14 +26,12 @@
+                     numIndices (Uint32) : 61908
+                 1 (SMeshChunkPacked)
+                     vertexType (EMeshVertexType) : MVT_SkinnedMesh
+-                    materialID (Uint32) : 1
+                     numVertices (Uint32) : 6405
+                     numIndices (Uint32) : 30954
+                     firstVertex (Uint32) : 11583
+                     firstIndex (Uint32) : 61908
+                 2 (SMeshChunkPacked)
+                     vertexType (EMeshVertexType) : MVT_SkinnedMesh
+-                    materialID (Uint32) : 1
+                     numVertices (Uint32) : 2472
+                     numIndices (Uint32) : 10314
+                     firstVertex (Uint32) : 17988
+@@ -511,7 +511,9 @@
+                 vertexBufferSize (Uint32) : 612336
+                 indexBufferSize (Uint32) : 216252
+                 indexBufferOffset (Uint32) : 612352
+-            soundInfo (ptr:SMeshSoundInfo) : SMeshSoundInfo #3
++                blasBuffer (DeferredDataBuffer)
++                    Bufferdata (Int16) : 0
++            soundInfo (ptr:SMeshSoundInfo) : SMeshSoundInfo #5
+             internalVersion (Uint8) : 2
+             ChunkgroupIndeces (CBufferVLQInt32:CPaddedBuffer:CUInt16)
+                 0 (CPaddedBuffer:CUInt16)
+@@ -2201,95 +2203,188 @@
+                 86 (Float) : 0.5252
+                 87 (Float) : 0.3915
+             BoneIndecesMappingBoneIndex (CBufferVLQInt32:CUInt32)
+-                0 (Uint32) : 50
+-                1 (Uint32) : 54
+-                2 (Uint32) : 76
+-                3 (Uint32) : 78
+-                4 (Uint32) : 77
+-                5 (Uint32) : 55
+-                6 (Uint32) : 69
+-                7 (Uint32) : 10
+-                8 (Uint32) : 14
+-                9 (Uint32) : 15
+-                10 (Uint32) : 29
+-                11 (Uint32) : 36
+-                12 (Uint32) : 37
+-                13 (Uint32) : 38
+-                14 (Uint32) : 74
+-                15 (Uint32) : 73
+-                16 (Uint32) : 72
+-                17 (Uint32) : 53
+-                18 (Uint32) : 56
+-                19 (Uint32) : 57
+-                20 (Uint32) : 63
+-                21 (Uint32) : 64
+-                22 (Uint32) : 58
+-                23 (Uint32) : 65
+-                24 (Uint32) : 66
+-                25 (Uint32) : 34
+-                26 (Uint32) : 33
+-                27 (Uint32) : 32
+-                28 (Uint32) : 13
+-                29 (Uint32) : 11
+-                30 (Uint32) : 12
+-                31 (Uint32) : 26
+-                32 (Uint32) : 27
+-                33 (Uint32) : 23
+-                34 (Uint32) : 28
+-                35 (Uint32) : 24
+-                36 (Uint32) : 59
+-                37 (Uint32) : 75
++                0 (Uint32) : 34
++                1 (Uint32) : 33
++                2 (Uint32) : 32
++                3 (Uint32) : 13
++                4 (Uint32) : 11
++                5 (Uint32) : 12
++                6 (Uint32) : 26
++                7 (Uint32) : 27
++                8 (Uint32) : 23
++                9 (Uint32) : 28
++                10 (Uint32) : 24
++                11 (Uint32) : 74
++                12 (Uint32) : 73
++                13 (Uint32) : 72
++                14 (Uint32) : 53
++                15 (Uint32) : 56
++                16 (Uint32) : 57
++                17 (Uint32) : 63
++                18 (Uint32) : 64
++                19 (Uint32) : 58
++                20 (Uint32) : 65
++                21 (Uint32) : 66
++                22 (Uint32) : 10
++                23 (Uint32) : 14
++                24 (Uint32) : 15
++                25 (Uint32) : 29
++                26 (Uint32) : 36
++                27 (Uint32) : 37
++                28 (Uint32) : 38
++                29 (Uint32) : 50
++                30 (Uint32) : 54
++                31 (Uint32) : 76
++                32 (Uint32) : 78
++                33 (Uint32) : 77
++                34 (Uint32) : 55
++                35 (Uint32) : 69
++                36 (Uint32) : 19
++                37 (Uint32) : 35
+                 38 (Uint32) : 43
+                 39 (Uint32) : 84
+-                40 (Uint32) : 19
+-                41 (Uint32) : 35
+-                42 (Uint32) : 68
+-                43 (Uint32) : 67
+-                44 (Uint32) : 51
+-                45 (Uint32) : 52
+-                46 (Uint32) : 81
++                40 (Uint32) : 59
++                41 (Uint32) : 75
++                42 (Uint32) : 81
++                43 (Uint32) : 68
++                44 (Uint32) : 67
++                45 (Uint32) : 51
++                46 (Uint32) : 52
+                 47 (Uint32) : 82
+                 48 (Uint32) : 83
+-                49 (Uint32) : 60
+-                50 (Uint32) : 80
+-                51 (Uint32) : 3
+-                52 (Uint32) : 2
+-                53 (Uint32) : 62
+-                54 (Uint32) : 61
+-                55 (Uint32) : 21
+-                56 (Uint32) : 22
+-                57 (Uint32) : 20
+-                58 (Uint32) : 5
+-                59 (Uint32) : 40
+-                60 (Uint32) : 39
+-                61 (Uint32) : 41
+-                62 (Uint32) : 87
+-                63 (Uint32) : 0
+-                64 (Uint32) : 47
+-                65 (Uint32) : 1
+-                66 (Uint32) : 8
+-                67 (Uint32) : 45
+-                68 (Uint32) : 48
+-                69 (Uint32) : 7
+-                70 (Uint32) : 42
+-                71 (Uint32) : 49
++                49 (Uint32) : 16
++                50 (Uint32) : 17
++                51 (Uint32) : 18
++                52 (Uint32) : 25
++                53 (Uint32) : 86
++                54 (Uint32) : 30
++                55 (Uint32) : 4
++                56 (Uint32) : 31
++                57 (Uint32) : 87
++                58 (Uint32) : 0
++                59 (Uint32) : 6
++                60 (Uint32) : 44
++                61 (Uint32) : 70
++                62 (Uint32) : 71
++                63 (Uint32) : 46
++                64 (Uint32) : 41
++                65 (Uint32) : 2
++                66 (Uint32) : 39
++                67 (Uint32) : 3
++                68 (Uint32) : 22
++                69 (Uint32) : 45
++                70 (Uint32) : 80
++                71 (Uint32) : 60
+                 72 (Uint32) : 79
+-                73 (Uint32) : 9
+-                74 (Uint32) : 46
+-                75 (Uint32) : 44
+-                76 (Uint32) : 70
+-                77 (Uint32) : 71
+-                78 (Uint32) : 86
+-                79 (Uint32) : 6
+-                80 (Uint32) : 4
+-                81 (Uint32) : 30
+-                82 (Uint32) : 31
+-                83 (Uint32) : 16
+-                84 (Uint32) : 25
+-                85 (Uint32) : 17
+-                86 (Uint32) : 18
++                73 (Uint32) : 49
++                74 (Uint32) : 47
++                75 (Uint32) : 42
++                76 (Uint32) : 48
++                77 (Uint32) : 1
++                78 (Uint32) : 5
++                79 (Uint32) : 8
++                80 (Uint32) : 20
++                81 (Uint32) : 40
++                82 (Uint32) : 9
++                83 (Uint32) : 7
++                84 (Uint32) : 62
++                85 (Uint32) : 61
++                86 (Uint32) : 21
+                 87 (Uint32) : 85
+     CMaterialInstance #1 (CMaterialInstance) : 
++        CMaterialInstance (CMaterialInstance)
++            baseMaterial (handle:IMaterial) : engine/materials/graphs/pbr_skin_decal.w2mg
++            InstanceParameters (array:CVariantSizeNameType)
++                Ambient (handle:ITexture) : characters/models/monsters/ghoul/model/t_01__ghoul_a01.xbm
++                AntiLightbleedScale (Float) : 1.0000
++                AntiLightbleedUpOffFront (Float) : 0.0000
++                AntiLightbleedUpOffRound (Float) : 0.0000
++                AntiLightbleedUseRounded (Float) : 0.0000
++                DetailAlbedoPower (Float) : 0.0000
++                DetailNormal (handle:ITexture) : characters/models/common/textures/detailmaps_pbr/detailmap_leather_04.xbm
++                DetailPower (Float) : 0.9000
++                DetailRange (Float) : 10.0000
++                DetailTile (Vector)
++                    X (Float) : 15.0000
++                    Y (Float) : 10.0000
++                    Z (Float) : 1.0000
++                    W (Float) : 1.0000
++                Diffuse (handle:ITexture) : characters/models/monsters/ghoul/model/t_01__ghoul_d02.xbm
++                DiffuseBumpinessAngleExp (Float) : 0.1000
++                DiffuseBumpinessSteepLight (Float) : 0.1000
++                DiffuseBumpinessStraightLight (Float) : 1.0000
++                EnvProbeBumpiness (Float) : 1.0000
++                Normal (handle:ITexture) : characters/models/monsters/ghoul/model/t_01__ghoul_n01.xbm
++                ReflectionGainScale (Float) : 0.2000
++                Roughness2Bias (Float) : 1.0000
++                RoughnessBias (Float) : 0.0000
++                RSpecBase (Float) : 0.0200
++                RSpecBase2 (Float) : 0.0000
++                RSpecPower2 (Float) : 0.0000
++                RSpecScale (Float) : 0.2000
++                RSpecScale2 (Float) : 0.0200
++                SpecularColor (Color)
++                    Red (Uint8) : 217
++                    Green (Uint8) : 245
++                    Blue (Uint8) : 255
++                    Alpha (Uint8) : 255
++                SpecularColor2 (Color)
++                    Red (Uint8) : 255
++                    Green (Uint8) : 255
++                    Blue (Uint8) : 255
++                    Alpha (Uint8) : 255
++                SSAOImpact (Float) : 0.4000
++                SSS_CoarseColor (Color)
++                    Red (Uint8) : 173
++                    Green (Uint8) : 16
++                    Blue (Uint8) : 6
++                    Alpha (Uint8) : 255
++                SSS_CoarseColorInvRange (Float) : 1.2000
++                SSS_CoarseWrapBase (Float) : 0.3000
++                SSS_CoarseWrapScale (Float) : 0.1000
++                SSS_DetailColorBleed (Color)
++                    Red (Uint8) : 206
++                    Green (Uint8) : 109
++                    Blue (Uint8) : 173
++                    Alpha (Uint8) : 255
++                SSS_DiffuseDistribPow (Float) : 1.5000
++                SSS_DiffuseScale (Float) : 1.7000
++                TranslucencyFresnel (Float) : 0.2000
++                TranslucencyFresnelGain (Float) : 0.1000
++                VarianceColor (Color)
++                    Red (Uint8) : 128
++                    Green (Uint8) : 128
++                    Blue (Uint8) : 128
++                    Alpha (Uint8) : 255
++                VarianceOffset (Float) : 1.0000
++    CMaterialInstance #2 (CMaterialInstance) : 
++        CMaterialInstance (CMaterialInstance)
++            baseMaterial (handle:IMaterial) : engine/materials/graphs/pbr_std.w2mg
++            InstanceParameters (array:CVariantSizeNameType)
++                Normal (handle:ITexture) : characters/models/monsters/ghoul/model/t_01__ghoul_n01.xbm
++                Diffuse (handle:ITexture) : characters/models/monsters/ghoul/model/t_01__ghoul_d02.xbm
++                Translucency (Float) : 0.1500
++                DetailPower (Float) : 1.3000
++                SpecularColor (Color)
++                    Red (Uint8) : 66
++                    Green (Uint8) : 105
++                    Blue (Uint8) : 119
++                    Alpha (Uint8) : 0
++                RSpecScale (Float) : 1.1000
++                RSpecBase (Float) : -0.2000
++                DetailRange (Float) : 20.0000
++                TintMask (handle:ITexture) : characters/models/monsters/ghoul/model/t_01__ghoul_a01.xbm
++                DetailTile (Vector)
++                    X (Float) : 15.0000
++                    Y (Float) : 15.0000
++                    Z (Float) : 10.0000
++                    W (Float) : 1.0000
++                DetailRotation (Float) : 0.0000
++                DetailNormal (handle:ITexture) : characters/models/common/textures/detailmaps_pbr/detailmap_leather_04.xbm
++                ColorShift_ BlendColors (Float) : 0.0000
++                ColorShift_ KeepGray (Float) : 1.0000
++                AOPower (Float) : 0.8000
++    CMaterialInstance #3 (CMaterialInstance) : 
+         CMaterialInstance (CMaterialInstance)
+             baseMaterial (handle:IMaterial) : engine/materials/graphs/pbr_std_tint_mask_det.w2mg
+             InstanceParameters (array:CVariantSizeNameType)
+@@ -2318,33 +2413,73 @@
+                 AOPower (Float) : 0.8000
+                 Roughness_max (Float) : 1.0000
+                 Roughness_min (Float) : 0.1000
+-    CMaterialInstance #2 (CMaterialInstance) : 
++    CMaterialInstance #4 (CMaterialInstance) : 
+         CMaterialInstance (CMaterialInstance)
+-            baseMaterial (handle:IMaterial) : engine/materials/graphs/pbr_std.w2mg
++            baseMaterial (handle:IMaterial) : engine/materials/graphs/pbr_skin.w2mg
+             InstanceParameters (array:CVariantSizeNameType)
+-                Normal (handle:ITexture) : characters/models/monsters/ghoul/model/t_01__ghoul_n01.xbm
+-                Diffuse (handle:ITexture) : characters/models/monsters/ghoul/model/t_01__ghoul_d02.xbm
+-                Translucency (Float) : 0.1500
+-                DetailPower (Float) : 1.3000
+-                SpecularColor (Color)
+-                    Red (Uint8) : 66
+-                    Green (Uint8) : 105
+-                    Blue (Uint8) : 119
+-                    Alpha (Uint8) : 0
+-                RSpecScale (Float) : 1.1000
+-                RSpecBase (Float) : -0.2000
+-                DetailRange (Float) : 20.0000
+-                TintMask (handle:ITexture) : characters/models/monsters/ghoul/model/t_01__ghoul_a01.xbm
++                Ambient (handle:ITexture) : characters/models/monsters/alghoul/model/t_01__alghoul_a01.xbm
++                AntiLightbleedScale (Float) : 1.0000
++                AntiLightbleedUpOffFront (Float) : 0.0000
++                AntiLightbleedUpOffRound (Float) : 0.0000
++                AntiLightbleedUseRounded (Float) : 1.0000
++                DetailAlbedoPower (Float) : 0.0000
++                DetailNormal (handle:ITexture) : characters/models/common/textures/detailmaps_pbr/detailmap_leather_04.xbm
++                DetailPower (Float) : 0.5000
++                DetailRange (Float) : 10.0000
+                 DetailTile (Vector)
+-                    X (Float) : 15.0000
+-                    Y (Float) : 15.0000
+-                    Z (Float) : 10.0000
++                    X (Float) : 20.0000
++                    Y (Float) : 20.0000
++                    Z (Float) : 1.0000
+                     W (Float) : 1.0000
+-                DetailRotation (Float) : 0.0000
+-                DetailNormal (handle:ITexture) : characters/models/common/textures/detailmaps_pbr/detailmap_leather_04.xbm
+-                ColorShift_ BlendColors (Float) : 0.0000
+-                ColorShift_ KeepGray (Float) : 1.0000
+-                AOPower (Float) : 0.8000
+-    SMeshSoundInfo #3 (SMeshSoundInfo) : generic
++                Diffuse (handle:ITexture) : characters/models/monsters/ghoul/model/t_01__ghoul_d01.xbm
++                DiffuseBumpinessAngleExp (Float) : 0.1000
++                DiffuseBumpinessSteepLight (Float) : 0.1000
++                DiffuseBumpinessStraightLight (Float) : 1.0000
++                EnvProbeBumpiness (Float) : 1.0000
++                Normal (handle:ITexture) : characters/models/monsters/ghoul/model/t_01__ghoul_n01.xbm
++                ReflectionGainScale (Float) : 0.2000
++                Roughness2Bias (Float) : 1.0000
++                RoughnessBias (Float) : 0.0000
++                RSpecBase (Float) : 0.0000
++                RSpecBase2 (Float) : 0.0000
++                RSpecPower2 (Float) : 1.0000
++                RSpecScale (Float) : 0.6000
++                RSpecScale2 (Float) : 0.2000
++                SpecularColor (Color)
++                    Red (Uint8) : 217
++                    Green (Uint8) : 245
++                    Blue (Uint8) : 255
++                    Alpha (Uint8) : 255
++                SpecularColor2 (Color)
++                    Red (Uint8) : 255
++                    Green (Uint8) : 255
++                    Blue (Uint8) : 255
++                    Alpha (Uint8) : 255
++                SSAOImpact (Float) : 0.5000
++                SSS_CoarseColor (Color)
++                    Red (Uint8) : 173
++                    Green (Uint8) : 16
++                    Blue (Uint8) : 6
++                    Alpha (Uint8) : 255
++                SSS_CoarseColorInvRange (Float) : 0.9000
++                SSS_CoarseWrapBase (Float) : 0.1500
++                SSS_CoarseWrapScale (Float) : 0.2000
++                SSS_DetailColorBleed (Color)
++                    Red (Uint8) : 206
++                    Green (Uint8) : 109
++                    Blue (Uint8) : 173
++                    Alpha (Uint8) : 255
++                SSS_DiffuseDistribPow (Float) : 1.2000
++                SSS_DiffuseScale (Float) : 1.2000
++                TranslucencyFresnel (Float) : 1.0000
++                TranslucencyFresnelGain (Float) : 0.2000
++                VarianceColor (Color)
++                    Red (Uint8) : 128
++                    Green (Uint8) : 128
++                    Blue (Uint8) : 128
++                    Alpha (Uint8) : 255
++                VarianceOffset (Float) : 1.0000
++    SMeshSoundInfo #5 (SMeshSoundInfo) : generic
+         SMeshSoundInfo (SMeshSoundInfo)
+             soundTypeIdentification (CName) : generic
++            soundSizeIdentification (CName) : default

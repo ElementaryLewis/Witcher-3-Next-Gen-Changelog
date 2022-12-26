@@ -1,0 +1,412 @@
+ 1 file changed, 275 insertions(+), 74 deletions(-)
+
+diff --git 1.32/characters/models/monsters/wildhunt_minion/model/t_03__wildhunt_minion.w2mesh.txt 4.00/characters/models/monsters/wildhunt_minion/model/t_03__wildhunt_minion.w2mesh.txt
+index 7c376ec..ada8b6a 100644
+--- 1.32/characters/models/monsters/wildhunt_minion/model/t_03__wildhunt_minion.w2mesh.txt
++++ 4.00/characters/models/monsters/wildhunt_minion/model/t_03__wildhunt_minion.w2mesh.txt
+@@ -3,12 +3,15 @@
+             materials (array:handle:IMaterial)
+                 0 (handle:IMaterial) : CMaterialInstance #1
+                 1 (handle:IMaterial) : CMaterialInstance #2
++                2 (handle:IMaterial) : CMaterialInstance #3
++                3 (handle:IMaterial) : CMaterialInstance #4
++                4 (handle:IMaterial) : CMaterialInstance #5
+             boundingBox (Box)
+                 Min (Vector)
+                     X (Float) : -0.6012
+                     Y (Float) : -0.8053
+                     Z (Float) : -0.0142
+-                    W (Float) : 1.0000
++                    W (Float) : 0.0000
+                 Max (Vector)
+                     X (Float) : 0.6012
+                     Y (Float) : 0.8805
+@@ -38,7 +41,6 @@
+                     firstIndex (Uint32) : 82710
+                 3 (SMeshChunkPacked)
+                     vertexType (EMeshVertexType) : MVT_SkinnedMesh
+-                    materialID (Uint32) : 1
+                     numBonesPerVertex (Uint8) : 4
+                     numVertices (Uint32) : 4102
+                     numIndices (Uint32) : 13218
+@@ -391,7 +393,9 @@
+                 vertexBufferSize (Uint32) : 812256
+                 indexBufferSize (Uint32) : 274548
+                 indexBufferOffset (Uint32) : 813056
+-            soundInfo (ptr:SMeshSoundInfo) : SMeshSoundInfo #3
++                blasBuffer (DeferredDataBuffer)
++                    Bufferdata (Int16) : 0
++            soundInfo (ptr:SMeshSoundInfo) : SMeshSoundInfo #6
+             internalVersion (Uint8) : 2
+             ChunkgroupIndeces (CBufferVLQInt32:CPaddedBuffer:CUInt16)
+                 0 (CPaddedBuffer:CUInt16)
+@@ -1622,36 +1626,37 @@
+                 62 (Float) : 0.5776
+                 63 (Float) : 0.4731
+             BoneIndecesMappingBoneIndex (CBufferVLQInt32:CUInt32)
+-                0 (Uint32) : 2
+-                2 (Uint32) : 29
+-                3 (Uint32) : 4
+-                4 (Uint32) : 26
+-                5 (Uint32) : 7
+-                6 (Uint32) : 27
+-                7 (Uint32) : 6
+-                8 (Uint32) : 5
+-                9 (Uint32) : 13
+-                10 (Uint32) : 61
+-                11 (Uint32) : 62
+-                12 (Uint32) : 0
+-                13 (Uint32) : 21
+-                14 (Uint32) : 3
+-                15 (Uint32) : 20
+-                16 (Uint32) : 63
+-                17 (Uint32) : 60
+-                18 (Uint32) : 25
+-                20 (Uint32) : 12
+-                21 (Uint32) : 8
+-                22 (Uint32) : 14
+-                23 (Uint32) : 16
+-                24 (Uint32) : 9
+-                25 (Uint32) : 10
+-                26 (Uint32) : 15
+-                27 (Uint32) : 17
+-                28 (Uint32) : 30
+-                29 (Uint32) : 57
+-                30 (Uint32) : 18
+-                31 (Uint32) : 28
++                0 (Uint32) : 25
++                1 (Uint32) : 19
++                2 (Uint32) : 12
++                3 (Uint32) : 8
++                4 (Uint32) : 7
++                5 (Uint32) : 61
++                6 (Uint32) : 62
++                7 (Uint32) : 0
++                8 (Uint32) : 21
++                9 (Uint32) : 3
++                10 (Uint32) : 20
++                11 (Uint32) : 63
++                12 (Uint32) : 60
++                13 (Uint32) : 6
++                14 (Uint32) : 5
++                15 (Uint32) : 13
++                16 (Uint32) : 4
++                17 (Uint32) : 26
++                18 (Uint32) : 27
++                19 (Uint32) : 30
++                20 (Uint32) : 57
++                21 (Uint32) : 14
++                22 (Uint32) : 16
++                23 (Uint32) : 9
++                24 (Uint32) : 10
++                25 (Uint32) : 15
++                26 (Uint32) : 17
++                27 (Uint32) : 2
++                28 (Uint32) : 1
++                30 (Uint32) : 28
++                31 (Uint32) : 18
+                 32 (Uint32) : 22
+                 33 (Uint32) : 23
+                 34 (Uint32) : 24
+@@ -1659,57 +1664,93 @@
+                 36 (Uint32) : 53
+                 37 (Uint32) : 58
+                 38 (Uint32) : 59
+-                39 (Uint32) : 34
+-                40 (Uint32) : 33
+-                42 (Uint32) : 49
+-                43 (Uint32) : 31
+-                44 (Uint32) : 48
+-                45 (Uint32) : 47
+-                46 (Uint32) : 40
+-                47 (Uint32) : 37
+-                48 (Uint32) : 42
+-                49 (Uint32) : 44
+-                50 (Uint32) : 38
+-                51 (Uint32) : 43
+-                52 (Uint32) : 45
+-                53 (Uint32) : 54
+-                54 (Uint32) : 32
+-                55 (Uint32) : 35
+-                56 (Uint32) : 55
+-                57 (Uint32) : 36
+-                58 (Uint32) : 46
+-                59 (Uint32) : 56
++                39 (Uint32) : 37
++                40 (Uint32) : 34
++                43 (Uint32) : 44
++                44 (Uint32) : 38
++                45 (Uint32) : 43
++                46 (Uint32) : 45
++                48 (Uint32) : 40
++                50 (Uint32) : 31
++                51 (Uint32) : 48
++                52 (Uint32) : 33
++                53 (Uint32) : 36
++                54 (Uint32) : 35
++                55 (Uint32) : 54
++                56 (Uint32) : 32
++                57 (Uint32) : 55
++                58 (Uint32) : 56
++                59 (Uint32) : 46
+                 60 (Uint32) : 50
+                 61 (Uint32) : 51
+                 62 (Uint32) : 52
+                 63 (Uint32) : 39
+     CMaterialInstance #1 (CMaterialInstance) : 
+         CMaterialInstance (CMaterialInstance)
+-            baseMaterial (handle:IMaterial) : engine/materials/graphs/pbr_std_tint_mask_det.w2mg
++            baseMaterial (handle:IMaterial) : engine/materials/graphs/pbr_skin.w2mg
+             InstanceParameters (array:CVariantSizeNameType)
+-                Normal (handle:ITexture) : characters/models/monsters/wildhunt_minion/model/t_01__wildhunt_minion_n01.xbm
+-                Diffuse (handle:ITexture) : characters/models/monsters/wildhunt_minion/model/t_03__wildhunt_minion_d01.xbm
+-                Translucency (Float) : 0.1000
++                Ambient (handle:ITexture) : characters/models/monsters/wildhunt_minion/model/t_01__wildhunt_minion_a01.xbm
++                AntiLightbleedScale (Float) : 0.2000
++                AntiLightbleedUpOffFront (Float) : 0.0000
++                AntiLightbleedUpOffRound (Float) : 0.0000
++                AntiLightbleedUseRounded (Float) : 1.0000
++                DetailAlbedoPower (Float) : 5.0000
++                DetailNormal (handle:ITexture) : characters/models/common/textures/detailmaps_pbr/detailmap_skin_07.xbm
+                 DetailPower (Float) : 1.0000
+-                AOPower (Float) : 0.5000
+-                DetailRange (Float) : 10.0000
+-                RSpecScale (Float) : 1.0000
+-                RSpecBase (Float) : -0.2000
+-                SpecularColor (Color)
+-                    Red (Uint8) : 108
+-                    Green (Uint8) : 143
+-                    Blue (Uint8) : 146
+-                    Alpha (Uint8) : 255
+-                DetailNormal (handle:ITexture) : characters/models/common/textures/detailmaps_pbr/detailmap_skin_01.xbm
++                DetailRange (Float) : 20.0000
+                 DetailTile (Vector)
+-                    X (Float) : 15.0000
+-                    Y (Float) : 15.0000
++                    X (Float) : 10.0000
++                    Y (Float) : 20.0000
+                     Z (Float) : 1.0000
+                     W (Float) : 1.0000
+-                DetailRotation (Float) : 0.0000
+-                ColorShift_ BlendColors (Float) : 0.0000
+-                ColorShift_ KeepGray (Float) : 1.0000
+-                TintMask (handle:ITexture) : characters/models/monsters/wildhunt_minion/model/t_01__wildhunt_minion_a01.xbm
++                Diffuse (handle:ITexture) : characters/models/monsters/wildhunt_minion/model/t_03__wildhunt_minion_d01.xbm
++                DiffuseBumpinessAngleExp (Float) : 0.3000
++                DiffuseBumpinessSteepLight (Float) : 0.3000
++                DiffuseBumpinessStraightLight (Float) : 0.5000
++                EnvProbeBumpiness (Float) : 1.0000
++                Normal (handle:ITexture) : characters/models/monsters/wildhunt_minion/model/t_01__wildhunt_minion_n01.xbm
++                ReflectionGainScale (Float) : 0.4000
++                Roughness2Bias (Float) : 0.1000
++                RoughnessBias (Float) : 0.1000
++                RSpecBase (Float) : 0.1000
++                RSpecBase2 (Float) : 0.0000
++                RSpecPower2 (Float) : 1.0000
++                RSpecScale (Float) : 0.1000
++                RSpecScale2 (Float) : 0.0300
++                SpecularColor (Color)
++                    Red (Uint8) : 202
++                    Green (Uint8) : 229
++                    Blue (Uint8) : 255
++                    Alpha (Uint8) : 255
++                SpecularColor2 (Color)
++                    Red (Uint8) : 240
++                    Green (Uint8) : 244
++                    Blue (Uint8) : 255
++                    Alpha (Uint8) : 255
++                SSAOImpact (Float) : 1.0000
++                SSS_CoarseColor (Color)
++                    Red (Uint8) : 173
++                    Green (Uint8) : 16
++                    Blue (Uint8) : 6
++                    Alpha (Uint8) : 255
++                SSS_CoarseColorInvRange (Float) : 4.0000
++                SSS_CoarseWrapBase (Float) : 0.2000
++                SSS_CoarseWrapScale (Float) : 0.1000
++                SSS_DetailColorBleed (Color)
++                    Red (Uint8) : 206
++                    Green (Uint8) : 109
++                    Blue (Uint8) : 173
++                    Alpha (Uint8) : 255
++                SSS_DiffuseDistribPow (Float) : 2.0000
++                SSS_DiffuseScale (Float) : 0.9000
++                TranslucencyFresnel (Float) : 1.2000
++                TranslucencyFresnelGain (Float) : 0.2000
++                VarianceColor (Color)
++                    Red (Uint8) : 128
++                    Green (Uint8) : 128
++                    Blue (Uint8) : 128
++                    Alpha (Uint8) : 255
++                VarianceOffset (Float) : 1.0000
+     CMaterialInstance #2 (CMaterialInstance) : 
+         CMaterialInstance (CMaterialInstance)
+             baseMaterial (handle:IMaterial) : engine/materials/graphs/pbr_std.w2mg
+@@ -1737,6 +1778,166 @@
+                 ColorShift_ BlendColors (Float) : 0.0000
+                 ColorShift_ KeepGray (Float) : 1.0000
+                 TintMask (handle:ITexture) : characters/models/monsters/wildhunt_minion/model/t_01__wildhunt_minion_a01.xbm
+-    SMeshSoundInfo #3 (SMeshSoundInfo) : monster_wildhunt_minion
++    CMaterialInstance #3 (CMaterialInstance) : 
++        CMaterialInstance (CMaterialInstance)
++            baseMaterial (handle:IMaterial) : engine/materials/graphs/pbr_std_tint_mask_det.w2mg
++            InstanceParameters (array:CVariantSizeNameType)
++                Normal (handle:ITexture) : characters/models/monsters/wildhunt_minion/model/t_01__wildhunt_minion_n01.xbm
++                Diffuse (handle:ITexture) : characters/models/monsters/wildhunt_minion/model/t_03__wildhunt_minion_d01.xbm
++                Translucency (Float) : 0.1000
++                DetailPower (Float) : 1.0000
++                AOPower (Float) : 0.5000
++                DetailRange (Float) : 10.0000
++                RSpecScale (Float) : 1.0000
++                RSpecBase (Float) : -0.2000
++                SpecularColor (Color)
++                    Red (Uint8) : 108
++                    Green (Uint8) : 143
++                    Blue (Uint8) : 146
++                    Alpha (Uint8) : 255
++                DetailNormal (handle:ITexture) : characters/models/common/textures/detailmaps_pbr/detailmap_skin_01.xbm
++                DetailTile (Vector)
++                    X (Float) : 15.0000
++                    Y (Float) : 15.0000
++                    Z (Float) : 1.0000
++                    W (Float) : 1.0000
++                DetailRotation (Float) : 0.0000
++                ColorShift_ BlendColors (Float) : 0.0000
++                ColorShift_ KeepGray (Float) : 1.0000
++                TintMask (handle:ITexture) : characters/models/monsters/wildhunt_minion/model/t_01__wildhunt_minion_a01.xbm
++    CMaterialInstance #4 (CMaterialInstance) : 
++        CMaterialInstance (CMaterialInstance)
++            baseMaterial (handle:IMaterial) : engine/materials/graphs/pbr_skin.w2mg
++            InstanceParameters (array:CVariantSizeNameType)
++                Ambient (handle:ITexture) : characters/models/monsters/wildhunt_minion/model/t_01__wildhunt_minion_a01.xbm
++                AntiLightbleedScale (Float) : 0.2000
++                AntiLightbleedUpOffFront (Float) : 0.0000
++                AntiLightbleedUpOffRound (Float) : 0.0000
++                AntiLightbleedUseRounded (Float) : 1.0000
++                DetailAlbedoPower (Float) : 5.0000
++                DetailNormal (handle:ITexture) : characters/models/common/textures/detailmaps_pbr/detailmap_skin_07.xbm
++                DetailPower (Float) : 1.0000
++                DetailRange (Float) : 20.0000
++                DetailTile (Vector)
++                    X (Float) : 10.0000
++                    Y (Float) : 20.0000
++                    Z (Float) : 1.0000
++                    W (Float) : 1.0000
++                Diffuse (handle:ITexture) : characters/models/monsters/wildhunt_minion/model/t_03__wildhunt_minion_d01.xbm
++                DiffuseBumpinessAngleExp (Float) : 0.3000
++                DiffuseBumpinessSteepLight (Float) : 0.3000
++                DiffuseBumpinessStraightLight (Float) : 0.5000
++                EnvProbeBumpiness (Float) : 1.0000
++                Normal (handle:ITexture) : characters/models/monsters/wildhunt_minion/model/t_01__wildhunt_minion_n01.xbm
++                ReflectionGainScale (Float) : 0.4000
++                Roughness2Bias (Float) : 0.1000
++                RoughnessBias (Float) : 0.0000
++                RSpecBase (Float) : 0.1000
++                RSpecBase2 (Float) : 0.0000
++                RSpecPower2 (Float) : 1.0000
++                RSpecScale (Float) : 0.0500
++                RSpecScale2 (Float) : 0.0300
++                SpecularColor (Color)
++                    Red (Uint8) : 198
++                    Green (Uint8) : 255
++                    Blue (Uint8) : 255
++                    Alpha (Uint8) : 255
++                SpecularColor2 (Color)
++                    Red (Uint8) : 240
++                    Green (Uint8) : 244
++                    Blue (Uint8) : 255
++                    Alpha (Uint8) : 255
++                SSAOImpact (Float) : 1.0000
++                SSS_CoarseColor (Color)
++                    Red (Uint8) : 173
++                    Green (Uint8) : 16
++                    Blue (Uint8) : 6
++                    Alpha (Uint8) : 255
++                SSS_CoarseColorInvRange (Float) : 4.0000
++                SSS_CoarseWrapBase (Float) : 0.2000
++                SSS_CoarseWrapScale (Float) : 0.1000
++                SSS_DetailColorBleed (Color)
++                    Red (Uint8) : 206
++                    Green (Uint8) : 109
++                    Blue (Uint8) : 173
++                    Alpha (Uint8) : 255
++                SSS_DiffuseDistribPow (Float) : 1.0000
++                SSS_DiffuseScale (Float) : 0.8000
++                TranslucencyFresnel (Float) : 1.2000
++                TranslucencyFresnelGain (Float) : 0.2000
++                VarianceColor (Color)
++                    Red (Uint8) : 128
++                    Green (Uint8) : 128
++                    Blue (Uint8) : 128
++                    Alpha (Uint8) : 255
++                VarianceOffset (Float) : 1.0000
++    CMaterialInstance #5 (CMaterialInstance) : 
++        CMaterialInstance (CMaterialInstance)
++            baseMaterial (handle:IMaterial) : engine/materials/graphs/pbr_skin.w2mg
++            InstanceParameters (array:CVariantSizeNameType)
++                Ambient (handle:ITexture) : characters/models/monsters/wildhunt_minion/model/t_01__wildhunt_minion_a01.xbm
++                AntiLightbleedScale (Float) : 0.2000
++                AntiLightbleedUpOffFront (Float) : 0.0000
++                AntiLightbleedUpOffRound (Float) : 0.0000
++                AntiLightbleedUseRounded (Float) : 1.0000
++                DetailAlbedoPower (Float) : 5.0000
++                DetailNormal (handle:ITexture) : characters/models/common/textures/detailmaps_pbr/detailmap_skin_07.xbm
++                DetailPower (Float) : 1.0000
++                DetailRange (Float) : 20.0000
++                DetailTile (Vector)
++                    X (Float) : 10.0000
++                    Y (Float) : 20.0000
++                    Z (Float) : 1.0000
++                    W (Float) : 1.0000
++                Diffuse (handle:ITexture) : characters/models/monsters/wildhunt_minion/model/t_03__wildhunt_minion_d01.xbm
++                DiffuseBumpinessAngleExp (Float) : 0.3000
++                DiffuseBumpinessSteepLight (Float) : 0.3000
++                DiffuseBumpinessStraightLight (Float) : 0.5000
++                EnvProbeBumpiness (Float) : 1.0000
++                Normal (handle:ITexture) : characters/models/monsters/wildhunt_minion/model/t_01__wildhunt_minion_n01.xbm
++                ReflectionGainScale (Float) : 0.4000
++                Roughness2Bias (Float) : 0.1000
++                RoughnessBias (Float) : 0.0000
++                RSpecBase (Float) : 0.1000
++                RSpecBase2 (Float) : 0.0000
++                RSpecPower2 (Float) : 1.0000
++                RSpecScale (Float) : 0.1000
++                RSpecScale2 (Float) : 0.0300
++                SpecularColor (Color)
++                    Red (Uint8) : 198
++                    Green (Uint8) : 255
++                    Blue (Uint8) : 255
++                    Alpha (Uint8) : 255
++                SpecularColor2 (Color)
++                    Red (Uint8) : 240
++                    Green (Uint8) : 244
++                    Blue (Uint8) : 255
++                    Alpha (Uint8) : 255
++                SSAOImpact (Float) : 1.0000
++                SSS_CoarseColor (Color)
++                    Red (Uint8) : 173
++                    Green (Uint8) : 16
++                    Blue (Uint8) : 6
++                    Alpha (Uint8) : 255
++                SSS_CoarseColorInvRange (Float) : 4.0000
++                SSS_CoarseWrapBase (Float) : 0.2000
++                SSS_CoarseWrapScale (Float) : 0.1000
++                SSS_DetailColorBleed (Color)
++                    Red (Uint8) : 206
++                    Green (Uint8) : 109
++                    Blue (Uint8) : 173
++                    Alpha (Uint8) : 255
++                SSS_DiffuseDistribPow (Float) : 1.0000
++                SSS_DiffuseScale (Float) : 0.9000
++                TranslucencyFresnel (Float) : 1.2000
++                TranslucencyFresnelGain (Float) : 0.2000
++                VarianceColor (Color)
++                    Red (Uint8) : 128
++                    Green (Uint8) : 128
++                    Blue (Uint8) : 128
++                    Alpha (Uint8) : 255
++                VarianceOffset (Float) : 1.0000
++    SMeshSoundInfo #6 (SMeshSoundInfo) : monster_wildhunt_minion
+         SMeshSoundInfo (SMeshSoundInfo)
+             soundTypeIdentification (CName) : monster_wildhunt_minion
++            soundSizeIdentification (CName) : default

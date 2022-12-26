@@ -1,0 +1,471 @@
+ 1 file changed, 270 insertions(+), 75 deletions(-)
+
+diff --git 1.32/characters/models/crowd_npc/novigrad_guard/caps/model/c_04_mb__novigrad_guard.w2mesh.txt 4.00/characters/models/crowd_npc/novigrad_guard/caps/model/c_04_mb__novigrad_guard.w2mesh.txt
+index b112b80..650f15b 100644
+--- 1.32/characters/models/crowd_npc/novigrad_guard/caps/model/c_04_mb__novigrad_guard.w2mesh.txt
++++ 4.00/characters/models/crowd_npc/novigrad_guard/caps/model/c_04_mb__novigrad_guard.w2mesh.txt
+@@ -3,16 +3,17 @@
+             materials (array:handle:IMaterial)
+                 0 (handle:IMaterial) : CMaterialInstance #1
+                 1 (handle:IMaterial) : CMaterialInstance #2
++                2 (handle:IMaterial) : CMaterialInstance #3
+             boundingBox (Box)
+                 Min (Vector)
+                     X (Float) : -0.0960
+                     Y (Float) : -0.1335
+                     Z (Float) : 1.5492
+-                    W (Float) : 1.0000
++                    W (Float) : 0.0000
+                 Max (Vector)
+-                    X (Float) : 0.0998
++                    X (Float) : 0.0996
+                     Y (Float) : 0.0942
+-                    Z (Float) : 1.8459
++                    Z (Float) : 1.8458
+                     W (Float) : 1.0000
+             autoHideDistance (Float) : 30.0000
+             generalizedMeshRadius (Float) : 0.1752
+@@ -20,16 +21,24 @@
+                 0 (SMeshChunkPacked)
+                     vertexType (EMeshVertexType) : MVT_SkinnedMesh
+                     numBonesPerVertex (Uint8) : 4
+-                    numVertices (Uint32) : 1092
+-                    numIndices (Uint32) : 5610
++                    numVertices (Uint32) : 958
++                    numIndices (Uint32) : 5040
+                 1 (SMeshChunkPacked)
+                     vertexType (EMeshVertexType) : MVT_SkinnedMesh
+                     materialID (Uint32) : 1
++                    numBonesPerVertex (Uint8) : 4
++                    numVertices (Uint32) : 134
++                    numIndices (Uint32) : 570
++                    firstVertex (Uint32) : 958
++                    firstIndex (Uint32) : 5040
++                2 (SMeshChunkPacked)
++                    vertexType (EMeshVertexType) : MVT_SkinnedMesh
++                    materialID (Uint32) : 2
++                    numBonesPerVertex (Uint8) : 4
+                     numVertices (Uint32) : 773
+                     numIndices (Uint32) : 2781
+                     firstVertex (Uint32) : 1092
+                     firstIndex (Uint32) : 5610
+-                    useForShadowmesh (Bool) : true
+             cookedData (SMeshCookedData)
+                 collisionInitPositionOffset (Vector)
+                     X (Float) : 0.0000
+@@ -48,14 +57,14 @@
+                         Z (Float) : 1.4100
+                         W (Float) : 1.0000
+                     2 (Vector)
+-                        X (Float) : -0.0300
+-                        Y (Float) : -0.0560
+-                        Z (Float) : 1.5706
++                        X (Float) : 0.0000
++                        Y (Float) : -0.0584
++                        Z (Float) : 1.6015
+                         W (Float) : 1.0000
+                     3 (Vector)
+-                        X (Float) : 0.0000
+-                        Y (Float) : -0.0584
+-                        Z (Float) : 1.6015
++                        X (Float) : -0.0300
++                        Y (Float) : -0.0560
++                        Z (Float) : 1.5706
+                         W (Float) : 1.0000
+                     4 (Vector)
+                         X (Float) : 0.0000
+@@ -67,6 +76,36 @@
+                         Y (Float) : -0.0560
+                         Z (Float) : 1.5706
+                         W (Float) : 1.0000
++                    6 (Vector)
++                        X (Float) : 0.0000
++                        Y (Float) : -0.0371
++                        Z (Float) : 1.7063
++                        W (Float) : 1.0000
++                    7 (Vector)
++                        X (Float) : 0.0000
++                        Y (Float) : -0.0279
++                        Z (Float) : 1.4100
++                        W (Float) : 1.0000
++                    8 (Vector)
++                        X (Float) : 0.0000
++                        Y (Float) : -0.0584
++                        Z (Float) : 1.6015
++                        W (Float) : 1.0000
++                    9 (Vector)
++                        X (Float) : -0.0300
++                        Y (Float) : -0.0560
++                        Z (Float) : 1.5706
++                        W (Float) : 1.0000
++                    10 (Vector)
++                        X (Float) : 0.0000
++                        Y (Float) : -0.0394
++                        Z (Float) : 1.6828
++                        W (Float) : 1.0000
++                    11 (Vector)
++                        X (Float) : 0.0300
++                        Y (Float) : -0.0560
++                        Z (Float) : 1.5706
++                        W (Float) : 1.0000
+                 renderLODs (array:Float)
+                     1 (Float) : 5.0000
+                 renderChunks (array:Uint8) : # array:Uint8
+@@ -82,23 +121,31 @@
+                     Y (Float) : -0.1335
+                     Z (Float) : 1.5492
+                     W (Float) : 1.0000
+-                vertexBufferSize (Uint32) : 52232
++                vertexBufferSize (Uint32) : 52248
+                 indexBufferSize (Uint32) : 16782
+                 indexBufferOffset (Uint32) : 53248
++                blasBuffer (DeferredDataBuffer)
++                    Bufferdata (Int16) : 0
+             internalVersion (Uint8) : 2
+             ChunkgroupIndeces (CBufferVLQInt32:CPaddedBuffer:CUInt16)
+                 0 (CPaddedBuffer:CUInt16)
+                     padding (Float) : 0.0000
+                 1 (CPaddedBuffer:CUInt16)
+-                    0 (Uint16) : 1
++                    0 (Uint16) : 2
+                     padding (Float) : 5.0000
+             BoneNames (CBufferVLQInt32:CName)
+                 0 (CName) : head
+                 1 (CName) : torso3
+-                2 (CName) : l_shoulder
+-                3 (CName) : neck
++                2 (CName) : neck
++                3 (CName) : l_shoulder
+                 4 (CName) : hroll
+                 5 (CName) : r_shoulder
++                6 (CName) : head
++                7 (CName) : torso3
++                8 (CName) : neck
++                9 (CName) : l_shoulder
++                10 (CName) : hroll
++                11 (CName) : r_shoulder
+             Bonematrices (CBufferVLQInt32:CMatrix4x4)
+                 0 (CMatrix4x4)
+                     ax (Float) : 0.0001
+@@ -135,38 +182,38 @@
+                     dz (Float) : -0.0001
+                     dw (Float) : 1.0000
+                 2 (CMatrix4x4)
+-                    ax (Float) : -0.9543
+-                    ay (Float) : 0.0913
+-                    az (Float) : -0.2845
++                    ax (Float) : 0.0001
++                    ay (Float) : 0.0002
++                    az (Float) : -1.0000
+                     aw (Float) : 0.0000
+-                    bx (Float) : -0.0876
+-                    by (Float) : -0.9958
+-                    bz (Float) : -0.0258
++                    bx (Float) : 0.1997
++                    by (Float) : 0.9799
++                    bz (Float) : 0.0002
+                     bw (Float) : 0.0000
+-                    cx (Float) : -0.2856
+-                    cy (Float) : 0.0003
+-                    cz (Float) : 0.9583
++                    cx (Float) : 0.9799
++                    cy (Float) : -0.1997
++                    cz (Float) : 0.0001
+                     cw (Float) : 0.0000
+-                    dx (Float) : 0.4151
+-                    dy (Float) : -0.0535
+-                    dz (Float) : -1.5151
++                    dx (Float) : -1.5575
++                    dy (Float) : 0.3771
++                    dz (Float) : -0.0001
+                     dw (Float) : 1.0000
+                 3 (CMatrix4x4)
+-                    ax (Float) : 0.0001
+-                    ay (Float) : 0.0002
+-                    az (Float) : -1.0000
++                    ax (Float) : -0.9543
++                    ay (Float) : 0.0913
++                    az (Float) : -0.2845
+                     aw (Float) : 0.0000
+-                    bx (Float) : 0.1997
+-                    by (Float) : 0.9799
+-                    bz (Float) : 0.0002
++                    bx (Float) : -0.0876
++                    by (Float) : -0.9958
++                    bz (Float) : -0.0258
+                     bw (Float) : 0.0000
+-                    cx (Float) : 0.9799
+-                    cy (Float) : -0.1997
+-                    cz (Float) : 0.0001
++                    cx (Float) : -0.2856
++                    cy (Float) : 0.0003
++                    cz (Float) : 0.9583
+                     cw (Float) : 0.0000
+-                    dx (Float) : -1.5575
+-                    dy (Float) : 0.3771
+-                    dz (Float) : -0.0001
++                    dx (Float) : 0.4151
++                    dy (Float) : -0.0535
++                    dz (Float) : -1.5151
+                     dw (Float) : 1.0000
+                 4 (CMatrix4x4)
+                     ax (Float) : 0.0001
+@@ -187,56 +234,213 @@
+                     dw (Float) : 1.0000
+                 5 (CMatrix4x4)
+                     ax (Float) : 0.9543
+-                    ay (Float) : -0.0915
++                    ay (Float) : -0.0914
+                     az (Float) : -0.2846
+                     aw (Float) : 0.0000
+-                    bx (Float) : -0.0878
++                    bx (Float) : -0.0877
+                     by (Float) : -0.9958
+-                    bz (Float) : 0.0259
++                    bz (Float) : 0.0260
+                     bw (Float) : 0.0000
+                     cx (Float) : -0.2858
++                    cy (Float) : 0.0002
++                    cz (Float) : -0.9583
++                    cw (Float) : 0.0000
++                    dx (Float) : 0.4153
++                    dy (Float) : -0.0533
++                    dz (Float) : 1.5150
++                    dw (Float) : 1.0000
++                6 (CMatrix4x4)
++                    ax (Float) : 0.0001
++                    ay (Float) : 0.0002
++                    az (Float) : -1.0000
++                    aw (Float) : 0.0000
++                    bx (Float) : 0.0234
++                    by (Float) : 0.9997
++                    bz (Float) : 0.0002
++                    bw (Float) : 0.0000
++                    cx (Float) : 0.9997
++                    cy (Float) : -0.0234
++                    cz (Float) : 0.0001
++                    cw (Float) : 0.0000
++                    dx (Float) : -1.7050
++                    dy (Float) : 0.0769
++                    dz (Float) : -0.0001
++                    dw (Float) : 1.0000
++                7 (CMatrix4x4)
++                    ax (Float) : 0.0001
++                    ay (Float) : 0.0001
++                    az (Float) : -1.0000
++                    aw (Float) : 0.0000
++                    bx (Float) : -0.1576
++                    by (Float) : 0.9875
++                    bz (Float) : 0.0001
++                    bw (Float) : 0.0000
++                    cx (Float) : 0.9875
++                    cy (Float) : 0.1576
++                    cz (Float) : 0.0001
++                    cw (Float) : 0.0000
++                    dx (Float) : -1.3968
++                    dy (Float) : -0.1947
++                    dz (Float) : -0.0001
++                    dw (Float) : 1.0000
++                8 (CMatrix4x4)
++                    ax (Float) : 0.0001
++                    ay (Float) : 0.0002
++                    az (Float) : -1.0000
++                    aw (Float) : 0.0000
++                    bx (Float) : 0.1997
++                    by (Float) : 0.9799
++                    bz (Float) : 0.0002
++                    bw (Float) : 0.0000
++                    cx (Float) : 0.9799
++                    cy (Float) : -0.1997
++                    cz (Float) : 0.0001
++                    cw (Float) : 0.0000
++                    dx (Float) : -1.5575
++                    dy (Float) : 0.3771
++                    dz (Float) : -0.0001
++                    dw (Float) : 1.0000
++                9 (CMatrix4x4)
++                    ax (Float) : -0.9543
++                    ay (Float) : 0.0913
++                    az (Float) : -0.2845
++                    aw (Float) : 0.0000
++                    bx (Float) : -0.0876
++                    by (Float) : -0.9958
++                    bz (Float) : -0.0258
++                    bw (Float) : 0.0000
++                    cx (Float) : -0.2856
+                     cy (Float) : 0.0003
+-                    cz (Float) : -0.9583
++                    cz (Float) : 0.9583
+                     cw (Float) : 0.0000
+-                    dx (Float) : 0.4152
++                    dx (Float) : 0.4151
+                     dy (Float) : -0.0535
+-                    dz (Float) : 1.5151
++                    dz (Float) : -1.5151
++                    dw (Float) : 1.0000
++                10 (CMatrix4x4)
++                    ax (Float) : 0.0001
++                    ay (Float) : 0.0002
++                    az (Float) : -1.0000
++                    aw (Float) : 0.0000
++                    bx (Float) : 0.1120
++                    by (Float) : 0.9937
++                    bz (Float) : 0.0002
++                    bw (Float) : 0.0000
++                    cx (Float) : 0.9937
++                    cy (Float) : -0.1120
++                    cz (Float) : 0.0001
++                    cw (Float) : 0.0000
++                    dx (Float) : -1.6678
++                    dy (Float) : 0.2276
++                    dz (Float) : -0.0001
++                    dw (Float) : 1.0000
++                11 (CMatrix4x4)
++                    ax (Float) : 0.9543
++                    ay (Float) : -0.0914
++                    az (Float) : -0.2846
++                    aw (Float) : 0.0000
++                    bx (Float) : -0.0877
++                    by (Float) : -0.9958
++                    bz (Float) : 0.0260
++                    bw (Float) : 0.0000
++                    cx (Float) : -0.2858
++                    cy (Float) : 0.0002
++                    cz (Float) : -0.9583
++                    cw (Float) : 0.0000
++                    dx (Float) : 0.4153
++                    dy (Float) : -0.0533
++                    dz (Float) : 1.5150
+                     dw (Float) : 1.0000
+             Block3 (CBufferVLQInt32:CFloat)
+-                0 (Float) : 0.2177
++                0 (Float) : 0.2171
+                 1 (Float) : 0.5056
+-                2 (Float) : 0.1529
+-                3 (Float) : 0.2633
+-                4 (Float) : 0.1909
++                2 (Float) : 0.2497
++                3 (Float) : 0.1529
++                4 (Float) : 0.1784
+                 5 (Float) : 0.1553
++                6 (Float) : 0.2177
++                7 (Float) : 0.5056
++                8 (Float) : 0.2497
++                9 (Float) : 0.1476
++                10 (Float) : 0.1784
++                11 (Float) : 0.1481
+             BoneIndecesMappingBoneIndex (CBufferVLQInt32:CUInt32)
+-                1 (Uint32) : 3
++                0 (Uint32) : 2
++                1 (Uint32) : 4
+                 2 (Uint32) : 1
+-                3 (Uint32) : 2
++                3 (Uint32) : 0
++                4 (Uint32) : 5
++                5 (Uint32) : 3
++                7 (Uint32) : 10
++                9 (Uint32) : 7
++                10 (Uint32) : 9
+     CMaterialInstance #1 (CMaterialInstance) : 
+         CMaterialInstance (CMaterialInstance)
+             baseMaterial (handle:IMaterial) : engine/materials/graphs/pbr_std_tint_mask_2det.w2mg
+             InstanceParameters (array:CVariantSizeNameType)
+                 Diffuse (handle:ITexture) : characters/models/crowd_npc/novigrad_guard/caps/model/c_04_ma__novigrad_guard_d01.xbm
+                 Normal (handle:ITexture) : characters/models/crowd_npc/novigrad_guard/caps/model/c_04_ma__novigrad_guard_n01.xbm
+-                TintMask (handle:ITexture) : characters/models/crowd_npc/novigrad_guard/caps/model/c_04_ma__novigrad_guard_a01.xbm
+                 SpecularColor (Color)
+-                    Red (Uint8) : 66
+-                    Green (Uint8) : 66
+-                    Blue (Uint8) : 66
++                    Red (Uint8) : 55
++                    Green (Uint8) : 55
++                    Blue (Uint8) : 55
+                     Alpha (Uint8) : 255
+-                RSpecScale (Float) : 1.0000
+-                RSpecBase (Float) : 0.0000
+-                DetailPower (Float) : 0.6000
+-                AmbientPower (Float) : 0.7000
+-                DetailNormal1 (handle:ITexture) : characters/models/common/textures/detailmaps_pbr/detailmap_leather_04.xbm
++                Translucency (Float) : 0.0000
++                DetailPower (Float) : 1.2000
++                AmbientPower (Float) : 0.5000
++                TintMask (handle:ITexture) : characters/models/crowd_npc/novigrad_guard/caps/model/c_04_ma__novigrad_guard_a01.xbm
++                DetailRange (Float) : 5.0000
+                 DetailNormal2 (handle:ITexture) : characters/models/common/textures/detailmaps_pbr/detailmap_cloth_02.xbm
+                 DetailTile2 (Vector)
+-                    X (Float) : 4.0000
+-                    Y (Float) : 4.0000
++                    X (Float) : 6.5000
++                    Y (Float) : 6.5000
+                     Z (Float) : 1.0000
+                     W (Float) : 1.0000
++                DetailRotation1 (Float) : 1.0000
++                ColorShift_ BlendColors (Float) : 0.0000
++                ColorShift_ KeepGray (Float) : 1.0000
++                DetailNormal1 (handle:ITexture) : characters/models/common/textures/detailmaps_pbr/detailmap_leather_04.xbm
++                DetailTile1 (Vector)
++                    X (Float) : 9.5000
++                    Y (Float) : 9.5000
++                    Z (Float) : 1.0000
++                    W (Float) : 1.0000
++                DetailRotation2 (Float) : 1.0000
++                DetailAlbedoPower (Float) : 2.0000
+     CMaterialInstance #2 (CMaterialInstance) : 
++        CMaterialInstance (CMaterialInstance)
++            baseMaterial (handle:IMaterial) : engine/materials/graphs/pbr_std_tint_mask_2det.w2mg
++            InstanceParameters (array:CVariantSizeNameType)
++                Diffuse (handle:ITexture) : characters/models/crowd_npc/novigrad_guard/caps/model/c_04_ma__novigrad_guard_d01.xbm
++                Normal (handle:ITexture) : characters/models/crowd_npc/novigrad_guard/caps/model/c_04_ma__novigrad_guard_n01.xbm
++                SpecularColor (Color)
++                    Red (Uint8) : 93
++                    Green (Uint8) : 94
++                    Blue (Uint8) : 93
++                    Alpha (Uint8) : 255
++                Translucency (Float) : 0.0000
++                DetailPower (Float) : 1.1500
++                TintMask (handle:ITexture) : characters/models/crowd_npc/novigrad_guard/caps/model/c_04_ma__novigrad_guard_a01.xbm
++                DetailRange (Float) : 5.0000
++                DetailNormal1 (handle:ITexture) : environment/textures_tileable/detailmaps/metal_02.xbm
++                DetailTile1 (Vector)
++                    X (Float) : 3.5000
++                    Y (Float) : 3.5000
++                    Z (Float) : 1.0000
++                    W (Float) : 1.0000
++                DetailRotation1 (Float) : 0.0000
++                AmbientPower (Float) : 0.5000
++                ColorShift_ BlendColors (Float) : 0.0000
++                ColorShift_ KeepGray (Float) : 1.0000
++                DetailNormal2 (handle:ITexture) : environment/textures_tileable/detailmaps/metal_03.xbm
++                DetailTile2 (Vector)
++                    X (Float) : 3.0000
++                    Y (Float) : 3.0000
++                    Z (Float) : 1.0000
++                    W (Float) : 1.0000
++                DetailRotation2 (Float) : 0.0000
++                DetailAlbedoPower (Float) : 2.0000
++    CMaterialInstance #3 (CMaterialInstance) : 
+         CMaterialInstance (CMaterialInstance)
+             baseMaterial (handle:IMaterial) : engine/materials/graphs/pbr_std_colorshift.w2mg
+             InstanceParameters (array:CVariantSizeNameType)
+@@ -244,18 +448,9 @@
+                 Normal (handle:ITexture) : characters/models/crowd_npc/novigrad_guard/caps/model/c_04_ma__novigrad_guard_n01.xbm
+                 TintMask (handle:ITexture) : characters/models/crowd_npc/novigrad_guard/caps/model/c_04_ma__novigrad_guard_a01.xbm
+                 SpecularColor (Color)
+-                    Red (Uint8) : 66
+-                    Green (Uint8) : 66
+-                    Blue (Uint8) : 66
++                    Red (Uint8) : 55
++                    Green (Uint8) : 55
++                    Blue (Uint8) : 55
+                     Alpha (Uint8) : 255
+                 RSpecScale (Float) : 1.0000
+                 RSpecBase (Float) : 0.0000
+-                DetailPower (Float) : 0.6000
+-                AmbientPower (Float) : 0.7000
+-                DetailNormal1 (handle:ITexture) : characters/models/common/textures/detailmaps_pbr/detailmap_leather_04.xbm
+-                DetailNormal2 (handle:ITexture) : characters/models/common/textures/detailmaps_pbr/detailmap_cloth_02.xbm
+-                DetailTile2 (Vector)
+-                    X (Float) : 4.0000
+-                    Y (Float) : 4.0000
+-                    Z (Float) : 1.0000
+-                    W (Float) : 1.0000
