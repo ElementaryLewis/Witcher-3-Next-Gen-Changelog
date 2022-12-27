@@ -1,0 +1,1408 @@
+ 1 file changed, 216 insertions(+), 511 deletions(-)
+
+diff --git 1.32/levels/kaer_morhen/kaer_morhen_valley/castle_exterior/lights.w2l.txt 4.00/levels/kaer_morhen/kaer_morhen_valley/castle_exterior/lights.w2l.txt
+index 0e3ca2e..3ea9ce8 100644
+--- 1.32/levels/kaer_morhen/kaer_morhen_valley/castle_exterior/lights.w2l.txt
++++ 4.00/levels/kaer_morhen/kaer_morhen_valley/castle_exterior/lights.w2l.txt
+@@ -50,10 +50,9 @@
+                 46 (ptr:CEntity) : CGameplayEntity #47
+                 47 (ptr:CEntity) : CGameplayEntity #48
+                 48 (ptr:CEntity) : CGameplayEntity #49
+-                49 (ptr:CEntity) : CGameplayEntity #50
++                49 (ptr:CEntity) : W3FireSource #50
+                 50 (ptr:CEntity) : W3FireSource #51
+-                51 (ptr:CEntity) : W3FireSource #52
+-            sectorData (handle:CSectorData) : CSectorData #53
++            sectorData (handle:CSectorData) : CSectorData #52
+             nameCount (Uint32) : 40
+     CGameplayEntity #1 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -77,9 +76,12 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : light1
+-                    sizeofdata (Uint32) : 22
++                    sizeofdata (Uint32) : 60
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 10.0000
++                        0 (Float) : 5.0000
++                        1 (Float) : 15.0000
++                        2 (Float) : 10.0000
++                        3 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CGameplayLightComponent1
+                     sizeofdata (Uint32) : 19
+@@ -108,9 +110,11 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : light1
+-                    sizeofdata (Uint32) : 22
++                    sizeofdata (Uint32) : 46
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 10.0000
++                        0 (Float) : 5.0000
++                        1 (Float) : 10.0000
++                        2 (Float) : 10.0000
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CGameplayLightComponent1
+                     sizeofdata (Uint32) : 19
+@@ -179,19 +183,15 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 55
++                    sizeofdata (Uint32) : 34
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : -1.5000
+-                            Y (Float) : -1.8500
+-                            Z (Float) : 2.6000
+-                        1 (Float) : 30.0000
+-                        2 (ELightUsageMask) : LUM_IsExteriorOnly
++                        0 (Float) : 20.0000
++                        1 (ELightUsageMask) : LUM_IsExteriorOnly
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 81
++                    sizeofdata (Uint32) : 93
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 4.1000
++                        0 (Float) : 1.2000
+                         1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+                         2 (Float) : 176.8000
+                         3 (EngineTransform)
+@@ -201,6 +201,7 @@
+                             X (Float) : 0.0200
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.5000
++                        4 (Float) : 30.0000
+             idTag (IdTag) :  e7e97797-ce6d-423f-a81a-34309cac8ea5
+     W3FireSource #5 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+@@ -236,15 +237,16 @@
+                     sizeofdata (Uint32) : 46
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (Float) : 9.6000
+-                        1 (Float) : 30.0000
++                        1 (Float) : 15.0000
+                         2 (ELightUsageMask) : LUM_IsExteriorOnly
+                 2 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 48
++                    sizeofdata (Uint32) : 60
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.9000
++                        0 (Float) : 1.7000
+                         1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+-                        2 (Float) : 1.0000
++                        2 (Float) : 20.0000
++                        3 (Float) : 1.0000
+             idTag (IdTag) :  796b3a78-2eeb-4c15-814c-9cea3c31f904
+     W3FireSource #6 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+@@ -277,19 +279,15 @@
+                         1 (Bool) : false
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 55
++                    sizeofdata (Uint32) : 34
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : 1.8000
+-                            Y (Float) : -0.6000
+-                            Z (Float) : 2.7000
+-                        1 (Float) : 30.0000
+-                        2 (ELightUsageMask) : LUM_IsExteriorOnly
++                        0 (Float) : 20.0000
++                        1 (ELightUsageMask) : LUM_IsExteriorOnly
+                 2 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 81
++                    sizeofdata (Uint32) : 93
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.8000
++                        0 (Float) : 1.7000
+                         1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+                         2 (EngineTransform)
+                             Pitch (Float) : 0.0000
+@@ -298,7 +296,8 @@
+                             X (Float) : 0.0200
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.5000
+-                        3 (Float) : 1.0000
++                        3 (Float) : 20.0000
++                        4 (Float) : 1.0000
+             idTag (IdTag) :  8f1d5f91-a1de-44c5-a57a-5e79c112e3b5
+     W3FireSource #7 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+@@ -322,19 +321,16 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 55
++                    sizeofdata (Uint32) : 46
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : 0.6000
+-                            Y (Float) : -1.3500
+-                            Z (Float) : 3.0500
+-                        1 (Float) : 6.3500
+-                        2 (Float) : 30.0000
++                        0 (Float) : 6.3500
++                        1 (Float) : 30.0000
++                        2 (Float) : 0.6000
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 67
++                    sizeofdata (Uint32) : 91
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 4.2500
++                        0 (Float) : 2.0000
+                         1 (Float) : 238.5000
+                         2 (EngineTransform)
+                             Pitch (Float) : 0.0000
+@@ -343,6 +339,8 @@
+                             X (Float) : 0.0200
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.4200
++                        3 (Float) : 20.0000
++                        4 (Float) : 0.5000
+             idTag (IdTag) :  d4ca1388-0613-41b0-8dd0-b5a24acfa6bc
+     W3FireSource #8 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+@@ -366,17 +364,13 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 55
++                    sizeofdata (Uint32) : 34
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : 0.0000
+-                            Y (Float) : 0.0000
+-                            Z (Float) : 2.1000
+-                        1 (Float) : 10.0000
+-                        2 (ELightUsageMask) : LUM_IsExteriorOnly
++                        0 (Float) : 10.0000
++                        1 (ELightUsageMask) : LUM_IsExteriorOnly
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 105
++                    sizeofdata (Uint32) : 117
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (Float) : 2.0000
+                         1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+@@ -389,7 +383,8 @@
+                             X (Float) : 0.0200
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.5000
+-                        5 (Float) : 1.0000
++                        5 (Float) : 20.0000
++                        6 (Float) : 1.0000
+             idTag (IdTag) :  c8c7d123-af96-4c40-ae61-05fb382a93e7
+     W3FireSource #9 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+@@ -413,18 +408,14 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 67
++                    sizeofdata (Uint32) : 46
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : 1.0900
+-                            Y (Float) : 0.1500
+-                            Z (Float) : 2.7500
+-                        1 (Float) : 6.4000
+-                        2 (Float) : 20.0000
+-                        3 (ELightUsageMask) : LUM_IsExteriorOnly
++                        0 (Float) : 6.4000
++                        1 (Float) : 20.0000
++                        2 (ELightUsageMask) : LUM_IsExteriorOnly
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 105
++                    sizeofdata (Uint32) : 117
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (Float) : 3.3000
+                         1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+@@ -437,7 +428,8 @@
+                             X (Float) : 0.0200
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.4100
+-                        5 (Float) : 1.0000
++                        5 (Float) : 20.0000
++                        6 (Float) : 1.0000
+             idTag (IdTag) :  739c0428-5bab-41c2-9390-311f12141f67
+     W3FireSource #10 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+@@ -466,19 +458,15 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 55
++                    sizeofdata (Uint32) : 34
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : -1.4500
+-                            Y (Float) : 0.6000
+-                            Z (Float) : 2.6000
+-                        1 (Float) : 20.0000
+-                        2 (ELightUsageMask) : LUM_IsExteriorOnly
++                        0 (Float) : 20.0000
++                        1 (ELightUsageMask) : LUM_IsExteriorOnly
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 105
++                    sizeofdata (Uint32) : 117
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 3.6000
++                        0 (Float) : 2.0000
+                         1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+                         2 (Float) : 184.4000
+                         3 (Float) : 248.4000
+@@ -489,7 +477,8 @@
+                             X (Float) : 0.0200
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.5000
+-                        5 (Float) : 1.0000
++                        5 (Float) : 20.0000
++                        6 (Float) : 1.0000
+             idTag (IdTag) :  35b98cb6-724e-42c1-af5b-975b89255178
+     W3FireSource #11 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+@@ -513,20 +502,16 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 67
++                    sizeofdata (Uint32) : 46
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : -1.9000
+-                            Y (Float) : 0.0000
+-                            Z (Float) : 2.6000
+-                        1 (Float) : 4.6000
+-                        2 (Float) : 20.0000
+-                        3 (ELightUsageMask) : LUM_IsExteriorOnly
++                        0 (Float) : 5.0000
++                        1 (Float) : 15.0000
++                        2 (ELightUsageMask) : LUM_IsExteriorOnly
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 81
++                    sizeofdata (Uint32) : 93
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.7000
++                        0 (Float) : 1.6000
+                         1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+                         2 (EngineTransform)
+                             Pitch (Float) : 0.0000
+@@ -535,7 +520,8 @@
+                             X (Float) : 0.0200
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.5000
+-                        3 (Float) : 1.0000
++                        3 (Float) : 20.0000
++                        4 (Float) : 1.0000
+             idTag (IdTag) :  836cc503-b60e-4165-96a2-0b69e384e92b
+     W3FireSource #12 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+@@ -559,19 +545,15 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 55
++                    sizeofdata (Uint32) : 34
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : -0.8500
+-                            Y (Float) : 0.5000
+-                            Z (Float) : 2.6000
+-                        1 (Float) : 20.0000
+-                        2 (ELightUsageMask) : LUM_IsExteriorOnly
++                        0 (Float) : 20.0000
++                        1 (ELightUsageMask) : LUM_IsExteriorOnly
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 105
++                    sizeofdata (Uint32) : 117
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 3.3000
++                        0 (Float) : 2.0000
+                         1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+                         2 (Float) : 139.4000
+                         3 (Float) : 226.0000
+@@ -582,7 +564,8 @@
+                             X (Float) : 0.0200
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.3500
+-                        5 (Float) : 1.0000
++                        5 (Float) : 20.0000
++                        6 (Float) : 1.0000
+             idTag (IdTag) :  9e7a3a93-133a-4412-98fa-85de2b4dd4b1
+     W3FireSource #13 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+@@ -606,20 +589,16 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 67
++                    sizeofdata (Uint32) : 46
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : -1.4000
+-                            Y (Float) : 0.0000
+-                            Z (Float) : 1.8500
+-                        1 (Float) : 5.4500
+-                        2 (Float) : 10.0000
+-                        3 (ELightUsageMask) : LUM_IsExteriorOnly
++                        0 (Float) : 5.4500
++                        1 (Float) : 10.0000
++                        2 (ELightUsageMask) : LUM_IsExteriorOnly
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 105
++                    sizeofdata (Uint32) : 117
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 3.1000
++                        0 (Float) : 1.0000
+                         1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+                         2 (Float) : 157.5000
+                         3 (Float) : 231.0000
+@@ -630,7 +609,8 @@
+                             X (Float) : 0.0200
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.5000
+-                        5 (Float) : 1.0000
++                        5 (Float) : 2.0000
++                        6 (Float) : 1.0000
+             idTag (IdTag) :  91126e49-0427-4c62-9d29-369bb2c3c8a9
+     W3FireSource #14 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+@@ -654,20 +634,16 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 67
++                    sizeofdata (Uint32) : 46
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : 0.0000
+-                            Y (Float) : 0.0000
+-                            Z (Float) : 2.3000
+-                        1 (Float) : 6.7000
+-                        2 (Float) : 30.0000
+-                        3 (ELightUsageMask) : LUM_IsExteriorOnly
++                        0 (Float) : 6.7000
++                        1 (Float) : 30.0000
++                        2 (ELightUsageMask) : LUM_IsExteriorOnly
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 93
++                    sizeofdata (Uint32) : 105
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 3.3000
++                        0 (Float) : 1.0000
+                         1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+                         2 (Float) : 191.2000
+                         3 (EngineTransform)
+@@ -677,7 +653,8 @@
+                             X (Float) : 0.0200
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.5000
+-                        4 (Float) : 1.0000
++                        4 (Float) : 20.0000
++                        5 (Float) : 1.0000
+             idTag (IdTag) :  cc006d51-ac3e-43c0-81ed-a9d8b5f7ac2b
+     W3FireSource #15 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+@@ -701,20 +678,16 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 67
++                    sizeofdata (Uint32) : 46
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : 0.0000
+-                            Y (Float) : 0.0000
+-                            Z (Float) : 2.1500
+-                        1 (Float) : 6.4500
+-                        2 (Float) : 10.0000
+-                        3 (ELightUsageMask) : LUM_IsExteriorOnly
++                        0 (Float) : 6.4500
++                        1 (Float) : 10.0000
++                        2 (ELightUsageMask) : LUM_IsExteriorOnly
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 105
++                    sizeofdata (Uint32) : 117
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 4.2000
++                        0 (Float) : 2.0000
+                         1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+                         2 (Float) : 167.6000
+                         3 (Float) : 239.0000
+@@ -725,7 +698,8 @@
+                             X (Float) : 0.0200
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.4300
+-                        5 (Float) : 1.0000
++                        5 (Float) : 20.0000
++                        6 (Float) : 1.0000
+             idTag (IdTag) :  cb2d6620-08bf-4d67-996e-b3da65338df3
+     CGameplayEntity #16 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -753,13 +727,6 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 48
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 3.0000
+-                        1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+-                        2 (Float) : 1.0000
+-                1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+                     sizeofdata (Uint32) : 43
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+@@ -787,55 +754,12 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 22
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 4.1000
+-                1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+                     sizeofdata (Uint32) : 22
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (Float) : 10.0000
+             idTag (IdTag) :  fdf59b2f-9156-403c-8144-2132a9e675cf
+     CGameplayEntity #18 (CGameplayEntity) : 
+-        CGameplayEntity (CGameplayEntity)
+-            tags (TagList)
+-                tags (CBufferVLQInt32:CName)
+-                    0 (CName) : no_climb
+-                    1 (CName) : q403_light_source_main_yard
+-                    2 (CName) : CarriesOpenFire
+-            transform (EngineTransform)
+-                X (Float) : -26.8273
+-                Y (Float) : 19.3274
+-                Z (Float) : 167.8761
+-            guid (CGUID) : 18ee8510-d35b-489c-bbdc-f7ef20e1d19b
+-            AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+-            AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+-            template (handle:CEntityTemplate) : environment/decorations/light_sources/complex/braziers_wall_chain_bounce.w2ent
+-            streamingDataBuffer (SharedDataBuffer)
+-                Bufferdata (CByteArray) : 0 bytes
+-            Components (array:ptr:CComponent) : # array:ptr:CComponent
+-            BufferV1 (CCompressedBuffer:SEntityBufferType1)
+-                0 (SEntityBufferType1)
+-                    ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2)
+-                0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 48
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 3.0000
+-                        1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+-                        2 (Float) : 1.0000
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 31
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : -1.4800
+-                            Y (Float) : 0.0000
+-                            Z (Float) : -0.9000
+-            idTag (IdTag) :  f6db8eb6-5431-4eb6-a8a2-0bdc11f30cce
+-    CGameplayEntity #19 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             tags (TagList)
+                 tags (CBufferVLQInt32:CName)
+@@ -858,13 +782,6 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 48
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 3.0000
+-                        1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+-                        2 (Float) : 1.0000
+-                1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+                     sizeofdata (Uint32) : 43
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+@@ -874,7 +791,7 @@
+                             Z (Float) : -0.9000
+                         1 (Float) : 10.0000
+             idTag (IdTag) :  730a97c8-ff87-4489-8522-160202fcdff7
+-    CGameplayEntity #20 (CGameplayEntity) : 
++    CGameplayEntity #19 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 359.3054
+@@ -895,25 +812,12 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 55
++                    componentName (CName) : light1
++                    sizeofdata (Uint32) : 22
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : -1.1500
+-                            Y (Float) : 0.0500
+-                            Z (Float) : 0.4000
+-                        1 (Float) : 3.3000
+-                        2 (ELightUsageMask) : LUM_IsExteriorOnly
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 60
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 1.3500
+-                        1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+-                        2 (Float) : 1.0000
+-                        3 (Float) : 20.0000
++                        0 (Float) : 20.0000
+             idTag (IdTag) :  dadd22a3-b769-459d-b24e-74c65586a285
+-    CGameplayEntity #21 (CGameplayEntity) : 
++    CGameplayEntity #20 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 350.0000
+@@ -937,24 +841,10 @@
+                     componentName (CName) : light1
+                     sizeofdata (Uint32) : 34
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.8000
+-                        1 (Float) : 10.0000
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 79
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 20.0000
+-                        1 (Float) : 1.9000
+-                        2 (EngineTransform)
+-                            Pitch (Float) : 0.0000
+-                            Yaw (Float) : 90.0000
+-                            Roll (Float) : 0.0000
+-                            X (Float) : 0.0000
+-                            Y (Float) : 0.0000
+-                            Z (Float) : 0.2000
+-                        3 (Float) : 1.0000
++                        0 (Float) : 5.0000
++                        1 (Float) : 15.0000
+             idTag (IdTag) :  b73084c2-e312-4465-a946-2bda786d3875
+-    CGameplayEntity #22 (CGameplayEntity) : 
++    CGameplayEntity #21 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -975,24 +865,13 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 55
++                    componentName (CName) : light1
++                    sizeofdata (Uint32) : 34
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : -1.1500
+-                            Y (Float) : 0.0500
+-                            Z (Float) : 0.6000
+-                        1 (Float) : 3.3000
+-                        2 (ELightUsageMask) : LUM_IsExteriorOnly
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 48
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 1.3000
+-                        1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+-                        2 (Float) : 1.0000
++                        0 (Float) : 20.0000
++                        1 (Float) : 5.0000
+             idTag (IdTag) :  cb839dbf-ae84-4b32-bb44-1801a1da7583
+-    CGameplayEntity #23 (CGameplayEntity) : 
++    CGameplayEntity #22 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1013,24 +892,13 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 55
++                    componentName (CName) : light1
++                    sizeofdata (Uint32) : 34
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : -1.1500
+-                            Y (Float) : 0.0500
+-                            Z (Float) : 0.0000
+-                        1 (Float) : 4.2000
+-                        2 (ELightUsageMask) : LUM_IsExteriorOnly
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 48
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.5000
+-                        1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+-                        2 (Float) : 1.0000
++                        0 (Float) : 18.0000
++                        1 (Float) : 4.5000
+             idTag (IdTag) :  37fc4121-8fb8-43ec-ab83-64c9228cbdb7
+-    CGameplayEntity #24 (CGameplayEntity) : 
++    CGameplayEntity #23 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 350.0000
+@@ -1054,20 +922,9 @@
+                     componentName (CName) : light1
+                     sizeofdata (Uint32) : 22
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 20.0000
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 55
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            Pitch (Float) : 0.0000
+-                            Yaw (Float) : 90.0000
+-                            Roll (Float) : 0.0000
+-                            X (Float) : 0.0000
+-                            Y (Float) : 0.0000
+-                            Z (Float) : 0.2000
++                        0 (Float) : 16.0000
+             idTag (IdTag) :  5fbced97-d39a-4e18-a46f-dca1ad65883a
+-    CGameplayEntity #25 (CGameplayEntity) : 
++    CGameplayEntity #24 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1088,21 +945,16 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 36
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 3.1000
+-                        1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+-                1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 31
++                    sizeofdata (Uint32) : 43
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (EngineTransform)
+                             X (Float) : -2.5000
+                             Y (Float) : 0.0000
+                             Z (Float) : -0.8000
++                        1 (Float) : 14.0000
+             idTag (IdTag) :  c1e417c6-781c-4399-adeb-40b3e30e7cd5
+-    CGameplayEntity #26 (CGameplayEntity) : 
++    CGameplayEntity #25 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1131,9 +983,9 @@
+                     componentName (CName) : CSpotLightComponent0
+                     sizeofdata (Uint32) : 34
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 3.7000
++                        0 (Float) : 1.0000
+             idTag (IdTag) :  ed8b797c-ecbe-45f5-aefe-45d84f4634d4
+-    CGameplayEntity #27 (CGameplayEntity) : 
++    CGameplayEntity #26 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1162,10 +1014,10 @@
+                     componentName (CName) : CSpotLightComponent0
+                     sizeofdata (Uint32) : 36
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 3.6500
++                        0 (Float) : 1.0000
+                         1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+             idTag (IdTag) :  a20edcfd-f477-45f5-ae2e-39cc5140466f
+-    CGameplayEntity #28 (CGameplayEntity) : 
++    CGameplayEntity #27 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1189,17 +1041,12 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 34
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 1.9000
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
++                    componentName (CName) : light1
+                     sizeofdata (Uint32) : 22
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 5.0000
++                        0 (Float) : 15.0000
+             idTag (IdTag) :  f3e64568-e3f9-4192-b8da-8723277796dd
+-    CGameplayEntity #29 (CGameplayEntity) : 
++    CGameplayEntity #28 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1223,17 +1070,12 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 34
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 1.9000
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
++                    componentName (CName) : light1
+                     sizeofdata (Uint32) : 22
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 5.0000
++                        0 (Float) : 20.0000
+             idTag (IdTag) :  aac15a39-cd25-4cc2-8cd4-c748a135278a
+-    CGameplayEntity #30 (CGameplayEntity) : 
++    CGameplayEntity #29 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1257,17 +1099,12 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 34
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 1.9000
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
++                    componentName (CName) : light1
+                     sizeofdata (Uint32) : 22
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 5.0000
++                        0 (Float) : 16.0000
+             idTag (IdTag) :  5e555f57-7cab-4f4b-9cc2-d4a48ba55b5b
+-    CGameplayEntity #31 (CGameplayEntity) : 
++    CGameplayEntity #30 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 X (Float) : -9.4178
+@@ -1285,22 +1122,12 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 43
++                    componentName (CName) : light1
++                    sizeofdata (Uint32) : 22
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : -1.1500
+-                            Y (Float) : -0.5500
+-                            Z (Float) : 0.6000
+-                        1 (Float) : 4.0000
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 46
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.3500
+-                        2 (Float) : 30.0000
++                        0 (Float) : 4.5000
+             idTag (IdTag) :  211d6573-fe9b-420f-ac51-3409d4b5654c
+-    CGameplayEntity #32 (CGameplayEntity) : 
++    CGameplayEntity #31 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 X (Float) : -10.7878
+@@ -1318,23 +1145,12 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 43
++                    componentName (CName) : light1
++                    sizeofdata (Uint32) : 22
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : -1.1500
+-                            Y (Float) : 0.0500
+-                            Z (Float) : 0.6000
+-                        1 (ELightUsageMask) : LUM_IsExteriorOnly
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 48
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.3500
+-                        1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+-                        2 (Float) : 1.0000
++                        0 (Float) : 16.0000
+             idTag (IdTag) :  ec03ac65-9401-449f-bb44-017978bb1643
+-    CGameplayEntity #33 (CGameplayEntity) : 
++    CGameplayEntity #32 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1355,24 +1171,12 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 55
++                    componentName (CName) : light1
++                    sizeofdata (Uint32) : 22
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : -1.1500
+-                            Y (Float) : 0.0500
+-                            Z (Float) : 0.3000
+-                        1 (Float) : 6.0000
+-                        2 (ELightUsageMask) : LUM_IsExteriorOnly
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 48
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 1.9000
+-                        1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+-                        2 (Float) : 1.0000
++                        0 (Float) : 16.0000
+             idTag (IdTag) :  0d3d1b17-8101-43a5-936d-0493976a2ab3
+-    CGameplayEntity #34 (CGameplayEntity) : 
++    CGameplayEntity #33 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1393,25 +1197,12 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 67
++                    componentName (CName) : light1
++                    sizeofdata (Uint32) : 22
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : -1.1500
+-                            Y (Float) : 0.0500
+-                            Z (Float) : 0.3000
+-                        1 (Float) : 4.0000
+-                        2 (Float) : 5.0000
+-                        3 (ELightUsageMask) : LUM_IsExteriorOnly
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 48
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 1.4500
+-                        1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+-                        2 (Float) : 1.0000
++                        0 (Float) : 13.0000
+             idTag (IdTag) :  febd33ce-52ae-47c5-8263-76422a3e434f
+-    CGameplayEntity #35 (CGameplayEntity) : 
++    CGameplayEntity #34 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1432,11 +1223,6 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 34
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.6000
+-                1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+                     sizeofdata (Uint32) : 55
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+@@ -1447,7 +1233,7 @@
+                         1 (Float) : 5.6000
+                         2 (Float) : 15.0000
+             idTag (IdTag) :  27e858be-9abc-45b8-9bdb-f44b363e5917
+-    CGameplayEntity #36 (CGameplayEntity) : 
++    CGameplayEntity #35 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1468,11 +1254,6 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 34
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.6000
+-                1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+                     sizeofdata (Uint32) : 55
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+@@ -1483,7 +1264,7 @@
+                         1 (Float) : 5.6000
+                         2 (Float) : 15.0000
+             idTag (IdTag) :  389a9d27-ab0f-410c-b0fb-49f17e8c69a5
+-    CGameplayEntity #37 (CGameplayEntity) : 
++    CGameplayEntity #36 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1504,12 +1285,12 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
++                    componentName (CName) : light1
+                     sizeofdata (Uint32) : 22
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.1000
++                        0 (Float) : 16.0000
+             idTag (IdTag) :  1b6f3440-e735-4334-8d76-237c6372da41
+-    CGameplayEntity #38 (CGameplayEntity) : 
++    CGameplayEntity #37 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1530,12 +1311,12 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
++                    componentName (CName) : light1
+                     sizeofdata (Uint32) : 22
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.1000
++                        0 (Float) : 20.0000
+             idTag (IdTag) :  6ae4e435-2644-4dcf-985e-317413dddf82
+-    CGameplayEntity #39 (CGameplayEntity) : 
++    CGameplayEntity #38 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1556,12 +1337,12 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
++                    componentName (CName) : light1
+                     sizeofdata (Uint32) : 22
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.3000
++                        0 (Float) : 16.0000
+             idTag (IdTag) :  fc31b33a-8766-4b22-9a81-2c354a767246
+-    CGameplayEntity #40 (CGameplayEntity) : 
++    CGameplayEntity #39 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 358.7681
+@@ -1580,30 +1361,9 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2)
+-                0 (SEntityBufferType2)
+-                    componentName (CName) : CGameplayLightComponent1
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : true
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 46
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.6000
+-                        1 (Float) : 30.0000
+-                        2 (Float) : 1.0000
+-                2 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 43
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : -0.4500
+-                            Y (Float) : 0.0500
+-                            Z (Float) : 0.8500
+-                        1 (Float) : 3.8500
++            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  37d3b952-f1b3-444b-9a60-2a80bb814f53
+-    CGameplayEntity #41 (CGameplayEntity) : 
++    CGameplayEntity #40 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1624,20 +1384,16 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 34
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 4.5000
+-                1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 31
++                    sizeofdata (Uint32) : 43
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (EngineTransform)
+                             X (Float) : -1.4800
+                             Y (Float) : 0.0000
+                             Z (Float) : 1.3000
++                        1 (Float) : 20.0000
+             idTag (IdTag) :  2e822516-3f79-4030-b012-7811529c5fa8
+-    CGameplayEntity #42 (CGameplayEntity) : 
++    CGameplayEntity #41 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1658,20 +1414,16 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 34
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 4.5000
+-                1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 31
++                    sizeofdata (Uint32) : 43
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (EngineTransform)
+                             X (Float) : -1.4800
+                             Y (Float) : 0.0000
+                             Z (Float) : 1.3000
++                        1 (Float) : 18.0000
+             idTag (IdTag) :  b3f9a42a-0a13-4cf4-8c3f-e41374b62f3f
+-    CGameplayEntity #43 (CGameplayEntity) : 
++    CGameplayEntity #42 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 350.0000
+@@ -1695,21 +1447,9 @@
+                     componentName (CName) : light1
+                     sizeofdata (Uint32) : 22
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 20.0000
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 55
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 1.3500
+-                        1 (EngineTransform)
+-                            Pitch (Float) : 0.0000
+-                            Yaw (Float) : 90.0000
+-                            Roll (Float) : 0.0000
+-                            X (Float) : 0.0000
+-                            Y (Float) : 0.0000
+-                            Z (Float) : 0.2000
++                        0 (Float) : 15.0000
+             idTag (IdTag) :  eb6e5852-2cc4-4382-8638-90729a107f8d
+-    CGameplayEntity #44 (CGameplayEntity) : 
++    CGameplayEntity #43 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1730,21 +1470,17 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 34
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.5000
+-                1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 43
++                    sizeofdata (Uint32) : 55
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (EngineTransform)
+                             X (Float) : -1.4800
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.6000
+                         1 (Float) : 5.5000
++                        2 (Float) : 15.0000
+             idTag (IdTag) :  2b756f1d-01b0-4e85-bb7e-d5e3f1d690f2
+-    CGameplayEntity #45 (CGameplayEntity) : 
++    CGameplayEntity #44 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1765,21 +1501,17 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 34
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.5000
+-                1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 43
++                    sizeofdata (Uint32) : 55
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (EngineTransform)
+                             X (Float) : -1.4800
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.6000
+                         1 (Float) : 5.5000
++                        2 (Float) : 14.0000
+             idTag (IdTag) :  644ead5a-3e7c-4df2-b694-468d5bb342a3
+-    CGameplayEntity #46 (CGameplayEntity) : 
++    CGameplayEntity #45 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1800,21 +1532,17 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 34
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 3.3000
+-                1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 43
++                    sizeofdata (Uint32) : 55
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (EngineTransform)
+                             X (Float) : -1.4800
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.5000
+                         1 (Float) : 5.0000
++                        2 (Float) : 15.0000
+             idTag (IdTag) :  3f1b53c2-5d36-469c-897a-f7239088275b
+-    CGameplayEntity #47 (CGameplayEntity) : 
++    CGameplayEntity #46 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1835,21 +1563,17 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 34
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 3.3000
+-                1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 43
++                    sizeofdata (Uint32) : 55
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (EngineTransform)
+                             X (Float) : -1.4800
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.5000
+                         1 (Float) : 5.0000
++                        2 (Float) : 6.0000
+             idTag (IdTag) :  4b614387-d413-4313-9c2f-93e034ded2b8
+-    CGameplayEntity #48 (CGameplayEntity) : 
++    CGameplayEntity #47 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1870,19 +1594,12 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
++                    componentName (CName) : light1
+                     sizeofdata (Uint32) : 22
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightUsageMask) : LUM_IsExteriorOnly
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 48
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.5000
+-                        1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+-                        2 (Float) : 1.0000
++                        0 (Float) : 16.0000
+             idTag (IdTag) :  5ed97b48-1583-4c74-9eb2-ef850c065539
+-    CGameplayEntity #49 (CGameplayEntity) : 
++    CGameplayEntity #48 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1904,16 +1621,18 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : light1
+-                    sizeofdata (Uint32) : 22
++                    sizeofdata (Uint32) : 46
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 10.0000
++                        0 (Float) : 5.0000
++                        1 (Float) : 20.0000
++                        2 (Float) : 10.0000
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CGameplayLightComponent1
+                     sizeofdata (Uint32) : 19
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (Bool) : true
+             idTag (IdTag) :  8b157bae-d9f2-44fb-ac9b-05e2f95d057c
+-    CGameplayEntity #50 (CGameplayEntity) : 
++    CGameplayEntity #49 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1932,22 +1651,9 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2)
+-                0 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 34
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 4.2000
+-                        1 (ELightUsageMask) : LUM_IsExteriorOnly
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 48
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.0000
+-                        1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+-                        2 (Float) : 1.0000
++            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  2a3b2168-98eb-4293-90c7-509a6856dbc3
+-    W3FireSource #51 (W3FireSource) : 
++    W3FireSource #50 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -1969,20 +1675,16 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 67
++                    sizeofdata (Uint32) : 46
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : 1.6000
+-                            Y (Float) : -1.4000
+-                            Z (Float) : 1.8000
+-                        1 (Float) : 4.5000
+-                        2 (Float) : 30.0000
+-                        3 (ELightUsageMask) : LUM_IsExteriorOnly
++                        0 (Float) : 4.5000
++                        1 (Float) : 30.0000
++                        2 (ELightUsageMask) : LUM_IsExteriorOnly
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 105
++                    sizeofdata (Uint32) : 117
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 3.7000
++                        0 (Float) : 2.0000
+                         1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+                         2 (Float) : 158.5000
+                         3 (Float) : 222.0000
+@@ -1993,9 +1695,10 @@
+                             X (Float) : 0.0200
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.2500
+-                        5 (Float) : 1.0000
++                        5 (Float) : 20.0000
++                        6 (Float) : 1.0000
+             idTag (IdTag) :  8907e33f-4723-41b3-85a2-0a9a43110f5f
+-    W3FireSource #52 (W3FireSource) : 
++    W3FireSource #51 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+@@ -2022,16 +1725,17 @@
+                         0 (Bool) : false
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 46
++                    sizeofdata (Uint32) : 58
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 6.7000
+-                        1 (Float) : 30.0000
++                        0 (Float) : 6.0000
++                        1 (Float) : 20.0000
+                         2 (ELightUsageMask) : LUM_IsInteriorOnly
++                        3 (Float) : 0.5000
+                 2 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 81
++                    sizeofdata (Uint32) : 93
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 4.1000
++                        0 (Float) : 2.0000
+                         1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsInteriorOnly
+                         2 (EngineTransform)
+                             Pitch (Float) : 0.0000
+@@ -2040,9 +1744,10 @@
+                             X (Float) : 0.0200
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.5000
+-                        3 (Float) : 1.0000
++                        3 (Float) : 20.0000
++                        4 (Float) : 1.0000
+             idTag (IdTag) :  4ac129a4-0f0d-43d0-9a3e-2743ba90d63a
+-    CSectorData #53 (CSectorData) : 
++    CSectorData #52 (CSectorData) : 
+         CSectorData (CSectorData)
+             Unknown1 (Uint64) : 4484063297536
+             Resources (CBufferVLQInt32:CSectorDataResource)
+@@ -2068,7 +1773,7 @@
+                     box2 (Float) : -0.3997
+                     box3 (Float) : 0.0392
+                     box4 (Float) : 1.2470
+-                    box5 (Float) : 0.3997
++                    box5 (Float) : 0.3996
+                     pathHash (String) : "environment/decorations/wooden_parts/platform_plank3.w2mesh"
+             Objects (CBufferVLQInt32:CSectorDataObject)
+                 0 (CSectorDataObject)
+@@ -2122,7 +1827,7 @@
+                 6 (CSectorDataObject)
+                     type (Uint8) : 1
+                     flags (Uint8) : 0
+-                    radius (Uint16) : 45
++                    radius (Uint16) : 80
+                     offset (Uint64) : 420
+                     positionX (Float) : 48.4935
+                     positionY (Float) : -31.3601
+@@ -2130,7 +1835,7 @@
+                 7 (CSectorDataObject)
+                     type (Uint8) : 2
+                     flags (Uint8) : 0
+-                    radius (Uint16) : 45
++                    radius (Uint16) : 80
+                     offset (Uint64) : 484
+                     positionX (Float) : 48.4935
+                     positionY (Float) : -31.3601
+@@ -2138,18 +1843,18 @@
+                 8 (CSectorDataObject)
+                     type (Uint8) : 1
+                     flags (Uint8) : 0
+-                    radius (Uint16) : 45
++                    radius (Uint16) : 80
+                     offset (Uint64) : 560
+                     positionX (Float) : 48.7350
+-                    positionY (Float) : -32.6144
++                    positionY (Float) : -32.6145
+                     positionZ (Float) : 170.3351
+                 9 (CSectorDataObject)
+                     type (Uint8) : 2
+                     flags (Uint8) : 0
+-                    radius (Uint16) : 45
++                    radius (Uint16) : 80
+                     offset (Uint64) : 624
+                     positionX (Float) : 48.7350
+-                    positionY (Float) : -32.6144
++                    positionY (Float) : -32.6145
+                     positionZ (Float) : 170.3351
+             blocksize (CVLQInt32) : 700
+             BlockData (CCompressedBuffer:SBlockData)

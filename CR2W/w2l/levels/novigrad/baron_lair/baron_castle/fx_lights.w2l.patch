@@ -1,0 +1,1894 @@
+ 1 file changed, 416 insertions(+), 474 deletions(-)
+
+diff --git 1.32/levels/novigrad/baron_lair/baron_castle/fx_lights.w2l.txt 4.00/levels/novigrad/baron_lair/baron_castle/fx_lights.w2l.txt
+index 34807fd..a1372f8 100644
+--- 1.32/levels/novigrad/baron_lair/baron_castle/fx_lights.w2l.txt
++++ 4.00/levels/novigrad/baron_lair/baron_castle/fx_lights.w2l.txt
+@@ -110,7 +110,7 @@
+                 106 (ptr:CEntity) : CGameplayEntity #107
+                 107 (ptr:CEntity) : CGameplayEntity #108
+             sectorData (handle:CSectorData) : CSectorData #109
+-            nameCount (Uint32) : 114
++            nameCount (Uint32) : 236
+     CGameplayEntity #1 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             tags (TagList)
+@@ -205,6 +205,14 @@
+                             Green (Uint8) : 223
+                             Blue (Uint8) : 197
+                             Alpha (Uint8) : 255
++                1 (SEntityBufferType2)
++                    componentName (CName) : CPointLightComponent1
++                    sizeofdata (Uint32) : 58
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 2.0000
++                        1 (Float) : 0.9000
++                        2 (Float) : 14.0000
++                        3 (Float) : 20.0000
+             idTag (IdTag) :  91be6d09-732f-44f4-be08-6a7c2683ac6f
+     CGameplayEntity #4 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -229,10 +237,12 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent0
+-                    sizeofdata (Uint32) : 32
++                    sizeofdata (Uint32) : 56
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightShadowCastingMode) : LSCM_OnlyStatic
+-                        1 (Float) : 20.0000
++                        0 (Float) : 1.0000
++                        1 (ELightShadowCastingMode) : LSCM_None
++                        2 (Float) : 20.0000
++                        3 (Float) : 10.0000
+             idTag (IdTag) :  b1e38539-9424-4cf8-9cf5-10be99175483
+     W3Campfire #5 (W3Campfire) : 
+         W3Campfire (W3Campfire)
+@@ -282,7 +292,7 @@
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (ELightShadowCastingMode) : LSCM_OnlyStatic
+                         1 (Float) : 2.6000
+-                        2 (Float) : 40.0000
++                        2 (Float) : 15.0000
+                         3 (Color)
+                             Red (Uint8) : 255
+                             Green (Uint8) : 237
+@@ -580,16 +590,6 @@
+                     sizeofdata (Uint32) : 19
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (Bool) : false
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 22
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightUsageMask) : LUM_IsExteriorOnly
+-                2 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 24
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+             idTag (IdTag) :  34722b3e-0f19-4cab-a843-5d8749e5295f
+     CGameplayEntity #17 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -617,16 +617,6 @@
+                     sizeofdata (Uint32) : 19
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (Bool) : false
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 22
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightUsageMask) : LUM_IsExteriorOnly
+-                2 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 24
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+             idTag (IdTag) :  63ac78e3-2781-4539-9887-e12ef81b5a64
+     CGameplayEntity #18 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -654,16 +644,6 @@
+                     sizeofdata (Uint32) : 19
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (Bool) : false
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 22
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightUsageMask) : LUM_IsExteriorOnly
+-                2 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 24
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+             idTag (IdTag) :  8837e4c4-d03d-4849-853f-322c10dd86ad
+     CGameplayEntity #19 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -731,7 +711,6 @@
+             idTag (IdTag) :  90b9516d-258d-46d4-814f-d17027d86d61
+     CGameplayEntity #21 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+-            tags (TagList)
+             transform (EngineTransform)
+                 Pitch (Float) : 344.2114
+                 Yaw (Float) : 357.2936
+@@ -749,21 +728,10 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2)
+-                0 (SEntityBufferType2)
+-                    componentName (CName) : CGameplayLightComponent0
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : light1
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
++            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  6f4f2844-ed4f-4b6a-b6dc-c3ec026c607c
+     CGameplayEntity #22 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+-            tags (TagList)
+             transform (EngineTransform)
+                 Pitch (Float) : 356.0180
+                 Yaw (Float) : 355.0005
+@@ -781,21 +749,10 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2)
+-                0 (SEntityBufferType2)
+-                    componentName (CName) : CGameplayLightComponent0
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : light1
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
++            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  9cf8f2b2-38be-4d02-93cc-5154d38dac78
+     CGameplayEntity #23 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+-            tags (TagList)
+             transform (EngineTransform)
+                 Pitch (Float) : 354.5509
+                 Yaw (Float) : 357.3470
+@@ -813,21 +770,10 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2)
+-                0 (SEntityBufferType2)
+-                    componentName (CName) : CGameplayLightComponent0
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : light1
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
++            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  c22f8919-fe87-4b1b-b68a-fc41105d3a8e
+     CGameplayEntity #24 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+-            tags (TagList)
+             transform (EngineTransform)
+                 Pitch (Float) : 357.7992
+                 Yaw (Float) : 358.4183
+@@ -845,21 +791,10 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2)
+-                0 (SEntityBufferType2)
+-                    componentName (CName) : CGameplayLightComponent0
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : light1
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
++            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  954a2148-d668-40d7-8ccf-53920f59b57c
+     CGameplayEntity #25 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+-            tags (TagList)
+             transform (EngineTransform)
+                 Pitch (Float) : 354.5509
+                 Yaw (Float) : 357.3470
+@@ -877,17 +812,7 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2)
+-                0 (SEntityBufferType2)
+-                    componentName (CName) : CGameplayLightComponent0
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : light1
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
++            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  91b66429-adbf-4773-93cf-d0310e9afb1c
+     CGameplayEntity #26 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -923,7 +848,6 @@
+             idTag (IdTag) :  b6dcc4df-a95e-43d5-8986-2c48b84043e0
+     CGameplayEntity #27 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+-            tags (TagList)
+             transform (EngineTransform)
+                 Pitch (Float) : 356.0180
+                 Yaw (Float) : 355.0005
+@@ -941,17 +865,7 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2)
+-                0 (SEntityBufferType2)
+-                    componentName (CName) : CGameplayLightComponent0
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : light1
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
++            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  836b60f9-692e-476f-a1a0-827e97f22652
+     CGameplayEntity #28 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -979,16 +893,6 @@
+                     sizeofdata (Uint32) : 19
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (Bool) : false
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 22
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightUsageMask) : LUM_IsExteriorOnly
+-                2 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 24
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+             idTag (IdTag) :  fcfd0b6b-8436-45b3-a6f7-afcc54be9fc8
+     CGameplayEntity #29 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -1025,6 +929,7 @@
+                         1 (Float) : 170.0000
+                         2 (Float) : 60.0000
+             idTag (IdTag) :  ba3fdd75-39ac-4774-a4d8-ab5327a74cd4
++            displayName (LocalizedString) : 0
+     CGameplayEntity #30 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             tags (TagList)
+@@ -1060,6 +965,7 @@
+                         1 (Float) : 170.0000
+                         2 (Float) : 60.0000
+             idTag (IdTag) :  af664ac7-0575-4df4-80da-af5a9d0c76d0
++            displayName (LocalizedString) : 0
+     CGameplayEntity #31 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             tags (TagList)
+@@ -1095,6 +1001,7 @@
+                         1 (Float) : 170.0000
+                         2 (Float) : 60.0000
+             idTag (IdTag) :  4e1c1047-222f-4a63-a44b-2055dd0ab460
++            displayName (LocalizedString) : 0
+     CGameplayEntity #32 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             tags (TagList)
+@@ -1162,6 +1069,7 @@
+                         1 (Float) : 170.0000
+                         2 (Float) : 60.0000
+             idTag (IdTag) :  b05487eb-003d-49b0-b930-c4010d998436
++            displayName (LocalizedString) : 0
+     CGameplayEntity #34 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             tags (TagList)
+@@ -1197,6 +1105,7 @@
+                         1 (Float) : 170.0000
+                         2 (Float) : 60.0000
+             idTag (IdTag) :  ee0544ec-19b4-47ba-9a55-0ae941a69828
++            displayName (LocalizedString) : 0
+     CGameplayEntity #35 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             tags (TagList)
+@@ -1231,6 +1140,7 @@
+                         0 (Float) : 170.0000
+                         1 (Float) : 60.0000
+             idTag (IdTag) :  829a7dd9-9a09-4e60-a46b-34ef29e47fa2
++            displayName (LocalizedString) : 0
+     CGameplayEntity #36 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             tags (TagList)
+@@ -1266,9 +1176,9 @@
+                         1 (Float) : 170.0000
+                         2 (Float) : 60.0000
+             idTag (IdTag) :  23b1aa2a-1365-4d67-a56e-35ca74ffb982
++            displayName (LocalizedString) : 0
+     CGameplayEntity #37 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+-            tags (TagList)
+             transform (EngineTransform)
+                 Pitch (Float) : 344.2114
+                 Yaw (Float) : 357.2936
+@@ -1286,17 +1196,7 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2)
+-                0 (SEntityBufferType2)
+-                    componentName (CName) : CGameplayLightComponent0
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : light1
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
++            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  4877ef92-c440-4062-909f-d46247558113
+     CGameplayEntity #38 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -1332,7 +1232,6 @@
+             idTag (IdTag) :  48377c55-30d0-4afe-9017-31d2c6b44ede
+     CGameplayEntity #39 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+-            tags (TagList)
+             transform (EngineTransform)
+                 Pitch (Float) : 356.0180
+                 Yaw (Float) : 355.0005
+@@ -1350,17 +1249,7 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2)
+-                0 (SEntityBufferType2)
+-                    componentName (CName) : CGameplayLightComponent0
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : light1
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
++            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  07f8a77b-8eca-4efa-86bc-63c71bda67fb
+     CGameplayEntity #40 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -1552,7 +1441,29 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CSpotLightComponent0
++                    sizeofdata (Uint32) : 67
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (EngineTransform)
++                            Pitch (Float) : 90.0000
++                            Yaw (Float) : 70.0000
++                            Roll (Float) : 269.9999
++                            X (Float) : 0.0000
++                            Y (Float) : 0.0000
++                            Z (Float) : 0.6000
++                        1 (Float) : 3.4000
++                        2 (Float) : 15.0000
++                1 (SEntityBufferType2)
++                    componentName (CName) : CPointLightComponent0
++                    sizeofdata (Uint32) : 43
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (EngineTransform)
++                            X (Float) : -0.0263
++                            Y (Float) : 0.0000
++                            Z (Float) : 0.6000
++                        1 (Float) : 6.0000
+             idTag (IdTag) :  23e6a337-2974-4463-bc94-596cff2cdd9b
+     CGameplayEntity #47 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -1612,36 +1523,7 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2)
+-                0 (SEntityBufferType2)
+-                    componentName (CName) : CGameplayLightComponent0
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 88
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
+-                        1 (Float) : 0.0000
+-                        2 (Float) : 1.6500
+-                        3 (Float) : 40.3000
+-                        4 (EngineTransform)
+-                            Pitch (Float) : 0.0002
+-                            Yaw (Float) : 90.0000
+-                            Roll (Float) : 0.0000
+-                            X (Float) : 0.0500
+-                            Y (Float) : 0.1000
+-                            Z (Float) : 1.6500
+-                2 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent0
+-                    sizeofdata (Uint32) : 43
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 31.0000
+-                        1 (EngineTransform)
+-                            X (Float) : 0.0000
+-                            Y (Float) : 1.1500
+-                            Z (Float) : 2.2900
++            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  90dc5151-c786-4c0a-a4fe-126403bf26ea
+     W3FireSource #49 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+@@ -1737,7 +1619,7 @@
+                     componentName (CName) : CPointLightComponent0
+                     sizeofdata (Uint32) : 60
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 25.0000
++                        0 (Float) : 14.0000
+                         1 (Float) : 3.2000
+                         2 (Float) : 1.0000
+                         3 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsInteriorOnly
+@@ -1773,18 +1655,19 @@
+                             X (Float) : 0.3000
+                             Y (Float) : -0.0900
+                             Z (Float) : 0.6200
+-                        1 (Float) : 15.0000
++                        1 (Float) : 10.0000
+                         2 (Float) : 204.5000
+                         3 (Float) : 308.0000
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent0
+-                    sizeofdata (Uint32) : 43
++                    sizeofdata (Uint32) : 55
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (EngineTransform)
+                             X (Float) : 0.9500
+                             Y (Float) : -0.7000
+                             Z (Float) : 0.4100
+-                        1 (Float) : 1.9900
++                        1 (Float) : 2.3000
++                        2 (Float) : 5.0000
+             idTag (IdTag) :  c4106cfb-652d-468d-9a0a-970a7b0aebd8
+     CGameplayEntity #54 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -1807,14 +1690,21 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
++                    componentName (CName) : CSpotLightComponent0
++                    sizeofdata (Uint32) : 34
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 20.0000
++                        1 (Float) : 140.0000
++                1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent0
+-                    sizeofdata (Uint32) : 43
++                    sizeofdata (Uint32) : 55
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (EngineTransform)
+                             X (Float) : 1.0000
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.3500
+                         1 (Float) : 1.9000
++                        2 (Float) : 7.0000
+             idTag (IdTag) :  2637f366-2019-4793-8418-b12295415ad8
+     CGameplayEntity #55 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -1840,6 +1730,7 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  044a55ed-9f7c-4d31-85ba-4a0a5187b8f0
++            displayName (LocalizedString) : 0
+     CGameplayEntity #56 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             tags (TagList)
+@@ -1868,6 +1759,7 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  aab2017d-5769-495b-8ce5-dee9743d1166
++            displayName (LocalizedString) : 0
+     CGameplayEntity #57 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             tags (TagList)
+@@ -1896,6 +1788,7 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  2f443474-ded9-44bc-87ad-d473ce5f532c
++            displayName (LocalizedString) : 0
+     CGameplayEntity #58 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             tags (TagList)
+@@ -1924,6 +1817,7 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  84fb5351-5dc5-44e1-b411-eba1ade90e8c
++            displayName (LocalizedString) : 0
+     CGameplayEntity #59 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             tags (TagList)
+@@ -2080,14 +1974,16 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 22
++                    sizeofdata (Uint32) : 34
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (Float) : 2.5000
++                        1 (Float) : 10.0000
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent0
+-                    sizeofdata (Uint32) : 22
++                    sizeofdata (Uint32) : 34
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (Float) : 2.3000
++                        1 (Float) : 5.0000
+             idTag (IdTag) :  64f02835-729e-4743-a1cb-0c135e1ba7ac
+     W3FireSource #64 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+@@ -2116,17 +2012,16 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent0
+-                    sizeofdata (Uint32) : 91
++                    sizeofdata (Uint32) : 81
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightShadowCastingMode) : LSCM_None
+-                        1 (Float) : 2.2000
+-                        2 (Float) : 27.5000
+-                        3 (Float) : 0.6000
+-                        4 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsInteriorOnly
+-                        5 (EngineTransform)
++                        0 (Float) : 3.0000
++                        1 (Float) : 27.5000
++                        2 (Float) : 0.6000
++                        3 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsInteriorOnly
++                        4 (EngineTransform)
+                             X (Float) : 0.0000
+-                            Y (Float) : -0.4500
+-                            Z (Float) : 1.5500
++                            Y (Float) : -0.9000
++                            Z (Float) : 1.0000
+             idTag (IdTag) :  6ffb352f-78db-4eaa-9f06-345798a3d902
+     CGameplayEntity #65 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -2147,7 +2042,12 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CPointLightComponent0
++                    sizeofdata (Uint32) : 22
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 5.0000
+             idTag (IdTag) :  f933d4f1-32df-4427-9463-74231db1ae8c
+     CGameplayEntity #66 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -2171,7 +2071,7 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 67
++                    sizeofdata (Uint32) : 79
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (EngineTransform)
+                             Pitch (Float) : 90.0000
+@@ -2181,16 +2081,18 @@
+                             Y (Float) : 0.0700
+                             Z (Float) : 0.6200
+                         1 (Float) : 1.0500
+-                        2 (Float) : 246.0000
++                        2 (Float) : 15.0000
++                        3 (Float) : 246.0000
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent0
+-                    sizeofdata (Uint32) : 43
++                    sizeofdata (Uint32) : 55
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (EngineTransform)
+                             X (Float) : 1.1000
+                             Y (Float) : 0.3800
+                             Z (Float) : 0.7000
+                         1 (Float) : 1.6100
++                        2 (Float) : 5.0000
+             idTag (IdTag) :  ea129f02-74b4-48e2-a591-3a27bded53a8
+     CGameplayEntity #67 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -2211,7 +2113,12 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CPointLightComponent0
++                    sizeofdata (Uint32) : 22
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 5.0000
+             idTag (IdTag) :  cda80896-5b5c-40dc-8aed-498269fd96d2
+     CGameplayEntity #68 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -2318,17 +2225,29 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 67
++                    sizeofdata (Uint32) : 79
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (EngineTransform)
+                             Pitch (Float) : 90.0000
+-                            Yaw (Float) : 92.8000
+-                            Roll (Float) : 269.9999
++                            Yaw (Float) : 37.0000
++                            Roll (Float) : 270.0000
+                             X (Float) : 0.2000
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.5000
+-                        1 (Float) : 1.9000
+-                        2 (Float) : 273.4000
++                        1 (Float) : 2.0000
++                        2 (Float) : 6.0000
++                        3 (Float) : 150.0000
++                1 (SEntityBufferType2)
++                    componentName (CName) : CPointLightComponent0
++                    sizeofdata (Uint32) : 67
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (EngineTransform)
++                            X (Float) : -0.0263
++                            Y (Float) : 0.0000
++                            Z (Float) : 0.3000
++                        1 (Float) : 2.0000
++                        2 (Float) : 3.0000
++                        3 (Float) : 1.0000
+             idTag (IdTag) :  83e5fa65-1420-4b33-b3cc-d3c62b42ecef
+     CGameplayEntity #72 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -2349,7 +2268,17 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CSpotLightComponent0
++                    sizeofdata (Uint32) : 22
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 10.0000
++                1 (SEntityBufferType2)
++                    componentName (CName) : CPointLightComponent0
++                    sizeofdata (Uint32) : 34
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 7.0000
+             idTag (IdTag) :  2786bd82-2dd0-4f1b-9a3f-bba0e11b059f
+     CGameplayEntity #73 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -2391,7 +2320,27 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CSpotLightComponent0
++                    sizeofdata (Uint32) : 55
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (EngineTransform)
++                            Pitch (Float) : 90.0000
++                            Yaw (Float) : 70.0000
++                            Roll (Float) : 269.9999
++                            X (Float) : 0.0000
++                            Y (Float) : 0.0000
++                            Z (Float) : 0.6000
++                        1 (Float) : 3.5000
++                1 (SEntityBufferType2)
++                    componentName (CName) : CPointLightComponent0
++                    sizeofdata (Uint32) : 31
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (EngineTransform)
++                            X (Float) : -0.0263
++                            Y (Float) : 0.0000
++                            Z (Float) : 0.6000
+             idTag (IdTag) :  bbaea741-04ae-4fca-9758-238743e3f70d
+     W3FireSource #75 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+@@ -2422,7 +2371,6 @@
+             idTag (IdTag) :  b801a6af-3987-4da4-b9db-bd0bbec61f5f
+     CGameplayEntity #76 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+-            tags (TagList)
+             transform (EngineTransform)
+                 Pitch (Float) : 0.2994
+                 Yaw (Float) : 359.7998
+@@ -2442,15 +2390,14 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CGameplayLightComponent0
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
+-                1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent0
+-                    sizeofdata (Uint32) : 19
++                    sizeofdata (Uint32) : 43
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
++                        0 (Float) : 4.0000
++                        1 (EngineTransform)
++                            X (Float) : 0.0000
++                            Y (Float) : 0.3000
++                            Z (Float) : 0.0000
+             idTag (IdTag) :  f41d5806-cef4-469e-bac5-1f8e3db6e698
+     W3FireSource #77 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+@@ -2480,13 +2427,9 @@
+                         0 (Bool) : false
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 43
++                    sizeofdata (Uint32) : 22
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : -0.8000
+-                            Y (Float) : -1.7000
+-                            Z (Float) : 3.3000
+-                        1 (Float) : 80.0000
++                        0 (Float) : 80.0000
+             idTag (IdTag) :  04123fe6-8fe8-46ae-8d98-84a5badccfb6
+     CGameplayEntity #78 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -2553,13 +2496,9 @@
+                         0 (Bool) : false
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 43
++                    sizeofdata (Uint32) : 22
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : 0.0000
+-                            Y (Float) : -1.1500
+-                            Z (Float) : 2.9000
+-                        1 (Float) : 7.0000
++                        0 (Float) : 7.0000
+             idTag (IdTag) :  fa29e333-05df-4f9f-993e-69a2da54cfac
+     CGameplayEntity #80 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -3480,12 +3419,12 @@
+                     componentName (CName) : CPointLightComponent0
+                     sizeofdata (Uint32) : 48
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 4.5000
+-                        1 (Float) : 15.0000
+-                        2 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsInteriorOnly
++                        0 (Float) : 5.0000
++                        1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsInteriorOnly
++                        2 (Float) : 0.8000
+                 2 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 69
++                    sizeofdata (Uint32) : 105
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (EngineTransform)
+                             Pitch (Float) : 0.0000
+@@ -3494,8 +3433,11 @@
+                             X (Float) : 0.0000
+                             Y (Float) : 0.0000
+                             Z (Float) : -0.1400
+-                        1 (Float) : 10.0000
+-                        2 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsInteriorOnly
++                        1 (Float) : 8.0000
++                        2 (Float) : 4.0000
++                        3 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsInteriorOnly
++                        4 (Float) : 200.0000
++                        5 (Float) : 1.0000
+             idTag (IdTag) :  45db3653-0a21-4e55-a0ba-c4608235c409
+     CSectorData #109 (CSectorData) : 
+         CSectorData (CSectorData)
+@@ -3683,385 +3625,385 @@
+                     flags (Uint8) : 0
+                     radius (Uint16) : 300
+                     offset (Uint64) : 1020
+-                    positionX (Float) : 156.6888
+-                    positionY (Float) : 175.7169
+-                    positionZ (Float) : 38.9470
+-                16 (CSectorDataObject)
+-                    type (Uint8) : 4
+-                    flags (Uint8) : 0
+-                    radius (Uint16) : 300
+-                    offset (Uint64) : 1088
+                     positionX (Float) : 150.5016
+                     positionY (Float) : 183.1983
+                     positionZ (Float) : 38.9470
+-                17 (CSectorDataObject)
++                16 (CSectorDataObject)
+                     type (Uint8) : 4
+                     flags (Uint8) : 0
+                     radius (Uint16) : 300
+-                    offset (Uint64) : 1156
++                    offset (Uint64) : 1088
+                     positionX (Float) : 148.9767
+                     positionY (Float) : 185.0423
+                     positionZ (Float) : 38.9470
+-                18 (CSectorDataObject)
++                17 (CSectorDataObject)
+                     type (Uint8) : 4
+                     flags (Uint8) : 0
+                     radius (Uint16) : 300
+-                    offset (Uint64) : 1224
++                    offset (Uint64) : 1156
+                     positionX (Float) : 149.0982
+                     positionY (Float) : 188.5324
+                     positionZ (Float) : 38.9470
+-                19 (CSectorDataObject)
++                18 (CSectorDataObject)
+                     type (Uint8) : 4
+                     flags (Uint8) : 0
+                     radius (Uint16) : 300
+-                    offset (Uint64) : 1292
++                    offset (Uint64) : 1224
+                     positionX (Float) : 150.8650
+                     positionY (Float) : 190.2254
+                     positionZ (Float) : 38.9470
+-                20 (CSectorDataObject)
++                19 (CSectorDataObject)
+                     type (Uint8) : 4
+                     flags (Uint8) : 0
+                     radius (Uint16) : 300
+-                    offset (Uint64) : 1360
++                    offset (Uint64) : 1292
+                     positionX (Float) : 151.4534
+                     positionY (Float) : 190.0828
+                     positionZ (Float) : 39.1230
+-                21 (CSectorDataObject)
++                20 (CSectorDataObject)
+                     type (Uint8) : 4
+                     flags (Uint8) : 0
+                     radius (Uint16) : 300
+-                    offset (Uint64) : 1428
++                    offset (Uint64) : 1360
+                     positionX (Float) : 152.8685
+                     positionY (Float) : 180.3364
+                     positionZ (Float) : 38.9470
+-                22 (CSectorDataObject)
++                21 (CSectorDataObject)
+                     type (Uint8) : 4
+                     flags (Uint8) : 0
+                     radius (Uint16) : 300
+-                    offset (Uint64) : 1496
++                    offset (Uint64) : 1428
+                     positionX (Float) : 158.6272
+                     positionY (Float) : 180.6916
+                     positionZ (Float) : 38.8539
+-                23 (CSectorDataObject)
++                22 (CSectorDataObject)
+                     type (Uint8) : 4
+                     flags (Uint8) : 0
+                     radius (Uint16) : 300
+-                    offset (Uint64) : 1564
++                    offset (Uint64) : 1496
+                     positionX (Float) : 153.1787
+                     positionY (Float) : 186.8781
+                     positionZ (Float) : 38.4571
++                23 (CSectorDataObject)
++                    type (Uint8) : 4
++                    flags (Uint8) : 0
++                    radius (Uint16) : 300
++                    offset (Uint64) : 1564
++                    positionX (Float) : 157.3879
++                    positionY (Float) : 182.4836
++                    positionZ (Float) : 42.6574
+                 24 (CSectorDataObject)
+                     type (Uint8) : 4
+                     flags (Uint8) : 0
+                     radius (Uint16) : 300
+                     offset (Uint64) : 1632
+-                    positionX (Float) : 157.3879
+-                    positionY (Float) : 182.4836
+-                    positionZ (Float) : 42.6574
+-                25 (CSectorDataObject)
+-                    type (Uint8) : 4
+-                    flags (Uint8) : 0
+-                    radius (Uint16) : 300
+-                    offset (Uint64) : 1700
+                     positionX (Float) : 182.1664
+                     positionY (Float) : 187.4091
+                     positionZ (Float) : 43.2055
+-                26 (CSectorDataObject)
++                25 (CSectorDataObject)
+                     type (Uint8) : 4
+                     flags (Uint8) : 0
+                     radius (Uint16) : 300
+-                    offset (Uint64) : 1768
++                    offset (Uint64) : 1700
+                     positionX (Float) : 181.9724
+                     positionY (Float) : 188.8985
+                     positionZ (Float) : 45.4751
+-                27 (CSectorDataObject)
++                26 (CSectorDataObject)
+                     type (Uint8) : 4
+                     flags (Uint8) : 0
+                     radius (Uint16) : 300
+-                    offset (Uint64) : 1836
++                    offset (Uint64) : 1768
+                     positionX (Float) : 182.4622
+                     positionY (Float) : 185.2885
+                     positionZ (Float) : 45.7688
+-                28 (CSectorDataObject)
++                27 (CSectorDataObject)
+                     type (Uint8) : 4
+                     flags (Uint8) : 0
+                     radius (Uint16) : 143
+-                    offset (Uint64) : 1904
++                    offset (Uint64) : 1836
+                     positionX (Float) : 177.3551
+                     positionY (Float) : 181.5188
+                     positionZ (Float) : 44.4084
+-                29 (CSectorDataObject)
++                28 (CSectorDataObject)
+                     type (Uint8) : 4
+                     flags (Uint8) : 0
+                     radius (Uint16) : 300
+-                    offset (Uint64) : 1972
++                    offset (Uint64) : 1904
+                     positionX (Float) : 168.1320
+                     positionY (Float) : 187.1182
+                     positionZ (Float) : 43.5229
+-                30 (CSectorDataObject)
++                29 (CSectorDataObject)
+                     type (Uint8) : 4
+                     flags (Uint8) : 0
+                     radius (Uint16) : 300
+-                    offset (Uint64) : 2040
++                    offset (Uint64) : 1972
+                     positionX (Float) : 182.2074
+                     positionY (Float) : 191.1938
+                     positionZ (Float) : 39.3653
+-                31 (CSectorDataObject)
++                30 (CSectorDataObject)
+                     type (Uint8) : 4
+                     flags (Uint8) : 0
+                     radius (Uint16) : 300
+-                    offset (Uint64) : 2108
++                    offset (Uint64) : 2040
+                     positionX (Float) : 165.2638
+                     positionY (Float) : 189.2654
+                     positionZ (Float) : 39.5057
++                31 (CSectorDataObject)
++                    type (Uint8) : 4
++                    flags (Uint8) : 0
++                    radius (Uint16) : 300
++                    offset (Uint64) : 2108
++                    positionX (Float) : 157.3879
++                    positionY (Float) : 182.4836
++                    positionZ (Float) : 39.1230
+                 32 (CSectorDataObject)
+                     type (Uint8) : 4
+                     flags (Uint8) : 0
+                     radius (Uint16) : 300
+                     offset (Uint64) : 2176
+-                    positionX (Float) : 157.3879
+-                    positionY (Float) : 182.4836
+-                    positionZ (Float) : 39.1230
+-                33 (CSectorDataObject)
+-                    type (Uint8) : 4
+-                    flags (Uint8) : 0
+-                    radius (Uint16) : 300
+-                    offset (Uint64) : 2244
+                     positionX (Float) : 165.9699
+                     positionY (Float) : 184.9332
+                     positionZ (Float) : 39.3653
+-                34 (CSectorDataObject)
++                33 (CSectorDataObject)
+                     type (Uint8) : 4
+                     flags (Uint8) : 0
+                     radius (Uint16) : 300
+-                    offset (Uint64) : 2312
++                    offset (Uint64) : 2244
+                     positionX (Float) : 164.7634
+                     positionY (Float) : 183.7315
+                     positionZ (Float) : 34.6741
++                34 (CSectorDataObject)
++                    type (Uint8) : 4
++                    flags (Uint8) : 0
++                    radius (Uint16) : 300
++                    offset (Uint64) : 2312
++                    positionX (Float) : 164.9507
++                    positionY (Float) : 188.2590
++                    positionZ (Float) : 41.4962
+                 35 (CSectorDataObject)
+                     type (Uint8) : 4
+                     flags (Uint8) : 0
+                     radius (Uint16) : 300
+                     offset (Uint64) : 2380
+-                    positionX (Float) : 164.9507
+-                    positionY (Float) : 188.2590
+-                    positionZ (Float) : 41.4962
+-                36 (CSectorDataObject)
+-                    type (Uint8) : 4
+-                    flags (Uint8) : 0
+-                    radius (Uint16) : 300
+-                    offset (Uint64) : 2448
+                     positionX (Float) : 162.6168
+                     positionY (Float) : 188.2590
+                     positionZ (Float) : 41.4962
+-                37 (CSectorDataObject)
++                36 (CSectorDataObject)
+                     type (Uint8) : 10
+                     flags (Uint8) : 0
+                     radius (Uint16) : 20
+-                    offset (Uint64) : 2516
++                    offset (Uint64) : 2448
+                     positionX (Float) : 200.4852
+                     positionY (Float) : 175.0699
+                     positionZ (Float) : 34.3854
+-                38 (CSectorDataObject)
++                37 (CSectorDataObject)
+                     type (Uint8) : 1
+                     flags (Uint8) : 0
+                     radius (Uint16) : 30
+-                    offset (Uint64) : 2584
++                    offset (Uint64) : 2516
+                     positionX (Float) : 159.9262
+                     positionY (Float) : 179.2847
+                     positionZ (Float) : 42.3769
+-                39 (CSectorDataObject)
++                38 (CSectorDataObject)
+                     type (Uint8) : 7
+                     flags (Uint8) : 0
+                     radius (Uint16) : 40
+-                    offset (Uint64) : 2648
++                    offset (Uint64) : 2580
+                     positionX (Float) : 158.8329
+                     positionY (Float) : 175.8094
+                     positionZ (Float) : 42.4030
++                39 (CSectorDataObject)
++                    type (Uint8) : 1
++                    flags (Uint8) : 0
++                    radius (Uint16) : 60
++                    offset (Uint64) : 2676
++                    positionX (Float) : 153.9704
++                    positionY (Float) : 180.0009
++                    positionZ (Float) : 42.8451
+                 40 (CSectorDataObject)
+-                    type (Uint8) : 1
++                    type (Uint8) : 2
+                     flags (Uint8) : 0
+                     radius (Uint16) : 60
+-                    offset (Uint64) : 2744
++                    offset (Uint64) : 2740
+                     positionX (Float) : 153.9704
+                     positionY (Float) : 180.0009
+                     positionZ (Float) : 42.8451
+                 41 (CSectorDataObject)
+-                    type (Uint8) : 2
++                    type (Uint8) : 1
+                     flags (Uint8) : 0
+-                    radius (Uint16) : 60
+-                    offset (Uint64) : 2808
+-                    positionX (Float) : 153.9704
+-                    positionY (Float) : 180.0009
+-                    positionZ (Float) : 42.8451
++                    radius (Uint16) : 30
++                    offset (Uint64) : 2816
++                    positionX (Float) : 153.9970
++                    positionY (Float) : 180.2292
++                    positionZ (Float) : 42.6473
+                 42 (CSectorDataObject)
+-                    type (Uint8) : 1
++                    type (Uint8) : 2
+                     flags (Uint8) : 0
+                     radius (Uint16) : 30
+-                    offset (Uint64) : 2884
++                    offset (Uint64) : 2880
+                     positionX (Float) : 153.9970
+                     positionY (Float) : 180.2292
+                     positionZ (Float) : 42.6473
+                 43 (CSectorDataObject)
+-                    type (Uint8) : 2
+-                    flags (Uint8) : 0
+-                    radius (Uint16) : 30
+-                    offset (Uint64) : 2948
+-                    positionX (Float) : 153.9970
+-                    positionY (Float) : 180.2292
+-                    positionZ (Float) : 42.6473
+-                44 (CSectorDataObject)
+                     type (Uint8) : 5
+                     flags (Uint8) : 0
+                     radius (Uint16) : 45
+-                    offset (Uint64) : 3024
++                    offset (Uint64) : 2956
+                     positionX (Float) : 151.1257
+                     positionY (Float) : 186.0581
+                     positionZ (Float) : 8.7242
+-                45 (CSectorDataObject)
++                44 (CSectorDataObject)
+                     type (Uint8) : 5
+                     flags (Uint8) : 0
+                     radius (Uint16) : 44
+-                    offset (Uint64) : 3132
++                    offset (Uint64) : 3064
+                     positionX (Float) : 151.4931
+                     positionY (Float) : 165.7074
+                     positionZ (Float) : 18.2853
+-                46 (CSectorDataObject)
++                45 (CSectorDataObject)
+                     type (Uint8) : 5
+                     flags (Uint8) : 0
+                     radius (Uint16) : 44
+-                    offset (Uint64) : 3240
++                    offset (Uint64) : 3172
+                     positionX (Float) : 148.7597
+                     positionY (Float) : 171.5712
+                     positionZ (Float) : 23.1344
+-                47 (CSectorDataObject)
++                46 (CSectorDataObject)
+                     type (Uint8) : 5
+                     flags (Uint8) : 0
+                     radius (Uint16) : 44
+-                    offset (Uint64) : 3348
++                    offset (Uint64) : 3280
+                     positionX (Float) : 140.0969
+                     positionY (Float) : 191.1805
+                     positionZ (Float) : 9.5989
+-                48 (CSectorDataObject)
++                47 (CSectorDataObject)
+                     type (Uint8) : 5
+                     flags (Uint8) : 0
+                     radius (Uint16) : 44
+-                    offset (Uint64) : 3456
++                    offset (Uint64) : 3388
+                     positionX (Float) : 139.3985
+                     positionY (Float) : 163.4315
+                     positionZ (Float) : 16.1496
+-                49 (CSectorDataObject)
++                48 (CSectorDataObject)
+                     type (Uint8) : 5
+                     flags (Uint8) : 0
+                     radius (Uint16) : 39
+-                    offset (Uint64) : 3564
++                    offset (Uint64) : 3496
+                     positionX (Float) : 146.8962
+                     positionY (Float) : 181.8964
+                     positionZ (Float) : 20.5482
+-                50 (CSectorDataObject)
++                49 (CSectorDataObject)
+                     type (Uint8) : 5
+                     flags (Uint8) : 0
+                     radius (Uint16) : 38
+-                    offset (Uint64) : 3672
++                    offset (Uint64) : 3604
+                     positionX (Float) : 146.8806
+                     positionY (Float) : 182.7458
+                     positionZ (Float) : 29.1776
+-                51 (CSectorDataObject)
++                50 (CSectorDataObject)
+                     type (Uint8) : 5
+                     flags (Uint8) : 0
+                     radius (Uint16) : 43
+-                    offset (Uint64) : 3780
++                    offset (Uint64) : 3712
+                     positionX (Float) : 160.8189
+                     positionY (Float) : 178.8192
+                     positionZ (Float) : 27.0854
+-                52 (CSectorDataObject)
++                51 (CSectorDataObject)
+                     type (Uint8) : 5
+                     flags (Uint8) : 0
+                     radius (Uint16) : 45
+-                    offset (Uint64) : 3888
++                    offset (Uint64) : 3820
+                     positionX (Float) : 164.1282
+                     positionY (Float) : 164.2461
+                     positionZ (Float) : 24.9576
++                52 (CSectorDataObject)
++                    type (Uint8) : 1
++                    flags (Uint8) : 0
++                    radius (Uint16) : 60
++                    offset (Uint64) : 3928
++                    positionX (Float) : 150.0450
++                    positionY (Float) : 175.3842
++                    positionZ (Float) : 33.0867
+                 53 (CSectorDataObject)
+-                    type (Uint8) : 1
++                    type (Uint8) : 2
+                     flags (Uint8) : 0
+                     radius (Uint16) : 60
+-                    offset (Uint64) : 3996
++                    offset (Uint64) : 3992
+                     positionX (Float) : 150.0450
+                     positionY (Float) : 175.3842
+                     positionZ (Float) : 33.0867
+                 54 (CSectorDataObject)
+-                    type (Uint8) : 2
++                    type (Uint8) : 1
+                     flags (Uint8) : 0
+                     radius (Uint16) : 60
+-                    offset (Uint64) : 4060
+-                    positionX (Float) : 150.0450
+-                    positionY (Float) : 175.3842
++                    offset (Uint64) : 4068
++                    positionX (Float) : 147.4886
++                    positionY (Float) : 175.8824
+                     positionZ (Float) : 33.0867
+                 55 (CSectorDataObject)
+-                    type (Uint8) : 1
++                    type (Uint8) : 2
+                     flags (Uint8) : 0
+                     radius (Uint16) : 60
+-                    offset (Uint64) : 4136
++                    offset (Uint64) : 4132
+                     positionX (Float) : 147.4886
+                     positionY (Float) : 175.8824
+                     positionZ (Float) : 33.0867
+                 56 (CSectorDataObject)
+-                    type (Uint8) : 2
++                    type (Uint8) : 1
+                     flags (Uint8) : 0
+                     radius (Uint16) : 60
+-                    offset (Uint64) : 4200
+-                    positionX (Float) : 147.4886
+-                    positionY (Float) : 175.8824
++                    offset (Uint64) : 4208
++                    positionX (Float) : 143.4304
++                    positionY (Float) : 159.9390
+                     positionZ (Float) : 33.0867
+                 57 (CSectorDataObject)
+-                    type (Uint8) : 1
++                    type (Uint8) : 2
+                     flags (Uint8) : 0
+                     radius (Uint16) : 60
+-                    offset (Uint64) : 4276
++                    offset (Uint64) : 4272
+                     positionX (Float) : 143.4304
+                     positionY (Float) : 159.9390
+                     positionZ (Float) : 33.0867
+                 58 (CSectorDataObject)
+-                    type (Uint8) : 2
+-                    flags (Uint8) : 0
+-                    radius (Uint16) : 60
+-                    offset (Uint64) : 4340
+-                    positionX (Float) : 143.4304
+-                    positionY (Float) : 159.9390
+-                    positionZ (Float) : 33.0867
+-                59 (CSectorDataObject)
+                     type (Uint8) : 5
+                     flags (Uint8) : 0
+                     radius (Uint16) : 43
+-                    offset (Uint64) : 4416
++                    offset (Uint64) : 4348
+                     positionX (Float) : 157.8338
+                     positionY (Float) : 162.5079
+                     positionZ (Float) : 23.7771
+-                60 (CSectorDataObject)
++                59 (CSectorDataObject)
+                     type (Uint8) : 5
+                     flags (Uint8) : 0
+                     radius (Uint16) : 47
+-                    offset (Uint64) : 4524
++                    offset (Uint64) : 4456
+                     positionX (Float) : 157.8051
+                     positionY (Float) : 173.8065
+                     positionZ (Float) : 20.8365
+-                61 (CSectorDataObject)
++                60 (CSectorDataObject)
+                     type (Uint8) : 5
+                     flags (Uint8) : 0
+                     radius (Uint16) : 44
+-                    offset (Uint64) : 4632
++                    offset (Uint64) : 4564
+                     positionX (Float) : 138.5179
+                     positionY (Float) : 187.9584
+                     positionZ (Float) : 15.9365
+-                62 (CSectorDataObject)
++                61 (CSectorDataObject)
+                     type (Uint8) : 6
+                     flags (Uint8) : 0
+                     radius (Uint16) : 21
+-                    offset (Uint64) : 4740
++                    offset (Uint64) : 4672
+                     positionX (Float) : 186.0301
+                     positionY (Float) : 183.3521
+                     positionZ (Float) : 39.1811
++                62 (CSectorDataObject)
++                    type (Uint8) : 4
++                    flags (Uint8) : 0
++                    radius (Uint16) : 300
++                    offset (Uint64) : 4808
++                    positionX (Float) : 156.6988
++                    positionY (Float) : 175.7269
++                    positionZ (Float) : 38.9470
+             blocksize (CVLQInt32) : 4876
+             BlockData (CCompressedBuffer:SBlockData)
+                 0 (SBlockData)
+@@ -4425,30 +4367,6 @@
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+                 15 (SBlockData)
+-                    rotationMatrix (CMatrix3x3)
+-                        ax (Float) : 1.5412
+-                        ay (Float) : 1.2746
+-                        az (Float) : 0.0000
+-                        by (Float) : -1.2746
+-                        bz (Float) : 1.5412
+-                        by (Float) : 0.0000
+-                        cz (Float) : 0.0000
+-                        cy (Float) : 0.0000
+-                        cz (Float) : 2.3673
+-                    position (SVector3D)
+-                        X (Float) : 156.6888
+-                        Y (Float) : 175.7169
+-                        Z (Float) : 38.9470
+-                    streamingRadius (Uint16) : 0
+-                    flags (Uint16) : 1
+-                    occlusionSystemID (Uint32) : 1582058266
+-                    SBlockDataDimmer (SBlockDataDimmer)
+-                        ambienLevel (Float) : 0.5000
+-                        marginFactor (Float) : 0.3000
+-                        dimmerType (Uint8) : 2
+-                        paddin1 (Uint8) : 0
+-                        paddin2 (Uint16) : 0
+-                16 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.5412
+                         ay (Float) : 1.2746
+@@ -4472,7 +4390,7 @@
+                         dimmerType (Uint8) : 2
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                17 (SBlockData)
++                16 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.5412
+                         ay (Float) : 1.2746
+@@ -4496,7 +4414,7 @@
+                         dimmerType (Uint8) : 2
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                18 (SBlockData)
++                17 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.5412
+                         ay (Float) : 1.2746
+@@ -4520,7 +4438,7 @@
+                         dimmerType (Uint8) : 2
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                19 (SBlockData)
++                18 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.8964
+                         ay (Float) : 1.5684
+@@ -4544,7 +4462,7 @@
+                         dimmerType (Uint8) : 2
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                20 (SBlockData)
++                19 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 3.0835
+                         ay (Float) : 2.7056
+@@ -4568,7 +4486,7 @@
+                         dimmerType (Uint8) : 1
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                21 (SBlockData)
++                20 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.5412
+                         ay (Float) : 1.2746
+@@ -4592,7 +4510,7 @@
+                         dimmerType (Uint8) : 2
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                22 (SBlockData)
++                21 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 6.3820
+                         ay (Float) : 5.2780
+@@ -4616,7 +4534,7 @@
+                         dimmerType (Uint8) : 2
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                23 (SBlockData)
++                22 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 3.8929
+                         ay (Float) : 3.2195
+@@ -4640,7 +4558,7 @@
+                         dimmerType (Uint8) : 2
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                24 (SBlockData)
++                23 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 3.9006
+                         ay (Float) : 3.2258
+@@ -4664,7 +4582,7 @@
+                         dimmerType (Uint8) : 1
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                25 (SBlockData)
++                24 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 8.5829
+                         ay (Float) : 0.9060
+@@ -4688,7 +4606,7 @@
+                         dimmerType (Uint8) : 1
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                26 (SBlockData)
++                25 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 8.5595
+                         ay (Float) : 0.9036
+@@ -4712,7 +4630,7 @@
+                         dimmerType (Uint8) : 1
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                27 (SBlockData)
++                26 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 8.6170
+                         ay (Float) : 0.9096
+@@ -4736,7 +4654,7 @@
+                         dimmerType (Uint8) : 1
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                28 (SBlockData)
++                27 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.1720
+                         ay (Float) : 0.1237
+@@ -4760,7 +4678,7 @@
+                         dimmerType (Uint8) : 1
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                29 (SBlockData)
++                28 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 5.8833
+                         ay (Float) : 0.6210
+@@ -4784,7 +4702,7 @@
+                         dimmerType (Uint8) : 1
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                30 (SBlockData)
++                29 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 8.6361
+                         ay (Float) : 0.9116
+@@ -4808,7 +4726,7 @@
+                         dimmerType (Uint8) : 1
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                31 (SBlockData)
++                30 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 3.4265
+                         ay (Float) : 0.3617
+@@ -4832,7 +4750,7 @@
+                         dimmerType (Uint8) : 1
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                32 (SBlockData)
++                31 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 3.9006
+                         ay (Float) : 3.2258
+@@ -4856,7 +4774,7 @@
+                         dimmerType (Uint8) : 1
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                33 (SBlockData)
++                32 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 2.5975
+                         ay (Float) : 2.2637
+@@ -4880,7 +4798,7 @@
+                         dimmerType (Uint8) : 1
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                34 (SBlockData)
++                33 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 2.5975
+                         ay (Float) : 2.2637
+@@ -4904,7 +4822,7 @@
+                         dimmerType (Uint8) : 1
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                35 (SBlockData)
++                34 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 6.3832
+                         ay (Float) : 0.6738
+@@ -4928,7 +4846,7 @@
+                         dimmerType (Uint8) : 0
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                36 (SBlockData)
++                35 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 6.3832
+                         ay (Float) : 0.6738
+@@ -4952,7 +4870,7 @@
+                         dimmerType (Uint8) : 0
+                         paddin1 (Uint8) : 0
+                         paddin2 (Uint16) : 0
+-                37 (SBlockData)
++                36 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.3549
+                         ay (Float) : 0.0000
+@@ -4978,7 +4896,7 @@
+                         envAutoHideGroup (Uint8) : 0
+                         transparencySortGroup (Uint8) : 2
+                         globalEmissionScale (Float) : 1.0000
+-                38 (SBlockData)
++                37 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 0.5577
+                         ay (Float) : -0.6419
+@@ -4996,7 +4914,7 @@
+                     streamingRadius (Uint16) : 0
+                     flags (Uint16) : 5
+                     occlusionSystemID (Uint32) : 1296846505
+-                39 (SBlockData)
++                38 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.0000
+                         ay (Float) : 0.0000
+@@ -5030,7 +4948,7 @@
+                         padd1 (Uint8) : 0
+                         padd2 (Uint8) : 0
+                         padd3 (Uint8) : 0
+-                40 (SBlockData)
++                39 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.0000
+                         ay (Float) : 0.0000
+@@ -5048,7 +4966,7 @@
+                     streamingRadius (Uint16) : 0
+                     flags (Uint16) : 5
+                     occlusionSystemID (Uint32) : 389079595
+-                41 (SBlockData)
++                40 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.0000
+                         ay (Float) : 0.0000
+@@ -5071,7 +4989,7 @@
+                         padding (Uint16) : 0
+                         collisionMask (Uint64) : 2
+                         collisionGroup (Uint64) : 550725311
+-                42 (SBlockData)
++                41 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.0000
+                         ay (Float) : 0.0000
+@@ -5089,7 +5007,7 @@
+                     streamingRadius (Uint16) : 0
+                     flags (Uint16) : 5
+                     occlusionSystemID (Uint32) : 1877102846
+-                43 (SBlockData)
++                42 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.0000
+                         ay (Float) : 0.0000
+@@ -5112,7 +5030,7 @@
+                         padding (Uint16) : 0
+                         collisionMask (Uint64) : 2
+                         collisionGroup (Uint64) : 550725311
+-                44 (SBlockData)
++                43 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.0000
+                         ay (Float) : 0.0000
+@@ -5148,7 +5066,7 @@
+                         envColorGroup (Uint8) : 0
+                         padding (Uint8) : 0
+                         lightUsageMask (Uint32) : 1024
+-                45 (SBlockData)
++                44 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.0000
+                         ay (Float) : 0.0000
+@@ -5184,7 +5102,7 @@
+                         envColorGroup (Uint8) : 0
+                         padding (Uint8) : 0
+                         lightUsageMask (Uint32) : 1024
+-                46 (SBlockData)
++                45 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.0000
+                         ay (Float) : 0.0000
+@@ -5220,7 +5138,7 @@
+                         envColorGroup (Uint8) : 0
+                         padding (Uint8) : 0
+                         lightUsageMask (Uint32) : 1024
+-                47 (SBlockData)
++                46 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.0000
+                         ay (Float) : 0.0000
+@@ -5256,7 +5174,7 @@
+                         envColorGroup (Uint8) : 0
+                         padding (Uint8) : 0
+                         lightUsageMask (Uint32) : 1024
+-                48 (SBlockData)
++                47 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.0000
+                         ay (Float) : 0.0000
+@@ -5292,7 +5210,7 @@
+                         envColorGroup (Uint8) : 0
+                         padding (Uint8) : 0
+                         lightUsageMask (Uint32) : 1024
+-                49 (SBlockData)
++                48 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.0000
+                         ay (Float) : 0.0000
+@@ -5328,7 +5246,7 @@
+                         envColorGroup (Uint8) : 0
+                         padding (Uint8) : 0
+                         lightUsageMask (Uint32) : 1024
+-                50 (SBlockData)
++                49 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.0000
+                         ay (Float) : 0.0000
+@@ -5364,7 +5282,7 @@
+                         envColorGroup (Uint8) : 0
+                         padding (Uint8) : 0
+                         lightUsageMask (Uint32) : 1024
+-                51 (SBlockData)
++                50 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.0000
+                         ay (Float) : 0.0000
+@@ -5400,7 +5318,7 @@
+                         envColorGroup (Uint8) : 0
+                         padding (Uint8) : 0
+                         lightUsageMask (Uint32) : 1024
+-                52 (SBlockData)
++                51 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.0000
+                         ay (Float) : 0.0000
+@@ -5436,6 +5354,24 @@
+                         envColorGroup (Uint8) : 0
+                         padding (Uint8) : 0
+                         lightUsageMask (Uint32) : 1024
++                52 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : -0.9994
++                        ay (Float) : 0.0349
++                        az (Float) : 0.0000
++                        by (Float) : -0.0349
++                        bz (Float) : -0.9994
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 150.1299
++                        Y (Float) : 175.3813
++                        Z (Float) : 32.2417
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 5
++                    occlusionSystemID (Uint32) : 1534675481
+                 53 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : -0.9994
+@@ -5452,31 +5388,31 @@
+                         Y (Float) : 175.3813
+                         Z (Float) : 32.2417
+                     streamingRadius (Uint16) : 0
+-                    flags (Uint16) : 5
+-                    occlusionSystemID (Uint32) : 1534675481
++                    flags (Uint16) : 0
++                    occlusionSystemID (Uint32) : 0
++                    SBlockDataCollisionObject (SBlockDataCollisionObject)
++                        meshIndex (Uint16) : 6
++                        padding (Uint16) : 0
++                        collisionMask (Uint64) : 2
++                        collisionGroup (Uint64) : 550725311
+                 54 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+-                        ax (Float) : -0.9994
+-                        ay (Float) : 0.0349
++                        ax (Float) : 0.9945
++                        ay (Float) : 0.1045
+                         az (Float) : 0.0000
+-                        by (Float) : -0.0349
+-                        bz (Float) : -0.9994
++                        by (Float) : -0.1045
++                        bz (Float) : 0.9945
+                         by (Float) : 0.0000
+                         cz (Float) : 0.0000
+                         cy (Float) : 0.0000
+                         cz (Float) : 1.0000
+                     position (SVector3D)
+-                        X (Float) : 150.1299
+-                        Y (Float) : 175.3813
++                        X (Float) : 147.4041
++                        Y (Float) : 175.8735
+                         Z (Float) : 32.2417
+                     streamingRadius (Uint16) : 0
+-                    flags (Uint16) : 0
+-                    occlusionSystemID (Uint32) : 0
+-                    SBlockDataCollisionObject (SBlockDataCollisionObject)
+-                        meshIndex (Uint16) : 6
+-                        padding (Uint16) : 0
+-                        collisionMask (Uint64) : 2
+-                        collisionGroup (Uint64) : 550725311
++                    flags (Uint16) : 5
++                    occlusionSystemID (Uint32) : 1534675481
+                 55 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 0.9945
+@@ -5493,31 +5429,31 @@
+                         Y (Float) : 175.8735
+                         Z (Float) : 32.2417
+                     streamingRadius (Uint16) : 0
+-                    flags (Uint16) : 5
+-                    occlusionSystemID (Uint32) : 1534675481
++                    flags (Uint16) : 0
++                    occlusionSystemID (Uint32) : 0
++                    SBlockDataCollisionObject (SBlockDataCollisionObject)
++                        meshIndex (Uint16) : 6
++                        padding (Uint16) : 0
++                        collisionMask (Uint64) : 2
++                        collisionGroup (Uint64) : 550725311
+                 56 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+-                        ax (Float) : 0.9945
+-                        ay (Float) : 0.1045
++                        ax (Float) : 0.9136
++                        ay (Float) : -0.4067
+                         az (Float) : 0.0000
+-                        by (Float) : -0.1045
+-                        bz (Float) : 0.9945
++                        by (Float) : 0.4067
++                        bz (Float) : 0.9136
+                         by (Float) : 0.0000
+                         cz (Float) : 0.0000
+                         cy (Float) : 0.0000
+                         cz (Float) : 1.0000
+                     position (SVector3D)
+-                        X (Float) : 147.4041
+-                        Y (Float) : 175.8735
++                        X (Float) : 143.3527
++                        Y (Float) : 159.9736
+                         Z (Float) : 32.2417
+                     streamingRadius (Uint16) : 0
+-                    flags (Uint16) : 0
+-                    occlusionSystemID (Uint32) : 0
+-                    SBlockDataCollisionObject (SBlockDataCollisionObject)
+-                        meshIndex (Uint16) : 6
+-                        padding (Uint16) : 0
+-                        collisionMask (Uint64) : 2
+-                        collisionGroup (Uint64) : 550725311
++                    flags (Uint16) : 5
++                    occlusionSystemID (Uint32) : 1534675481
+                 57 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 0.9136
+@@ -5534,32 +5470,14 @@
+                         Y (Float) : 159.9736
+                         Z (Float) : 32.2417
+                     streamingRadius (Uint16) : 0
+-                    flags (Uint16) : 5
+-                    occlusionSystemID (Uint32) : 1534675481
++                    flags (Uint16) : 0
++                    occlusionSystemID (Uint32) : 0
++                    SBlockDataCollisionObject (SBlockDataCollisionObject)
++                        meshIndex (Uint16) : 6
++                        padding (Uint16) : 0
++                        collisionMask (Uint64) : 2
++                        collisionGroup (Uint64) : 550725311
+                 58 (SBlockData)
+-                    rotationMatrix (CMatrix3x3)
+-                        ax (Float) : 0.9136
+-                        ay (Float) : -0.4067
+-                        az (Float) : 0.0000
+-                        by (Float) : 0.4067
+-                        bz (Float) : 0.9136
+-                        by (Float) : 0.0000
+-                        cz (Float) : 0.0000
+-                        cy (Float) : 0.0000
+-                        cz (Float) : 1.0000
+-                    position (SVector3D)
+-                        X (Float) : 143.3527
+-                        Y (Float) : 159.9736
+-                        Z (Float) : 32.2417
+-                    streamingRadius (Uint16) : 0
+-                    flags (Uint16) : 0
+-                    occlusionSystemID (Uint32) : 0
+-                    SBlockDataCollisionObject (SBlockDataCollisionObject)
+-                        meshIndex (Uint16) : 6
+-                        padding (Uint16) : 0
+-                        collisionMask (Uint64) : 2
+-                        collisionGroup (Uint64) : 550725311
+-                59 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.0000
+                         ay (Float) : 0.0000
+@@ -5595,7 +5513,7 @@
+                         envColorGroup (Uint8) : 0
+                         padding (Uint8) : 0
+                         lightUsageMask (Uint32) : 1024
+-                60 (SBlockData)
++                59 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.0000
+                         ay (Float) : 0.0000
+@@ -5631,7 +5549,7 @@
+                         envColorGroup (Uint8) : 0
+                         padding (Uint8) : 0
+                         lightUsageMask (Uint32) : 1024
+-                61 (SBlockData)
++                60 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 1.0000
+                         ay (Float) : 0.0000
+@@ -5667,7 +5585,7 @@
+                         envColorGroup (Uint8) : 0
+                         padding (Uint8) : 0
+                         lightUsageMask (Uint32) : 1024
+-                62 (SBlockData)
++                61 (SBlockData)
+                     rotationMatrix (CMatrix3x3)
+                         ax (Float) : 0.9945
+                         ay (Float) : 0.1045
+@@ -5711,3 +5629,27 @@
+                         padding2 (Uint16) : 0
+                         projectionTexture (Uint16) : 0
+                         projectionTexureVBias (Float) : 0.0000
++                62 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.5412
++                        ay (Float) : 1.2746
++                        az (Float) : 0.0000
++                        by (Float) : -1.2746
++                        bz (Float) : 1.5412
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 2.3673
++                    position (SVector3D)
++                        X (Float) : 156.6988
++                        Y (Float) : 175.7269
++                        Z (Float) : 38.9470
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 3616270172
++                    SBlockDataDimmer (SBlockDataDimmer)
++                        ambienLevel (Float) : 0.5000
++                        marginFactor (Float) : 0.3000
++                        dimmerType (Uint8) : 2
++                        paddin1 (Uint8) : 0
++                        paddin2 (Uint16) : 0

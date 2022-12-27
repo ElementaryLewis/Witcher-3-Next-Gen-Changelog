@@ -1,0 +1,407 @@
+ 1 file changed, 113 insertions(+), 82 deletions(-)
+
+diff --git 1.32/levels/skellige/ard_skellig/kaer_trolde/castle/gameplay.w2l.txt 4.00/levels/skellige/ard_skellig/kaer_trolde/castle/gameplay.w2l.txt
+index cc07769..9128a7d 100644
+--- 1.32/levels/skellige/ard_skellig/kaer_trolde/castle/gameplay.w2l.txt
++++ 4.00/levels/skellige/ard_skellig/kaer_trolde/castle/gameplay.w2l.txt
+@@ -41,12 +41,13 @@
+                 37 (ptr:CEntity) : CGameplayEntity #45
+                 38 (ptr:CEntity) : W3FireSource #46
+             nameCount (Uint32) : 635
+-    W3ItemRepairObject #1 (W3ItemRepairObject) : MISSING_NAME_FBD44AE2-4CD95824-CBBBB7A2-4B4A7FF2
++    W3ItemRepairObject #1 (W3ItemRepairObject) : kaer_trolde_whetstone
+         W3ItemRepairObject (W3ItemRepairObject)
+             tags (TagList)
+                 tags (CBufferVLQInt32:CName)
+-                    0 (CName) : Apprentice
+-                    1 (CName) : Blacksmith
++                    0 (CName) : kaer_trolde_whetstone
++                    1 (CName) : Apprentice
++                    2 (CName) : Blacksmith
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+                 Yaw (Float) : 0.0000
+@@ -106,7 +107,7 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  ec872d3d-68ef-4bdc-abae-b15ca50e1aac
+             focusModeVisibility (EFocusModeVisibility) : FMV_Interactive
+-            entityName (CName) : MISSING_NAME_FBD44AE2-4CD95824-CBBBB7A2-4B4A7FF2
++            entityName (CName) : kaer_trolde_whetstone
+             repairSword (Bool) : true
+     CTriggerAreaComponent #2 (CTriggerAreaComponent) : make_sure_its_bigger_than_interaction
+         CTriggerAreaComponent (CTriggerAreaComponent)
+@@ -205,12 +206,13 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  7c7fb31e-3ac8-49ca-8a87-7ffc67f6cc9a
+-    W3ItemRepairObject #5 (W3ItemRepairObject) : MISSING_NAME_A0A1F26C-477BB025-8A5052A2-86643976
++    W3ItemRepairObject #5 (W3ItemRepairObject) : kaer_trolde_repair_table
+         W3ItemRepairObject (W3ItemRepairObject)
+             tags (TagList)
+                 tags (CBufferVLQInt32:CName)
+-                    0 (CName) : Apprentice
+-                    1 (CName) : Armorer
++                    0 (CName) : kaer_trolde_repair_table
++                    1 (CName) : Apprentice
++                    2 (CName) : Armorer
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+                 Yaw (Float) : 0.0000
+@@ -359,7 +361,7 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  53a8b115-359a-4fe3-a829-97e0a5fc2245
+             focusModeVisibility (EFocusModeVisibility) : FMV_Interactive
+-            entityName (CName) : MISSING_NAME_A0A1F26C-477BB025-8A5052A2-86643976
++            entityName (CName) : kaer_trolde_repair_table
+             repairArmor (Bool) : true
+     CTriggerAreaComponent #6 (CTriggerAreaComponent) : make_sure_its_bigger_than_interaction
+         CTriggerAreaComponent (CTriggerAreaComponent)
+@@ -656,19 +658,16 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 55
++                    sizeofdata (Uint32) : 46
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : -1.1000
+-                            Y (Float) : -0.9000
+-                            Z (Float) : 2.6000
+-                        1 (Float) : 5.7000
++                        0 (Float) : 5.7000
++                        1 (Float) : 50.0000
+                         2 (ELightUsageMask) : LUM_IsInteriorOnly
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 69
++                    sizeofdata (Uint32) : 81
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 3.0000
++                        0 (Float) : 2.0000
+                         1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsExteriorOnly
+                         2 (EngineTransform)
+                             Pitch (Float) : 0.0002
+@@ -677,6 +676,7 @@
+                             X (Float) : 0.0200
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.5000
++                        3 (Float) : 20.0000
+             idTag (IdTag) :  e833cb20-26cb-48a1-b3b3-bfc62697567f
+     CGameplayEntity #16 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -703,7 +703,7 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 55
++                    sizeofdata (Uint32) : 67
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (Float) : 2.0000
+                         1 (EngineTransform)
+@@ -713,6 +713,13 @@
+                             X (Float) : -0.3000
+                             Y (Float) : 0.0000
+                             Z (Float) : 0.8000
++                        2 (Float) : 20.0000
++                1 (SEntityBufferType2)
++                    componentName (CName) : CPointLightComponent1
++                    sizeofdata (Uint32) : 34
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 5.0000
++                        1 (Float) : 30.0000
+             idTag (IdTag) :  408c1f50-dae3-472b-8cdd-a23697aca462
+     CGameplayEntity #17 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -733,17 +740,7 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2)
+-                0 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 22
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightUsageMask) : LUM_IsInteriorOnly
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 24
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsInteriorOnly
++            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  437a3c5b-54eb-42d7-8ef7-36a6dae2dcb5
+     CGameplayEntity #18 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -767,15 +764,17 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 36
++                    sizeofdata (Uint32) : 48
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+                         0 (Float) : 2.0000
+                         1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsInteriorOnly
++                        2 (Float) : 20.0000
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 22
++                    sizeofdata (Uint32) : 34
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightUsageMask) : LUM_IsInteriorOnly
++                        0 (Float) : 30.0000
++                        1 (ELightUsageMask) : LUM_IsInteriorOnly
+             idTag (IdTag) :  e64497ff-caaf-4ee6-8372-cbafb10186c8
+     CGameplayEntity #19 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -799,14 +798,17 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 24
++                    sizeofdata (Uint32) : 48
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsInteriorOnly
++                        0 (Float) : 1.4000
++                        1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsInteriorOnly
++                        2 (Float) : 20.0000
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 22
++                    sizeofdata (Uint32) : 34
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightUsageMask) : LUM_IsInteriorOnly
++                        0 (Float) : 30.0000
++                        1 (ELightUsageMask) : LUM_IsInteriorOnly
+             idTag (IdTag) :  2e73506c-29a8-45b3-b8e0-dd9895807cb9
+     CGameplayEntity #20 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -830,14 +832,17 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 24
++                    sizeofdata (Uint32) : 48
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsInteriorOnly
++                        0 (Float) : 1.5000
++                        1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsInteriorOnly
++                        2 (Float) : 20.0000
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 22
++                    sizeofdata (Uint32) : 34
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightUsageMask) : LUM_IsInteriorOnly
++                        0 (Float) : 30.0000
++                        1 (ELightUsageMask) : LUM_IsInteriorOnly
+             idTag (IdTag) :  847a4308-c634-40ad-b8a3-3cf51071e358
+     CGameplayEntity #21 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -861,14 +866,18 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 24
++                    sizeofdata (Uint32) : 48
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsInteriorOnly
++                        0 (Float) : 1.0000
++                        1 (ELightUsageMask) : LUM_RenderToEnvProbe,LUM_IsInteriorOnly
++                        2 (Float) : 20.0000
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 22
++                    sizeofdata (Uint32) : 46
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (ELightUsageMask) : LUM_IsInteriorOnly
++                        0 (Float) : 5.0000
++                        1 (Float) : 30.0000
++                        2 (ELightUsageMask) : LUM_IsInteriorOnly
+             idTag (IdTag) :  34e0ed6a-e1b4-4f00-9b7d-bce7e7fc70b0
+     CGameplayEntity #22 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -892,7 +901,19 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CSpotLightComponent0
++                    sizeofdata (Uint32) : 34
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 1.4000
++                        1 (Float) : 20.0000
++                1 (SEntityBufferType2)
++                    componentName (CName) : CPointLightComponent1
++                    sizeofdata (Uint32) : 34
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 5.0000
++                        1 (Float) : 30.0000
+             idTag (IdTag) :  50c8e4be-1ab1-43e1-8a1b-e0922e5051f7
+     CGameplayEntity #23 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -915,10 +936,10 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 22
++                    componentName (CName) : CGameplayLightComponent1
++                    sizeofdata (Uint32) : 19
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.0000
++                        0 (Bool) : true
+             idTag (IdTag) :  42df0d28-bb0d-404f-b16a-2928e38cdb4b
+     CGameplayEntity #24 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -1056,7 +1077,12 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CGameplayLightComponent1
++                    sizeofdata (Uint32) : 19
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Bool) : true
+             idTag (IdTag) :  32512d66-946b-469e-9b19-e4ce88e07baf
+     CGameplayEntity #30 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -1077,7 +1103,12 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CGameplayLightComponent1
++                    sizeofdata (Uint32) : 19
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Bool) : true
+             idTag (IdTag) :  43d094d9-6464-4abf-8f3a-40e671abb68a
+     CGameplayEntity #31 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -1098,7 +1129,12 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CGameplayLightComponent1
++                    sizeofdata (Uint32) : 19
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Bool) : true
+             idTag (IdTag) :  09f0633a-69c4-4de5-b215-d1942db3559d
+     CGameplayEntity #32 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -1119,7 +1155,12 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CGameplayLightComponent1
++                    sizeofdata (Uint32) : 19
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Bool) : true
+             idTag (IdTag) :  8580d648-9762-49ab-b5f8-4ab45c0f8de5
+     CGameplayEntity #33 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -1179,19 +1220,10 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 43
++                    componentName (CName) : CGameplayLightComponent1
++                    sizeofdata (Uint32) : 19
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : -1.1500
+-                            Y (Float) : 0.9000
+-                            Z (Float) : 0.9500
+-                        1 (Float) : 4.0000
+-                1 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 22
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 1.5000
++                        0 (Bool) : true
+             idTag (IdTag) :  a969fa95-30fe-4b1e-8428-f6e8a675ee12
+     CGameplayEntity #35 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -1295,7 +1327,12 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CGameplayLightComponent1
++                    sizeofdata (Uint32) : 19
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Bool) : true
+             idTag (IdTag) :  68fc3c09-a7b0-4949-996d-4997136841a4
+     CGameplayEntity #39 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -1316,7 +1353,12 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CGameplayLightComponent1
++                    sizeofdata (Uint32) : 19
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Bool) : true
+             idTag (IdTag) :  08b238f3-396c-4daf-b541-4804f81b032a
+     W3FireSource #40 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+@@ -1339,14 +1381,6 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 31
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : 0.0000
+-                            Y (Float) : 0.0000
+-                            Z (Float) : 2.6000
+-                1 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+                     sizeofdata (Uint32) : 43
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+@@ -1436,7 +1470,12 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CGameplayLightComponent1
++                    sizeofdata (Uint32) : 19
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Bool) : true
+             idTag (IdTag) :  b0cad8c8-21bb-4b0e-af86-6d227b4f3042
+     CGameplayEntity #44 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -1520,14 +1559,6 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 31
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : 0.0000
+-                            Y (Float) : 0.0000
+-                            Z (Float) : 2.6000
+-                1 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+                     sizeofdata (Uint32) : 22
+                     variables (CBufferUInt32:CVariantSizeTypeName)

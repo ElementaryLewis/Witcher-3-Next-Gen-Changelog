@@ -1,0 +1,1627 @@
+ 1 file changed, 1165 insertions(+), 89 deletions(-)
+
+diff --git 1.32/levels/prolog_village/global_ambient_fx/area_fx.w2l.txt 4.00/levels/prolog_village/global_ambient_fx/area_fx.w2l.txt
+index 30e6268..e7f9219 100644
+--- 1.32/levels/prolog_village/global_ambient_fx/area_fx.w2l.txt
++++ 4.00/levels/prolog_village/global_ambient_fx/area_fx.w2l.txt
+@@ -6,7 +6,8 @@
+                 2 (ptr:CEntity) : CCameraEffectTrigger #5
+                 3 (ptr:CEntity) : CCameraEffectTrigger #7
+                 4 (ptr:CEntity) : CCameraEffectTrigger #9
+-            nameCount (Uint32) : 3
++            sectorData (handle:CSectorData) : CSectorData #11
++            nameCount (Uint32) : 10
+     CCameraEffectTrigger #1 (CCameraEffectTrigger) : fog_dust_outdoor
+         CCameraEffectTrigger (CCameraEffectTrigger)
+             transform (EngineTransform)
+@@ -44,7 +45,7 @@
+                     W (Float) : 1.0000
+                 Max (Vector)
+                     X (Float) : 870.1680
+-                    Y (Float) : 554.4380
++                    Y (Float) : 554.4379
+                     Z (Float) : 38.8702
+                     W (Float) : 1.0000
+             height (Float) : 10.0000
+@@ -197,7 +198,7 @@
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 2 (Vector)
+-                    X (Float) : 282.3963
++                    X (Float) : 282.3964
+                     Y (Float) : -26.6762
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+@@ -247,18 +248,18 @@
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 12 (Vector)
+-                    X (Float) : 799.6400
++                    X (Float) : 799.6399
+                     Y (Float) : 94.9567
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 13 (Vector)
+                     X (Float) : 764.8170
+-                    Y (Float) : 121.3741
++                    Y (Float) : 121.3740
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 14 (Vector)
+-                    X (Float) : 743.9160
+-                    Y (Float) : 149.0249
++                    X (Float) : 743.9159
++                    Y (Float) : 149.0248
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 15 (Vector)
+@@ -267,17 +268,17 @@
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 16 (Vector)
+-                    X (Float) : 716.9516
+-                    Y (Float) : 242.3325
++                    X (Float) : 716.9515
++                    Y (Float) : 242.3324
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 17 (Vector)
+-                    X (Float) : 741.3465
+-                    Y (Float) : 319.4004
++                    X (Float) : 741.3464
++                    Y (Float) : 319.4003
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 18 (Vector)
+-                    X (Float) : 814.0829
++                    X (Float) : 814.0828
+                     Y (Float) : 412.4208
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+@@ -288,17 +289,17 @@
+                     W (Float) : 1.0000
+                 20 (Vector)
+                     X (Float) : 627.4771
+-                    Y (Float) : 546.6603
++                    Y (Float) : 546.6602
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 21 (Vector)
+                     X (Float) : 411.8428
+-                    Y (Float) : 554.4380
++                    Y (Float) : 554.4379
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 22 (Vector)
+                     X (Float) : 412.7790
+-                    Y (Float) : 512.0164
++                    Y (Float) : 512.0163
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 23 (Vector)
+@@ -313,7 +314,7 @@
+                     W (Float) : 1.0000
+                 25 (Vector)
+                     X (Float) : 410.4193
+-                    Y (Float) : 142.2542
++                    Y (Float) : 142.2541
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+             Bufferdata (CByteArray2) : 12794 bytes
+@@ -349,13 +350,13 @@
+             name (String) : "CTriggerAreaComponent0"
+             boundingBox (Box)
+                 Min (Vector)
+-                    X (Float) : -734.6433
++                    X (Float) : -734.6432
+                     Y (Float) : -42.5143
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 Max (Vector)
+                     X (Float) : 419.2391
+-                    Y (Float) : 881.1734
++                    Y (Float) : 881.1733
+                     Z (Float) : 38.8702
+                     W (Float) : 1.0000
+             height (Float) : 10.0000
+@@ -609,17 +610,17 @@
+             worldPoints (array:Vector)
+                 0 (Vector)
+                     X (Float) : -217.1966
+-                    Y (Float) : 717.4819
++                    Y (Float) : 717.4818
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 1 (Vector)
+                     X (Float) : -244.8764
+-                    Y (Float) : 682.0938
++                    Y (Float) : 682.0937
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 2 (Vector)
+                     X (Float) : -294.3130
+-                    Y (Float) : 649.8074
++                    Y (Float) : 649.8073
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 3 (Vector)
+@@ -628,18 +629,18 @@
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 4 (Vector)
+-                    X (Float) : -557.2613
+-                    Y (Float) : 881.1734
++                    X (Float) : -557.2612
++                    Y (Float) : 881.1733
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 5 (Vector)
+-                    X (Float) : -734.6433
+-                    Y (Float) : 732.6577
++                    X (Float) : -734.6432
++                    Y (Float) : 732.6576
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 6 (Vector)
+-                    X (Float) : -721.2712
+-                    Y (Float) : 533.1763
++                    X (Float) : -721.2711
++                    Y (Float) : 533.1762
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 7 (Vector)
+@@ -654,17 +655,17 @@
+                     W (Float) : 1.0000
+                 9 (Vector)
+                     X (Float) : -327.0285
+-                    Y (Float) : 499.7158
++                    Y (Float) : 499.7157
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 10 (Vector)
+                     X (Float) : -197.9412
+-                    Y (Float) : 490.0924
++                    Y (Float) : 490.0923
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 11 (Vector)
+                     X (Float) : -149.9295
+-                    Y (Float) : 430.9632
++                    Y (Float) : 430.9631
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 12 (Vector)
+@@ -673,13 +674,13 @@
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 13 (Vector)
+-                    X (Float) : -146.3242
+-                    Y (Float) : 375.5080
++                    X (Float) : -146.3241
++                    Y (Float) : 375.5079
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 14 (Vector)
+                     X (Float) : -135.8469
+-                    Y (Float) : 352.1728
++                    Y (Float) : 352.1727
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 15 (Vector)
+@@ -689,12 +690,12 @@
+                     W (Float) : 1.0000
+                 16 (Vector)
+                     X (Float) : -104.8165
+-                    Y (Float) : 342.2310
++                    Y (Float) : 342.2309
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 17 (Vector)
+                     X (Float) : -85.0309
+-                    Y (Float) : 290.9722
++                    Y (Float) : 290.9721
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 18 (Vector)
+@@ -809,7 +810,7 @@
+                     W (Float) : 1.0000
+                 40 (Vector)
+                     X (Float) : 380.7742
+-                    Y (Float) : 159.7460
++                    Y (Float) : 159.7459
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 41 (Vector)
+@@ -819,7 +820,7 @@
+                     W (Float) : 1.0000
+                 42 (Vector)
+                     X (Float) : 412.4565
+-                    Y (Float) : 235.9080
++                    Y (Float) : 235.9079
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 43 (Vector)
+@@ -828,8 +829,8 @@
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 44 (Vector)
+-                    X (Float) : 406.3240
+-                    Y (Float) : 478.1494
++                    X (Float) : 406.3239
++                    Y (Float) : 478.1493
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 45 (Vector)
+@@ -838,8 +839,8 @@
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 46 (Vector)
+-                    X (Float) : 169.4771
+-                    Y (Float) : 555.8603
++                    X (Float) : 169.4770
++                    Y (Float) : 555.8602
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 47 (Vector)
+@@ -970,13 +971,13 @@
+             name (String) : "CTriggerAreaComponent0"
+             boundingBox (Box)
+                 Min (Vector)
+-                    X (Float) : -831.8374
++                    X (Float) : -831.8373
+                     Y (Float) : -664.4418
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 Max (Vector)
+                     X (Float) : 835.4326
+-                    Y (Float) : 238.9131
++                    Y (Float) : 238.9130
+                     Z (Float) : 38.8702
+                     W (Float) : 1.0000
+             height (Float) : 10.0000
+@@ -1165,7 +1166,7 @@
+             worldPoints (array:Vector)
+                 0 (Vector)
+                     X (Float) : -500.5710
+-                    Y (Float) : -17.7321
++                    Y (Float) : -17.7322
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 1 (Vector)
+@@ -1174,7 +1175,7 @@
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 2 (Vector)
+-                    X (Float) : -831.8374
++                    X (Float) : -831.8373
+                     Y (Float) : -522.8056
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+@@ -1189,7 +1190,7 @@
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 5 (Vector)
+-                    X (Float) : 248.9341
++                    X (Float) : 248.9340
+                     Y (Float) : -472.2024
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+@@ -1205,36 +1206,36 @@
+                     W (Float) : 1.0000
+                 8 (Vector)
+                     X (Float) : 835.4326
+-                    Y (Float) : -247.8574
++                    Y (Float) : -247.8575
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 9 (Vector)
+-                    X (Float) : 572.8997
++                    X (Float) : 572.8995
+                     Y (Float) : -291.9738
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 10 (Vector)
+-                    X (Float) : 455.2942
+-                    Y (Float) : -280.5171
++                    X (Float) : 455.2941
++                    Y (Float) : -280.5172
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 11 (Vector)
+-                    X (Float) : 320.2669
+-                    Y (Float) : -230.3904
++                    X (Float) : 320.2668
++                    Y (Float) : -230.3905
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 12 (Vector)
+                     X (Float) : 188.0526
+-                    Y (Float) : -185.7102
++                    Y (Float) : -185.7103
+                     Z (Float) : -7.2000
+                     W (Float) : 1.0000
+                 13 (Vector)
+-                    X (Float) : 125.5289
+-                    Y (Float) : -80.1439
++                    X (Float) : 125.5288
++                    Y (Float) : -80.1440
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 14 (Vector)
+-                    X (Float) : 106.9122
++                    X (Float) : 106.9121
+                     Y (Float) : -26.3110
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+@@ -1245,12 +1246,12 @@
+                     W (Float) : 1.0000
+                 16 (Vector)
+                     X (Float) : 100.5349
+-                    Y (Float) : 12.0245
++                    Y (Float) : 12.0244
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 17 (Vector)
+                     X (Float) : 65.5888
+-                    Y (Float) : 23.7342
++                    Y (Float) : 23.7341
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 18 (Vector)
+@@ -1259,43 +1260,43 @@
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 19 (Vector)
+-                    X (Float) : 29.0597
+-                    Y (Float) : 31.0110
++                    X (Float) : 29.0596
++                    Y (Float) : 31.0109
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 20 (Vector)
+                     X (Float) : 5.9987
+-                    Y (Float) : 27.3432
++                    Y (Float) : 27.3431
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 21 (Vector)
+                     X (Float) : -3.9104
+-                    Y (Float) : 37.7803
++                    Y (Float) : 37.7802
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 22 (Vector)
+                     X (Float) : -37.4949
+-                    Y (Float) : 44.5579
++                    Y (Float) : 44.5578
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 23 (Vector)
+                     X (Float) : -55.9977
+-                    Y (Float) : 51.1644
++                    Y (Float) : 51.1643
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 24 (Vector)
+                     X (Float) : -128.5193
+-                    Y (Float) : 94.3055
++                    Y (Float) : 94.3054
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 25 (Vector)
+                     X (Float) : -147.5242
+-                    Y (Float) : 120.1849
++                    Y (Float) : 120.1848
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 26 (Vector)
+-                    X (Float) : -161.4223
+-                    Y (Float) : 135.0510
++                    X (Float) : -161.4224
++                    Y (Float) : 135.0509
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 27 (Vector)
+@@ -1304,33 +1305,33 @@
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 28 (Vector)
+-                    X (Float) : -152.8094
+-                    Y (Float) : 162.0995
++                    X (Float) : -152.8095
++                    Y (Float) : 162.0994
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 29 (Vector)
+                     X (Float) : -131.3674
+-                    Y (Float) : 163.3862
++                    Y (Float) : 163.3861
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 30 (Vector)
+                     X (Float) : -113.9934
+-                    Y (Float) : 168.4281
++                    Y (Float) : 168.4280
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 31 (Vector)
+                     X (Float) : -121.6998
+-                    Y (Float) : 199.7020
++                    Y (Float) : 199.7019
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 32 (Vector)
+-                    X (Float) : -146.7369
+-                    Y (Float) : 238.9131
++                    X (Float) : -146.7370
++                    Y (Float) : 238.9130
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 33 (Vector)
+                     X (Float) : -340.5766
+-                    Y (Float) : 164.7303
++                    Y (Float) : 164.7302
+                     Z (Float) : -7.2001
+                     W (Float) : 1.0000
+                 34 (Vector)
+@@ -1374,12 +1375,12 @@
+             name (String) : "CTriggerAreaComponent0"
+             boundingBox (Box)
+                 Min (Vector)
+-                    X (Float) : -757.5167
+-                    Y (Float) : -58.1237
++                    X (Float) : -757.5166
++                    Y (Float) : -58.1238
+                     Z (Float) : -6.1000
+                     W (Float) : 1.0000
+                 Max (Vector)
+-                    X (Float) : -134.3259
++                    X (Float) : -134.3260
+                     Y (Float) : 390.6600
+                     Z (Float) : 25.7580
+                     W (Float) : 1.0000
+@@ -1482,7 +1483,7 @@
+                     Z (Float) : -6.1000
+                     W (Float) : 1.0000
+                 1 (Vector)
+-                    X (Float) : -134.3259
++                    X (Float) : -134.3260
+                     Y (Float) : 284.4134
+                     Z (Float) : -6.1000
+                     W (Float) : 1.0000
+@@ -1492,7 +1493,7 @@
+                     Z (Float) : -6.1000
+                     W (Float) : 1.0000
+                 3 (Vector)
+-                    X (Float) : -269.6534
++                    X (Float) : -269.6535
+                     Y (Float) : 374.1946
+                     Z (Float) : -6.1000
+                     W (Float) : 1.0000
+@@ -1507,23 +1508,23 @@
+                     Z (Float) : -6.1000
+                     W (Float) : 1.0000
+                 6 (Vector)
+-                    X (Float) : -581.0998
++                    X (Float) : -581.0997
+                     Y (Float) : 197.3414
+                     Z (Float) : -6.1000
+                     W (Float) : 1.0000
+                 7 (Vector)
+-                    X (Float) : -757.5167
+-                    Y (Float) : 125.6737
++                    X (Float) : -757.5166
++                    Y (Float) : 125.6736
+                     Z (Float) : -6.0999
+                     W (Float) : 1.0000
+                 8 (Vector)
+-                    X (Float) : -745.0534
++                    X (Float) : -745.0533
+                     Y (Float) : 62.5373
+                     Z (Float) : -6.0999
+                     W (Float) : 1.0000
+                 9 (Vector)
+-                    X (Float) : -701.4886
+-                    Y (Float) : -58.1237
++                    X (Float) : -701.4885
++                    Y (Float) : -58.1238
+                     Z (Float) : -6.0999
+                     W (Float) : 1.0000
+                 10 (Vector)
+@@ -1537,7 +1538,7 @@
+                     Z (Float) : -6.1000
+                     W (Float) : 1.0000
+                 12 (Vector)
+-                    X (Float) : -395.4430
++                    X (Float) : -395.4429
+                     Y (Float) : 48.8127
+                     Z (Float) : -6.1000
+                     W (Float) : 1.0000
+@@ -1548,7 +1549,7 @@
+                     W (Float) : 1.0000
+                 14 (Vector)
+                     X (Float) : -340.2601
+-                    Y (Float) : 170.3011
++                    Y (Float) : 170.3010
+                     Z (Float) : -6.1000
+                     W (Float) : 1.0000
+                 15 (Vector)
+@@ -1563,3 +1564,1078 @@
+                     W (Float) : 1.0000
+             Bufferdata (CByteArray2) : 7304 bytes
+             includedChannels (ETriggerChannel) : TC_Player
++    CSectorData #11 (CSectorData) : 
++        CSectorData (CSectorData)
++            Unknown1 (Uint64) : 12713220636672
++            Resources (CBufferVLQInt32:CSectorDataResource)
++                0 (CSectorDataResource)
++                    box0 (Float) : 0.0000
++                    box1 (Float) : 0.0000
++                    box2 (Float) : 0.0000
++                    box3 (Float) : 0.0000
++                    box4 (Float) : 0.0000
++                    box5 (Float) : 0.0000
++                    pathHash (String) : ""
++                1 (CSectorDataResource)
++                    box0 (Float) : -0.5000
++                    box1 (Float) : -0.5000
++                    box2 (Float) : -0.5000
++                    box3 (Float) : 0.5000
++                    box4 (Float) : 0.5000
++                    box5 (Float) : 0.5000
++                    pathHash (String) : "fx/environment/leaf/dandelions_area_wind.w2p"
++                2 (CSectorDataResource)
++                    box0 (Float) : -0.5000
++                    box1 (Float) : -0.5000
++                    box2 (Float) : -0.5000
++                    box3 (Float) : 0.5000
++                    box4 (Float) : 0.5000
++                    box5 (Float) : 0.5000
++                    pathHash (String) : "fx/environment/leaf/leaf_area_fx1.w2p"
++                3 (CSectorDataResource)
++                    box0 (Float) : -0.5000
++                    box1 (Float) : -0.5000
++                    box2 (Float) : -0.5000
++                    box3 (Float) : 0.5000
++                    box4 (Float) : 0.5000
++                    box5 (Float) : 0.5000
++                    pathHash (String) : "fx/environment/leaf/leaves_tree.w2p"
++                4 (CSectorDataResource)
++                    box0 (Float) : -0.5000
++                    box1 (Float) : -0.5000
++                    box2 (Float) : -0.5000
++                    box3 (Float) : 0.5000
++                    box4 (Float) : 0.5000
++                    box5 (Float) : 0.5000
++                    pathHash (String) : "fx/environment/leaf/leaf_area_wind.w2p"
++                5 (CSectorDataResource)
++                    box0 (Float) : -0.5000
++                    box1 (Float) : -0.5000
++                    box2 (Float) : -0.5000
++                    box3 (Float) : 0.5000
++                    box4 (Float) : 0.5000
++                    box5 (Float) : 0.5000
++                    pathHash (String) : "fx/environment/fog/p_fog_rolling_large_area.w2p"
++            Objects (CBufferVLQInt32:CSectorDataObject)
++                0 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 0
++                    positionX (Float) : 92.5674
++                    positionY (Float) : -37.0422
++                    positionZ (Float) : 4.1176
++                1 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 68
++                    positionX (Float) : 93.6221
++                    positionY (Float) : -61.0078
++                    positionZ (Float) : 5.8176
++                2 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 136
++                    positionX (Float) : 253.1156
++                    positionY (Float) : -79.1422
++                    positionZ (Float) : 7.3684
++                3 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 204
++                    positionX (Float) : 330.0189
++                    positionY (Float) : -6.0782
++                    positionZ (Float) : 7.3684
++                4 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 272
++                    positionX (Float) : 322.7943
++                    positionY (Float) : -116.5945
++                    positionZ (Float) : 7.3684
++                5 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 340
++                    positionX (Float) : 390.7571
++                    positionY (Float) : -22.8081
++                    positionZ (Float) : 28.4684
++                6 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 408
++                    positionX (Float) : 388.1268
++                    positionY (Float) : 77.6622
++                    positionZ (Float) : 7.3684
++                7 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 476
++                    positionX (Float) : 65.5396
++                    positionY (Float) : -177.9633
++                    positionZ (Float) : 11.4684
++                8 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 544
++                    positionX (Float) : 395.8235
++                    positionY (Float) : -116.3020
++                    positionZ (Float) : 12.2684
++                9 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 612
++                    positionX (Float) : -25.7078
++                    positionY (Float) : -245.8593
++                    positionZ (Float) : 26.1684
++                10 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 680
++                    positionX (Float) : 15.2459
++                    positionY (Float) : 302.9276
++                    positionZ (Float) : 18.2684
++                11 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 748
++                    positionX (Float) : 92.5774
++                    positionY (Float) : -28.0322
++                    positionZ (Float) : 4.1176
++                12 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 816
++                    positionX (Float) : 74.2634
++                    positionY (Float) : -56.0688
++                    positionZ (Float) : 5.4176
++                13 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 884
++                    positionX (Float) : 63.6991
++                    positionY (Float) : -37.1106
++                    positionZ (Float) : 5.4176
++                14 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 952
++                    positionX (Float) : 55.0697
++                    positionY (Float) : -57.9841
++                    positionZ (Float) : 6.4176
++                15 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 1020
++                    positionX (Float) : 195.5235
++                    positionY (Float) : -2.8565
++                    positionZ (Float) : 4.9176
++                16 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 40
++                    offset (Uint64) : 1088
++                    positionX (Float) : 265.7415
++                    positionY (Float) : -19.5092
++                    positionZ (Float) : 9.1447
++                17 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 1156
++                    positionX (Float) : 283.7099
++                    positionY (Float) : -42.9451
++                    positionZ (Float) : 7.2598
++                18 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 1224
++                    positionX (Float) : 297.6610
++                    positionY (Float) : -51.9467
++                    positionZ (Float) : 7.2598
++                19 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 1292
++                    positionX (Float) : 316.8866
++                    positionY (Float) : -54.6051
++                    positionZ (Float) : 7.2598
++                20 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 110
++                    offset (Uint64) : 1360
++                    positionX (Float) : 306.4792
++                    positionY (Float) : -18.1549
++                    positionZ (Float) : 7.2598
++                21 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 60
++                    offset (Uint64) : 1428
++                    positionX (Float) : 264.6861
++                    positionY (Float) : -0.6873
++                    positionZ (Float) : 0.1783
++                22 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 60
++                    offset (Uint64) : 1496
++                    positionX (Float) : 537.4725
++                    positionY (Float) : 153.9937
++                    positionZ (Float) : 22.5335
++                23 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 60
++                    offset (Uint64) : 1564
++                    positionX (Float) : 522.8256
++                    positionY (Float) : 176.9169
++                    positionZ (Float) : 20.7346
++                24 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 60
++                    offset (Uint64) : 1632
++                    positionX (Float) : 518.9933
++                    positionY (Float) : 196.8599
++                    positionZ (Float) : 20.8561
++                25 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 60
++                    offset (Uint64) : 1700
++                    positionX (Float) : 545.2639
++                    positionY (Float) : 216.3550
++                    positionZ (Float) : 20.4308
++                26 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 60
++                    offset (Uint64) : 1768
++                    positionX (Float) : 551.3020
++                    positionY (Float) : 192.8246
++                    positionZ (Float) : 20.3504
++                27 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 60
++                    offset (Uint64) : 1836
++                    positionX (Float) : 565.2562
++                    positionY (Float) : 167.0654
++                    positionZ (Float) : 21.2532
++                28 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 60
++                    offset (Uint64) : 1904
++                    positionX (Float) : 568.8807
++                    positionY (Float) : 196.5546
++                    positionZ (Float) : 20.7717
++                29 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 60
++                    offset (Uint64) : 1972
++                    positionX (Float) : 583.1201
++                    positionY (Float) : 219.9800
++                    positionZ (Float) : 19.9314
++            blocksize (CVLQInt32) : 2040
++            BlockData (CCompressedBuffer:SBlockData)
++                0 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 92.5674
++                        Y (Float) : -37.0422
++                        Z (Float) : 4.1176
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 3970048626
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 1
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                1 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 93.6221
++                        Y (Float) : -61.0078
++                        Z (Float) : 5.8176
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 3970048626
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 1
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                2 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 253.1156
++                        Y (Float) : -79.1422
++                        Z (Float) : 7.3684
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 702742570
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 2
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                3 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 330.0189
++                        Y (Float) : -6.0782
++                        Z (Float) : 7.3684
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 702742570
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 2
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                4 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 322.7943
++                        Y (Float) : -116.5945
++                        Z (Float) : 7.3684
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 702742570
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 2
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                5 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 390.7571
++                        Y (Float) : -22.8081
++                        Z (Float) : 28.4684
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 702742570
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 2
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                6 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 388.1268
++                        Y (Float) : 77.6622
++                        Z (Float) : 7.3684
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 702742570
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 2
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                7 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 65.5396
++                        Y (Float) : -177.9633
++                        Z (Float) : 11.4684
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 702742570
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 2
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                8 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 395.8235
++                        Y (Float) : -116.3020
++                        Z (Float) : 12.2684
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 702742570
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 2
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                9 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : -25.7078
++                        Y (Float) : -245.8593
++                        Z (Float) : 26.1684
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 702742570
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 2
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                10 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 15.2459
++                        Y (Float) : 302.9276
++                        Z (Float) : 18.2684
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 702742570
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 2
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                11 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 92.5774
++                        Y (Float) : -28.0322
++                        Z (Float) : 4.1176
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 3970048626
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 1
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                12 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 74.2634
++                        Y (Float) : -56.0688
++                        Z (Float) : 5.4176
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 3970048626
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 1
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                13 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 63.6991
++                        Y (Float) : -37.1106
++                        Z (Float) : 5.4176
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 3970048626
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 1
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                14 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 55.0697
++                        Y (Float) : -57.9841
++                        Z (Float) : 6.4176
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 3970048626
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 1
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                15 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 195.5235
++                        Y (Float) : -2.8565
++                        Z (Float) : 4.9176
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 3970048626
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 1
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                16 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 265.7415
++                        Y (Float) : -19.5092
++                        Z (Float) : 9.1447
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 394502813
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 3
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                17 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 283.7099
++                        Y (Float) : -42.9451
++                        Z (Float) : 7.2598
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 1239672587
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 4
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                18 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 297.6610
++                        Y (Float) : -51.9467
++                        Z (Float) : 7.2598
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 1239672587
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 4
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                19 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 316.8866
++                        Y (Float) : -54.6051
++                        Z (Float) : 7.2598
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 1239672587
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 4
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                20 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 306.4792
++                        Y (Float) : -18.1549
++                        Z (Float) : 7.2598
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 1239672587
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 4
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                21 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 264.6861
++                        Y (Float) : -0.6873
++                        Z (Float) : 0.1783
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 950525363
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 5
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                22 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 537.4725
++                        Y (Float) : 153.9937
++                        Z (Float) : 22.5335
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 950525363
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 5
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                23 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 522.8256
++                        Y (Float) : 176.9169
++                        Z (Float) : 20.7346
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 950525363
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 5
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                24 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 518.9933
++                        Y (Float) : 196.8599
++                        Z (Float) : 20.8561
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 950525363
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 5
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                25 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 545.2639
++                        Y (Float) : 216.3550
++                        Z (Float) : 20.4308
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 950525363
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 5
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                26 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 551.3020
++                        Y (Float) : 192.8246
++                        Z (Float) : 20.3504
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 950525363
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 5
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                27 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 565.2562
++                        Y (Float) : 167.0654
++                        Z (Float) : 21.2532
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 950525363
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 5
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                28 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 568.8807
++                        Y (Float) : 196.5546
++                        Z (Float) : 20.7717
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 950525363
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 5
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                29 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 583.1201
++                        Y (Float) : 219.9800
++                        Z (Float) : 19.9314
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 950525363
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 5
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000

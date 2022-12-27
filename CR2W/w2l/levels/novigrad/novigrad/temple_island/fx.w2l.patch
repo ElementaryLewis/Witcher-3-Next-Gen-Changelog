@@ -1,0 +1,497 @@
+ 1 file changed, 224 insertions(+), 58 deletions(-)
+
+diff --git 1.32/levels/novigrad/novigrad/temple_island/fx.w2l.txt 4.00/levels/novigrad/novigrad/temple_island/fx.w2l.txt
+index d197ac4..2ea5ec0 100644
+--- 1.32/levels/novigrad/novigrad/temple_island/fx.w2l.txt
++++ 4.00/levels/novigrad/novigrad/temple_island/fx.w2l.txt
+@@ -127,7 +127,8 @@
+                 123 (ptr:CEntity) : CGameplayEntity #124
+                 124 (ptr:CEntity) : CGameplayEntity #125
+                 125 (ptr:CEntity) : CGameplayEntity #126
+-            nameCount (Uint32) : 167
++            sectorData (handle:CSectorData) : CSectorData #127
++            nameCount (Uint32) : 170
+     W3FireSource #1 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+             tags (TagList)
+@@ -350,7 +351,7 @@
+                 Roll (Float) : 34.0000
+                 X (Float) : 462.8419
+                 Y (Float) : 2135.8260
+-                Z (Float) : 34.1256
++                Z (Float) : 34.0470
+             guid (CGUID) : c5d2934d-ecae-44b8-8c2a-81e5087531d0
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -411,9 +412,9 @@
+                 Pitch (Float) : 0.0000
+                 Yaw (Float) : 0.0000
+                 Roll (Float) : 24.0000
+-                X (Float) : 426.9564
+-                Y (Float) : 2139.0230
+-                Z (Float) : 26.4106
++                X (Float) : 426.9343
++                Y (Float) : 2139.0420
++                Z (Float) : 26.3189
+             guid (CGUID) : c7c2bf5c-ea5f-4a95-bc5a-c1533953b47e
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -580,7 +581,7 @@
+                 Roll (Float) : 17.0000
+                 X (Float) : 441.1764
+                 Y (Float) : 2158.7690
+-                Z (Float) : 34.0320
++                Z (Float) : 33.9867
+             guid (CGUID) : d0022ba2-dd5f-4ff2-820e-74be45cbd329
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -607,7 +608,7 @@
+                 Roll (Float) : 17.0000
+                 X (Float) : 420.3450
+                 Y (Float) : 2187.8310
+-                Z (Float) : 25.6897
++                Z (Float) : 25.5741
+             guid (CGUID) : c99d71b8-8449-48bf-a67a-0e079025afff
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -688,7 +689,7 @@
+                 Roll (Float) : 30.0000
+                 X (Float) : 442.6856
+                 Y (Float) : 2145.3110
+-                Z (Float) : 33.9853
++                Z (Float) : 33.9705
+             guid (CGUID) : ac7eb489-9b6d-4b72-bc24-f3afefb25c9e
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -795,14 +796,10 @@
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent1
+-                    sizeofdata (Uint32) : 55
++                    sizeofdata (Uint32) : 34
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (EngineTransform)
+-                            X (Float) : 1.2000
+-                            Y (Float) : -0.1000
+-                            Z (Float) : 4.4000
+-                        1 (Float) : 7.7000
+-                        2 (ELightUsageMask) : LUM_IsExteriorOnly
++                        0 (Float) : 7.7000
++                        1 (ELightUsageMask) : LUM_IsExteriorOnly
+                 1 (SEntityBufferType2)
+                     componentName (CName) : CSpotLightComponent0
+                     sizeofdata (Uint32) : 36
+@@ -2190,9 +2187,9 @@
+                 Scale_x (Float) : 0.8506
+                 Scale_y (Float) : 0.8506
+                 Scale_z (Float) : 0.9229
+-                X (Float) : 468.7071
+-                Y (Float) : 2156.3370
+-                Z (Float) : 40.9132
++                X (Float) : 468.7896
++                Y (Float) : 2156.3890
++                Z (Float) : 40.9140
+             guid (CGUID) : 1298f92d-e95a-4c3d-9352-9eab402080bf
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -3755,9 +3752,9 @@
+                 Pitch (Float) : 0.0000
+                 Yaw (Float) : 0.0000
+                 Roll (Float) : 261.0018
+-                X (Float) : 494.9760
+-                Y (Float) : 2178.2390
+-                Z (Float) : 33.9527
++                X (Float) : 495.0427
++                Y (Float) : 2178.0030
++                Z (Float) : 33.9406
+             guid (CGUID) : 11be1d41-fbc7-4e6e-bd94-72426471a44a
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -3776,9 +3773,9 @@
+                 Pitch (Float) : 0.0000
+                 Yaw (Float) : 0.0000
+                 Roll (Float) : 296.0014
+-                X (Float) : 485.6096
+-                Y (Float) : 2206.8980
+-                Z (Float) : 35.1275
++                X (Float) : 485.5940
++                Y (Float) : 2206.9470
++                Z (Float) : 35.3216
+             guid (CGUID) : edbdb03e-72bb-4370-b9fb-f41f8d62f64a
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -3797,9 +3794,9 @@
+                 Pitch (Float) : 0.0000
+                 Yaw (Float) : 0.0000
+                 Roll (Float) : 328.0013
+-                X (Float) : 475.2029
+-                Y (Float) : 2217.6850
+-                Z (Float) : 40.0535
++                X (Float) : 475.2922
++                Y (Float) : 2218.3020
++                Z (Float) : 40.0696
+             guid (CGUID) : ad31f1ab-41c1-4e3f-9a40-9257d0140042
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -3818,9 +3815,9 @@
+                 Pitch (Float) : 0.0000
+                 Yaw (Float) : 0.0000
+                 Roll (Float) : 297.0009
+-                X (Float) : 471.8236
+-                Y (Float) : 2230.5480
+-                Z (Float) : 44.3338
++                X (Float) : 472.2159
++                Y (Float) : 2230.9090
++                Z (Float) : 44.3311
+             guid (CGUID) : 03c1aaa7-c39a-4143-8d48-7f3204ba76e5
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -3839,9 +3836,9 @@
+                 Pitch (Float) : 0.0000
+                 Yaw (Float) : 0.0000
+                 Roll (Float) : 297.0009
+-                X (Float) : 459.7184
+-                Y (Float) : 2234.2910
+-                Z (Float) : 44.8356
++                X (Float) : 460.0383
++                Y (Float) : 2234.5860
++                Z (Float) : 44.7614
+             guid (CGUID) : 7c6fb831-1399-4b1c-9c4f-09aec0136a95
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -3860,9 +3857,9 @@
+                 Pitch (Float) : 0.0000
+                 Yaw (Float) : 0.0000
+                 Roll (Float) : 257.0017
+-                X (Float) : 541.1915
+-                Y (Float) : 2190.9740
+-                Z (Float) : 37.0354
++                X (Float) : 541.2964
++                Y (Float) : 2191.0070
++                Z (Float) : 36.9343
+             guid (CGUID) : b0e52d77-d759-499e-ac99-532e41ab907c
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -3881,9 +3878,9 @@
+                 Pitch (Float) : 0.0000
+                 Yaw (Float) : 0.0000
+                 Roll (Float) : 257.0017
+-                X (Float) : 533.4128
+-                Y (Float) : 2181.8890
+-                Z (Float) : 34.0467
++                X (Float) : 533.3493
++                Y (Float) : 2181.7860
++                Z (Float) : 33.9175
+             guid (CGUID) : b7913e54-499c-4bda-af2f-584caf99961a
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -3925,7 +3922,12 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CGameplayLightComponent1
++                    sizeofdata (Uint32) : 19
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Bool) : true
+             idTag (IdTag) :  fd62bb21-8cf7-4d58-a72a-0bc1371c53af
+     W3FireSource #95 (W3FireSource) : 
+         W3FireSource (W3FireSource)
+@@ -3935,7 +3937,7 @@
+                 Roll (Float) : 316.0012
+                 X (Float) : 531.3759
+                 Y (Float) : 2200.9240
+-                Z (Float) : 37.7385
++                Z (Float) : 37.6919
+             guid (CGUID) : 62e22dec-248c-458c-9fd0-840785c950f5
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -4019,7 +4021,7 @@
+                 Roll (Float) : 331.0014
+                 X (Float) : 490.7171
+                 Y (Float) : 2240.0110
+-                Z (Float) : 43.3960
++                Z (Float) : 43.4091
+             guid (CGUID) : f4c4fbf2-637f-4fd0-a0b4-d13ed0fece4d
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -4061,7 +4063,7 @@
+                 Roll (Float) : 311.0009
+                 X (Float) : 468.5169
+                 Y (Float) : 2192.1890
+-                Z (Float) : 44.9729
++                Z (Float) : 44.9538
+             guid (CGUID) : c45e23fd-fa2f-494c-9363-7c61aa40637f
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -4082,7 +4084,7 @@
+                 Roll (Float) : 342.0011
+                 X (Float) : 491.2252
+                 Y (Float) : 2202.2410
+-                Z (Float) : 45.5167
++                Z (Float) : 45.3348
+             guid (CGUID) : 40c43dbe-8c6d-4438-a96f-e0b6e07b1140
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -4103,7 +4105,7 @@
+                 Roll (Float) : 326.0006
+                 X (Float) : 465.8951
+                 Y (Float) : 2204.5580
+-                Z (Float) : 44.9729
++                Z (Float) : 44.9465
+             guid (CGUID) : 8535d612-d9bb-4f6e-8396-353da3132477
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -4381,9 +4383,9 @@
+                 Pitch (Float) : 0.0000
+                 Yaw (Float) : 0.0000
+                 Roll (Float) : 309.0011
+-                X (Float) : 458.8474
+-                Y (Float) : 2257.7720
+-                Z (Float) : 50.8618
++                X (Float) : 459.7476
++                Y (Float) : 2258.9880
++                Z (Float) : 51.0734
+             guid (CGUID) : 9528bfff-7b02-45db-a8ff-903bd742a061
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -4402,9 +4404,9 @@
+                 Pitch (Float) : 0.0000
+                 Yaw (Float) : 0.0000
+                 Roll (Float) : 287.0012
+-                X (Float) : 475.0328
+-                Y (Float) : 2267.0980
+-                Z (Float) : 52.6392
++                X (Float) : 475.4924
++                Y (Float) : 2267.1480
++                Z (Float) : 52.7775
+             guid (CGUID) : 452b0560-152f-4b30-8df9-028849632451
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -4425,7 +4427,7 @@
+                 Roll (Float) : 230.0018
+                 X (Float) : 491.5035
+                 Y (Float) : 2276.6440
+-                Z (Float) : 57.9902
++                Z (Float) : 57.9312
+             guid (CGUID) : ae940c43-0eb3-498b-87fc-40a8e1c295ce
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -4446,7 +4448,7 @@
+                 Roll (Float) : 218.0019
+                 X (Float) : 499.2928
+                 Y (Float) : 2284.6450
+-                Z (Float) : 60.1654
++                Z (Float) : 60.0877
+             guid (CGUID) : 50e9c5dd-7a6b-42fe-81ad-cb6c8e0175e0
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -4467,7 +4469,7 @@
+                 Roll (Float) : 196.0020
+                 X (Float) : 507.5881
+                 Y (Float) : 2287.6520
+-                Z (Float) : 62.4703
++                Z (Float) : 62.4903
+             guid (CGUID) : 6c498e11-26f3-41ce-8187-952c9d550c3d
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -4488,7 +4490,7 @@
+                 Roll (Float) : 259.0021
+                 X (Float) : 517.0673
+                 Y (Float) : 2287.9310
+-                Z (Float) : 64.8123
++                Z (Float) : 64.6982
+             guid (CGUID) : d8ed7ea5-98de-4a29-93ec-ff648dbf0957
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -4509,7 +4511,7 @@
+                 Roll (Float) : 37.0000
+                 X (Float) : 521.8122
+                 Y (Float) : 2277.0410
+-                Z (Float) : 65.2182
++                Z (Float) : 65.1807
+             guid (CGUID) : 8d5f909e-4c7e-4545-9916-687279c714da
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -4530,7 +4532,7 @@
+                 Roll (Float) : 18.0000
+                 X (Float) : 522.4290
+                 Y (Float) : 2274.0240
+-                Z (Float) : 64.5918
++                Z (Float) : 64.5809
+             guid (CGUID) : 88299108-7fe9-4193-9127-bc94cb4383a7
+             AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
+             AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
+@@ -4720,5 +4722,169 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CGameplayLightComponent1
++                    sizeofdata (Uint32) : 19
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Bool) : true
+             idTag (IdTag) :  3278e4fa-1eb4-4a84-a0ad-282828b295e0
++    CSectorData #127 (CSectorData) : 
++        CSectorData (CSectorData)
++            Unknown1 (Uint64) : 1889903050752
++            Resources (CBufferVLQInt32:CSectorDataResource)
++                0 (CSectorDataResource)
++                    box0 (Float) : 0.0000
++                    box1 (Float) : 0.0000
++                    box2 (Float) : 0.0000
++                    box3 (Float) : 0.0000
++                    box4 (Float) : 0.0000
++                    box5 (Float) : 0.0000
++                    pathHash (String) : ""
++                1 (CSectorDataResource)
++                    box0 (Float) : -0.5000
++                    box1 (Float) : -0.5000
++                    box2 (Float) : -0.5000
++                    box3 (Float) : 0.5000
++                    box4 (Float) : 0.5000
++                    box5 (Float) : 0.5000
++                    pathHash (String) : "fx/fire/fire_medium/p_fire_medium_far.w2p"
++            Objects (CBufferVLQInt32:CSectorDataObject)
++                0 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 2010
++                    offset (Uint64) : 0
++                    positionX (Float) : 562.5452
++                    positionY (Float) : 2213.6240
++                    positionZ (Float) : 143.9317
++                1 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 2010
++                    offset (Uint64) : 68
++                    positionX (Float) : 572.0173
++                    positionY (Float) : 2233.9630
++                    positionZ (Float) : 143.9317
++                2 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 2010
++                    offset (Uint64) : 136
++                    positionX (Float) : 591.8018
++                    positionY (Float) : 2224.7730
++                    positionZ (Float) : 143.9317
++                3 (CSectorDataObject)
++                    type (Uint8) : 10
++                    flags (Uint8) : 0
++                    radius (Uint16) : 2010
++                    offset (Uint64) : 204
++                    positionX (Float) : 582.7541
++                    positionY (Float) : 2204.2100
++                    positionZ (Float) : 143.9317
++            blocksize (CVLQInt32) : 272
++            BlockData (CCompressedBuffer:SBlockData)
++                0 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 562.5452
++                        Y (Float) : 2213.6240
++                        Z (Float) : 143.9317
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 307150932
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 1
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                1 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 572.0173
++                        Y (Float) : 2233.9630
++                        Z (Float) : 143.9317
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 307150932
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 1
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                2 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 591.8018
++                        Y (Float) : 2224.7730
++                        Z (Float) : 143.9317
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 307150932
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 1
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000
++                3 (SBlockData)
++                    rotationMatrix (CMatrix3x3)
++                        ax (Float) : 1.0000
++                        ay (Float) : 0.0000
++                        az (Float) : 0.0000
++                        by (Float) : 0.0000
++                        bz (Float) : 1.0000
++                        by (Float) : 0.0000
++                        cz (Float) : 0.0000
++                        cy (Float) : 0.0000
++                        cz (Float) : 1.0000
++                    position (SVector3D)
++                        X (Float) : 582.7541
++                        Y (Float) : 2204.2100
++                        Z (Float) : 143.9317
++                    streamingRadius (Uint16) : 0
++                    flags (Uint16) : 1
++                    occlusionSystemID (Uint32) : 307150932
++                    SBlockDataLight (SBlockDataParticles)
++                        particleSystem (Uint16) : 1
++                        padding (Uint16) : 0
++                        lightChanels (Uint8) : 0
++                        renderingPlane (Uint8) : 0
++                        envAutoHideGroup (Uint8) : 0
++                        transparencySortGroup (Uint8) : 2
++                        globalEmissionScale (Float) : 1.0000

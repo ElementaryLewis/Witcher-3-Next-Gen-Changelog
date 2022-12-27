@@ -1,0 +1,298 @@
+ 1 file changed, 200 insertions(+), 23 deletions(-)
+
+diff --git 1.32/levels/novigrad/baron_lair/baron_castle/baron_castle_interior_lights_nn/entity_lights.w2l.txt 4.00/levels/novigrad/baron_lair/baron_castle/baron_castle_interior_lights_nn/entity_lights.w2l.txt
+index 398cbba..323d50c 100644
+--- 1.32/levels/novigrad/baron_lair/baron_castle/baron_castle_interior_lights_nn/entity_lights.w2l.txt
++++ 4.00/levels/novigrad/baron_lair/baron_castle/baron_castle_interior_lights_nn/entity_lights.w2l.txt
+@@ -9,12 +9,14 @@
+                 5 (ptr:CEntity) : CGameplayEntity #6
+                 6 (ptr:CEntity) : CGameplayEntity #7
+                 7 (ptr:CEntity) : CGameplayEntity #8
++                8 (ptr:CEntity) : CR4InteriorAreaEntity #9
+             nameCount (Uint32) : 226
+     CGameplayEntity #1 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+             tags (TagList)
+                 tags (CBufferVLQInt32:CName)
+                     0 (CName) : no_climb
++                    1 (CName) : CarriesOpenFire
+             transform (EngineTransform)
+                 Pitch (Float) : 0.0000
+                 Yaw (Float) : 0.0000
+@@ -34,19 +36,14 @@
+                     ComponentName (CName) : 
+             BufferV2 (CBufferUInt32:SEntityBufferType2)
+                 0 (SEntityBufferType2)
+-                    componentName (CName) : CGameplayLightComponent0
+-                    sizeofdata (Uint32) : 19
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
+-                1 (SEntityBufferType2)
+                     componentName (CName) : CPointLightComponent0
+-                    sizeofdata (Uint32) : 67
++                    sizeofdata (Uint32) : 70
+                     variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Bool) : false
+-                        1 (Float) : 10.0000
+-                        2 (Float) : 2.8500
+-                        3 (Float) : 27.0000
+-                        4 (Float) : 1.0000
++                        0 (Float) : 10.0000
++                        1 (Float) : 3.5000
++                        2 (Float) : 6.0000
++                        3 (Float) : 0.8500
++                        4 (Float) : 0.7000
+             idTag (IdTag) :  6aa2ff6e-955c-4cab-a4fe-439de990e02f
+     CGameplayEntity #2 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -67,7 +64,21 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CSpotLightComponent0
++                    sizeofdata (Uint32) : 34
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 0.1000
++                1 (SEntityBufferType2)
++                    componentName (CName) : CPointLightComponent0
++                    sizeofdata (Uint32) : 43
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 7.0000
++                        1 (EngineTransform)
++                            X (Float) : 0.0000
++                            Y (Float) : 0.0000
++                            Z (Float) : 0.4500
+             idTag (IdTag) :  394b04ed-4a15-4898-9311-686f1c7e12ea
+     CGameplayEntity #3 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -85,7 +96,22 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CSpotLightComponent0
++                    sizeofdata (Uint32) : 34
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 0.1000
++                1 (SEntityBufferType2)
++                    componentName (CName) : CPointLightComponent0
++                    sizeofdata (Uint32) : 55
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 2.0000
++                        1 (Float) : 7.0000
++                        2 (EngineTransform)
++                            X (Float) : 0.0000
++                            Y (Float) : 0.0000
++                            Z (Float) : 0.4500
+             idTag (IdTag) :  61078bad-d830-408e-914d-5ab157d515b8
+     CGameplayEntity #4 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -110,12 +136,7 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2)
+-                0 (SEntityBufferType2)
+-                    componentName (CName) : CSpotLightComponent0
+-                    sizeofdata (Uint32) : 22
+-                    variables (CBufferUInt32:CVariantSizeTypeName)
+-                        0 (Float) : 2.4000
++            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
+             idTag (IdTag) :  ee6a6037-b8e7-455c-9d62-474b9601e829
+     CGameplayEntity #5 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -139,7 +160,24 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CSpotLightComponent0
++                    sizeofdata (Uint32) : 34
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 0.1000
++                1 (SEntityBufferType2)
++                    componentName (CName) : CPointLightComponent0
++                    sizeofdata (Uint32) : 79
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 2.0000
++                        1 (Float) : 7.0000
++                        2 (Float) : 1.0000
++                        3 (Float) : 15.0000
++                        4 (EngineTransform)
++                            X (Float) : 0.0000
++                            Y (Float) : 0.0000
++                            Z (Float) : 0.6000
+             idTag (IdTag) :  56da783d-1f23-49fe-a0c7-aa00577847f8
+     CGameplayEntity #6 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -160,7 +198,21 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CSpotLightComponent0
++                    sizeofdata (Uint32) : 34
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 0.1000
++                1 (SEntityBufferType2)
++                    componentName (CName) : CPointLightComponent0
++                    sizeofdata (Uint32) : 55
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 2.9000
++                        2 (EngineTransform)
++                            X (Float) : 0.0000
++                            Y (Float) : 0.0000
++                            Z (Float) : 0.6000
+             idTag (IdTag) :  44dcec95-5e2b-4302-b96c-a0f8a220b496
+     CGameplayEntity #7 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -181,7 +233,22 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CSpotLightComponent0
++                    sizeofdata (Uint32) : 70
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 210.0000
++                        1 (Float) : 170.0000
++                        2 (Float) : 4.0000
++                        3 (Float) : 0.7000
++                        4 (Float) : 10.0000
++                1 (SEntityBufferType2)
++                    componentName (CName) : CPointLightComponent0
++                    sizeofdata (Uint32) : 34
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 2.0000
++                        1 (Float) : 15.0000
+             idTag (IdTag) :  e2485f9b-8519-4f8a-b43d-caef04b7e0a9
+     CGameplayEntity #8 (CGameplayEntity) : 
+         CGameplayEntity (CGameplayEntity)
+@@ -205,5 +272,115 @@
+             BufferV1 (CCompressedBuffer:SEntityBufferType1)
+                 0 (SEntityBufferType1)
+                     ComponentName (CName) : 
+-            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++            BufferV2 (CBufferUInt32:SEntityBufferType2)
++                0 (SEntityBufferType2)
++                    componentName (CName) : CSpotLightComponent0
++                    sizeofdata (Uint32) : 34
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 0.1000
++                        1 (Float) : 0.1000
++                1 (SEntityBufferType2)
++                    componentName (CName) : CPointLightComponent0
++                    sizeofdata (Uint32) : 46
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 3.0000
++                        1 (Float) : 21.0000
++                        2 (Float) : 0.7000
++                2 (SEntityBufferType2)
++                    componentName (CName) : CPointLightComponent1
++                    sizeofdata (Uint32) : 34
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 1.0000
++                        1 (Float) : 0.1000
++                3 (SEntityBufferType2)
++                    componentName (CName) : CPointLightComponent2
++                    sizeofdata (Uint32) : 34
++                    variables (CBufferUInt32:CVariantSizeTypeName)
++                        0 (Float) : 0.1000
+             idTag (IdTag) :  b050edcd-5ef0-4554-81e1-4dfd811ddca2
++    CR4InteriorAreaEntity #9 (CR4InteriorAreaEntity) : 
++        CR4InteriorAreaEntity (CR4InteriorAreaEntity)
++            transform (EngineTransform)
++                X (Float) : 150.6786
++                Y (Float) : 178.5036
++                Z (Float) : 37.1190
++            guid (CGUID) : 942e2465-8654-427c-9866-75f1bce63fee
++            AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
++            AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
++            streamingDistance (Uint8) : 0
++            Components (array:ptr:CComponent)
++                0 (ptr:CComponent) : CR4InteriorAreaComponent #10
++            BufferV1 (CCompressedBuffer:SEntityBufferType1)
++                0 (SEntityBufferType1)
++                    ComponentName (CName) : 
++            BufferV2 (CBufferUInt32:SEntityBufferType2) : # CBufferUInt32:SEntityBufferType2
++    CR4InteriorAreaComponent #10 (CR4InteriorAreaComponent) : InteriorTrigger
++        CR4InteriorAreaComponent (CR4InteriorAreaComponent)
++            transform (EngineTransform)
++                Scale_x (Float) : 10.0000
++                Scale_y (Float) : 10.0000
++                Scale_z (Float) : 10.0000
++            guid (CGUID) : 61a9e9ef-6ee7-452f-a4d2-5558f27e117f
++            AttachmentsReference (array:handle:IAttachment) : # array:handle:IAttachment
++            AttachmentsChild (array:handle:IAttachment) : # array:handle:IAttachment
++            name (String) : "InteriorTrigger"
++            boundingBox (Box)
++                Min (Vector)
++                    X (Float) : 145.6786
++                    Y (Float) : 173.5036
++                    Z (Float) : 37.1190
++                    W (Float) : 1.0000
++                Max (Vector)
++                    X (Float) : 155.6786
++                    Y (Float) : 183.5036
++                    Z (Float) : 187.1190
++                    W (Float) : 1.0000
++            height (Float) : 15.0000
++            color (Color)
++                Red (Uint8) : 255
++                Green (Uint8) : 253
++                Blue (Uint8) : 12
++                Alpha (Uint8) : 255
++            localPoints (array:Vector)
++                0 (Vector)
++                    X (Float) : -0.5000
++                    Y (Float) : -0.5000
++                    Z (Float) : 0.0000
++                    W (Float) : 1.0000
++                1 (Vector)
++                    X (Float) : 0.5000
++                    Y (Float) : -0.5000
++                    Z (Float) : 0.0000
++                    W (Float) : 1.0000
++                2 (Vector)
++                    X (Float) : 0.5000
++                    Y (Float) : 0.5000
++                    Z (Float) : 0.0000
++                    W (Float) : 1.0000
++                3 (Vector)
++                    X (Float) : -0.5000
++                    Y (Float) : 0.5000
++                    Z (Float) : 0.0000
++                    W (Float) : 1.0000
++            worldPoints (array:Vector)
++                0 (Vector)
++                    X (Float) : 145.6786
++                    Y (Float) : 173.5036
++                    Z (Float) : 37.1190
++                    W (Float) : 1.0000
++                1 (Vector)
++                    X (Float) : 155.6786
++                    Y (Float) : 173.5036
++                    Z (Float) : 37.1190
++                    W (Float) : 1.0000
++                2 (Vector)
++                    X (Float) : 155.6786
++                    Y (Float) : 183.5036
++                    Z (Float) : 37.1190
++                    W (Float) : 1.0000
++                3 (Vector)
++                    X (Float) : 145.6786
++                    Y (Float) : 183.5036
++                    Z (Float) : 37.1190
++                    W (Float) : 1.0000
++            Bufferdata (CByteArray2) : 1299 bytes
