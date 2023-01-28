@@ -1,0 +1,403 @@
+ 1 file changed, 151 insertions(+), 144 deletions(-)
+
+diff --git 1.32/fx/shaders/smoke_light.w2mg.txt 4.00/fx/shaders/smoke_light.w2mg.txt
+index a487409..4f43a10 100644
+--- 1.32/fx/shaders/smoke_light.w2mg.txt
++++ 4.00/fx/shaders/smoke_light.w2mg.txt
+@@ -1,44 +1,44 @@
+     CMaterialGraph #0 (CMaterialGraph) : 
+         CMaterialGraph (CMaterialGraph)
+-            pixelParamBlockSize (Uint32) : 148
++            pixelParamBlockSize (Uint32) : 152
+             vertexParamBlockSize (Uint32) : 8
+-            canUseOnMeshes (Bool) : false
+             canUseOnParticles (Bool) : true
+             canUseSkinning (Bool) : false
+             sortGroup (ERenderingSortGroup) : RSG_Transparent
+             blendMode (ERenderingBlendMode) : RBM_AlphaBlend
+             offset (Vector)
+-                X (Float) : 437.0000
+-                Y (Float) : 413.0000
++                X (Float) : -84.0000
++                Y (Float) : 133.0000
+                 Z (Float) : 0.0000
+                 W (Float) : 1.0000
+             pixelParameterBlocks (array:ptr:CMaterialParameter)
+                 0 (ptr:CMaterialParameter) : CMaterialParameterScalar #1
+                 1 (ptr:CMaterialParameter) : CMaterialParameterScalar #2
+-                2 (ptr:CMaterialParameter) : CMaterialParameterScalar #3
+-                3 (ptr:CMaterialParameter) : CMaterialParameterScalar #4
+-                4 (ptr:CMaterialParameter) : CMaterialParameterScalar #5
+-                5 (ptr:CMaterialParameter) : CMaterialParameterScalar #6
+-                6 (ptr:CMaterialParameter) : CMaterialParameterScalar #7
++                2 (ptr:CMaterialParameter) : CMaterialParameterTexture #3
++                3 (ptr:CMaterialParameter) : CMaterialParameterVector #4
++                4 (ptr:CMaterialParameter) : CMaterialParameterVector #5
++                5 (ptr:CMaterialParameter) : CMaterialParameterVector #6
++                6 (ptr:CMaterialParameter) : CMaterialParameterTexture #7
+                 7 (ptr:CMaterialParameter) : CMaterialParameterScalar #8
+                 8 (ptr:CMaterialParameter) : CMaterialParameterScalar #9
+-                9 (ptr:CMaterialParameter) : CMaterialParameterScalar #10
++                9 (ptr:CMaterialParameter) : CMaterialParameterVector #10
+                 10 (ptr:CMaterialParameter) : CMaterialParameterScalar #11
+                 11 (ptr:CMaterialParameter) : CMaterialParameterScalar #12
+                 12 (ptr:CMaterialParameter) : CMaterialParameterScalar #13
+-                13 (ptr:CMaterialParameter) : CMaterialParameterTexture #14
+-                14 (ptr:CMaterialParameter) : CMaterialParameterVector #15
+-                15 (ptr:CMaterialParameter) : CMaterialParameterVector #16
+-                16 (ptr:CMaterialParameter) : CMaterialParameterVector #17
+-                17 (ptr:CMaterialParameter) : CMaterialParameterVector #18
+-                18 (ptr:CMaterialParameter) : CMaterialParameterScalar #19
+-                19 (ptr:CMaterialParameter) : CMaterialParameterTexture #20
++                13 (ptr:CMaterialParameter) : CMaterialParameterScalar #14
++                14 (ptr:CMaterialParameter) : CMaterialParameterScalar #15
++                15 (ptr:CMaterialParameter) : CMaterialParameterScalar #16
++                16 (ptr:CMaterialParameter) : CMaterialParameterScalar #17
++                17 (ptr:CMaterialParameter) : CMaterialParameterScalar #18
++                18 (ptr:CMaterialParameter) : CMaterialParameterColor #19
++                19 (ptr:CMaterialParameter) : CMaterialParameterScalar #20
+                 20 (ptr:CMaterialParameter) : CMaterialParameterScalar #21
+-                21 (ptr:CMaterialParameter) : CMaterialParameterColor #22
++                21 (ptr:CMaterialParameter) : CMaterialParameterScalar #22
+                 22 (ptr:CMaterialParameter) : CMaterialParameterScalar #23
++                23 (ptr:CMaterialParameter) : CMaterialParameterScalar #24
+             vertexParameterBlocks (array:ptr:CMaterialParameter)
+-                0 (ptr:CMaterialParameter) : CMaterialParameterScalar #24
+-                1 (ptr:CMaterialParameter) : CMaterialParameterScalar #25
++                0 (ptr:CMaterialParameter) : CMaterialParameterScalar #25
++                1 (ptr:CMaterialParameter) : CMaterialParameterScalar #26
+             canOverrideMasked (Bool) : true
+             PixelParameters (CBufferVLQInt32:SMaterialGraphParameter)
+                 0 (SMaterialGraphParameter)
+@@ -48,91 +48,95 @@
+                 1 (SMaterialGraphParameter)
+                     Type (Uint8) : 5
+                     Offset (Uint8) : 4
+-                    Name (CName) : rain_strengthA
++                    Name (CName) : blend_far_start
+                 2 (SMaterialGraphParameter)
+-                    Type (Uint8) : 5
++                    Type (Uint8) : 1
+                     Offset (Uint8) : 8
+-                    Name (CName) : rain_strengthB
++                    Name (CName) : diffuse
+                 3 (SMaterialGraphParameter)
+-                    Type (Uint8) : 5
+-                    Offset (Uint8) : 12
+-                    Name (CName) : interior_volume
+-                4 (SMaterialGraphParameter)
+-                    Type (Uint8) : 5
++                    Type (Uint8) : 4
+                     Offset (Uint8) : 16
+-                    Name (CName) : distortion_scale
++                    Name (CName) : distortion_text1_size
++                4 (SMaterialGraphParameter)
++                    Type (Uint8) : 4
++                    Offset (Uint8) : 32
++                    Name (CName) : distortion_text2_speed
+                 5 (SMaterialGraphParameter)
+-                    Type (Uint8) : 5
+-                    Offset (Uint8) : 20
+-                    Name (CName) : blend_near_start
++                    Type (Uint8) : 4
++                    Offset (Uint8) : 48
++                    Name (CName) : distortion_text2_size
+                 6 (SMaterialGraphParameter)
+-                    Type (Uint8) : 5
+-                    Offset (Uint8) : 24
+-                    Name (CName) : blend_near_end
++                    Type (Uint8) : 1
++                    Offset (Uint8) : 64
++                    Name (CName) : distortion_texture
+                 7 (SMaterialGraphParameter)
+                     Type (Uint8) : 5
+-                    Offset (Uint8) : 28
+-                    Name (CName) : blend_far_end
++                    Offset (Uint8) : 72
++                    Name (CName) : distortion_scale
+                 8 (SMaterialGraphParameter)
+                     Type (Uint8) : 5
+-                    Offset (Uint8) : 32
+-                    Name (CName) : blend_far_start
++                    Offset (Uint8) : 76
++                    Name (CName) : distortion_multiply
+                 9 (SMaterialGraphParameter)
+-                    Type (Uint8) : 5
+-                    Offset (Uint8) : 36
+-                    Name (CName) : subuvheight
++                    Type (Uint8) : 4
++                    Offset (Uint8) : 80
++                    Name (CName) : distortion_text1_speed
+                 10 (SMaterialGraphParameter)
+                     Type (Uint8) : 5
+-                    Offset (Uint8) : 40
+-                    Name (CName) : global_colour
+-                11 (SMaterialGraphParameter)
+-                    Type (Uint8) : 5
+-                    Offset (Uint8) : 44
++                    Offset (Uint8) : 96
+                     Name (CName) : subuvwidth
++                11 (SMaterialGraphParameter)
++                    Type (Uint8) : 5
++                    Offset (Uint8) : 100
++                    Name (CName) : subuvheight
+                 12 (SMaterialGraphParameter)
+                     Type (Uint8) : 5
+-                    Offset (Uint8) : 48
+-                    Name (CName) : color_multiply_value
++                    Offset (Uint8) : 104
++                    Name (CName) : global_colour
+                 13 (SMaterialGraphParameter)
+-                    Type (Uint8) : 1
+-                    Offset (Uint8) : 52
+-                    Name (CName) : diffuse
++                    Type (Uint8) : 5
++                    Offset (Uint8) : 108
++                    Name (CName) : alpha_value
+                 14 (SMaterialGraphParameter)
+-                    Type (Uint8) : 4
+-                    Offset (Uint8) : 60
+-                    Name (CName) : distortion_text1_speed
++                    Type (Uint8) : 5
++                    Offset (Uint8) : 112
++                    Name (CName) : soft_transparency_value
+                 15 (SMaterialGraphParameter)
+-                    Type (Uint8) : 4
+-                    Offset (Uint8) : 76
+-                    Name (CName) : distortion_text2_speed
++                    Type (Uint8) : 5
++                    Offset (Uint8) : 116
++                    Name (CName) : interior_volume
+                 16 (SMaterialGraphParameter)
+-                    Type (Uint8) : 4
+-                    Offset (Uint8) : 92
+-                    Name (CName) : distortion_text1_size
++                    Type (Uint8) : 5
++                    Offset (Uint8) : 120
++                    Name (CName) : rain_strengthA
+                 17 (SMaterialGraphParameter)
+-                    Type (Uint8) : 4
+-                    Offset (Uint8) : 108
+-                    Name (CName) : distortion_text2_size
+-                18 (SMaterialGraphParameter)
+                     Type (Uint8) : 5
+                     Offset (Uint8) : 124
+-                    Name (CName) : alpha_value
+-                19 (SMaterialGraphParameter)
+-                    Type (Uint8) : 1
++                    Name (CName) : rain_strengthB
++                18 (SMaterialGraphParameter)
++                    Type (Uint8) : 2
+                     Offset (Uint8) : 128
+-                    Name (CName) : distortion_texture
++                    Name (CName) : color_multiply
++                19 (SMaterialGraphParameter)
++                    Type (Uint8) : 5
++                    Offset (Uint8) : 132
++                    Name (CName) : color_multiply_value
+                 20 (SMaterialGraphParameter)
+                     Type (Uint8) : 5
+                     Offset (Uint8) : 136
+-                    Name (CName) : soft_transparency_value
++                    Name (CName) : alpcha_power
+                 21 (SMaterialGraphParameter)
+-                    Type (Uint8) : 2
++                    Type (Uint8) : 5
+                     Offset (Uint8) : 140
+-                    Name (CName) : color_multiply
++                    Name (CName) : blend_near_end
+                 22 (SMaterialGraphParameter)
+                     Type (Uint8) : 5
+                     Offset (Uint8) : 144
+-                    Name (CName) : distortion_multiply
++                    Name (CName) : blend_near_start
++                23 (SMaterialGraphParameter)
++                    Type (Uint8) : 5
++                    Offset (Uint8) : 148
++                    Name (CName) : blend_far_end
+             VertexParameters (CBufferVLQInt32:SMaterialGraphParameter)
+                 0 (SMaterialGraphParameter)
+                     Type (Uint8) : 5
+@@ -147,71 +151,15 @@
+         CMaterialParameterScalar (CMaterialParameterScalar)
+             parameterName (CName) : max_light
+             scalar (Float) : 0.2000
+-    CMaterialParameterScalar #2 (CMaterialParameterScalar) : rain_strengthA
+-        CMaterialParameterScalar (CMaterialParameterScalar)
+-            parameterName (CName) : rain_strengthA
+-    CMaterialParameterScalar #3 (CMaterialParameterScalar) : rain_strengthB
+-        CMaterialParameterScalar (CMaterialParameterScalar)
+-            parameterName (CName) : rain_strengthB
+-    CMaterialParameterScalar #4 (CMaterialParameterScalar) : interior_volume
+-        CMaterialParameterScalar (CMaterialParameterScalar)
+-            parameterName (CName) : interior_volume
+-            scalar (Float) : 0.0000
+-    CMaterialParameterScalar #5 (CMaterialParameterScalar) : distortion_scale
+-        CMaterialParameterScalar (CMaterialParameterScalar)
+-            parameterName (CName) : distortion_scale
+-            scalar (Float) : 0.2200
+-    CMaterialParameterScalar #6 (CMaterialParameterScalar) : blend_near_start
+-        CMaterialParameterScalar (CMaterialParameterScalar)
+-            parameterName (CName) : blend_near_start
+-    CMaterialParameterScalar #7 (CMaterialParameterScalar) : blend_near_end
+-        CMaterialParameterScalar (CMaterialParameterScalar)
+-            parameterName (CName) : blend_near_end
+-            scalar (Float) : 0.5000
+-    CMaterialParameterScalar #8 (CMaterialParameterScalar) : blend_far_end
+-        CMaterialParameterScalar (CMaterialParameterScalar)
+-            parameterName (CName) : blend_far_end
+-            scalar (Float) : 40.0000
+-    CMaterialParameterScalar #9 (CMaterialParameterScalar) : blend_far_start
++    CMaterialParameterScalar #2 (CMaterialParameterScalar) : blend_far_start
+         CMaterialParameterScalar (CMaterialParameterScalar)
+             parameterName (CName) : blend_far_start
+             scalar (Float) : 30.0000
+-    CMaterialParameterScalar #10 (CMaterialParameterScalar) : subuvheight
+-        CMaterialParameterScalar (CMaterialParameterScalar)
+-            parameterName (CName) : subuvheight
+-            scalar (Float) : 2.0000
+-    CMaterialParameterScalar #11 (CMaterialParameterScalar) : global_colour
+-        CMaterialParameterScalar (CMaterialParameterScalar)
+-            parameterName (CName) : global_colour
+-            scalar (Float) : 0.0000
+-    CMaterialParameterScalar #12 (CMaterialParameterScalar) : subuvwidth
+-        CMaterialParameterScalar (CMaterialParameterScalar)
+-            parameterName (CName) : subuvwidth
+-            scalar (Float) : 2.0000
+-    CMaterialParameterScalar #13 (CMaterialParameterScalar) : color_multiply_value
+-        CMaterialParameterScalar (CMaterialParameterScalar)
+-            parameterName (CName) : color_multiply_value
+-    CMaterialParameterTexture #14 (CMaterialParameterTexture) : diffuse
++    CMaterialParameterTexture #3 (CMaterialParameterTexture) : diffuse
+         CMaterialParameterTexture (CMaterialParameterTexture)
+             parameterName (CName) : diffuse
+             texture (handle:ITexture) : fx/textures/smoke/white_smoke_03.xbm
+-    CMaterialParameterVector #15 (CMaterialParameterVector) : distortion_text1_speed
+-        CMaterialParameterVector (CMaterialParameterVector)
+-            parameterName (CName) : distortion_text1_speed
+-            vector (Vector)
+-                X (Float) : 0.2000
+-                Y (Float) : 0.2000
+-                Z (Float) : 0.2000
+-                W (Float) : 0.0000
+-    CMaterialParameterVector #16 (CMaterialParameterVector) : distortion_text2_speed
+-        CMaterialParameterVector (CMaterialParameterVector)
+-            parameterName (CName) : distortion_text2_speed
+-            vector (Vector)
+-                X (Float) : 0.1000
+-                Y (Float) : 0.1000
+-                Z (Float) : 0.1000
+-                W (Float) : 0.0000
+-    CMaterialParameterVector #17 (CMaterialParameterVector) : distortion_text1_size
++    CMaterialParameterVector #4 (CMaterialParameterVector) : distortion_text1_size
+         CMaterialParameterVector (CMaterialParameterVector)
+             parameterName (CName) : distortion_text1_size
+             vector (Vector)
+@@ -219,7 +167,15 @@
+                 Y (Float) : 1.0000
+                 Z (Float) : 1.0000
+                 W (Float) : 0.0000
+-    CMaterialParameterVector #18 (CMaterialParameterVector) : distortion_text2_size
++    CMaterialParameterVector #5 (CMaterialParameterVector) : distortion_text2_speed
++        CMaterialParameterVector (CMaterialParameterVector)
++            parameterName (CName) : distortion_text2_speed
++            vector (Vector)
++                X (Float) : 0.1000
++                Y (Float) : 0.1000
++                Z (Float) : 0.1000
++                W (Float) : 0.0000
++    CMaterialParameterVector #6 (CMaterialParameterVector) : distortion_text2_size
+         CMaterialParameterVector (CMaterialParameterVector)
+             parameterName (CName) : distortion_text2_size
+             vector (Vector)
+@@ -227,28 +183,79 @@
+                 Y (Float) : 2.0000
+                 Z (Float) : 2.0000
+                 W (Float) : 0.0000
+-    CMaterialParameterScalar #19 (CMaterialParameterScalar) : alpha_value
+-        CMaterialParameterScalar (CMaterialParameterScalar)
+-            parameterName (CName) : alpha_value
+-    CMaterialParameterTexture #20 (CMaterialParameterTexture) : distortion_texture
++    CMaterialParameterTexture #7 (CMaterialParameterTexture) : distortion_texture
+         CMaterialParameterTexture (CMaterialParameterTexture)
+             parameterName (CName) : distortion_texture
+             texture (handle:ITexture) : fx/textures/noise/noise01.xbm
+-    CMaterialParameterScalar #21 (CMaterialParameterScalar) : soft_transparency_value
++    CMaterialParameterScalar #8 (CMaterialParameterScalar) : distortion_scale
++        CMaterialParameterScalar (CMaterialParameterScalar)
++            parameterName (CName) : distortion_scale
++            scalar (Float) : 0.2200
++    CMaterialParameterScalar #9 (CMaterialParameterScalar) : distortion_multiply
++        CMaterialParameterScalar (CMaterialParameterScalar)
++            parameterName (CName) : distortion_multiply
++            scalar (Float) : 0.0000
++    CMaterialParameterVector #10 (CMaterialParameterVector) : distortion_text1_speed
++        CMaterialParameterVector (CMaterialParameterVector)
++            parameterName (CName) : distortion_text1_speed
++            vector (Vector)
++                X (Float) : 0.2000
++                Y (Float) : 0.2000
++                Z (Float) : 0.2000
++                W (Float) : 0.0000
++    CMaterialParameterScalar #11 (CMaterialParameterScalar) : subuvwidth
++        CMaterialParameterScalar (CMaterialParameterScalar)
++            parameterName (CName) : subuvwidth
++            scalar (Float) : 2.0000
++    CMaterialParameterScalar #12 (CMaterialParameterScalar) : subuvheight
++        CMaterialParameterScalar (CMaterialParameterScalar)
++            parameterName (CName) : subuvheight
++            scalar (Float) : 2.0000
++    CMaterialParameterScalar #13 (CMaterialParameterScalar) : global_colour
++        CMaterialParameterScalar (CMaterialParameterScalar)
++            parameterName (CName) : global_colour
++            scalar (Float) : 0.0000
++    CMaterialParameterScalar #14 (CMaterialParameterScalar) : alpha_value
++        CMaterialParameterScalar (CMaterialParameterScalar)
++            parameterName (CName) : alpha_value
++    CMaterialParameterScalar #15 (CMaterialParameterScalar) : soft_transparency_value
+         CMaterialParameterScalar (CMaterialParameterScalar)
+             parameterName (CName) : soft_transparency_value
+-    CMaterialParameterColor #22 (CMaterialParameterColor) : color_multiply
++    CMaterialParameterScalar #16 (CMaterialParameterScalar) : interior_volume
++        CMaterialParameterScalar (CMaterialParameterScalar)
++            parameterName (CName) : interior_volume
++            scalar (Float) : 0.0000
++    CMaterialParameterScalar #17 (CMaterialParameterScalar) : rain_strengthA
++        CMaterialParameterScalar (CMaterialParameterScalar)
++            parameterName (CName) : rain_strengthA
++    CMaterialParameterScalar #18 (CMaterialParameterScalar) : rain_strengthB
++        CMaterialParameterScalar (CMaterialParameterScalar)
++            parameterName (CName) : rain_strengthB
++    CMaterialParameterColor #19 (CMaterialParameterColor) : color_multiply
+         CMaterialParameterColor (CMaterialParameterColor)
+             parameterName (CName) : color_multiply
+-    CMaterialParameterScalar #23 (CMaterialParameterScalar) : distortion_multiply
++    CMaterialParameterScalar #20 (CMaterialParameterScalar) : color_multiply_value
+         CMaterialParameterScalar (CMaterialParameterScalar)
+-            parameterName (CName) : distortion_multiply
+-            scalar (Float) : 0.0000
+-    CMaterialParameterScalar #24 (CMaterialParameterScalar) : SamplingRadius
++            parameterName (CName) : color_multiply_value
++    CMaterialParameterScalar #21 (CMaterialParameterScalar) : alpcha_power
++        CMaterialParameterScalar (CMaterialParameterScalar)
++            parameterName (CName) : alpcha_power
++    CMaterialParameterScalar #22 (CMaterialParameterScalar) : blend_near_end
++        CMaterialParameterScalar (CMaterialParameterScalar)
++            parameterName (CName) : blend_near_end
++            scalar (Float) : 0.5000
++    CMaterialParameterScalar #23 (CMaterialParameterScalar) : blend_near_start
++        CMaterialParameterScalar (CMaterialParameterScalar)
++            parameterName (CName) : blend_near_start
++    CMaterialParameterScalar #24 (CMaterialParameterScalar) : blend_far_end
++        CMaterialParameterScalar (CMaterialParameterScalar)
++            parameterName (CName) : blend_far_end
++            scalar (Float) : 40.0000
++    CMaterialParameterScalar #25 (CMaterialParameterScalar) : SamplingRadius
+         CMaterialParameterScalar (CMaterialParameterScalar)
+             parameterName (CName) : SamplingRadius
+             scalar (Float) : 3.0000
+-    CMaterialParameterScalar #25 (CMaterialParameterScalar) : ShadowSamples
++    CMaterialParameterScalar #26 (CMaterialParameterScalar) : ShadowSamples
+         CMaterialParameterScalar (CMaterialParameterScalar)
+             parameterName (CName) : ShadowSamples
+             scalar (Float) : 3.0000
