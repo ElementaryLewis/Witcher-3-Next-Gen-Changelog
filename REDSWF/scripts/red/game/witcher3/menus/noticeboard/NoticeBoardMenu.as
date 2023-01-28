@@ -177,11 +177,12 @@ package red.game.witcher3.menus.noticeboard
       
       private function onItemClicked(param1:ListEvent) : void
       {
+         var _loc2_:NoticeboardListItem = null;
          if(this.mcList.selectedIndex == -1)
          {
             return;
          }
-         var _loc2_:NoticeboardListItem = this.mcList.getRendererAt(this.mcList.selectedIndex) as NoticeboardListItem;
+         _loc2_ = this.mcList.getRendererAt(this.mcList.selectedIndex) as NoticeboardListItem;
          if(_loc2_)
          {
             if(_loc2_.visible && _loc2_.enabled)

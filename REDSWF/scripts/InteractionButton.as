@@ -6,9 +6,9 @@ package
    {
        
       
-      public var mcActionName:MovieClip;
-      
       public var btnInteract:InputFeedbackButtonRef;
+      
+      public var mcActionName:MovieClip;
       
       public function InteractionButton()
       {

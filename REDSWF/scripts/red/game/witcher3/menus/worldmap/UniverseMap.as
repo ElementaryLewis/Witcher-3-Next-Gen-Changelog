@@ -3,6 +3,8 @@ package red.game.witcher3.menus.worldmap
    import com.gskinner.motion.GTween;
    import flash.display.MovieClip;
    import flash.events.TimerEvent;
+   import flash.filters.BitmapFilterQuality;
+   import flash.filters.GlowFilter;
    import flash.geom.Point;
    import flash.utils.Timer;
    import red.core.constants.KeyCode;
@@ -12,6 +14,7 @@ package red.game.witcher3.menus.worldmap
    import red.game.witcher3.events.MapContextEvent;
    import red.game.witcher3.utils.CommonUtils;
    import scaleform.clik.constants.InputValue;
+   import scaleform.clik.controls.UILoader;
    import scaleform.clik.events.InputEvent;
    import scaleform.clik.ui.InputDetails;
    
@@ -41,12 +44,25 @@ package red.game.witcher3.menus.worldmap
       
       private var playeLevel:int;
       
+      private var _glowFilter:GlowFilter;
+      
+      private var GLOW_COLOR:Number = 11508592;
+      
+      private var GLOW_BLUR:Number = 0;
+      
+      private var GLOW_STRENGHT:Number = 1;
+      
+      private var GLOW_ALPHA:Number = 1;
+      
+      private var filterArray:Array;
+      
       private var _bufScrollX:Number = 0;
       
       private var _bufScrollY:Number = 0;
       
       public function UniverseMap()
       {
+         this.filterArray = [];
          super();
       }
       
@@ -244,10 +260,12 @@ package red.game.witcher3.menus.worldmap
       public function updateAreaSelection(param1:Boolean = false) : void
       {
          var _loc3_:MapContextEvent = null;
-         var _loc5_:String = null;
-         var _loc6_:Object = null;
-         var _loc7_:int = 0;
-         var _loc8_:String = null;
+         var _loc5_:UILoader = null;
+         var _loc6_:UILoader = null;
+         var _loc7_:String = null;
+         var _loc8_:Object = null;
+         var _loc9_:int = 0;
+         var _loc10_:String = null;
          var _loc2_:UniverseArea = null;
          var _loc4_:UniverseArea = this.mcUniverseMapContainer.GetOveredHub(this.GetGlobalCrosshairPos());
          if(this.currentSelectedArea != _loc4_)
@@ -255,10 +273,30 @@ package red.game.witcher3.menus.worldmap
             if(this.currentSelectedArea)
             {
                this.currentSelectedArea.mcIcon.gotoAndStop("inactive");
+               if(this.currentSelectedArea as Hub_Custom)
+               {
+                  if(_loc5_ = this.currentSelectedArea.mcIcon.getChildByName("customUILoader") as UILoader)
+                  {
+                     this._glowFilter = new GlowFilter(this.GLOW_COLOR,1,this.GLOW_BLUR,this.GLOW_BLUR,0,BitmapFilterQuality.HIGH);
+                     this.filterArray = [];
+                     this.filterArray.push(this._glowFilter);
+                     _loc5_.filters = this.filterArray;
+                  }
+               }
             }
             if(_loc4_)
             {
                _loc4_.mcIcon.gotoAndStop("active");
+               if(_loc4_ as Hub_Custom)
+               {
+                  if(_loc6_ = _loc4_.mcIcon.getChildByName("customUILoader") as UILoader)
+                  {
+                     this._glowFilter = new GlowFilter(this.GLOW_COLOR,this.GLOW_ALPHA,this.GLOW_BLUR,this.GLOW_BLUR,this.GLOW_STRENGHT,BitmapFilterQuality.HIGH);
+                     this.filterArray = [];
+                     this.filterArray.push(this._glowFilter);
+                     _loc6_.filters = this.filterArray;
+                  }
+               }
             }
          }
          if(!param1)
@@ -271,24 +309,24 @@ package red.game.witcher3.menus.worldmap
             this.mcUniverseMapCrosshair.gotoAndPlay("snap");
             _loc3_ = new MapContextEvent(MapContextEvent.CONTEXT_CHANGE);
             _loc3_.active = true;
-            _loc6_ = {};
-            if((_loc7_ = this.currentSelectedArea.recLevel - this.playeLevel) >= 15)
+            _loc8_ = {};
+            if((_loc9_ = this.currentSelectedArea.recLevel - this.playeLevel) >= 15)
             {
-               _loc8_ = "<font color=\'#d61010\'>";
+               _loc10_ = "<font color=\'#d61010\'>";
             }
-            else if(_loc7_ < 15 && _loc7_ >= 6)
+            else if(_loc9_ < 15 && _loc9_ >= 6)
             {
-               _loc8_ = "<font color=\'#d68f29\'>";
+               _loc10_ = "<font color=\'#d68f29\'>";
             }
             else
             {
-               _loc8_ = "<font color=\'#FFFFFF\'>";
+               _loc10_ = "<font color=\'#FFFFFF\'>";
             }
-            _loc6_.title = "[[map_location_" + this.currentSelectedArea.GetWorldName() + "]]";
-            _loc6_.description = CommonUtils.getLocalization("map_description_" + this.currentSelectedArea.GetWorldName());
-            _loc6_.description += "<br>" + _loc8_ + CommonUtils.getLocalization("panel_item_required_level") + " " + this.currentSelectedArea.recLevel + "</font>";
-            _loc6_.openRegion = true;
-            _loc3_.tooltipData = _loc6_;
+            _loc8_.title = "[[map_location_" + this.currentSelectedArea.GetWorldName() + "]]";
+            _loc8_.description = CommonUtils.getLocalization("map_description_" + this.currentSelectedArea.GetWorldName());
+            _loc8_.description += "<br>" + _loc10_ + CommonUtils.getLocalization("panel_item_required_level") + " " + this.currentSelectedArea.recLevel + "</font>";
+            _loc8_.openRegion = true;
+            _loc3_.tooltipData = _loc8_;
             dispatchEvent(_loc3_);
          }
          else if(!_loc2_ && Boolean(this.currentSelectedArea))
@@ -357,8 +395,7 @@ package red.game.witcher3.menus.worldmap
       
       public function OnMouseMove(param1:Point) : *
       {
-         var _loc2_:Point = null;
-         _loc2_ = globalToLocal(param1);
+         var _loc2_:Point = globalToLocal(param1);
          this.mcUniverseMapCrosshair.x = _loc2_.x;
          this.mcUniverseMapCrosshair.y = _loc2_.y;
          if(this.CanProcessInput())

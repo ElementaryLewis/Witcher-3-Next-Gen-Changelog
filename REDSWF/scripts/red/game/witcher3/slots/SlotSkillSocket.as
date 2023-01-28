@@ -5,7 +5,7 @@ package red.game.witcher3.slots
    import red.game.witcher3.events.GridEvent;
    import red.game.witcher3.interfaces.IDragTarget;
    import red.game.witcher3.interfaces.IDropTarget;
-   import red.game.witcher3.menus.character_menu.SkillSocketsGroup;
+   import red.game.witcher3.menus.character_menu.SkillSlotConnector;
    
    public class SlotSkillSocket extends SlotSkillGrid implements IDropTarget
    {
@@ -17,8 +17,6 @@ package red.game.witcher3.slots
       
       protected var _connector:String;
       
-      public var skillSocketGroupRef:SkillSocketsGroup;
-      
       public function SlotSkillSocket()
       {
          super();
@@ -29,9 +27,9 @@ package red.game.witcher3.slots
          return this._connector;
       }
       
-      public function set connector(param1:String) : void
+      public function set connector(value:String) : void
       {
-         this._connector = param1;
+         this._connector = value;
       }
       
       public function get slotId() : int
@@ -39,9 +37,9 @@ package red.game.witcher3.slots
          return this._slotId;
       }
       
-      public function set slotId(param1:int) : void
+      public function set slotId(value:int) : void
       {
-         this._slotId = param1;
+         this._slotId = value;
       }
       
       override protected function configUI() : void
@@ -50,19 +48,11 @@ package red.game.witcher3.slots
          SlotsTransferManager.getInstance().addDropTarget(this);
       }
       
-      override protected function loadIcon(param1:String) : void
+      override protected function loadIcon(iconPath:String) : void
       {
          if(Boolean(_data) && _data.skillPath != NULL_SKILL)
          {
-            super.loadIcon(param1);
-            if(_imageLoader)
-            {
-               _imageLoader.visible = true;
-            }
-         }
-         else
-         {
-            unloadIcon();
+            super.loadIcon(iconPath);
          }
       }
       
@@ -74,71 +64,65 @@ package red.game.witcher3.slots
             iconLock.visible = _isLocked;
             this.updateConnector(_data.color);
          }
-         if(equipedIcon)
+      }
+      
+      protected function updateConnector(targetColor:String) : void
+      {
+         if(!this._connector)
          {
-            if(Boolean(_data) && !_data.isCoreSkill)
-            {
-               equipedIcon.visible = _data.isEquipped;
-            }
-            else
-            {
-               equipedIcon.visible = false;
-            }
+            return;
+         }
+         var connectorRef:SkillSlotConnector = parent.getChildByName(this._connector) as SkillSlotConnector;
+         if(connectorRef)
+         {
+            connectorRef.currentColor = targetColor;
          }
       }
       
-      protected function updateConnector(param1:String) : void
+      override protected function fireTooltipShowEvent(isMouseTooltip:Boolean = false) : void
       {
-         if(this.skillSocketGroupRef != null)
-         {
-            this.skillSocketGroupRef.updateData();
-         }
-      }
-      
-      override protected function fireTooltipShowEvent(param1:Boolean = false) : void
-      {
-         var _loc2_:GridEvent = null;
+         var displayEvent:GridEvent = null;
          if(Boolean(_data) && activeSelectionEnabled)
          {
-            _loc2_ = new GridEvent(GridEvent.DISPLAY_TOOLTIP,true,false,index,-1,-1,null,_data as Object);
-            _loc2_.tooltipContentRef = "SkillTooltipRef";
-            _loc2_.tooltipMouseContentRef = "SkillTooltipRef";
-            _loc2_.isMouseTooltip = param1;
-            if(param1)
+            displayEvent = new GridEvent(GridEvent.DISPLAY_TOOLTIP,true,false,index,-1,-1,null,_data as Object);
+            displayEvent.tooltipContentRef = "SkillTooltipRef";
+            displayEvent.tooltipMouseContentRef = "SkillTooltipRef";
+            displayEvent.isMouseTooltip = isMouseTooltip;
+            if(isMouseTooltip)
             {
-               _loc2_.anchorRect = getGlobalSlotRect();
+               displayEvent.anchorRect = getGlobalSlotRect();
             }
             if(_data.skillPath != NULL_SKILL)
             {
-               _loc2_.tooltipDataSource = "OnGetSkillTooltipData";
+               displayEvent.tooltipDataSource = "OnGetSkillTooltipData";
             }
             else if(_data.unlocked)
             {
-               _loc2_.tooltipCustomArgs = [_data.unlockedOnLevel];
-               _loc2_.tooltipDataSource = "OnGetEmptySlotTooltipData";
+               displayEvent.tooltipCustomArgs = [_data.unlockedOnLevel];
+               displayEvent.tooltipDataSource = "OnGetEmptySlotTooltipData";
             }
             else
             {
-               _loc2_.tooltipCustomArgs = [_data.unlockedOnLevel];
-               _loc2_.tooltipDataSource = "OnGetLockedTooltipData";
+               displayEvent.tooltipCustomArgs = [_data.unlockedOnLevel];
+               displayEvent.tooltipDataSource = "OnGetLockedTooltipData";
             }
             _tooltipRequested = true;
-            dispatchEvent(_loc2_);
+            dispatchEvent(displayEvent);
          }
       }
       
-      override protected function fireTooltipHideEvent(param1:Boolean = false) : void
+      override protected function fireTooltipHideEvent(isMouseTooltip:Boolean = false) : void
       {
-         var _loc2_:GridEvent = null;
+         var hideEvent:GridEvent = null;
          if(_tooltipRequested)
          {
-            _loc2_ = new GridEvent(GridEvent.HIDE_TOOLTIP,true,false,index,-1,-1,null,_data as Object);
-            dispatchEvent(_loc2_);
+            hideEvent = new GridEvent(GridEvent.HIDE_TOOLTIP,true,false,index,-1,-1,null,_data as Object);
+            dispatchEvent(hideEvent);
             _tooltipRequested = false;
          }
       }
       
-      override protected function handleMouseDoubleClick(param1:MouseEvent) : void
+      override protected function handleMouseDoubleClick(event:MouseEvent) : void
       {
          if(_data)
          {
@@ -146,28 +130,28 @@ package red.game.witcher3.slots
          }
          else
          {
-            super.handleMouseDoubleClick(param1);
+            super.handleMouseDoubleClick(event);
          }
       }
       
-      override public function applyDrop(param1:IDragTarget) : void
+      override public function applyDrop(source:IDragTarget) : void
       {
-         var _loc2_:Object = null;
-         var _loc3_:uint = 0;
-         var _loc4_:uint = 0;
+         var itemData:Object = null;
+         var slotId:uint = 0;
+         var skillId:uint = 0;
          if(_data)
          {
-            _loc2_ = param1.getDragData() as Object;
-            _loc3_ = uint(_data.slotId);
-            _loc4_ = uint(_loc2_.skillTypeId);
-            dispatchEvent(new GameEvent(GameEvent.CALL,"OnEquipSkill",[_loc4_,_loc3_]));
+            itemData = source.getDragData() as Object;
+            slotId = uint(_data.slotId);
+            skillId = uint(itemData.skillTypeId);
+            dispatchEvent(new GameEvent(GameEvent.CALL,"OnEquipSkill",[skillId,slotId]));
          }
       }
       
-      override public function canDrop(param1:IDragTarget) : Boolean
+      override public function canDrop(dragData:IDragTarget) : Boolean
       {
-         var _loc2_:Object = param1.getDragData() as Object;
-         return selectable && _loc2_.skillType && _loc2_.skillType != "S_Undefined" && !_isLocked;
+         var itemData:Object = dragData.getDragData() as Object;
+         return selectable && itemData.skillType && itemData.skillType != "S_Undefined" && !_isLocked;
       }
       
       override public function get dropSelection() : Boolean
@@ -175,13 +159,13 @@ package red.game.witcher3.slots
          return _dropSelection;
       }
       
-      override public function set dropSelection(param1:Boolean) : void
+      override public function set dropSelection(value:Boolean) : void
       {
-         _dropSelection = param1;
+         _dropSelection = value;
          invalidateState();
       }
       
-      override public function processOver(param1:SlotDragAvatar) : void
+      override public function processOver(avatar:SlotDragAvatar) : void
       {
       }
    }

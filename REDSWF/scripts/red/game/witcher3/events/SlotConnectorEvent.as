@@ -10,10 +10,10 @@ package red.game.witcher3.events
       
       public var connectorColor:String;
       
-      public function SlotConnectorEvent(param1:String, param2:Boolean = false, param3:Boolean = false, param4:* = "")
+      public function SlotConnectorEvent(type:String, bubbles:Boolean = false, cancelable:Boolean = false, connectorColor:* = "")
       {
-         super(param1,param2,param3);
-         this.connectorColor = param4;
+         super(type,bubbles,cancelable);
+         this.connectorColor = connectorColor;
       }
       
       override public function clone() : Event

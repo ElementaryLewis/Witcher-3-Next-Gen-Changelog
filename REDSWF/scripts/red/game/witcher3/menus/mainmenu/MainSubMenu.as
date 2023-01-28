@@ -69,14 +69,9 @@ package red.game.witcher3.menus.mainmenu
          var _loc2_:BaseListItem = this.mcMenuList.getRendererAt(param1.index,this.mcMenuList.scrollPosition) as BaseListItem;
          if(_loc2_)
          {
-            trace("HUD onItemClicked renderer.data.tag " + _loc2_.data.tag);
             _loc3_ = InputManager.getInstance();
             _loc3_.reset();
             dispatchEvent(new GameEvent(GameEvent.CALL,"OnItemChosen",[_loc2_.data.tag]));
-         }
-         else
-         {
-            trace("MainMenu renderer is fucked " + param1.target);
          }
       }
       
@@ -111,7 +106,6 @@ package red.game.witcher3.menus.mainmenu
          {
             this.mcMenuList.dataProvider = new DataProvider(_loc3_);
          }
-         trace("HUD dataArray.length " + _loc3_.length + " mcMenuList.dataProvider " + this.mcMenuList.dataProvider.length);
          this.mcMenuList.ShowRenderers(true);
       }
       

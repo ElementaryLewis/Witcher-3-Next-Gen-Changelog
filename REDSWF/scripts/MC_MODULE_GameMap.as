@@ -16,11 +16,9 @@ package
       {
          this.__setPropDict = new Dictionary(true);
          super();
-         addFrameScript(0,this.frame1,5,this.frame6,8,this.frame9,9,this.frame10,12,this.frame13);
+         addFrameScript(0,this.frame1,4,this.frame5,5,this.frame6,8,this.frame9,9,this.frame10,12,this.frame13,13,this.frame14,18,this.frame19);
          this.__setProp_mcRightPCButton_MC_MODULE_GameMap_mcRightPCButton_0();
          this.__setProp_mcLeftPCButton_MC_MODULE_GameMap_mcLeftPCButton_0();
-         this.__setProp_txtAButton_MC_MODULE_GameMap_keybindtextareas_0();
-         this.__setProp_txtBButton_MC_MODULE_GameMap_keybindtextareas_0();
          addEventListener(Event.FRAME_CONSTRUCTED,this.__setProp_handler,false,0,true);
       }
       
@@ -84,81 +82,209 @@ package
          }
       }
       
-      internal function __setProp_txtAButton_MC_MODULE_GameMap_keybindtextareas_0() : *
+      internal function __setProp_txtAButton_MC_MODULE_GameMap_keybindtextareas_0(param1:int) : *
       {
-         try
+         if(txtAButton != null && param1 >= 1 && param1 <= 5 && (this.__setPropDict[txtAButton] == undefined || !(int(this.__setPropDict[txtAButton]) >= 1 && int(this.__setPropDict[txtAButton]) <= 5)))
          {
-            txtAButton["componentInspectorSetting"] = true;
-         }
-         catch(e:Error)
-         {
-         }
-         txtAButton.actAsButton = false;
-         txtAButton.alignArabicText = true;
-         txtAButton.defaultText = "";
-         txtAButton.displayAsPassword = false;
-         txtAButton.editable = true;
-         txtAButton.enabled = true;
-         txtAButton.enableInitCallback = false;
-         txtAButton.focusable = true;
-         txtAButton.maxChars = 0;
-         txtAButton.minThumbSize = 1;
-         txtAButton.scrollBar = "";
-         txtAButton.scrollSpeed = 40;
-         txtAButton.text = "";
-         txtAButton.thumbOffset = {
-            "top":0,
-            "bottom":0
-         };
-         txtAButton.visible = true;
-         try
-         {
-            txtAButton["componentInspectorSetting"] = false;
-         }
-         catch(e:Error)
-         {
+            this.__setPropDict[txtAButton] = param1;
+            try
+            {
+               txtAButton["componentInspectorSetting"] = true;
+            }
+            catch(e:Error)
+            {
+            }
+            txtAButton.actAsButton = false;
+            txtAButton.alignArabicText = true;
+            txtAButton.defaultText = "";
+            txtAButton.displayAsPassword = false;
+            txtAButton.editable = true;
+            txtAButton.enabled = true;
+            txtAButton.enableInitCallback = false;
+            txtAButton.focusable = true;
+            txtAButton.maxChars = 0;
+            txtAButton.minThumbSize = 1;
+            txtAButton.scrollBar = "";
+            txtAButton.scrollSpeed = 40;
+            txtAButton.text = "";
+            txtAButton.thumbOffset = {
+               "top":0,
+               "bottom":0
+            };
+            txtAButton.visible = true;
+            try
+            {
+               txtAButton["componentInspectorSetting"] = false;
+            }
+            catch(e:Error)
+            {
+            }
          }
       }
       
-      internal function __setProp_txtBButton_MC_MODULE_GameMap_keybindtextareas_0() : *
+      internal function __setProp_txtBButton_MC_MODULE_GameMap_keybindtextareas_0(param1:int) : *
       {
-         try
+         if(txtBButton != null && param1 >= 1 && param1 <= 5 && (this.__setPropDict[txtBButton] == undefined || !(int(this.__setPropDict[txtBButton]) >= 1 && int(this.__setPropDict[txtBButton]) <= 5)))
          {
-            txtBButton["componentInspectorSetting"] = true;
-         }
-         catch(e:Error)
-         {
-         }
-         txtBButton.actAsButton = false;
-         txtBButton.alignArabicText = true;
-         txtBButton.defaultText = "";
-         txtBButton.displayAsPassword = false;
-         txtBButton.editable = true;
-         txtBButton.enabled = true;
-         txtBButton.enableInitCallback = false;
-         txtBButton.focusable = true;
-         txtBButton.maxChars = 0;
-         txtBButton.minThumbSize = 1;
-         txtBButton.scrollBar = "";
-         txtBButton.scrollSpeed = 40;
-         txtBButton.text = "";
-         txtBButton.thumbOffset = {
-            "top":0,
-            "bottom":0
-         };
-         txtBButton.visible = true;
-         try
-         {
-            txtBButton["componentInspectorSetting"] = false;
-         }
-         catch(e:Error)
-         {
+            this.__setPropDict[txtBButton] = param1;
+            try
+            {
+               txtBButton["componentInspectorSetting"] = true;
+            }
+            catch(e:Error)
+            {
+            }
+            txtBButton.actAsButton = false;
+            txtBButton.alignArabicText = true;
+            txtBButton.defaultText = "";
+            txtBButton.displayAsPassword = false;
+            txtBButton.editable = true;
+            txtBButton.enabled = true;
+            txtBButton.enableInitCallback = false;
+            txtBButton.focusable = true;
+            txtBButton.maxChars = 0;
+            txtBButton.minThumbSize = 1;
+            txtBButton.scrollBar = "";
+            txtBButton.scrollSpeed = 40;
+            txtBButton.text = "";
+            txtBButton.thumbOffset = {
+               "top":0,
+               "bottom":0
+            };
+            txtBButton.visible = true;
+            try
+            {
+               txtBButton["componentInspectorSetting"] = false;
+            }
+            catch(e:Error)
+            {
+            }
          }
       }
       
       internal function __setProp_txtRightBumper_MC_MODULE_GameMap_keybindtextareas_0(param1:int) : *
       {
-         if(txtRightBumper != null && param1 >= 1 && param1 <= 9 && (this.__setPropDict[txtRightBumper] == undefined || !(int(this.__setPropDict[txtRightBumper]) >= 1 && int(this.__setPropDict[txtRightBumper]) <= 9)))
+         if(txtRightBumper != null && param1 >= 1 && param1 <= 5 && (this.__setPropDict[txtRightBumper] == undefined || !(int(this.__setPropDict[txtRightBumper]) >= 1 && int(this.__setPropDict[txtRightBumper]) <= 5)))
+         {
+            this.__setPropDict[txtRightBumper] = param1;
+            try
+            {
+               txtRightBumper["componentInspectorSetting"] = true;
+            }
+            catch(e:Error)
+            {
+            }
+            txtRightBumper.actAsButton = false;
+            txtRightBumper.alignArabicText = true;
+            txtRightBumper.defaultText = "";
+            txtRightBumper.displayAsPassword = false;
+            txtRightBumper.editable = true;
+            txtRightBumper.enabled = true;
+            txtRightBumper.enableInitCallback = false;
+            txtRightBumper.focusable = true;
+            txtRightBumper.maxChars = 0;
+            txtRightBumper.minThumbSize = 1;
+            txtRightBumper.scrollBar = "";
+            txtRightBumper.scrollSpeed = 40;
+            txtRightBumper.text = "";
+            txtRightBumper.thumbOffset = {
+               "top":0,
+               "bottom":0
+            };
+            txtRightBumper.visible = true;
+            try
+            {
+               txtRightBumper["componentInspectorSetting"] = false;
+            }
+            catch(e:Error)
+            {
+            }
+         }
+      }
+      
+      internal function __setProp_txtAButton_MC_MODULE_GameMap_keybindtextareas_5(param1:int) : *
+      {
+         if(txtAButton != null && param1 >= 6 && param1 <= 19 && (this.__setPropDict[txtAButton] == undefined || !(int(this.__setPropDict[txtAButton]) >= 6 && int(this.__setPropDict[txtAButton]) <= 19)))
+         {
+            this.__setPropDict[txtAButton] = param1;
+            try
+            {
+               txtAButton["componentInspectorSetting"] = true;
+            }
+            catch(e:Error)
+            {
+            }
+            txtAButton.actAsButton = false;
+            txtAButton.alignArabicText = true;
+            txtAButton.defaultText = "";
+            txtAButton.displayAsPassword = false;
+            txtAButton.editable = true;
+            txtAButton.enabled = true;
+            txtAButton.enableInitCallback = false;
+            txtAButton.focusable = true;
+            txtAButton.maxChars = 0;
+            txtAButton.minThumbSize = 1;
+            txtAButton.scrollBar = "";
+            txtAButton.scrollSpeed = 40;
+            txtAButton.text = "";
+            txtAButton.thumbOffset = {
+               "top":0,
+               "bottom":0
+            };
+            txtAButton.visible = true;
+            try
+            {
+               txtAButton["componentInspectorSetting"] = false;
+            }
+            catch(e:Error)
+            {
+            }
+         }
+      }
+      
+      internal function __setProp_txtBButton_MC_MODULE_GameMap_keybindtextareas_5(param1:int) : *
+      {
+         if(txtBButton != null && param1 >= 6 && param1 <= 19 && (this.__setPropDict[txtBButton] == undefined || !(int(this.__setPropDict[txtBButton]) >= 6 && int(this.__setPropDict[txtBButton]) <= 19)))
+         {
+            this.__setPropDict[txtBButton] = param1;
+            try
+            {
+               txtBButton["componentInspectorSetting"] = true;
+            }
+            catch(e:Error)
+            {
+            }
+            txtBButton.actAsButton = false;
+            txtBButton.alignArabicText = true;
+            txtBButton.defaultText = "";
+            txtBButton.displayAsPassword = false;
+            txtBButton.editable = true;
+            txtBButton.enabled = true;
+            txtBButton.enableInitCallback = false;
+            txtBButton.focusable = true;
+            txtBButton.maxChars = 0;
+            txtBButton.minThumbSize = 1;
+            txtBButton.scrollBar = "";
+            txtBButton.scrollSpeed = 40;
+            txtBButton.text = "";
+            txtBButton.thumbOffset = {
+               "top":0,
+               "bottom":0
+            };
+            txtBButton.visible = true;
+            try
+            {
+               txtBButton["componentInspectorSetting"] = false;
+            }
+            catch(e:Error)
+            {
+            }
+         }
+      }
+      
+      internal function __setProp_txtRightBumper_MC_MODULE_GameMap_keybindtextareas_5(param1:int) : *
+      {
+         if(txtRightBumper != null && param1 >= 6 && param1 <= 9 && (this.__setPropDict[txtRightBumper] == undefined || !(int(this.__setPropDict[txtRightBumper]) >= 6 && int(this.__setPropDict[txtRightBumper]) <= 9)))
          {
             this.__setPropDict[txtRightBumper] = param1;
             try
@@ -198,7 +324,7 @@ package
       
       internal function __setProp_txtRightBumper_MC_MODULE_GameMap_keybindtextareas_9(param1:int) : *
       {
-         if(txtRightBumper != null && param1 >= 10 && param1 <= 13 && (this.__setPropDict[txtRightBumper] == undefined || !(int(this.__setPropDict[txtRightBumper]) >= 10 && int(this.__setPropDict[txtRightBumper]) <= 13)))
+         if(txtRightBumper != null && param1 >= 10 && param1 <= 19 && (this.__setPropDict[txtRightBumper] == undefined || !(int(this.__setPropDict[txtRightBumper]) >= 10 && int(this.__setPropDict[txtRightBumper]) <= 19)))
          {
             this.__setPropDict[txtRightBumper] = param1;
             try
@@ -236,86 +362,6 @@ package
          }
       }
       
-      internal function __setProp_txtYButton_MC_MODULE_GameMap_keybindtextareas_0(param1:int) : *
-      {
-         if(txtYButton != null && param1 >= 1 && param1 <= 9 && (this.__setPropDict[txtYButton] == undefined || !(int(this.__setPropDict[txtYButton]) >= 1 && int(this.__setPropDict[txtYButton]) <= 9)))
-         {
-            this.__setPropDict[txtYButton] = param1;
-            try
-            {
-               txtYButton["componentInspectorSetting"] = true;
-            }
-            catch(e:Error)
-            {
-            }
-            txtYButton.actAsButton = false;
-            txtYButton.alignArabicText = true;
-            txtYButton.defaultText = "";
-            txtYButton.displayAsPassword = false;
-            txtYButton.editable = true;
-            txtYButton.enabled = true;
-            txtYButton.enableInitCallback = false;
-            txtYButton.focusable = true;
-            txtYButton.maxChars = 0;
-            txtYButton.minThumbSize = 1;
-            txtYButton.scrollBar = "";
-            txtYButton.scrollSpeed = 40;
-            txtYButton.text = "";
-            txtYButton.thumbOffset = {
-               "top":0,
-               "bottom":0
-            };
-            txtYButton.visible = true;
-            try
-            {
-               txtYButton["componentInspectorSetting"] = false;
-            }
-            catch(e:Error)
-            {
-            }
-         }
-      }
-      
-      internal function __setProp_txtYButton_MC_MODULE_GameMap_keybindtextareas_9(param1:int) : *
-      {
-         if(txtYButton != null && param1 >= 10 && param1 <= 13 && (this.__setPropDict[txtYButton] == undefined || !(int(this.__setPropDict[txtYButton]) >= 10 && int(this.__setPropDict[txtYButton]) <= 13)))
-         {
-            this.__setPropDict[txtYButton] = param1;
-            try
-            {
-               txtYButton["componentInspectorSetting"] = true;
-            }
-            catch(e:Error)
-            {
-            }
-            txtYButton.actAsButton = false;
-            txtYButton.alignArabicText = false;
-            txtYButton.defaultText = "";
-            txtYButton.displayAsPassword = false;
-            txtYButton.editable = true;
-            txtYButton.enabled = true;
-            txtYButton.enableInitCallback = false;
-            txtYButton.focusable = true;
-            txtYButton.maxChars = 0;
-            txtYButton.minThumbSize = 1;
-            txtYButton.scrollBar = "";
-            txtYButton.scrollSpeed = 40;
-            txtYButton.text = "";
-            txtYButton.thumbOffset = {
-               "top":0,
-               "bottom":0
-            };
-            txtYButton.visible = true;
-            try
-            {
-               txtYButton["componentInspectorSetting"] = false;
-            }
-            catch(e:Error)
-            {
-            }
-         }
-      }
-      
       internal function __setProp_handler(param1:Object) : *
       {
          var _loc2_:int = currentFrame;
@@ -324,13 +370,21 @@ package
             return;
          }
          this.__lastFrameProp = _loc2_;
+         this.__setProp_txtAButton_MC_MODULE_GameMap_keybindtextareas_0(_loc2_);
+         this.__setProp_txtBButton_MC_MODULE_GameMap_keybindtextareas_0(_loc2_);
          this.__setProp_txtRightBumper_MC_MODULE_GameMap_keybindtextareas_0(_loc2_);
+         this.__setProp_txtAButton_MC_MODULE_GameMap_keybindtextareas_5(_loc2_);
+         this.__setProp_txtBButton_MC_MODULE_GameMap_keybindtextareas_5(_loc2_);
+         this.__setProp_txtRightBumper_MC_MODULE_GameMap_keybindtextareas_5(_loc2_);
          this.__setProp_txtRightBumper_MC_MODULE_GameMap_keybindtextareas_9(_loc2_);
-         this.__setProp_txtYButton_MC_MODULE_GameMap_keybindtextareas_0(_loc2_);
-         this.__setProp_txtYButton_MC_MODULE_GameMap_keybindtextareas_9(_loc2_);
       }
       
       internal function frame1() : *
+      {
+         stop();
+      }
+      
+      internal function frame5() : *
       {
          stop();
       }
@@ -351,6 +405,16 @@ package
       }
       
       internal function frame13() : *
+      {
+         stop();
+      }
+      
+      internal function frame14() : *
+      {
+         stop();
+      }
+      
+      internal function frame19() : *
       {
          stop();
       }

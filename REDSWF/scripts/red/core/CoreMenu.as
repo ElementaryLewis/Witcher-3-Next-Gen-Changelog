@@ -568,6 +568,11 @@ package red.core
          this._contextMgr.isArabicAligmentMode = param1;
       }
       
+      public function setGameLanguage(param1:String) : *
+      {
+         CoreComponent.gameLanguage = param1;
+      }
+      
       protected function handleModuleMouseFocuse(param1:Event) : void
       {
          var _loc2_:CoreMenuModule = param1.currentTarget as CoreMenuModule;

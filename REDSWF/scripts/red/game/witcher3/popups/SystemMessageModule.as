@@ -224,6 +224,10 @@ package red.game.witcher3.popups
                _loc4_++;
             }
             this.mcInputFeedback.handleSetupButtons(_loc2_);
+            if(_loc3_ == 0)
+            {
+               this.mcInputBackground.visible = false;
+            }
          }
          else
          {

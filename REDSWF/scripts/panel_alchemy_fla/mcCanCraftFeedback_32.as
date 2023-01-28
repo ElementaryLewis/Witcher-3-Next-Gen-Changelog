@@ -6,9 +6,9 @@ package panel_alchemy_fla
    {
        
       
-      public var txtCraft:txt_Craft;
-      
       public var mcButton:InputFeedbackButtonRef;
+      
+      public var txtCraft:txt_Craft;
       
       public function mcCanCraftFeedback_32()
       {

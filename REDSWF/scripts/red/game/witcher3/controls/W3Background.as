@@ -13,6 +13,8 @@ package red.game.witcher3.controls
       
       public var mcFogEffect2:MovieClip;
       
+      public var visibilityChangeCallback:Function;
+      
       protected var _fogStartX:int = 2147483647;
       
       protected var _fogEndX:int = 2147483647;
@@ -123,6 +125,10 @@ package red.game.witcher3.controls
             else
             {
                GTweener.to(this,0.2,{"alpha":0},{"onComplete":this.handleBackgroundHideComplete});
+            }
+            if(this.visibilityChangeCallback != null)
+            {
+               this.visibilityChangeCallback(param1);
             }
          }
       }

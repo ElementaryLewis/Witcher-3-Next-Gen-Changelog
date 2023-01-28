@@ -8,11 +8,11 @@ package
       
       public var mcRadiusBelgard:MovieClip;
       
-      public var mcRadiusRegular:MovieClip;
+      public var mcRadiusCoronata:MovieClip;
       
       public var mcRadiusQuest:MovieClip;
       
-      public var mcRadiusCoronata:MovieClip;
+      public var mcRadiusRegular:MovieClip;
       
       public var mcRadiusVermentino:MovieClip;
       

@@ -10,21 +10,21 @@ package panel_common_fla
       
       public var mcCharacterMenuAnchor:AnchorComponent;
       
-      public var mcMapMenuAnchor:AnchorComponent;
-      
-      public var mcMeditationClockMenuAnchor:AnchorComponent;
-      
-      public var mcImageLoader:IconLoader;
+      public var mcCraftingParentAnchor:AnchorComponent;
       
       public var mcEnchantingParentAnchor:AnchorComponent;
       
-      public var mcJournalQuestMenuAnchor:AnchorComponent;
-      
-      public var mcCraftingParentAnchor:AnchorComponent;
-      
       public var mcGlossaryParentAnchor:AnchorComponent;
       
+      public var mcImageLoader:IconLoader;
+      
       public var mcInventoryMenuAnchor:AnchorComponent;
+      
+      public var mcJournalQuestMenuAnchor:AnchorComponent;
+      
+      public var mcMapMenuAnchor:AnchorComponent;
+      
+      public var mcMeditationClockMenuAnchor:AnchorComponent;
       
       public function mcTabBackgrounds_15()
       {

@@ -364,7 +364,7 @@ package red.game.witcher3.menus.gwint
          dispatchEvent(new GameEvent(GameEvent.CALL,"OnSelectedDeckChanged",[this.selectedDeckIndex]));
          if(this.txtCurrentDeck)
          {
-            this.txtCurrentDeck.text = CommonUtils.toUpperCaseSafe(_loc1_.getFactionNameString());
+            this.txtCurrentDeck.text = _loc1_.getFactionNameString();
             this.txtCurrentDeckPassive.htmlText = _loc1_.getFactionPerkString();
             this.txtCurrentDeckPassive.htmlText = this.txtCurrentDeckPassive.htmlText;
          }

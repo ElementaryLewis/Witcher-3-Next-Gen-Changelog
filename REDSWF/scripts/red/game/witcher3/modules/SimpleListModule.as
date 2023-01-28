@@ -7,6 +7,7 @@ package red.game.witcher3.modules
    import red.game.witcher3.controls.W3ScrollingList;
    import red.game.witcher3.menus.mainmenu.IngameMenu;
    import red.game.witcher3.menus.mainmenu.W3MenuListItemRenderer;
+   import red.game.witcher3.utils.CommonUtils;
    import scaleform.clik.data.DataProvider;
    import scaleform.clik.events.ListEvent;
    import scaleform.gfx.MouseEventEx;
@@ -204,7 +205,7 @@ package red.game.witcher3.modules
                _loc2_ = _loc1_.data;
                if(Boolean(_loc2_) && Boolean(_loc2_.description))
                {
-                  this.txtMenuListDescripion.text = _loc2_.description;
+                  this.txtMenuListDescripion.htmlText = CommonUtils.fixFontStyleTags(_loc2_.description);
                   this.txtMenuListDescripion.visible = true;
                }
                else
@@ -216,6 +217,15 @@ package red.game.witcher3.modules
             {
                this.txtMenuListDescripion.visible = false;
             }
+         }
+      }
+      
+      public function updateSelectedItemText(param1:String) : void
+      {
+         var _loc2_:W3MenuListItemRenderer = this.mcList.getSelectedRenderer() as W3MenuListItemRenderer;
+         if(_loc2_)
+         {
+            _loc2_.label = param1;
          }
       }
       
@@ -286,7 +296,8 @@ package red.game.witcher3.modules
          else
          {
             this.txtMenuListTitle.visible = true;
-            this.txtMenuListTitle.text = param1;
+            this.txtMenuListTitle.htmlText = CommonUtils.fixFontStyleTags(param1);
+            this.txtMenuListTitle.htmlText = CommonUtils.toUpperCaseSafe(this.txtMenuListTitle.htmlText);
             if(this.mcMenuTitleUnderline)
             {
                this.mcMenuTitleUnderline.visible = true;

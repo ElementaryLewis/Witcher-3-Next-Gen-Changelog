@@ -10,6 +10,7 @@ package red.game.witcher3.menus.worldmap
    import flash.utils.getDefinitionByName;
    import red.game.witcher3.events.MapAnimation;
    import red.game.witcher3.utils.CommonUtils;
+   import scaleform.clik.controls.UILoader;
    import scaleform.clik.core.UIComponent;
    
    public class UniverseMapContainer extends UIComponent
@@ -337,6 +338,30 @@ package red.game.witcher3.menus.worldmap
             _loc2_++;
          }
          return null;
+      }
+      
+      public function addCustomHubs(param1:Array) : *
+      {
+         var _loc4_:UILoader = null;
+         var _loc2_:int = 0;
+         var _loc3_:UniverseArea = null;
+         while(_loc2_ < param1.length)
+         {
+            _loc3_ = param1[_loc2_] as UniverseArea;
+            addChild(_loc3_);
+            _loc3_.SetWorldName(param1[_loc2_].worldName,param1[_loc2_].realName);
+            _loc3_.mcPlayerIndicator.visible = param1[_loc2_].isPlayer;
+            _loc3_.mcQuestIndicator.visible = param1[_loc2_].isQuest;
+            _loc3_.tfLabel.x += param1[_loc2_].worldNameOffsetX;
+            _loc3_.tfLabel.y += param1[_loc2_].worldNameOffsetY;
+            (_loc4_ = new UILoader()).source = param1[_loc2_].uiIcon;
+            _loc4_.x = -58;
+            _loc4_.y = -55;
+            _loc4_.name = "customUILoader";
+            _loc3_.mcIcon.addChild(_loc4_);
+            this.m_hubs.push(_loc3_);
+            _loc2_++;
+         }
       }
    }
 }

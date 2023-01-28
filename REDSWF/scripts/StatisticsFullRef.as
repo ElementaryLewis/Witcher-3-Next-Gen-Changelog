@@ -6,21 +6,21 @@ package
    {
        
       
-      public var __id2_:FullStatsItem;
-      
-      public var __id3_:FullStatsItem;
-      
       public var __id0_:FullStatsItem;
       
       public var __id1_:FullStatsItem;
       
-      public var __id6_:FullStatsItem;
+      public var __id2_:FullStatsItem;
       
-      public var __id7_:FullStatsItem;
+      public var __id3_:FullStatsItem;
       
       public var __id4_:FullStatsItem;
       
       public var __id5_:FullStatsItem;
+      
+      public var __id6_:FullStatsItem;
+      
+      public var __id7_:FullStatsItem;
       
       public var __id8_:FullStatsItem;
       

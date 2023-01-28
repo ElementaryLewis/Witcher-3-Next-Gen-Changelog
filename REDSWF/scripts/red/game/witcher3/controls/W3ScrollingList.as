@@ -7,6 +7,7 @@ package red.game.witcher3.controls
    import red.core.constants.KeyCode;
    import red.core.events.GameEvent;
    import red.game.witcher3.interfaces.IScrollingList;
+   import red.game.witcher3.menus.mainmenu.IngameMenu;
    import scaleform.clik.constants.InputValue;
    import scaleform.clik.constants.WrappingMode;
    import scaleform.clik.controls.DropdownMenu;
@@ -38,6 +39,8 @@ package red.game.witcher3.controls
       public var bAlwaysHandleDirectionActions:Boolean = false;
       
       public var bSkipFocusCheck:Boolean = false;
+      
+      public var bIsOptionList:Boolean = false;
       
       private var _lastDir:int = 0;
       
@@ -245,19 +248,38 @@ package red.game.witcher3.controls
       
       public function moveUp(param1:Boolean = true) : void
       {
-         var _loc2_:UIComponent = null;
+         var _loc2_:ListItemRenderer = null;
          var _loc4_:int = 0;
          var _loc3_:* = -1;
-         _loc4_ = selectedIndex - 1;
-         while(_loc4_ >= 0)
+         var _loc5_:uint = 0;
+         if(this.bIsOptionList)
          {
-            _loc2_ = getRendererAt(_loc4_) as UIComponent;
-            if(!_loc2_ || _loc2_.enabled)
+            _loc4_ = selectedIndex - 1;
+            while(_loc4_ >= 0)
             {
-               _loc3_ = _loc4_;
-               break;
+               _loc5_ = uint(dataProvider[_loc4_].type);
+               if(!dataProvider[_loc4_].disabled && (_loc5_ != IngameMenu.IGMActionType_Separator || _loc5_ != IngameMenu.IGMActionType_SubtleSeparator))
+               {
+                  _loc3_ = _loc4_;
+                  break;
+               }
+               _loc4_--;
             }
-            _loc4_--;
+         }
+         else
+         {
+            _loc4_ = selectedIndex - 1;
+            while(_loc4_ >= 0)
+            {
+               _loc2_ = getRendererAt(_loc4_) as ListItemRenderer;
+               _loc5_ = uint(dataProvider[_loc4_].type);
+               if((!_loc2_ || _loc2_.enabled) && (_loc5_ != IngameMenu.IGMActionType_Separator || _loc5_ != IngameMenu.IGMActionType_SubtleSeparator))
+               {
+                  _loc3_ = _loc4_;
+                  break;
+               }
+               _loc4_--;
+            }
          }
          if(selectedIndex == -1)
          {
@@ -276,15 +298,16 @@ package red.game.witcher3.controls
             _loc4_ = int(_dataProvider.length - 1);
             while(_loc4_ >= 0)
             {
-               _loc2_ = getRendererAt(_loc4_) as UIComponent;
-               if(!_loc2_ || _loc2_.enabled)
+               _loc2_ = getRendererAt(_loc4_) as ListItemRenderer;
+               _loc5_ = uint(dataProvider[_loc4_].type);
+               if((!_loc2_ || _loc2_.enabled) && (_loc5_ != IngameMenu.IGMActionType_Separator || _loc5_ != IngameMenu.IGMActionType_SubtleSeparator))
                {
                   this.selectedIndex = _loc4_;
                   break;
                }
                _loc4_--;
             }
-            updateSelectedIndex();
+            this.updateSelectedIndex();
             if(_loc2_ != null)
             {
                _loc2_.invalidate();
@@ -292,10 +315,10 @@ package red.game.witcher3.controls
             this.CheckSubListSelection();
          }
          validateNow();
-         var _loc5_:W3DropdownMenuListItem;
-         if((Boolean(_loc5_ = getRendererAt(selectedIndex) as W3DropdownMenuListItem)) && _loc5_.isOpen())
+         var _loc6_:W3DropdownMenuListItem;
+         if((Boolean(_loc6_ = getRendererAt(selectedIndex) as W3DropdownMenuListItem)) && _loc6_.isOpen())
          {
-            _loc5_.SelectLastSubListItem();
+            _loc6_.SelectLastSubListItem();
          }
          _loc2_ = getRendererAt(selectedIndex) as BaseListItem;
          this.dispatchIndexChanged(selectedIndex,_loc2_);
@@ -303,26 +326,41 @@ package red.game.witcher3.controls
       
       public function moveDown(param1:Boolean = true) : void
       {
-         var _loc2_:UIComponent = null;
+         var _loc2_:ListItemRenderer = null;
          var _loc4_:int = 0;
-         var _loc5_:W3DropdownMenuListItem = null;
+         var _loc6_:W3DropdownMenuListItem = null;
          var _loc3_:* = -1;
-         _loc4_ = selectedIndex + 1;
-         while(_loc4_ < _dataProvider.length)
+         var _loc5_:uint = 0;
+         if(this.bIsOptionList)
          {
-            _loc2_ = getRendererAt(_loc4_) as UIComponent;
-            if(!_loc2_ || _loc2_.enabled)
+            _loc4_ = selectedIndex + 1;
+            while(_loc4_ < _dataProvider.length)
             {
-               _loc3_ = _loc4_;
-               break;
+               _loc5_ = uint(dataProvider[_loc4_].type);
+               if(!dataProvider[_loc4_].disabled && (_loc5_ != IngameMenu.IGMActionType_Separator || _loc5_ != IngameMenu.IGMActionType_SubtleSeparator))
+               {
+                  _loc3_ = _loc4_;
+                  break;
+               }
+               _loc4_++;
             }
-            _loc4_++;
          }
-         if(_selectedIndex == -1)
+         else
          {
-            this.selectedIndex = 0;
+            _loc4_ = selectedIndex + 1;
+            while(_loc4_ < _dataProvider.length)
+            {
+               _loc2_ = getRendererAt(_loc4_) as ListItemRenderer;
+               _loc5_ = uint(dataProvider[_loc4_].type);
+               if((!_loc2_ || _loc2_.enabled) && (_loc5_ != IngameMenu.IGMActionType_Separator || _loc5_ != IngameMenu.IGMActionType_SubtleSeparator))
+               {
+                  _loc3_ = _loc4_;
+                  break;
+               }
+               _loc4_++;
+            }
          }
-         else if(_loc3_ != -1)
+         if(_loc3_ != -1)
          {
             this.selectedIndex = _loc3_;
          }
@@ -332,9 +370,9 @@ package red.game.witcher3.controls
             {
                if(selectedIndex == 0)
                {
-                  if((Boolean(_loc5_ = getRendererAt(0) as W3DropdownMenuListItem)) && _loc5_.selectedIndex != -1)
+                  if((Boolean(_loc6_ = getRendererAt(0) as W3DropdownMenuListItem)) && _loc6_.selectedIndex != -1)
                   {
-                     _loc5_.SelectSubListItem(-1);
+                     _loc6_.SelectSubListItem(-1);
                   }
                }
                else
@@ -342,15 +380,16 @@ package red.game.witcher3.controls
                   _loc4_ = 0;
                   while(_loc4_ < _dataProvider.length)
                   {
-                     _loc2_ = getRendererAt(_loc4_) as UIComponent;
-                     if(!_loc2_ || _loc2_.enabled)
+                     _loc2_ = getRendererAt(_loc4_) as ListItemRenderer;
+                     _loc5_ = uint(dataProvider[_loc4_].type);
+                     if(!_loc2_ || _loc2_.enabled && (_loc5_ != IngameMenu.IGMActionType_Separator || _loc5_ != IngameMenu.IGMActionType_SubtleSeparator))
                      {
                         this.selectedIndex = _loc4_;
                         break;
                      }
                      _loc4_++;
                   }
-                  updateSelectedIndex();
+                  this.updateSelectedIndex();
                }
             }
          }
@@ -400,6 +439,10 @@ package red.game.witcher3.controls
                      _loc6_ = getRendererAt(selectedIndex) as BaseListItem;
                      this.dispatchIndexChanged(selectedIndex,_loc6_);
                      param1.handled = true;
+                  }
+                  if(_loc5_ == 1 && selectedIndex == 1)
+                  {
+                     scrollPosition = 0;
                   }
                }
                break;
@@ -555,6 +598,11 @@ package red.game.witcher3.controls
          {
             return;
          }
+         if(param1 >= 0 && param1 < dataProvider.length && Boolean(dataProvider[param1].disabled))
+         {
+            super.selectedIndex = -1;
+            return;
+         }
          if(this is W3DropDownList)
          {
             _loc2_ = getRendererAt(param1) as W3DropdownMenuListItem;
@@ -589,6 +637,16 @@ package red.game.witcher3.controls
       override public function set focused(param1:Number) : void
       {
          super.focused = param1;
+      }
+      
+      override protected function updateSelectedIndex() : void
+      {
+         var _loc1_:ListItemRenderer = getRendererAt(_newSelectedIndex,scrollPosition) as ListItemRenderer;
+         if(_loc1_ != null && !_loc1_.selectable)
+         {
+            return;
+         }
+         super.updateSelectedIndex();
       }
    }
 }

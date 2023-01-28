@@ -310,6 +310,10 @@ package red.core.constants
       public static const MOUSE_PAN:uint = 1001;
       
       public static const MOUSE_SCROLL:uint = 1002;
+      
+      public static const MOUSE_MOVE:uint = 1003;
+      
+      public static const INVALID:uint = 10000;
        
       
       public function KeyCode()

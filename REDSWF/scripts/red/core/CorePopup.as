@@ -17,6 +17,11 @@ package red.core
          this.registerPopup();
       }
       
+      public function getPopupName() : String
+      {
+         return this.popupName;
+      }
+      
       protected function get popupName() : String
       {
          throw new Error("Override this");
@@ -27,12 +32,22 @@ package red.core
          super.configUI();
       }
       
+      override public function toString() : String
+      {
+         return "CorePopup [ " + this.name + "; " + this.popupName + " ]";
+      }
+      
       private function registerPopup() : void
       {
          if(Extensions.isScaleform)
          {
             ExternalInterface.call("registerPopup",this.popupName,this);
          }
+      }
+      
+      public function setGameLanguage(param1:String) : *
+      {
+         CoreComponent.gameLanguage = param1;
       }
    }
 }

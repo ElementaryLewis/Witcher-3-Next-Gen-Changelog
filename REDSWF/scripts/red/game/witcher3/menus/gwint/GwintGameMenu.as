@@ -72,7 +72,7 @@ package red.game.witcher3.menus.gwint
       public function __setPerspectiveProjection_(evt:Event) : void
       {
          root.transform.perspectiveProjection.fieldOfView = 122.353662;
-         root.transform.perspectiveProjection.projectionCenter = new Point(275,200);
+         root.transform.perspectiveProjection.projectionCenter = new Point(960,540);
       }
       
       public function playSound(soundID:String) : *

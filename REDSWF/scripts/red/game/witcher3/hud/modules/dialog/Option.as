@@ -90,7 +90,7 @@ package red.game.witcher3.hud.modules.dialog
       
       private function updateTextLine() : *
       {
-         var _loc1_:* = null;
+         var _loc1_:String = null;
          this.isLocked = false;
          if(data)
          {
@@ -102,7 +102,7 @@ package red.game.witcher3.hud.modules.dialog
                }
                else
                {
-                  _loc1_ = data.prefix + ". ";
+                  _loc1_ = String(data.prefix);
                }
                if(data.locked)
                {
@@ -128,7 +128,7 @@ package red.game.witcher3.hud.modules.dialog
                {
                   this.tfLine.textColor = 15914679;
                }
-               this.tfLine.text = _loc1_ + data.name;
+               this.tfLine.htmlText = _loc1_ + data.name;
                this.updateTextFieldSize();
             }
          }

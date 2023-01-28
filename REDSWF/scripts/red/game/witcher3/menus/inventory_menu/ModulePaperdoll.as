@@ -61,6 +61,8 @@ package red.game.witcher3.menus.inventory_menu
       
       public var tfPetards:TextField;
       
+      public var tfMasks:TextField;
+      
       public var mcSegmentBorderWeapons:MovieClip;
       
       public var mcSegmentBorderArmor:MovieClip;
@@ -90,6 +92,7 @@ package red.game.witcher3.menus.inventory_menu
          this.createSection(3,-1,4,1,5,this.mcSegmentBorderPotion,[this.mcPaperDollSlot5,this.mcPaperDollSlot6,this.mcPaperDollSlot19,this.mcPaperDollSlot20]);
          this.createSection(4,3,-1,2,5,this.mcSegmentBorderHorse,[this.mcPaperDollSlot15,this.mcPaperDollSlot16,this.mcPaperDollSlot17,this.mcPaperDollSlot18]);
          this.createSection(5,-1,4,3,-1,this.mcSegmentBorderBombs,[this.mcPaperDollSlot7,this.mcPaperDollSlot8,this.mcPaperDollSlot13,this.mcPaperDollSlot14]);
+         this.mcPaperDollSlot13.selectable = false;
       }
       
       override protected function configUI() : void
@@ -102,6 +105,7 @@ package red.game.witcher3.menus.inventory_menu
          dispatchEvent(new GameEvent(GameEvent.REGISTER,"inventory.grid.paperdoll.pockets",[this.handlePocketsSlotsNameSet]));
          dispatchEvent(new GameEvent(GameEvent.REGISTER,"inventory.grid.paperdoll.potions",[this.handlePotionsSlotsNameSet]));
          dispatchEvent(new GameEvent(GameEvent.REGISTER,"inventory.grid.paperdoll.petards",[this.handlePetardsSlotsNameSet]));
+         dispatchEvent(new GameEvent(GameEvent.REGISTER,"inventory.grid.paperdoll.masks",[this.handleMasksSlotsNameSet]));
          this.updateSectionBorders();
       }
       
@@ -213,7 +217,7 @@ package red.game.witcher3.menus.inventory_menu
          var _loc2_:* = 0.1;
          this.mcSegmentBorderWeapons.alpha = this.mcPaperDollSlot1.selectable || this.mcPaperDollSlot2.selectable || this.mcPaperDollSlot3.selectable || this.mcPaperDollSlot4.selectable ? 1 : _loc2_;
          this.mcSegmentBorderPotion.alpha = this.tfPotions.alpha = this.mcPaperDollSlot5.selectable || this.mcPaperDollSlot6.selectable || this.mcPaperDollSlot19.selectable || this.mcPaperDollSlot20.selectable ? 1 : _loc2_;
-         this.mcSegmentBorderBombs.alpha = this.tfPetards.alpha = this.mcPaperDollSlot7.selectable || this.mcPaperDollSlot13.selectable ? 1 : _loc2_;
+         this.mcSegmentBorderBombs.alpha = this.tfPetards.alpha = this.mcPaperDollSlot7.selectable ? 1 : _loc2_;
          this.mcSegmentBorderArmor.alpha = this.mcPaperDollSlot9.selectable || this.mcPaperDollSlot10.selectable || this.mcPaperDollSlot11.selectable || this.mcPaperDollSlot12.selectable ? 1 : _loc2_;
          this.mcSegmentBorderHorse.alpha = this.mcPaperDollSlot15.selectable || this.mcPaperDollSlot16.selectable || this.mcPaperDollSlot17.selectable || this.mcPaperDollSlot18.selectable ? 1 : _loc2_;
          this.tfPockets.alpha = this.mcPaperDollSlot8.selectable || this.mcPaperDollSlot14.selectable ? 1 : _loc2_;
@@ -230,6 +234,11 @@ package red.game.witcher3.menus.inventory_menu
          this.tfPotions.alpha = 1;
          this.tfPetards.alpha = 1;
          this.tfPockets.alpha = 1;
+         this.tfMasks.alpha = 1;
+         this.mcPaperDollSlot8.selectable = true;
+         this.mcPaperDollSlot14.selectable = true;
+         this.mcPaperDollSlot7.selectable = true;
+         this.mcPaperDollSlot13.selectable = false;
          this.updateSectionBorders();
       }
       
@@ -301,6 +310,14 @@ package red.game.witcher3.menus.inventory_menu
          if(this.tfPetards)
          {
             this.tfPetards.htmlText = param1;
+         }
+      }
+      
+      protected function handleMasksSlotsNameSet(param1:String) : void
+      {
+         if(this.tfMasks)
+         {
+            this.tfMasks.htmlText = param1;
          }
       }
       

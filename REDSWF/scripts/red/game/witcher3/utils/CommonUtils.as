@@ -20,6 +20,20 @@ package red.game.witcher3.utils
    
    public class CommonUtils
    {
+      
+      private static var isTurkish:Boolean = false;
+      
+      private static const GERMAN_SS_STRING:String = "ß";
+      
+      private static const GERMAN_SS_REPLACEMENT:String = "SS";
+      
+      private static const TURKISH_FIRST_LC_I_STRING:String = "i";
+      
+      private static const TURKISH_FIRST_UC_I_STRING:String = "İ";
+      
+      private static const TURKISH_SECOND_LC_I_STRING:String = "ı";
+      
+      private static const TURKISH_SECOND_UC_I_STRING:String = "I";
        
       
       public function CommonUtils()
@@ -311,19 +325,49 @@ package red.game.witcher3.utils
          return new Point(_loc7_,_loc8_);
       }
       
+      public static function setTurkish(param1:Boolean) : *
+      {
+         isTurkish = param1;
+      }
+      
       public static function toLowerCaseExSafe(param1:String) : String
       {
-         var _loc2_:* = "";
-         if(param1.charAt(0) == "ß")
+         var _loc3_:String = null;
+         var _loc2_:String = "";
+         if(!param1 || param1.length == 0)
          {
-            _loc2_ += "SS";
+            return _loc2_;
+         }
+         _loc3_ = param1.charAt(0);
+         if(isTurkish)
+         {
+            if(_loc3_ == TURKISH_FIRST_LC_I_STRING)
+            {
+               _loc2_ += TURKISH_FIRST_UC_I_STRING;
+            }
+            else if(_loc3_ == TURKISH_SECOND_LC_I_STRING)
+            {
+               _loc2_ += TURKISH_SECOND_UC_I_STRING;
+            }
+            else if(_loc3_ == TURKISH_FIRST_UC_I_STRING || _loc3_ == TURKISH_SECOND_UC_I_STRING)
+            {
+               _loc2_ += _loc3_;
+            }
+            else
+            {
+               _loc2_ += _loc3_.toUpperCase();
+            }
+         }
+         else if(_loc3_ == GERMAN_SS_STRING)
+         {
+            _loc2_ += GERMAN_SS_REPLACEMENT;
          }
          else
          {
-            _loc2_ += param1.charAt(0).toUpperCase();
+            _loc2_ += _loc3_.toUpperCase();
          }
-         var _loc3_:String = param1.slice(1,param1.length);
-         return _loc2_ + _loc3_.toLowerCase();
+         var _loc4_:String = param1.slice(1,param1.length);
+         return _loc2_ + _loc4_.toLowerCase();
       }
       
       public static function toSmallCaps(param1:TextField) : void
@@ -340,9 +384,18 @@ package red.game.witcher3.utils
       public static function toUpperCaseSafe(param1:String) : String
       {
          var _loc2_:String = null;
-         var _loc3_:RegExp = /ß/;
-         _loc2_ = param1.replace(_loc3_,"SS");
-         return _loc2_.toUpperCase();
+         if(isTurkish)
+         {
+            _loc2_ = param1.split(TURKISH_FIRST_LC_I_STRING).join(TURKISH_FIRST_UC_I_STRING);
+            _loc2_ = _loc2_.split(TURKISH_SECOND_LC_I_STRING).join(TURKISH_SECOND_UC_I_STRING);
+            _loc2_ = _loc2_.toUpperCase();
+         }
+         else
+         {
+            _loc2_ = param1.split(GERMAN_SS_STRING).join(GERMAN_SS_REPLACEMENT);
+            _loc2_ = _loc2_.toUpperCase();
+         }
+         return _loc2_;
       }
       
       public static function convertWASDCodeToNavEquivalent(param1:InputDetails) : *

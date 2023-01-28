@@ -55,13 +55,17 @@ package red.game.witcher3.menus.mainmenu
       {
          if(_label != null && textField != null)
          {
-            if(this._IsBackButton && !selected)
+            if(Boolean(data) && Boolean(data.unavailable))
+            {
+               textField.htmlText = "<font color=\"#555555\">" + _label + "</font>";
+            }
+            else if(this._IsBackButton && !selected)
             {
                textField.htmlText = "<font color=\"#FFFFFF\">" + _label + "</font>";
             }
             else if(this._showOpen)
             {
-               textField.htmlText = "<font color=\"#A8833F\">" + _label + "</font>";
+               textField.htmlText = "<font color=\"#FFFFFF\">" + _label + "</font>";
             }
             else
             {

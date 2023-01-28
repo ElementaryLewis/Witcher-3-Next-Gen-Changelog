@@ -237,6 +237,18 @@ package red.game.witcher3.hud.modules
          }
       }
       
+      public function ResetPetardData() : void
+      {
+         if(this.mcSubItemView)
+         {
+            this.mcSubItemView.cleanup();
+         }
+         if(this.mcRadialMenuFields.mcRadialMenuItem6)
+         {
+            (this.mcRadialMenuFields.mcRadialMenuItem6 as RadialMenuItemEquipped).ResetPetardData();
+         }
+      }
+      
       private function handleSetItemsList(param1:Array) : void
       {
          var _loc4_:Object = null;
@@ -469,22 +481,22 @@ package red.game.witcher3.hud.modules
          {
             if(this._lastSetSelection != -1)
             {
-               if(this.activateSelectedSlot())
+               if(this.activateSelectedSlot(false))
                {
-                  dispatchEvent(new GameEvent(GameEvent.CALL,"OnRequestCloseRadial"));
+                  dispatchEvent(new GameEvent(GameEvent.CALL,"OnRequestCloseRadial",[true]));
                }
             }
          }
          else if(_loc2_.buttonIdx == MouseEventEx.RIGHT_BUTTON)
          {
-            dispatchEvent(new GameEvent(GameEvent.CALL,"OnRequestCloseRadial"));
+            dispatchEvent(new GameEvent(GameEvent.CALL,"OnRequestCloseRadial",[false]));
          }
       }
       
       protected function handleDoubleClick(param1:MouseEvent) : void
       {
-         this.activateSelectedSlot();
-         dispatchEvent(new GameEvent(GameEvent.CALL,"OnRequestCloseRadial"));
+         this.activateSelectedSlot(false);
+         dispatchEvent(new GameEvent(GameEvent.CALL,"OnRequestCloseRadial",[true]));
       }
       
       protected function handleMouseWheel(param1:MouseEvent) : void
@@ -503,28 +515,28 @@ package red.game.witcher3.hud.modules
          }
       }
       
-      protected function activateSelectedSlot() : Boolean
+      protected function activateSelectedSlot(param1:Boolean) : Boolean
       {
-         var _loc1_:RadialMenuItemEquipped = null;
-         var _loc2_:String = null;
+         var _loc2_:RadialMenuItemEquipped = null;
+         var _loc3_:String = null;
          if(this.pendingTimer)
          {
             this.handlePendedDataUpdate();
          }
          if(this._lastSetSelection != -1)
          {
-            _loc1_ = this.mcRadialMenuFields.GetSelectedRadialMenuField() as RadialMenuItemEquipped;
-            if(_loc1_)
+            _loc2_ = this.mcRadialMenuFields.GetSelectedRadialMenuField() as RadialMenuItemEquipped;
+            if(_loc2_)
             {
-               _loc2_ = _loc1_.getCurrentSlotName();
+               _loc3_ = _loc2_.getCurrentSlotName();
             }
             else
             {
-               _loc2_ = String(this.SlotsNames[this._lastSetSelection]);
+               _loc3_ = String(this.SlotsNames[this._lastSetSelection]);
             }
-            if(_loc2_ != "disabled" && !this.mcRadialMenuFields.IsDesatureted(_loc2_))
+            if(_loc3_ != "disabled" && !this.mcRadialMenuFields.IsDesatureted(_loc3_))
             {
-               dispatchEvent(new GameEvent(GameEvent.CALL,"OnActivateSlot",[_loc2_]));
+               dispatchEvent(new GameEvent(GameEvent.CALL,"OnActivateSlot",[_loc3_,param1,false]));
                return true;
             }
          }
@@ -571,8 +583,8 @@ package red.game.witcher3.hud.modules
          {
             if(this.holdCloseTimer == null)
             {
-               this.activateSelectedSlot();
-               dispatchEvent(new GameEvent(GameEvent.CALL,"OnRequestCloseRadial"));
+               this.activateSelectedSlot(true);
+               dispatchEvent(new GameEvent(GameEvent.CALL,"OnRequestCloseRadial",[false]));
             }
             else
             {
@@ -618,12 +630,12 @@ package red.game.witcher3.hud.modules
                }
                break;
             case KeyCode.ESCAPE:
-               dispatchEvent(new GameEvent(GameEvent.CALL,"OnRequestCloseRadial"));
+               dispatchEvent(new GameEvent(GameEvent.CALL,"OnRequestCloseRadial",[false]));
                break;
             case KeyCode.E:
             case KeyCode.ENTER:
-               this.activateSelectedSlot();
-               dispatchEvent(new GameEvent(GameEvent.CALL,"OnRequestCloseRadial"));
+               this.activateSelectedSlot(false);
+               dispatchEvent(new GameEvent(GameEvent.CALL,"OnRequestCloseRadial",[true]));
          }
       }
       
@@ -763,7 +775,18 @@ package red.game.witcher3.hud.modules
          }
          if(param1.isSwitchable())
          {
-            _loc2_ = param1.isCrossbow() ? "[[hud_radial_change_bolt]]" : "[[hud_radial_change_item]]";
+            if(param1.ShowChangeItemText())
+            {
+               _loc2_ = "[[hud_radial_change_item]]";
+            }
+            else if(param1.isCrossbow())
+            {
+               _loc2_ = "[[hud_radial_change_bolt]]";
+            }
+            else
+            {
+               _loc2_ = "[[hud_radial_change_item]]";
+            }
             this.mcInputFeedback.removeButton(this.BTN_ID_SWITCH,false);
             if(this._isAlternativeInputMode)
             {

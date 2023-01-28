@@ -9,6 +9,8 @@ package red.core.overlay
    
    public class LoadingOverlay extends MovieClip
    {
+      
+      private static const SPINNER_ANIMATION_LIMIT:int = 25000;
        
       
       public var mcProgressBar:StatusIndicator;
@@ -19,9 +21,19 @@ package red.core.overlay
       
       private var alphaAccel:Number = 0;
       
+      private var spinnerAnimationTime:int = 0;
+      
+      private var currentProgress:Number = 0;
+      
+      private var displayFakeProgress:Boolean = false;
+      
       public function LoadingOverlay()
       {
          super();
+         this.mcProgressBar.visible = false;
+         this.mcProgressBar.minimum = 0;
+         this.mcProgressBar.maximum = 1;
+         this.mcProgressBar.validateNow();
          this.mcLoading.visible = false;
          this.mcLoading.alpha = 0;
          if(!stage)
@@ -32,6 +44,16 @@ package red.core.overlay
          {
             this.registerLoadingOverlay();
          }
+      }
+      
+      public function setProgressValue(param1:Number) : void
+      {
+         this.mcProgressBar.value = param1;
+      }
+      
+      public function showProgressBar(param1:Boolean) : void
+      {
+         this.mcProgressBar.visible = param1;
       }
       
       public function fadeIn(param1:Number) : void

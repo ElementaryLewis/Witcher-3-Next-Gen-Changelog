@@ -24,6 +24,8 @@ package red.game.witcher3.hud.modules
       
       public var mcBtn4:HintButton;
       
+      public var mcBtn5:HintButton;
+      
       public function HudModuleControlsFeedback()
       {
          super();
@@ -70,24 +72,36 @@ package red.game.witcher3.hud.modules
                      _loc4_ = _loc3_[3] as KeyBindingData;
                      this.mcBtn4.label = _loc4_.label;
                      this.mcBtn4.keyBinding = _loc4_;
+                     if(_loc5_ > 4)
+                     {
+                        _loc4_ = _loc3_[4] as KeyBindingData;
+                        this.mcBtn5.label = _loc4_.label;
+                        this.mcBtn5.keyBinding = _loc4_;
+                        return;
+                     }
+                     this.mcBtn5.visible = false;
                      return;
                   }
                   this.mcBtn4.visible = false;
+                  this.mcBtn5.visible = false;
                   return;
                }
                this.mcBtn3.visible = false;
                this.mcBtn4.visible = false;
+               this.mcBtn5.visible = false;
                return;
             }
             this.mcBtn2.visible = false;
             this.mcBtn3.visible = false;
             this.mcBtn4.visible = false;
+            this.mcBtn5.visible = false;
             return;
          }
          this.mcBtn1.visible = false;
          this.mcBtn2.visible = false;
          this.mcBtn3.visible = false;
          this.mcBtn4.visible = false;
+         this.mcBtn5.visible = false;
       }
       
       public function setSwordText(param1:String) : void

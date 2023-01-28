@@ -6,7 +6,7 @@ package red.game.witcher3.menus.mainmenu
    import flash.events.MouseEvent;
    import flash.text.TextField;
    import red.core.CoreMenuModule;
-   import red.game.witcher3.constants.CommonConstants;
+   import red.game.witcher3.constants.PlatformType;
    import red.game.witcher3.controls.ConditionalButton;
    import red.game.witcher3.controls.W3TextArea;
    import scaleform.clik.constants.InputValue;
@@ -21,6 +21,8 @@ package red.game.witcher3.menus.mainmenu
       
       public var txtRightJoy:W3TextArea;
       
+      public var txtLeftJoyRightJoy:W3TextArea;
+      
       public var txtXButton:W3TextArea;
       
       public var txtAButton:W3TextArea;
@@ -28,6 +30,10 @@ package red.game.witcher3.menus.mainmenu
       public var txtBButton:W3TextArea;
       
       public var txtYButton:W3TextArea;
+      
+      public var txtYButtonPs:W3TextArea;
+      
+      public var txtYButtonXbox:W3TextArea;
       
       public var txtRightBumper:W3TextArea;
       
@@ -55,6 +61,8 @@ package red.game.witcher3.menus.mainmenu
       
       protected var selectedIndex:int = 0;
       
+      protected var platformType:int = 255;
+      
       public function GamepadMappingModule()
       {
          super();
@@ -81,16 +89,22 @@ package red.game.witcher3.menus.mainmenu
          visible = true;
          GTweener.removeTweens(this);
          GTweener.to(this,0.2,{"alpha":1},{});
+         this.platformType = param2;
          switch(param2)
          {
-            case CommonConstants.PLATFORM_PC:
-               gotoAndStop("pc");
+            case PlatformType.PLATFORM_PC:
+            case PlatformType.PLATFORM_XBOX1:
+               gotoAndStop("xboxone");
                break;
-            case CommonConstants.PLATFORM_XBOX1:
-               gotoAndStop("xbox");
+            case PlatformType.PLATFORM_XB_SCARLETT_LOCKHART:
+            case PlatformType.PLATFORM_XB_SCARLETT_ANACONDA:
+               gotoAndStop("xboxseries");
                break;
-            case CommonConstants.PLATFORM_PS4:
-               gotoAndStop("ps");
+            case PlatformType.PLATFORM_PS4:
+               gotoAndStop("ps4");
+               break;
+            case PlatformType.PLATFORM_PS5:
+               gotoAndStop("ps5");
                addEventListener(Event.ENTER_FRAME,this.handleEnterFrame,false,0,true);
          }
          this.dataArray = param1;
@@ -196,11 +210,22 @@ package red.game.witcher3.menus.mainmenu
       
       protected function updateButtonMapping() : void
       {
-         var _loc1_:Object = null;
-         _loc1_ = this.dataArray[this.selectedIndex];
+         var _loc1_:Object = this.dataArray[this.selectedIndex];
          if(this.txtLayoutName)
          {
             this.txtLayoutName.htmlText = _loc1_.layoutName;
+         }
+         if(this.txtLeftJoyRightJoy)
+         {
+            if(_loc1_.txtLeftJoyRightJoy == "" || this.platformType == PlatformType.PLATFORM_PS4 || this.platformType == PlatformType.PLATFORM_XBOX1)
+            {
+               this.txtLeftJoyRightJoy.visible = false;
+            }
+            else
+            {
+               this.txtLeftJoyRightJoy.visible = true;
+               this.txtLeftJoyRightJoy.htmlText = _loc1_.txtLeftJoyRightJoy;
+            }
          }
          if(this.txtRightJoy)
          {
@@ -260,6 +285,30 @@ package red.game.witcher3.menus.mainmenu
             {
                this.txtYButton.visible = true;
                this.txtYButton.htmlText = _loc1_.txtYButton;
+            }
+         }
+         if(this.txtYButtonXbox)
+         {
+            if(_loc1_.txtYButton == "")
+            {
+               this.txtYButtonXbox.visible = false;
+            }
+            else
+            {
+               this.txtYButtonXbox.visible = true;
+               this.txtYButtonXbox.htmlText = _loc1_.txtYButton;
+            }
+         }
+         if(this.txtYButtonPs)
+         {
+            if(_loc1_.txtYButton == "")
+            {
+               this.txtYButtonPs.visible = false;
+            }
+            else
+            {
+               this.txtYButtonPs.visible = true;
+               this.txtYButtonPs.htmlText = _loc1_.txtYButton;
             }
          }
          if(this.txtRightBumper)

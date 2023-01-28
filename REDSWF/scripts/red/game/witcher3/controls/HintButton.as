@@ -6,7 +6,6 @@ package red.game.witcher3.controls
    import red.core.constants.KeyCode;
    import red.game.witcher3.constants.EInputDeviceType;
    import red.game.witcher3.constants.KeyboardKeys;
-   import red.game.witcher3.constants.PlatformType;
    import red.game.witcher3.data.KeyBindingData;
    import red.game.witcher3.managers.InputManager;
    import scaleform.clik.core.UIComponent;
@@ -138,7 +137,7 @@ package red.game.witcher3.controls
          var _loc4_:String = null;
          var _loc5_:String = null;
          var _loc1_:InputManager = InputManager.getInstance();
-         var _loc2_:Boolean = _loc1_.getPlatform() == PlatformType.PLATFORM_PS4 || _loc1_.gamepadType == InputManager.GAMEPAD_TYPE_PS4;
+         var _loc2_:Boolean = _loc1_.isPsPlatform() || _loc1_.isPsGamepad();
          var _loc3_:MovieClip = this.getCurrentPadIcon();
          if(this.keyBinding.gamepad_navEquivalent)
          {
@@ -169,6 +168,7 @@ package red.game.witcher3.controls
          switch(_loc1_)
          {
             case EInputDeviceType.IDT_PS4:
+            case EInputDeviceType.IDT_PS5:
                return this.mcIconPS;
             case EInputDeviceType.IDT_Xbox1:
                return this.mcIconXbox;

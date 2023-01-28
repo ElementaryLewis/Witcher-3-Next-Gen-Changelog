@@ -11,9 +11,9 @@ package red.game.witcher3.menus.mainmenu
          super();
       }
       
-      override public function setData(data:Object) : void
+      override public function setData(param1:Object) : void
       {
-         super.setData(data);
+         super.setData(param1);
       }
       
       public function getDLCDescription() : String

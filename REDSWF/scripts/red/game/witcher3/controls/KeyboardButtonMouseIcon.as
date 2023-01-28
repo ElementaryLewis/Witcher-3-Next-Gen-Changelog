@@ -21,6 +21,8 @@ package red.game.witcher3.controls
       
       private const LABEL_SCROLL:String = "scroll";
       
+      private const LABEL_MOVE:String = "move";
+      
       protected var _keyCode:uint;
       
       public function KeyboardButtonMouseIcon()
@@ -30,7 +32,7 @@ package red.game.witcher3.controls
       
       public function isMouseKey(param1:uint) : Boolean
       {
-         return param1 >= KeyCode.LEFT_MOUSE && param1 <= KeyCode.MIDDLE_MOUSE || param1 == KeyCode.MOUSE_WHEEL_UP || param1 == KeyCode.MOUSE_WHEEL_DOWN || param1 == KeyCode.MOUSE_PAN || param1 == KeyCode.MOUSE_SCROLL;
+         return param1 >= KeyCode.LEFT_MOUSE && param1 <= KeyCode.MIDDLE_MOUSE || param1 == KeyCode.MOUSE_WHEEL_UP || param1 == KeyCode.MOUSE_WHEEL_DOWN || param1 == KeyCode.MOUSE_PAN || param1 == KeyCode.MOUSE_SCROLL || param1 == KeyCode.MOUSE_MOVE;
       }
       
       public function get keyCode() : uint
@@ -68,6 +70,8 @@ package red.game.witcher3.controls
                break;
             case KeyCode.MOUSE_PAN:
                gotoAndStop(this.LABEL_PAN);
+            case KeyCode.MOUSE_MOVE:
+               gotoAndStop(this.LABEL_MOVE);
          }
       }
    }

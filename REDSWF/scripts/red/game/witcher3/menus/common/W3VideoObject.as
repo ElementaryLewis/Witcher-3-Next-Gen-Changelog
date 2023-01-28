@@ -63,12 +63,10 @@ package red.game.witcher3.menus.common
          }
          this.ns.play(this.videoToPlay);
          this.ns.addEventListener(NetStatusEvent.NET_STATUS,this.statusHandler);
-         trace("video play " + this.videoToPlay);
       }
       
       internal function statusHandler(param1:NetStatusEvent) : void
       {
-         trace("status: " + param1.info.code);
          if(param1.info.code == "NetStream.Play.Start")
          {
          }
@@ -80,16 +78,8 @@ package red.game.witcher3.menus.common
       
       internal function handleMetaDataEvent(param1:Object) : void
       {
-         if(param1)
+         if(!param1)
          {
-            trace("duration: " + param1.duration);
-            trace("width: " + param1.width);
-            trace("height: " + param1.height);
-            trace("frameRate: " + param1.frameRate);
-            trace("totalFrames: " + param1.totalFrames);
-            trace("audioTracks: " + param1.audioTracksCount);
-            trace("subtitleTracks: " + param1.subtitleTracksCount);
-            trace("cuePoints: " + param1.cuePointsCount);
          }
       }
       
@@ -98,19 +88,16 @@ package red.game.witcher3.menus.common
          var _loc2_:String = null;
          if(param1)
          {
-            trace("cuePoint: " + param1.name + ", " + param1.time + ", " + param1.type);
             for(_loc2_ in param1.parameters)
             {
-               trace("\t" + _loc2_ + ":\t" + param1.parameters[_loc2_]);
             }
          }
       }
       
       internal function handleSubtitleEvent(param1:String) : *
       {
-         if(param1)
+         if(!param1)
          {
-            trace("subtitle: " + param1);
          }
       }
       

@@ -156,7 +156,7 @@ package red.game.witcher3.slots
                   _loc5_ = _loc3_.slotType == InventorySlotType.SilverSword;
                   _loc6_ = _loc3_.slotType == InventorySlotType.Armor || _loc3_.slotType == InventorySlotType.Boots || _loc3_.slotType == InventorySlotType.Gloves || _loc3_.slotType == InventorySlotType.Pants;
                   _loc7_ = _loc3_.socketsCount > _loc3_.socketsUsedCount && !_loc3_.enchanted;
-                  if(_loc3_.quality == ItemQuality.SET && _loc2_.isDye && _loc6_)
+                  if(_loc3_.quality == ItemQuality.SET && _loc2_.isDye && _loc6_ && _loc3_.canBeDyed)
                   {
                      this._currentDropAction = SlotDragAvatar.ACTION_DIY;
                      return true;
@@ -455,6 +455,10 @@ package red.game.witcher3.slots
          if(this._slotTag)
          {
             this.defaultIcon.visible = true;
+            if(this._slotTag == "quick2")
+            {
+               this.loadIcon("icons\\inventory\\slots\\mask2.png");
+            }
          }
          if(_selected && InputManager.getInstance().isGamepad())
          {
@@ -514,7 +518,7 @@ package red.game.witcher3.slots
                _loc2_ = InventorySlotType.Petard1;
                break;
             case "petard2":
-               _loc2_ = InventorySlotType.Petard2;
+               _loc2_ = InventorySlotType.Petard1;
                break;
             case "potion1":
                _loc2_ = InventorySlotType.Potion1;
@@ -614,32 +618,14 @@ package red.game.witcher3.slots
          {
             if(_loc2_ == InventorySlotType.Petard2)
             {
-               return true;
-            }
-         }
-         else if(param1 == InventorySlotType.Petard2)
-         {
-            if(_loc2_ == InventorySlotType.Petard1)
-            {
-               return true;
-            }
-         }
-         else if(param1 == InventorySlotType.Quickslot1)
-         {
-            if(_loc2_ == InventorySlotType.Quickslot2)
-            {
-               return true;
-            }
-         }
-         else if(param1 == InventorySlotType.Quickslot2)
-         {
-            if(_loc2_ == InventorySlotType.Quickslot1)
-            {
-               return true;
             }
          }
          else
          {
+            if(param1 == InventorySlotType.Petard2)
+            {
+               return false;
+            }
             if((param1 == InventorySlotType.Potion1 || param1 == InventorySlotType.Potion2 || param1 == InventorySlotType.Potion3 || param1 == InventorySlotType.Potion4) && (_loc2_ == InventorySlotType.Potion1 || _loc2_ == InventorySlotType.Potion2 || _loc2_ == InventorySlotType.Potion3 || _loc2_ == InventorySlotType.Potion4))
             {
                return true;

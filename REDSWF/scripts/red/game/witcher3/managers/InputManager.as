@@ -26,12 +26,6 @@ package red.game.witcher3.managers
       
       public static const LOCKED_SCHEME_MOUSE:uint = 2;
       
-      public static const GAMEPAD_TYPE_XBOX:uint = 0;
-      
-      public static const GAMEPAD_TYPE_PS4:uint = 1;
-      
-      public static const GAMEPAD_TYPE_STEAM:uint = 2;
-      
       protected static const CHANGE_CONTROLLER_TYPE_DELAY:Number = -1;
       
       protected static const CHANGE_CONTROLLER_MOUSE_DELTA:Number = 3;
@@ -168,15 +162,15 @@ package red.game.witcher3.managers
       
       public function get gamepadType() : uint
       {
-         if(this._platformType == PlatformType.PLATFORM_PS4)
+         if(this.getPlatform() == PlatformType.PLATFORM_PS4)
          {
-            return GAMEPAD_TYPE_PS4;
+            return EInputDeviceType.IDT_PS4;
          }
-         if(this._platformType == PlatformType.PLATFORM_XBOX1)
+         if(this.getPlatform() == PlatformType.PLATFORM_PS5)
          {
-            return GAMEPAD_TYPE_XBOX;
+            return EInputDeviceType.IDT_PS5;
          }
-         if(this._platformType == PlatformType.PLATFORM_PC && this._gamepadType != EInputDeviceType.IDT_PS4 && this._gamepadType != EInputDeviceType.IDT_Steam)
+         if(this.isXboxPlatform())
          {
             return EInputDeviceType.IDT_Xbox1;
          }
@@ -185,9 +179,9 @@ package red.game.witcher3.managers
       
       public function set gamepadType(param1:uint) : void
       {
+         this._gamepadType = param1;
          if(this._gamepadType == EInputDeviceType.IDT_Steam || param1 == EInputDeviceType.IDT_Steam)
          {
-            this._gamepadType = param1;
             if(this._gamepadType == EInputDeviceType.IDT_Steam)
             {
                this._lockedControlScheme = LOCKED_SCHEME_GPAD;
@@ -199,10 +193,6 @@ package red.game.witcher3.managers
                this.setGamepadInputType(this._isGamepad,true);
             }
             this.fireCtrlChangeEvent(this._isGamepad,this._platformType);
-         }
-         else
-         {
-            this._gamepadType = param1;
          }
       }
       
@@ -287,9 +277,24 @@ package red.game.witcher3.managers
          return this._platformType;
       }
       
+      public function isXboxPlatform() : Boolean
+      {
+         return this._platformType == PlatformType.PLATFORM_XBOX1 || this._platformType == PlatformType.PLATFORM_XB_SCARLETT_LOCKHART || this._platformType == PlatformType.PLATFORM_XB_SCARLETT_ANACONDA;
+      }
+      
+      public function isPsPlatform() : Boolean
+      {
+         return this._platformType == PlatformType.PLATFORM_PS4 || this._platformType == PlatformType.PLATFORM_PS5;
+      }
+      
       public function isGamepad() : Boolean
       {
          return this._isGamepad || this._platformType != PlatformType.PLATFORM_PC;
+      }
+      
+      public function isPsGamepad() : Boolean
+      {
+         return this._gamepadType == EInputDeviceType.IDT_PS4 || this._gamepadType == EInputDeviceType.IDT_PS5;
       }
       
       public function setControllerType(param1:Boolean) : void

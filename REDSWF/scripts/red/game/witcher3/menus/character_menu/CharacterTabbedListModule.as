@@ -195,19 +195,19 @@ package red.game.witcher3.menus.character_menu
          switch(_loc7_)
          {
             case TabIndex_Sword:
-               _loc4_ = 8;
-               _loc5_ = 20;
-               _loc6_ = 30;
+               _loc4_ = 6;
+               _loc5_ = 12;
+               _loc6_ = 18;
                break;
             case TabIndex_Signs:
                _loc4_ = 6;
-               _loc5_ = 18;
-               _loc6_ = 28;
+               _loc5_ = 12;
+               _loc6_ = 18;
                break;
             case TabIndex_Alchemy:
-               _loc4_ = 8;
-               _loc5_ = 20;
-               _loc6_ = 28;
+               _loc4_ = 6;
+               _loc5_ = 12;
+               _loc6_ = 18;
          }
          _loc1_.text = _loc4_.toString();
          _loc2_.text = _loc5_.toString();

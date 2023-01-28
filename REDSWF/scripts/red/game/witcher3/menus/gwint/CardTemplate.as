@@ -596,6 +596,10 @@ package red.game.witcher3.menus.gwint
                {
                   return "gwint_card_tooltip_summon_sm";
                }
+               if(this.index == 26 || this.index == 27)
+               {
+                  return "gwint_card_tooltip_summon_roach";
+               }
                return "gwint_card_tooltip_summon_clones";
             }
             if(this.hasEffect(CardEffect_SuicideSummon))

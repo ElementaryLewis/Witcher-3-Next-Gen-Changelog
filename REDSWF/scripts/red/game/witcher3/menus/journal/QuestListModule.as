@@ -317,47 +317,10 @@ package red.game.witcher3.menus.journal
       
       override protected function sortData(param1:Array) : void
       {
-         param1.sort(this.sortQuestData);
       }
       
       protected function sortQuestData(param1:*, param2:*) : int
       {
-         if(param1.status != param2.status)
-         {
-            return param1.status - param2.status;
-         }
-         if(param1.isStory != param2.isStory)
-         {
-            return param1.isStory - param2.isStory;
-         }
-         if(param1.tracked)
-         {
-            return -1;
-         }
-         if(param2.tracked)
-         {
-            return 1;
-         }
-         if(param1.questWorld != param2.questWorld)
-         {
-            if(param1.questWorld == param1.curWorld)
-            {
-               return -1;
-            }
-            if(param2.questWorld == param2.curWorld)
-            {
-               return 1;
-            }
-            if(param1.questWorld == 0)
-            {
-               return -1;
-            }
-            if(param2.questWorld == 0)
-            {
-               return 1;
-            }
-            return param1.questWorld - param2.questWorld;
-         }
          return 0;
       }
       

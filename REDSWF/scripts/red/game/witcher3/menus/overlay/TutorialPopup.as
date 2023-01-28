@@ -10,6 +10,7 @@ package red.game.witcher3.menus.overlay
    import flash.geom.Point;
    import flash.geom.Rectangle;
    import flash.text.TextField;
+   import flash.text.TextFormat;
    import red.core.CoreComponent;
    import red.core.constants.KeyCode;
    import red.core.events.GameEvent;
@@ -146,7 +147,8 @@ package red.game.witcher3.menus.overlay
       
       protected function populateData() : void
       {
-         var _loc2_:String = null;
+         var _loc2_:TextFormat = null;
+         var _loc3_:String = null;
          var _loc1_:Boolean = false;
          if(this._data.imagePath)
          {
@@ -160,16 +162,26 @@ package red.game.witcher3.menus.overlay
             this.txtTitle.height = this.txtTitle.textHeight + CommonConstants.SAFE_TEXT_PADDING;
             this.txtTitle.textColor = !!this._data.isUiTutorial ? 0 : 11374417;
             this.topDelemiter.visible = true;
+            _loc2_ = new TextFormat();
+            if(CoreComponent.isArabicAligmentMode)
+            {
+               _loc2_.font = "$NormalFont";
+            }
+            else
+            {
+               _loc2_.font = "$BoldFont";
+            }
+            this.txtTitle.setTextFormat(_loc2_);
          }
          if(this._data.messageText)
          {
             this.txtDescription.width = MIN_WIDTH;
             this.txtDescription.multiline = true;
             this.txtDescription.wordWrap = true;
-            _loc2_ = CommonUtils.fixFontStyleTags(this._data.messageText);
+            _loc3_ = CommonUtils.fixFontStyleTags(this._data.messageText);
             if(this._data.isUiTutorial)
             {
-               this._data.messageText = "<font color = \'#0\'>" + _loc2_ + "</font>";
+               this._data.messageText = "<font color = \'#0\'>" + _loc3_ + "</font>";
             }
             if(CoreComponent.isArabicAligmentMode)
             {
@@ -217,10 +229,11 @@ package red.game.witcher3.menus.overlay
       
       private function alignContent() : void
       {
+         var _loc1_:Number = NaN;
          var _loc4_:Number = NaN;
          var _loc8_:Number = NaN;
          var _loc9_:* = new Namespace("");
-         var _loc1_:Number = 0;
+         _loc1_ = 0;
          var _loc2_:Number = 0;
          var _loc3_:Rectangle = CommonUtils.getScreenRect();
          if(this.topDelemiter.visible)

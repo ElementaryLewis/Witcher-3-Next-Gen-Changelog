@@ -6,13 +6,13 @@ package
    {
        
       
-      public var mcPinIcon:MovieClip;
-      
-      public var mcPingAnimation:MovieClip;
-      
       public var mcPinGlow:PinGlow;
       
+      public var mcPinIcon:MovieClip;
+      
       public var mcPinRadius:MovieClip;
+      
+      public var mcPingAnimation:MovieClip;
       
       public function MapPinIco()
       {

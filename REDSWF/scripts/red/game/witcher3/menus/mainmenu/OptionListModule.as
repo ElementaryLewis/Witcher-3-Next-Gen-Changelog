@@ -6,6 +6,7 @@ package red.game.witcher3.menus.mainmenu
    import flash.events.Event;
    import flash.events.MouseEvent;
    import flash.text.TextField;
+   import red.core.CoreComponent;
    import red.core.CoreMenuModule;
    import red.core.constants.KeyCode;
    import red.core.events.GameEvent;
@@ -22,6 +23,8 @@ package red.game.witcher3.menus.mainmenu
    
    public class OptionListModule extends CoreMenuModule
    {
+      
+      private static const ACTION_DOWNLOAD:uint = 66;
        
       
       public var mcPresetOption:MovieClip;
@@ -40,6 +43,14 @@ package red.game.witcher3.menus.mainmenu
       
       public var mcOptionListItem6:W3SubMenuListItemRenderer;
       
+      public var mcOptionListItem7:W3SubMenuListItemRenderer;
+      
+      public var mcOptionListItem8:W3SubMenuListItemRenderer;
+      
+      public var mcOptionListItem9:W3SubMenuListItemRenderer;
+      
+      public var optionListItems:Array;
+      
       protected var mcPresetList:W3ScrollingList;
       
       public var mcScrollingListItem1:W3MenuListItemRenderer;
@@ -50,15 +61,23 @@ package red.game.witcher3.menus.mainmenu
       
       public var mcScrollingListItem4:W3MenuListItemRenderer;
       
+      public var mcScrollingListItem5:W3MenuListItemRenderer;
+      
+      public var optionListData:Array;
+      
       public var mcOptionScrollbar:ScrollBar;
       
       protected var txtPresetTitle:TextField;
+      
+      public var txtOptionDescription:TextField;
       
       protected var presetSelected:Boolean = false;
       
       protected var presetsEnabled:Boolean = false;
       
       protected var currentPresetGroupName:uint;
+      
+      protected var itemsX:Number;
       
       public var _lastMoveWasMouse:Boolean = false;
       
@@ -91,7 +110,7 @@ package red.game.witcher3.menus.mainmenu
             {
                this.presetSelected = false;
                this.mcPresetList.selectedIndex = -1;
-               this.mcOptionList.selectedIndex = this.mcOptionList.getRendererAt(this._lastMouseOveredOptionItem).index;
+               this.mcOptionList.selectedIndex = this.mcOptionList.getRendererAt(this._lastMouseOveredOptionItem,this.mcOptionList.scrollPosition).index;
             }
          }
          else if(this.mcOptionList.selectedIndex == -1 && this.mcPresetList.selectedIndex == -1)
@@ -104,9 +123,13 @@ package red.game.witcher3.menus.mainmenu
       override protected function configUI() : void
       {
          super.configUI();
+         this.mcOptionList.bIsOptionList = true;
+         this.optionListItems = new Array(this.mcOptionListItem1,this.mcOptionListItem2,this.mcOptionListItem3,this.mcOptionListItem4,this.mcOptionListItem5,this.mcOptionListItem6,this.mcOptionListItem7,this.mcOptionListItem8,this.mcOptionListItem9);
+         this.itemsX = this.mcOptionListItem1.x;
          if(this.mcOptionList)
          {
             this.mcOptionList.focusable = false;
+            this.mcOptionList.addEventListener(ListEvent.INDEX_CHANGE,this.onOptionSelectionChanged);
          }
          if(this.mcPresetOption)
          {
@@ -121,10 +144,13 @@ package red.game.witcher3.menus.mainmenu
             this.setupPresetItemMouseEvents(this.mcScrollingListItem3);
             this.mcScrollingListItem4 = this.mcPresetOption.getChildByName("mcScrollingListItem4") as W3MenuListItemRenderer;
             this.setupPresetItemMouseEvents(this.mcScrollingListItem4);
+            this.mcScrollingListItem5 = this.mcPresetOption.getChildByName("mcScrollingListItem5") as W3MenuListItemRenderer;
+            this.setupPresetItemMouseEvents(this.mcScrollingListItem5);
             this.mcPresetList.addEventListener(ListEvent.INDEX_CHANGE,this.handlePresetIndexChanged,false,0,true);
             this.mcPresetList.PCUpAction = KeyCode.A;
             this.mcPresetList.PCDownAction = KeyCode.D;
          }
+         this.txtOptionDescription = getChildByName("txtOptionDescription") as TextField;
          stage.addEventListener(MouseEvent.MOUSE_MOVE,this.handleMouseMove,false,0,true);
          if(this.mcOptionScrollbar)
          {
@@ -133,28 +159,46 @@ package red.game.witcher3.menus.mainmenu
          visible = false;
          enabled = false;
          alpha = 0;
+         dispatchEvent(new GameEvent(GameEvent.REGISTER,"options.insert_entry",[this.onInsertOptionsEntry]));
+         dispatchEvent(new GameEvent(GameEvent.REGISTER,"options.remove_entry",[this.onRemoveOptionsEntry]));
+         dispatchEvent(new GameEvent(GameEvent.REGISTER,"options.update_disabled",[this.onUpdateDisabled]));
       }
       
       public function showWithData(param1:Array) : void
       {
+         var _loc4_:int = 0;
          if(!this.mcOptionList)
          {
             return;
          }
+         var _loc2_:IngameMenu = parent as IngameMenu;
+         var _loc3_:Array = new Array();
          visible = true;
          enabled = true;
+         this.mcOptionList.selectedIndex = -1;
+         this.txtOptionDescription.text = "";
          GTweener.removeTweens(this);
          GTweener.to(this,0.2,{"alpha":1},{});
          this.presetSelected = false;
-         this.setupDataProviders(param1);
+         _loc4_ = 0;
+         while(_loc4_ < param1.length)
+         {
+            if(!param1[_loc4_].checkHardwareCursor || !_loc2_._hardwareCursorOn)
+            {
+               _loc3_.push(param1[_loc4_]);
+            }
+            _loc4_++;
+         }
+         this.optionListData = _loc3_;
+         this.setupDataProviders(_loc3_);
          if(this.mcOptionList.selectedIndex == 0)
          {
             dispatchEvent(new GameEvent(GameEvent.CALL,"OnPlaySoundEvent",["gui_global_highlight"]));
          }
-         var _loc2_:IngameMenu = parent as IngameMenu;
          if(!this.lastMoveWasMouse)
          {
             this.mcOptionList.selectedIndex = 0;
+            this.mcOptionList.dispatchEvent(new ListEvent(ListEvent.INDEX_CHANGE,false,false,0));
          }
          else
          {
@@ -183,6 +227,32 @@ package red.game.witcher3.menus.mainmenu
          this.mcOptionList.validateNow();
       }
       
+      internal function onOptionSelectionChanged(param1:ListEvent) : void
+      {
+         this.updateDescriptionText(param1.itemData);
+      }
+      
+      public function updateDescriptionText(param1:Object) : void
+      {
+         var _loc2_:String = "";
+         if(param1)
+         {
+            if(param1.description)
+            {
+               _loc2_ = String(param1.description);
+            }
+            else if(Boolean(param1.descriptionTrue) && param1.current == "true")
+            {
+               _loc2_ = String(param1.descriptionTrue);
+            }
+            else if(Boolean(param1.descriptionFalse) && param1.current == "false")
+            {
+               _loc2_ = String(param1.descriptionFalse);
+            }
+         }
+         this.txtOptionDescription.htmlText = _loc2_;
+      }
+      
       protected function setupDataProviders(param1:Array) : void
       {
          var _loc2_:int = 0;
@@ -206,6 +276,53 @@ package red.game.witcher3.menus.mainmenu
          this.mcOptionList.validateNow();
       }
       
+      private function onUpdateDisabled(param1:Array) : void
+      {
+         var _loc2_:int = 0;
+         var _loc3_:int = 0;
+         if(this.optionListData == null)
+         {
+            return;
+         }
+         _loc2_ = 0;
+         while(_loc2_ < param1.length)
+         {
+            _loc3_ = 0;
+            while(_loc3_ < this.optionListData.length)
+            {
+               if(this.optionListData[_loc3_].tag == param1[_loc2_].tag)
+               {
+                  this.optionListData[_loc3_].disabled = param1[_loc2_].disabled;
+                  break;
+               }
+               _loc3_++;
+            }
+            _loc2_++;
+         }
+         this.setupDataProviders(this.optionListData);
+         this.mcOptionList.validateNow();
+      }
+      
+      private function getOptionDataForScreenIndex(param1:int) : Object
+      {
+         var _loc2_:int = int(this.mcOptionList.scrollPosition);
+         var _loc3_:int = param1 + _loc2_;
+         if(_loc3_ < 0 || _loc3_ >= this.optionListData.length)
+         {
+            return null;
+         }
+         return this.optionListData[_loc3_];
+      }
+      
+      private function getListItem(param1:int) : W3SubMenuListItemRenderer
+      {
+         if(param1 >= 0 && param1 < this.optionListItems.length)
+         {
+            return this.optionListItems[param1];
+         }
+         return null;
+      }
+      
       public function setPresetData(param1:Object) : void
       {
          if(!this.mcPresetOption)
@@ -222,7 +339,14 @@ package red.game.witcher3.menus.mainmenu
             this.currentPresetGroupName = param1.GroupName;
             if(this.txtPresetTitle)
             {
-               this.txtPresetTitle.text = param1.label;
+               if(CoreComponent.isArabicAligmentMode)
+               {
+                  this.txtPresetTitle.htmlText = "<p align=\"right\">" + param1.label + "</p>";
+               }
+               else
+               {
+                  this.txtPresetTitle.htmlText = param1.label;
+               }
             }
          }
          else
@@ -269,7 +393,7 @@ package red.game.witcher3.menus.mainmenu
          if(_loc3_)
          {
             this.mcOptionList.selectedIndex = _loc3_.index;
-            this._lastMouseOveredOptionItem = this.mcOptionList.getRenderers().indexOf(_loc3_);
+            this._lastMouseOveredOptionItem = _loc3_.index;
          }
          else
          {
@@ -300,34 +424,31 @@ package red.game.witcher3.menus.mainmenu
          {
             return this.mcScrollingListItem4;
          }
+         if(this.mcScrollingListItem5.hitTestPoint(param1,param2))
+         {
+            return this.mcScrollingListItem5;
+         }
          return null;
       }
       
       protected function getOptionUnderMouse(param1:int, param2:int) : W3SubMenuListItemRenderer
       {
-         if(this.mcOptionListItem1.hitTestPoint(param1,param2))
+         var _loc5_:* = undefined;
+         var _loc6_:int = 0;
+         var _loc3_:int = int(this.mcOptionList.scrollPosition);
+         var _loc4_:int = 0;
+         while(_loc4_ < this.optionListItems.length)
          {
-            return this.mcOptionListItem1;
-         }
-         if(this.mcOptionListItem2.hitTestPoint(param1,param2))
-         {
-            return this.mcOptionListItem2;
-         }
-         if(this.mcOptionListItem3.hitTestPoint(param1,param2))
-         {
-            return this.mcOptionListItem3;
-         }
-         if(this.mcOptionListItem4.hitTestPoint(param1,param2))
-         {
-            return this.mcOptionListItem4;
-         }
-         if(this.mcOptionListItem5.hitTestPoint(param1,param2))
-         {
-            return this.mcOptionListItem5;
-         }
-         if(this.mcOptionListItem6.hitTestPoint(param1,param2))
-         {
-            return this.mcOptionListItem6;
+            if((_loc5_ = this.optionListItems[_loc4_]).hitTestPoint(param1,param2))
+            {
+               _loc6_ = _loc3_ + _loc4_;
+               if(this.optionListData && _loc6_ < this.optionListData.length && Boolean(this.optionListData[_loc6_].disabled))
+               {
+                  return null;
+               }
+               return _loc5_;
+            }
+            _loc4_++;
          }
          return null;
       }
@@ -361,11 +482,10 @@ package red.game.witcher3.menus.mainmenu
          }
          if(this._lastMouseOveredOptionItem != -1)
          {
-            _loc3_ = this.mcOptionList.getRendererAt(this._lastMouseOveredOptionItem) as W3SubMenuListItemRenderer;
+            _loc3_ = this.mcOptionList.getRendererAt(this._lastMouseOveredOptionItem,this.mcOptionList.scrollPosition) as W3SubMenuListItemRenderer;
             if(_loc3_)
             {
                this.mcOptionList.selectedIndex = _loc3_.index;
-               this.mcOptionList.validateNow();
             }
          }
       }
@@ -433,7 +553,8 @@ package red.game.witcher3.menus.mainmenu
                         {
                            this.presetSelected = false;
                            this.mcPresetList.selectedIndex = -1;
-                           this.mcOptionList.selectedIndex = 0;
+                           this.mcOptionList.selectedIndex = -1;
+                           this.mcOptionList.moveDown();
                         }
                      }
                }
@@ -451,7 +572,8 @@ package red.game.witcher3.menus.mainmenu
       
       public function handleNavigateBack() : void
       {
-         dispatchEvent(new GameEvent(GameEvent.CALL,"OnOptionPanelNavigateBackReq"));
+         dispatchEvent(new Event(IngameMenu.OnOptionPanelClosed,false,false));
+         (parent as IngameMenu).mcInputFeedbackModule.removeButton(ACTION_DOWNLOAD,true);
       }
       
       protected function handlePresetIndexChanged(param1:ListEvent) : void
@@ -460,6 +582,80 @@ package red.game.witcher3.menus.mainmenu
          {
             (parent as IngameMenu).showApplyPresetInputFeedback(param1.index != -1);
          }
+      }
+      
+      private function onInsertOptionsEntry(param1:Object) : void
+      {
+         var _loc2_:Array = null;
+         var _loc7_:uint = 0;
+         var _loc3_:int = -1;
+         var _loc4_:DataProvider = this.mcOptionList.dataProvider as DataProvider;
+         var _loc5_:Boolean = false;
+         _loc7_ = 0;
+         while(_loc7_ < _loc4_.length)
+         {
+            if(_loc4_[_loc7_].tag == param1.masterTag)
+            {
+               _loc3_ = int(_loc7_);
+               break;
+            }
+            _loc7_++;
+         }
+         if(_loc3_ == -1 && param1.masterTag != 0)
+         {
+            return;
+         }
+         var _loc6_:uint = 0;
+         while(_loc6_ < param1.list.length)
+         {
+            _loc5_ = false;
+            _loc7_ = 0;
+            while(_loc7_ < _loc4_.length)
+            {
+               if(_loc4_[_loc7_].tag == param1.list[_loc6_].tag)
+               {
+                  _loc5_ = true;
+                  break;
+               }
+               _loc7_++;
+            }
+            if(!_loc5_)
+            {
+               _loc4_.splice(_loc3_ + 1,0,param1.list[_loc6_]);
+               _loc3_ += 1;
+            }
+            _loc6_++;
+         }
+         this.mcOptionList.invalidateData();
+      }
+      
+      private function onRemoveOptionsEntry(param1:Object) : void
+      {
+         var _loc2_:Array = null;
+         var _loc6_:uint = 0;
+         var _loc3_:int = -1;
+         var _loc4_:DataProvider = this.mcOptionList.dataProvider as DataProvider;
+         var _loc5_:uint = 0;
+         while(_loc5_ < param1.list.length)
+         {
+            _loc6_ = 0;
+            while(_loc6_ < _loc4_.length)
+            {
+               if(_loc4_[_loc6_].tag == param1.list[_loc5_].tag)
+               {
+                  _loc3_ = int(_loc6_);
+                  break;
+               }
+               _loc6_++;
+            }
+            if(_loc3_ != -1)
+            {
+               _loc4_.splice(_loc3_,1);
+               _loc3_ = -1;
+            }
+            _loc5_++;
+         }
+         this.mcOptionList.invalidateData();
       }
    }
 }

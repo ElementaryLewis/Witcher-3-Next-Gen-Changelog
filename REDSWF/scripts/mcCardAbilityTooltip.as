@@ -7,9 +7,9 @@ package
    {
        
       
-      public var txtTooltip:TextField;
-      
       public var mcTooltipIcon:MovieClip;
+      
+      public var txtTooltip:TextField;
       
       public var txtTooltipTitle:TextField;
       

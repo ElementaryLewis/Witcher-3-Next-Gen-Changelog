@@ -19,6 +19,8 @@ package red.game.witcher3.menus.poster
       
       public var tfSubtitlesHack:TextField;
       
+      public var fontSize:int;
+      
       public function PosterMenu()
       {
          addFrameScript(0,this.frame1);
@@ -45,22 +47,31 @@ package red.game.witcher3.menus.poster
          dispatchEvent(new GameEvent(GameEvent.CALL,"OnCloseMenu"));
       }
       
+      public function SetFontScale(param1:int) : *
+      {
+         this.fontSize = param1;
+      }
+      
       public function SetDescription(param1:String, param2:Boolean) : *
       {
+         var _loc3_:* = null;
+         var _loc4_:String = null;
+         _loc3_ = "<font size = \"" + (27 + this.fontSize) + "\" >";
+         _loc4_ = "</font>";
          if(param2)
          {
             if(CoreComponent.isArabicAligmentMode)
             {
-               this.tfSubtitles.htmlText = "<p align=\"right\">" + param1 + "</p>";
+               this.tfSubtitles.htmlText = "<p align=\"right\">" + _loc3_ + param1 + _loc4_ + "</p>";
             }
             else
             {
-               this.tfSubtitles.htmlText = "<p align=\"left\">" + param1 + "</p>";
+               this.tfSubtitles.htmlText = "<p align=\"left\">" + _loc3_ + param1 + _loc4_ + "</p>";
             }
          }
          else
          {
-            this.tfSubtitles.htmlText = param1;
+            this.tfSubtitles.htmlText = _loc3_ + param1 + _loc4_;
          }
          if(this.tfSubtitles.textHeight + this.tfSubtitles.y > 1025)
          {

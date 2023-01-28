@@ -1,7 +1,9 @@
 package red.game.witcher3.menus.common_menu
 {
+   import flash.display.MovieClip;
    import flash.display.Sprite;
    import flash.events.MouseEvent;
+   import flash.geom.Rectangle;
    import flash.utils.Dictionary;
    import flash.utils.getDefinitionByName;
    import red.core.constants.KeyCode;
@@ -39,6 +41,10 @@ package red.game.witcher3.menus.common_menu
       
       protected var _isGamepad:Boolean;
       
+      protected var _isAcceptCancelSwapped:Boolean;
+      
+      protected var _platform:uint;
+      
       protected var _commonButtons:Array;
       
       protected var _canvas:Sprite;
@@ -59,9 +65,15 @@ package red.game.witcher3.menus.common_menu
       
       protected var _isActualVisibility:Boolean;
       
+      protected var _coloringButtons:Boolean;
+      
+      protected var _showBackground:Boolean;
+      
       public var filterKeyCodeFunction:Function;
       
       public var filterNavCodeFunction:Function;
+      
+      public var mcInputBackground:MovieClip;
       
       public function ModuleInputFeedback()
       {
@@ -168,6 +180,27 @@ package red.game.witcher3.menus.common_menu
          this.repositionButtons();
       }
       
+      public function get coloringButtons() : Boolean
+      {
+         return this._coloringButtons;
+      }
+      
+      public function set coloringButtons(param1:Boolean) : void
+      {
+         this._coloringButtons = param1;
+      }
+      
+      public function get showBackground() : Boolean
+      {
+         return this._showBackground;
+      }
+      
+      public function set showBackground(param1:Boolean) : void
+      {
+         this._showBackground = param1;
+         this.updateBackgroundVisibility();
+      }
+      
       public function handleSetupButtons(param1:Object) : void
       {
          this._data = param1 as Array;
@@ -198,7 +231,8 @@ package red.game.witcher3.menus.common_menu
                _loc13_ = int(this._buttonsList.length);
                if(_loc14_ = this.getButtonByData(_loc12_))
                {
-                  _loc14_.data = _loc7_;
+                  _loc14_.setData(_loc7_,InputManager.getInstance().isGamepad());
+                  this.tryApplyButtonColor(_loc14_);
                   _loc14_.validateNow();
                }
                _loc9_ = false;
@@ -223,7 +257,7 @@ package red.game.witcher3.menus.common_menu
          }
       }
       
-      public function removeButton(param1:int, param2:Boolean = false, param3:int = -1) : void
+      public function removeButton(param1:int, param2:Boolean = false, param3:int = -1) : Boolean
       {
          var _loc7_:KeyBindingData = null;
          var _loc8_:int = 0;
@@ -259,6 +293,7 @@ package red.game.witcher3.menus.common_menu
          {
             this.repositionButtons();
          }
+         return _loc5_;
       }
       
       public function disableButton(param1:int, param2:Boolean, param3:int = -1) : void
@@ -322,6 +357,8 @@ package red.game.witcher3.menus.common_menu
       override protected function configUI() : void
       {
          super.configUI();
+         this._isAcceptCancelSwapped = InputManager.getInstance().swapAcceptCancel;
+         this._platform = InputManager.getInstance().getPlatform();
          InputManager.getInstance().addEventListener(ControllerChangeEvent.CONTROLLER_CHANGE,this.handleControllerChange,false,0,true);
          if(!Extensions.isScaleform)
          {
@@ -348,6 +385,8 @@ package red.game.witcher3.menus.common_menu
          this._gpadSortMap.push(NavigationCode.GAMEPAD_RSTICK_HOLD);
          this._gpadSortMap.push(NavigationCode.GAMEPAD_RSTICK_SCROLL);
          this._gpadSortMap.push(NavigationCode.GAMEPAD_RSTICK_TAB);
+         this._gpadSortMap.push(NavigationCode.GAMEPAD_LSTICK_SCROLL);
+         this._gpadSortMap.push(NavigationCode.GAMEPAD_LSTICK_TAB);
          this._gpadSortMap.push(NavigationCode.DPAD_DOWN);
          this._gpadSortMap.push(NavigationCode.DPAD_LEFT);
          this._gpadSortMap.push(NavigationCode.DPAD_RIGHT);
@@ -445,6 +484,7 @@ package red.game.witcher3.menus.common_menu
                _loc7_.setData(_loc6_,this._isGamepad);
                _loc7_.label = _loc6_.label;
                _loc7_.validateNow();
+               this.tryApplyButtonColor(_loc7_);
                _loc3_[_loc7_] = true;
             }
             else
@@ -481,9 +521,33 @@ package red.game.witcher3.menus.common_menu
          {
             _loc3_.enabled = false;
          }
+         this.tryApplyButtonColor(_loc3_);
          this._canvas.addChild(_loc3_);
          this._buttonsList.push(_loc3_);
          return _loc3_;
+      }
+      
+      protected function tryApplyButtonColor(param1:InputFeedbackButton) : void
+      {
+         var _loc2_:KeyBindingData = null;
+         var _loc3_:Number = NaN;
+         if(this.coloringButtons)
+         {
+            _loc2_ = param1.getBindingData();
+            if(_loc2_)
+            {
+               _loc3_ = this.getColorByNavCode(_loc2_.gamepad_navEquivalent);
+               if(_loc3_ != -1)
+               {
+                  param1.overrideTextColor = _loc3_;
+               }
+               else
+               {
+                  param1.overrideTextColor = -1;
+               }
+               param1.invalidateData();
+            }
+         }
       }
       
       protected function prepareButtonsList(param1:Array, param2:Array, param3:Boolean) : Array
@@ -516,7 +580,7 @@ package red.game.witcher3.menus.common_menu
                while(_loc8_ < _loc4_.length)
                {
                   _loc11_ = _loc4_[_loc8_] as KeyBindingData;
-                  if(_loc10_ == _loc11_[_loc6_])
+                  if(_loc10_ == _loc11_[_loc6_] && _loc9_.hasHoldPrefix == _loc11_.hasHoldPrefix)
                   {
                      if(_loc9_.level < _loc11_.level)
                      {
@@ -591,8 +655,9 @@ package red.game.witcher3.menus.common_menu
       
       protected function handleControllerChange(param1:ControllerChangeEvent) : void
       {
-         if(this._isGamepad != param1.isGamepad && (this._data || this._commonButtons.length))
+         if((this._isGamepad != param1.isGamepad || this._isAcceptCancelSwapped != InputManager.getInstance().swapAcceptCancel || this._platform != InputManager.getInstance().getPlatform()) && (this._data || this._commonButtons.length))
          {
+            this._isAcceptCancelSwapped = InputManager.getInstance().swapAcceptCancel;
             this.populateData();
          }
       }
@@ -623,6 +688,28 @@ package red.game.witcher3.menus.common_menu
             case "right":
                this._canvas.x = 0;
          }
+         this.updateBackgroundVisibility();
+      }
+      
+      protected function updateBackgroundVisibility() : void
+      {
+         var _loc1_:Rectangle = null;
+         if(this.mcInputBackground)
+         {
+            if(Boolean(this._buttonsList.length) && this._showBackground)
+            {
+               _loc1_ = this._canvas.getBounds(this);
+               this.mcInputBackground.x = _loc1_.x;
+               this.mcInputBackground.y = _loc1_.y;
+               this.mcInputBackground.width = _loc1_.width;
+               this.mcInputBackground.height = _loc1_.height;
+               this.mcInputBackground.visible = true;
+            }
+            else
+            {
+               this.mcInputBackground.visible = false;
+            }
+         }
       }
       
       protected function getButtonByData(param1:KeyBindingData) : InputFeedbackButton
@@ -637,7 +724,7 @@ package red.game.witcher3.menus.common_menu
          while(_loc5_ < _loc2_)
          {
             _loc8_ = (_loc7_ = (_loc6_ = this._buttonsList[_loc5_]).getBindingData())[_loc3_];
-            if(Boolean(_loc7_) && _loc4_ == _loc8_)
+            if(_loc7_ && _loc4_ == _loc8_ && param1.hasHoldPrefix == _loc7_.hasHoldPrefix)
             {
                return _loc6_;
             }
@@ -658,7 +745,7 @@ package red.game.witcher3.menus.common_menu
             _loc3_ = _loc2_.getBindingData();
             if(Boolean(_loc3_) && _loc2_.clickable)
             {
-               this.activateButton(_loc3_);
+               this.activateButton(_loc3_,null,true);
                if(this._emulateInputEvent)
                {
                   _loc4_ = new InputDetails("key",_loc3_.keyboard_keyCode,InputValue.KEY_UP,_loc3_.gamepad_navEquivalent);
@@ -692,37 +779,38 @@ package red.game.witcher3.menus.common_menu
          }
       }
       
-      protected function activateButton(param1:KeyBindingData, param2:InputEvent = null) : void
+      protected function activateButton(param1:KeyBindingData, param2:InputEvent = null, param3:Boolean = false) : void
       {
-         var _loc4_:uint = 0;
-         var _loc5_:int = 0;
-         var _loc6_:String = null;
-         var _loc7_:uint = 0;
+         var _loc5_:uint = 0;
+         var _loc6_:int = 0;
+         var _loc7_:String = null;
+         var _loc8_:uint = 0;
          if(this._directWsCall)
          {
-            _loc4_ = !!param1.actionId ? param1.actionId : 0;
-            _loc5_ = !!param1.keyboard_keyCode ? param1.keyboard_keyCode : 0;
-            _loc6_ = param1.gamepad_navEquivalent;
-            _loc7_ = uint(_loc5_);
+            _loc5_ = !!param1.actionId ? param1.actionId : 0;
+            _loc6_ = !!param1.keyboard_keyCode ? param1.keyboard_keyCode : 0;
+            _loc7_ = param1.gamepad_navEquivalent;
+            _loc8_ = uint(_loc6_);
             if(InputManager.getInstance().swapAcceptCancel)
             {
-               if(_loc6_ == NavigationCode.GAMEPAD_A)
+               if(_loc7_ == NavigationCode.GAMEPAD_A)
                {
-                  _loc6_ == NavigationCode.GAMEPAD_B;
-                  _loc7_ = KeyCode.PAD_B_CIRCLE;
+                  _loc7_ == NavigationCode.GAMEPAD_B;
+                  _loc8_ = KeyCode.PAD_B_CIRCLE;
                }
-               else if(_loc6_ == NavigationCode.GAMEPAD_B)
+               else if(_loc7_ == NavigationCode.GAMEPAD_B)
                {
-                  _loc6_ == NavigationCode.GAMEPAD_A;
-                  _loc7_ = KeyCode.PAD_A_CROSS;
+                  _loc7_ == NavigationCode.GAMEPAD_A;
+                  _loc8_ = KeyCode.PAD_A_CROSS;
                }
             }
-            dispatchEvent(new GameEvent(GameEvent.CALL,"OnInputHandled",[param1.gamepad_navEquivalent,_loc7_,_loc4_]));
+            dispatchEvent(new GameEvent(GameEvent.CALL,"OnInputHandled",[param1.gamepad_navEquivalent,_loc8_,_loc5_]));
          }
-         var _loc3_:InputFeedbackEvent = new InputFeedbackEvent(InputFeedbackEvent.USER_ACTION,true,false);
-         _loc3_.inputEventRef = param2;
-         _loc3_.actionId = param1.actionId;
-         dispatchEvent(_loc3_);
+         var _loc4_:InputFeedbackEvent;
+         (_loc4_ = new InputFeedbackEvent(InputFeedbackEvent.USER_ACTION,true,false)).inputEventRef = param2;
+         _loc4_.actionId = param1.actionId;
+         _loc4_.isMouseEvent = param3;
+         dispatchEvent(_loc4_);
       }
       
       protected function getBindingData(param1:String = "", param2:int = 0) : KeyBindingData
@@ -770,6 +858,20 @@ package red.game.witcher3.menus.common_menu
          this.appendButton(0,NavigationCode.GAMEPAD_RSTICK_HOLD,-1,"Ok",false);
          this.appendButton(1,NavigationCode.GAMEPAD_LSTICK_HOLD,-1,"Cancel",false);
          this.visible = true;
+      }
+      
+      protected function getColorByNavCode(param1:String) : Number
+      {
+         var _loc2_:Number = -1;
+         switch(param1)
+         {
+            case NavigationCode.GAMEPAD_A:
+               _loc2_ = 1873692;
+               break;
+            case NavigationCode.GAMEPAD_B:
+               _loc2_ = 10364968;
+         }
+         return _loc2_;
       }
    }
 }

@@ -6,11 +6,11 @@ package
    {
        
       
-      public var mcUser:MovieClip;
-      
       public var mcHighlightedQuest:MovieClip;
       
       public var mcRegularQuest:MovieClip;
+      
+      public var mcUser:MovieClip;
       
       public function QuestDirectionCurrentMain()
       {

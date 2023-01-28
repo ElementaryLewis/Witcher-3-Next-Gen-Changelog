@@ -70,6 +70,8 @@ package red.game.witcher3.menus.common
       
       public var enchantmentId:uint;
       
+      public var canBeDyed:Boolean;
+      
       public var sortGroup:int = -1;
       
       public var sectionId:int = -1;

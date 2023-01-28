@@ -15,6 +15,8 @@ package red.game.witcher3.events
       
       public var messageId:int;
       
+      public var isMouseEvent:Boolean;
+      
       public function InputFeedbackEvent(param1:String, param2:Boolean = false, param3:Boolean = false)
       {
          super(param1,param2,param3);

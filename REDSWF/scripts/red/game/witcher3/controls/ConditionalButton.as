@@ -12,6 +12,12 @@ package red.game.witcher3.controls
       
       private var _showOnMouseKeyboard:Boolean = true;
       
+      private var _showOnPC:Boolean = true;
+      
+      private var _showOnXbox:Boolean = true;
+      
+      private var _showOnPS4:Boolean = true;
+      
       public var mcClickRect:KeyboardButtonClickArea;
       
       private var _visiblityEnabled:Boolean = true;
@@ -34,7 +40,7 @@ package red.game.witcher3.controls
       public function set showOnGamepad(param1:Boolean) : void
       {
          this._showOnGamepad = param1;
-         this.updateControllerVisibility(InputManager.getInstance().isGamepad());
+         this.updateControllerVisibility();
       }
       
       public function get showOnMouseKeyboard() : Boolean
@@ -45,7 +51,40 @@ package red.game.witcher3.controls
       public function set showOnMouseKeyboard(param1:Boolean) : void
       {
          this._showOnMouseKeyboard = param1;
-         this.updateControllerVisibility(InputManager.getInstance().isGamepad());
+         this.updateControllerVisibility();
+      }
+      
+      public function get showOnPC() : Boolean
+      {
+         return this._showOnPC;
+      }
+      
+      public function set showOnPC(param1:Boolean) : void
+      {
+         this._showOnPC = param1;
+         this.updateControllerVisibility();
+      }
+      
+      public function get showOnXbox() : Boolean
+      {
+         return this._showOnXbox;
+      }
+      
+      public function set showOnXbox(param1:Boolean) : void
+      {
+         this._showOnXbox = param1;
+         this.updateControllerVisibility();
+      }
+      
+      public function get showOnPS4() : Boolean
+      {
+         return this._showOnPS4;
+      }
+      
+      public function set showOnPS4(param1:Boolean) : void
+      {
+         this._showOnPS4 = param1;
+         this.updateControllerVisibility();
       }
       
       override public function get visible() : Boolean
@@ -56,7 +95,7 @@ package red.game.witcher3.controls
       override public function set visible(param1:Boolean) : void
       {
          this._visiblityEnabled = param1;
-         this.updateControllerVisibility(InputManager.getInstance().isGamepad());
+         this.updateControllerVisibility();
       }
       
       override protected function configUI() : void
@@ -64,12 +103,12 @@ package red.game.witcher3.controls
          super.visible = false;
          super.configUI();
          InputManager.getInstance().addEventListener(ControllerChangeEvent.CONTROLLER_CHANGE,this.handleControllerChange,false,0,true);
-         this.updateControllerVisibility(InputManager.getInstance().isGamepad());
+         this.updateControllerVisibility();
       }
       
       protected function handleControllerChange(param1:ControllerChangeEvent) : void
       {
-         this.updateControllerVisibility(param1.isGamepad);
+         this.updateControllerVisibility();
       }
       
       public function set visibleWidth(param1:Number) : void
@@ -104,17 +143,52 @@ package red.game.witcher3.controls
          }
       }
       
-      protected function updateControllerVisibility(param1:Boolean) : void
+      protected function updateControllerVisibility() : void
       {
+         var _loc1_:Boolean = InputManager.getInstance().isGamepad();
+         var _loc2_:uint = InputManager.getInstance().getPlatform();
          if(this._visiblityEnabled)
          {
-            if(param1)
+            if(_loc1_)
             {
-               super.visible = this.showOnGamepad;
+               if(this.showOnGamepad)
+               {
+                  if(InputManager.getInstance().isXboxPlatform())
+                  {
+                     super.visible = this._showOnXbox;
+                  }
+                  else if(InputManager.getInstance().isPsPlatform())
+                  {
+                     super.visible = this._showOnPS4;
+                  }
+                  else
+                  {
+                     super.visible = this._showOnPC;
+                  }
+               }
+               else
+               {
+                  super.visible = false;
+               }
+            }
+            else if(this.showOnMouseKeyboard)
+            {
+               if(InputManager.getInstance().isXboxPlatform())
+               {
+                  super.visible = this._showOnXbox;
+               }
+               else if(InputManager.getInstance().isPsPlatform())
+               {
+                  super.visible = this._showOnPS4;
+               }
+               else
+               {
+                  super.visible = this._showOnPC;
+               }
             }
             else
             {
-               super.visible = this.showOnMouseKeyboard;
+               super.visible = false;
             }
          }
          else

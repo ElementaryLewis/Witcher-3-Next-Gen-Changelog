@@ -31,12 +31,7 @@ package red.game.witcher3.menus.mainmenu
          var _loc2_:BaseListItem = mcMenuList.getRendererAt(param1.index,mcMenuList.scrollPosition) as BaseListItem;
          if(_loc2_)
          {
-            trace("HUD onItemClicked renderer.data.tag " + _loc2_.data.tag);
             dispatchEvent(new GameEvent(GameEvent.CALL,"OnStartQuest",[_loc2_.data.tag]));
-         }
-         else
-         {
-            trace("MainMenu renderer is fucked " + param1.target);
          }
       }
       

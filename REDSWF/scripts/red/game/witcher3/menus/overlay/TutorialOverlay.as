@@ -6,6 +6,7 @@ package red.game.witcher3.menus.overlay
    import flash.display.Sprite;
    import flash.geom.Rectangle;
    import flash.text.TextField;
+   import flash.text.TextFormat;
    import red.core.CoreComponent;
    import red.core.constants.KeyCode;
    import red.core.events.GameEvent;
@@ -114,15 +115,19 @@ package red.game.witcher3.menus.overlay
          this.txtDescription.height = this.txtDescription.textHeight + CommonConstants.SAFE_TEXT_PADDING;
          this.topDelemiter.x = _loc6_;
          this.txtTitle.x = _loc6_ - this.txtTitle.textWidth / 2;
+         var _loc8_:TextFormat = new TextFormat();
          if(CoreComponent.isArabicAligmentMode)
          {
             this.txtDescription.htmlText = "<p align=\"right\">" + this._data.messageText + "</p>";
             this.txtDescription.x = _loc6_ - this.txtDescription.textWidth / 2 - (this.txtDescription.width - this.txtDescription.textWidth);
+            _loc8_.font = "$NormalFont";
          }
          else
          {
             this.txtDescription.x = _loc6_ - this.txtDescription.textWidth / 2;
+            _loc8_.font = "$BoldFont";
          }
+         this.txtTitle.setTextFormat(_loc8_);
          if(!this._data.imagePath)
          {
          }

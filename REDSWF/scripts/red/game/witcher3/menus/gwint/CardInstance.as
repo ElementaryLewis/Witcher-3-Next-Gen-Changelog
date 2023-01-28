@@ -222,6 +222,7 @@ package red.game.witcher3.menus.gwint
          var meleeAvailable:* = false;
          var rangedAvailable:* = false;
          var beserkerCard:CardInstance = null;
+         var beserkerCardInHand:CardInstance = null;
          var meleeRowIncrease:int = 0;
          var rangeRowIncrease:int = 0;
          var seigeRowIncrease:int = 0;
@@ -613,13 +614,13 @@ package red.game.witcher3.menus.gwint
                }
                if(beserkersInHand.length != 0)
                {
-                  for each(beserkerCard in beserkersInHand)
+                  for each(beserkerCardInHand in beserkersInHand)
                   {
-                     if(beserkerCard.inList == CardManager.CARD_LIST_LOC_MELEE && meleeAvailable)
+                     if(beserkerCardInHand.inList == CardManager.CARD_LIST_LOC_MELEE && meleeAvailable)
                      {
                         meleeCount += 1;
                      }
-                     else if(beserkerCard.inList == CardManager.CARD_LIST_LOC_RANGED && rangedAvailable)
+                     else if(beserkerCardInHand.inList == CardManager.CARD_LIST_LOC_RANGED && rangedAvailable)
                      {
                         rangedCount += 1;
                      }

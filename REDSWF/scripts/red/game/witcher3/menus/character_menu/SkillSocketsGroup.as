@@ -54,6 +54,9 @@ package red.game.witcher3.menus.character_menu
       
       public function set mutagenData(param1:Object) : void
       {
+         if(!param1)
+         {
+         }
          this._mutagenData = param1;
          this._mutagenData.gridSize = 1;
          this.mutagenSlot.cleanup();
@@ -75,14 +78,17 @@ package red.game.witcher3.menus.character_menu
          _loc3_ = 0;
          while(_loc3_ < _loc2_)
          {
-            if(_loc4_ != this.COLOR_NONE && this._skillSlotRefs[_loc3_].data != null && _loc4_ == this._skillSlotRefs[_loc3_].data.color)
+            if(this._skillSlotConnectorsList[_loc3_])
             {
-               this._skillSlotConnectorsList[_loc3_].currentColor = _loc4_;
-               _loc1_ = true;
-            }
-            else
-            {
-               this._skillSlotConnectorsList[_loc3_].currentColor = this.COLOR_NONE;
+               if(_loc4_ != this.COLOR_NONE && this._skillSlotRefs[_loc3_].data != null && _loc4_ == this._skillSlotRefs[_loc3_].data.color)
+               {
+                  this._skillSlotConnectorsList[_loc3_].currentColor = _loc4_;
+                  _loc1_ = true;
+               }
+               else
+               {
+                  this._skillSlotConnectorsList[_loc3_].currentColor = this.COLOR_NONE;
+               }
             }
             _loc3_++;
          }

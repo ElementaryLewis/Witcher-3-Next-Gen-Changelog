@@ -8,7 +8,7 @@ package red.core.overlay
    import flash.utils.Timer;
    import flash.utils.getTimer;
    import red.core.constants.KeyCode;
-   import red.game.witcher3.constants.CommonConstants;
+   import red.game.witcher3.constants.PlatformType;
    import red.game.witcher3.controls.InputFeedbackButton;
    import red.game.witcher3.managers.InputManager;
    import scaleform.clik.constants.NavigationCode;
@@ -52,7 +52,6 @@ package red.core.overlay
          {
             _loc1_ = ExternalInterface.call("initString") as String;
          }
-         trace("LoadingScreen initString: " + _loc1_);
          InputManager.getInstance().init(this);
          InputManager.getInstance().setControllerType(true);
          this.mcProgressBar.visible = false;
@@ -78,7 +77,6 @@ package red.core.overlay
       
       protected function registerLoadingScreen() : void
       {
-         trace("LoadingScreen registerLoadingScreen");
          if(Extensions.enabled)
          {
             ExternalInterface.call("registerLoadingScreen",this);
@@ -97,9 +95,8 @@ package red.core.overlay
       
       public function setPlatform(param1:uint) : void
       {
-         trace("setPlatform: " + param1);
          InputManager.getInstance().setPlatformType(param1);
-         if(param1 == CommonConstants.PLATFORM_PC)
+         if(param1 == PlatformType.PLATFORM_PC)
          {
             this.initializeTipListForPC();
          }
@@ -123,13 +120,11 @@ package red.core.overlay
       
       public function setVideoSubtitles(param1:String) : void
       {
-         trace("setVideoSubtitles: " + param1);
          this.mcSubtitles.tfSubtitles.text = param1;
       }
       
       public function setTipText(param1:String) : void
       {
-         trace("setTipText: " + param1);
          this.mcSubtitles.tfSubtitles.text = param1;
       }
       
@@ -167,14 +162,12 @@ package red.core.overlay
       
       public function showImage() : void
       {
-         trace("showImage");
          this.mcImage.visible = true;
          this.setTipsEnabled(true);
       }
       
       public function hideImage() : void
       {
-         trace("hideImage");
          this.mcImage.visible = false;
          this.setTipsEnabled(false);
       }
@@ -219,7 +212,6 @@ package red.core.overlay
       
       public function fadeIn(param1:Number) : void
       {
-         trace("fadeIn: " + param1);
          removeEventListener(Event.ENTER_FRAME,this.handleEnterFrame,false);
          if(param1 <= 0)
          {
@@ -237,7 +229,6 @@ package red.core.overlay
       
       public function fadeOut(param1:Number) : void
       {
-         trace("fadeOut: " + param1);
          removeEventListener(Event.ENTER_FRAME,this.handleEnterFrame,false);
          if(param1 <= 0)
          {
@@ -274,7 +265,6 @@ package red.core.overlay
       
       private function onFadeOutCompleted() : void
       {
-         trace("LoadingScreen fadeOutCompleted");
          if(Extensions.enabled)
          {
             ExternalInterface.call("fadeOutCompleted",this);

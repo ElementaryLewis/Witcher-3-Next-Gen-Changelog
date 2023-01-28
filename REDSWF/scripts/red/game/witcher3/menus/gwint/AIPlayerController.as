@@ -522,6 +522,7 @@ package red.game.witcher3.menus.gwint
          var bestCard:CardInstance = null;
          var cardList:Vector.<CardInstance> = null;
          var i:int = 0;
+         var j:int = 0;
          var firstValidIndex:int = 0;
          var targetIndex:int = 0;
          var cardManagerRef:CardManager = CardManager.getInstance();
@@ -555,11 +556,11 @@ package red.game.witcher3.menus.gwint
                if(!this.berserkerMushroomPlaced)
                {
                   cardList = cardManagerRef.getCardsInHandWithEffect(CardTemplate.CardEffect_Mushroom,playerID);
-                  for(i = 0; i < cardList.length; i++)
+                  for(j = 0; j < cardList.length; j++)
                   {
-                     if(cardList[i].templateRef.isType(this.berserkerSelectedRowType))
+                     if(cardList[j].templateRef.isType(this.berserkerSelectedRowType))
                      {
-                        currentCard = cardList[i];
+                        currentCard = cardList[j];
                         break;
                      }
                   }

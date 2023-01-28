@@ -55,7 +55,7 @@ package red.game.witcher3.slots
          }
          else
          {
-            this.slotBackground.gotoAndStop("SC_None");
+            this.slotBackground.gotoAndPlay("SC_None");
          }
          if(_data.maxLevel && _data.maxLevel > 0 && !_data.isCoreSkill && Boolean(_data.hasRequiredPointsSpent))
          {
@@ -69,9 +69,9 @@ package red.game.witcher3.slots
          this.applyAvailability();
       }
       
-      override protected function handleIconLoaded(param1:Event) : void
+      override protected function handleIconLoaded(event:Event) : void
       {
-         super.handleIconLoaded(param1);
+         super.handleIconLoaded(event);
          if(this.txtLevel)
          {
             addChild(this.txtLevel);
@@ -111,33 +111,33 @@ package red.game.witcher3.slots
          mcColorBackground.setBySkillType(_data.color);
       }
       
-      override protected function fireTooltipShowEvent(param1:Boolean = false) : void
+      override protected function fireTooltipShowEvent(isMouseTooltip:Boolean = false) : void
       {
-         var _loc3_:GridEvent = null;
-         var _loc2_:Boolean = activeSelectionEnabled || !InputManager.getInstance().isGamepad();
-         if(_data && _loc2_ && isParentEnabled())
+         var displayEvent:GridEvent = null;
+         var checkOwner:Boolean = activeSelectionEnabled || !InputManager.getInstance().isGamepad();
+         if(_data && checkOwner && isParentEnabled())
          {
-            _loc3_ = new GridEvent(GridEvent.DISPLAY_TOOLTIP,true,false,index,-1,-1,null,_data as Object);
-            _loc3_.tooltipContentRef = "SkillTooltipRef";
-            _loc3_.tooltipMouseContentRef = "SkillTooltipRef";
-            _loc3_.tooltipDataSource = "OnGetSkillTooltipData";
-            _loc3_.isMouseTooltip = param1;
-            if(param1)
+            displayEvent = new GridEvent(GridEvent.DISPLAY_TOOLTIP,true,false,index,-1,-1,null,_data as Object);
+            displayEvent.tooltipContentRef = "SkillTooltipRef";
+            displayEvent.tooltipMouseContentRef = "SkillTooltipRef";
+            displayEvent.tooltipDataSource = "OnGetSkillTooltipData";
+            displayEvent.isMouseTooltip = isMouseTooltip;
+            if(isMouseTooltip)
             {
-               _loc3_.anchorRect = getGlobalSlotRect();
+               displayEvent.anchorRect = getGlobalSlotRect();
             }
             _tooltipRequested = true;
-            dispatchEvent(_loc3_);
+            dispatchEvent(displayEvent);
          }
       }
       
-      override protected function fireTooltipHideEvent(param1:Boolean = false) : void
+      override protected function fireTooltipHideEvent(isMouseTooltip:Boolean = false) : void
       {
-         var _loc2_:GridEvent = null;
+         var hideEvent:GridEvent = null;
          if(_tooltipRequested)
          {
-            _loc2_ = new GridEvent(GridEvent.HIDE_TOOLTIP,true,false,index,-1,-1,null,_data as Object);
-            dispatchEvent(_loc2_);
+            hideEvent = new GridEvent(GridEvent.HIDE_TOOLTIP,true,false,index,-1,-1,null,_data as Object);
+            dispatchEvent(hideEvent);
             _tooltipRequested = false;
          }
       }
@@ -147,18 +147,18 @@ package red.game.witcher3.slots
          return _data && !this.isLocked && _data.level > 0 && !data.isCoreSkill;
       }
       
-      override protected function executeDefaultAction(param1:Number, param2:InputEvent) : void
+      override protected function executeDefaultAction(keyCode:Number, event:InputEvent) : void
       {
          trace("GFX <SlotSkillGrid> executeDefaultAction  ",canExecuteAction());
-         if(param1 == KeyCode.PAD_A_CROSS)
+         if(keyCode == KeyCode.PAD_A_CROSS)
          {
-            if(param2)
+            if(event)
             {
-               param2.handled = true;
+               event.handled = true;
             }
             fireActionEvent(_data.actionType);
          }
-         else if(param1 == KeyCode.PAD_Y_TRIANGLE)
+         else if(keyCode == KeyCode.PAD_Y_TRIANGLE)
          {
             if(_data.slotType != InventorySlotType.Potion1 && _data.slotType != InventorySlotType.Potion2 && _data.slotType != InventorySlotType.Petard1 && _data.slotType != InventorySlotType.Petard2 && _data.slotType != InventorySlotType.Quickslot1 && _data.slotType != InventorySlotType.Quickslot2)
             {
@@ -166,17 +166,17 @@ package red.game.witcher3.slots
             }
             fireActionEvent(InventoryActionType.DROP);
          }
-         else if(param1 == KeyCode.PAD_X_SQUARE)
+         else if(keyCode == KeyCode.PAD_X_SQUARE)
          {
             fireActionEvent(InventoryActionType.SUB_ACTION,SlotActionEvent.EVENT_SECONDARY_ACTION);
          }
       }
       
-      override public function executeAction(param1:Number, param2:InputEvent) : Boolean
+      override public function executeAction(keyCode:Number, event:InputEvent) : Boolean
       {
          if(canExecuteAction())
          {
-            this.executeDefaultAction(param1,param2);
+            this.executeDefaultAction(keyCode,event);
             return true;
          }
          return false;

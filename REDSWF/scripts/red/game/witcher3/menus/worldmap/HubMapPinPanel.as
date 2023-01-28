@@ -87,11 +87,12 @@ package red.game.witcher3.menus.worldmap
          this._disabledPins = new Dictionary();
          this._categoryDefinitions = {
             "All":new CategoryDefinition(1,true,true,true),
-            "General":new CategoryDefinition(2,true,true,false),
-            "Quests":new CategoryDefinition(3,true,true,true),
-            "Exploration":new CategoryDefinition(4,true,true,false),
-            "NPCs":new CategoryDefinition(5,true,true,false),
-            "Buffs":new CategoryDefinition(6,true,true,false)
+            "Default":new CategoryDefinition(2,true,true,true),
+            "General":new CategoryDefinition(3,true,true,false),
+            "Quests":new CategoryDefinition(4,true,true,true),
+            "Exploration":new CategoryDefinition(5,true,true,false),
+            "NPCs":new CategoryDefinition(6,true,true,false),
+            "Buffs":new CategoryDefinition(7,true,true,false)
          };
          this._pinTypeDefinitions = {
             "RoadSign":new PinTypeDefinition("General",101),
@@ -182,6 +183,7 @@ package red.game.witcher3.menus.worldmap
             "WineContract":new PinTypeDefinition("Exploration",369),
             "KnightErrant":new PinTypeDefinition("Exploration",370),
             "SignalingStake":new PinTypeDefinition("Exploration",371),
+            "Boat":new PinTypeDefinition("Exploration",372),
             "Shopkeeper":new PinTypeDefinition("NPCs",501),
             "Archmaster":new PinTypeDefinition("NPCs",502),
             "Blacksmith":new PinTypeDefinition("NPCs",503),
@@ -270,6 +272,7 @@ package red.game.witcher3.menus.worldmap
       override protected function configUI() : void
       {
          super.configUI();
+         dispatchEvent(new GameEvent(GameEvent.REGISTER,"worldmap.global.set.index",[this.updateCurrentCategoryIndex]));
          this.initializeRenderers();
          this.updateRenderersVisibility();
          this.mcHubMapPinCategoryList.bSkipFocusCheck = true;
@@ -284,6 +287,36 @@ package red.game.witcher3.menus.worldmap
          this.mcHubMapPinArrowUp.addEventListener(MouseEvent.MOUSE_DOWN,this.handleArrowUp,false,0,true);
          this.mcHubMapPinArrowDown.addEventListener(MouseEvent.MOUSE_DOWN,this.handleArrowDown,false,0,true);
          dispatchEvent(new GameEvent(GameEvent.REGISTER,"worldmap.global.pins.disabled",[this.setDisabledPins]));
+      }
+      
+      public function updateCurrentCategoryIndex(param1:int) : *
+      {
+         this._currentCategoryIndex = param1;
+         this.selectSpecificCategoryPanel(param1);
+      }
+      
+      public function selectSpecificCategoryPanel(param1:int) : *
+      {
+         var _loc2_:CategoryData = null;
+         this._expandedList = false;
+         this.addMandatoryContents();
+         this.sortContents();
+         if(this._categories.length > 0)
+         {
+            _loc2_ = this._categories[param1];
+            this.mcHubMapPinCategoryList.dataProvider = new DataProvider(_loc2_._pins);
+            this.mcHubMapPinCategoryList.validateNow();
+            this.updatePinsFromCategory(_loc2_,false);
+         }
+         else
+         {
+            this._currentCategoryIndex = -1;
+         }
+         this.updateCategoryButton();
+         this.updateArrowButtons();
+         this.resizeHitArea();
+         this.updateCategoryButton();
+         this.updateArrowButtons();
       }
       
       public function OnMouseWheel(param1:MouseEvent) : *
@@ -461,14 +494,28 @@ package red.game.witcher3.menus.worldmap
       
       public function initializeCategoryPanel(param1:Boolean = false) : *
       {
+         var _loc2_:CategoryData = null;
          this._expandedList = false;
          if(this._categories.length > 0)
          {
-            this._currentCategoryIndex = 0;
          }
          this.addMandatoryContents();
          this.sortContents();
-         this.selectPrevNextCategory(0,param1);
+         if(this._categories.length > 0)
+         {
+            this._currentCategoryIndex = (this._currentCategoryIndex + this._categories.length) % this._categories.length;
+            _loc2_ = this._categories[this._currentCategoryIndex];
+            this.mcHubMapPinCategoryList.dataProvider = new DataProvider(_loc2_._pins);
+            this.mcHubMapPinCategoryList.validateNow();
+            this.updatePinsFromCategory(_loc2_,param1);
+         }
+         else
+         {
+            this._currentCategoryIndex = -1;
+         }
+         this.updateCategoryButton();
+         this.updateArrowButtons();
+         this.resizeHitArea();
          this.updateCategoryButton();
          this.updateArrowButtons();
       }
@@ -559,6 +606,7 @@ package red.game.witcher3.menus.worldmap
          this.updateCategoryButton();
          this.updateArrowButtons();
          this.resizeHitArea();
+         dispatchEvent(new GameEvent(GameEvent.CALL,"OnFiltersChanged",[this._currentCategoryIndex]));
       }
       
       private function updatePinsFromCategory(param1:CategoryData, param2:Boolean) : *
@@ -994,6 +1042,12 @@ package red.game.witcher3.menus.worldmap
                _loc2_ = this.__DEBUG_addCategory(_loc7_);
                _loc3_ = this.__DEBUG_addPin(_loc2_,_loc5_,_loc6_,_loc8_);
                this.__DEBUG_addInstance(_loc3_,param1.id,new Point(param1.posX,param1.posY),param1.distance);
+               if(_loc7_ == "General" || _loc7_ == "Quests" || _loc7_ == "NPCs" || _loc7_ == "Buffs" || _loc5_ == "Entrance")
+               {
+                  _loc2_ = this.__DEBUG_addCategory("Default");
+                  _loc3_ = this.__DEBUG_addPin(_loc2_,_loc5_,_loc6_,_loc8_);
+                  this.__DEBUG_addInstance(_loc3_,param1.id,new Point(param1.posX,param1.posY),param1.distance);
+               }
             }
          }
       }

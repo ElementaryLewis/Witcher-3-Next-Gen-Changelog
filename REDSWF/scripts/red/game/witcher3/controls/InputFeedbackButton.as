@@ -13,7 +13,6 @@ package red.game.witcher3.controls
    import red.game.witcher3.constants.CommonConstants;
    import red.game.witcher3.constants.EInputDeviceType;
    import red.game.witcher3.constants.KeyboardKeys;
-   import red.game.witcher3.constants.PlatformType;
    import red.game.witcher3.data.KeyBindingData;
    import red.game.witcher3.events.ControllerChangeEvent;
    import red.game.witcher3.managers.InputManager;
@@ -59,6 +58,10 @@ package red.game.witcher3.controls
       
       public var mcIconPS:MovieClip;
       
+      public var mcIconPS4:MovieClip;
+      
+      public var mcIconPS5:MovieClip;
+      
       public var mcIconSteam:MovieClip;
       
       public var mcKeyboardIcon:KeyboardButtonIcon;
@@ -101,6 +104,12 @@ package red.game.witcher3.controls
       
       protected var _holdIndicator:Sprite;
       
+      protected var _posXSource:int = 0;
+      
+      protected var _shiftXForGamepad:int = 0;
+      
+      protected var _shiftXForKeyboard:int = 0;
+      
       protected var _displayGamepadCode:String = "";
       
       protected var _displayGamepadKeyCode:int = -1;
@@ -136,6 +145,14 @@ package red.game.witcher3.controls
          {
             this.mcIconPS.visible = false;
          }
+         if(this.mcIconPS4)
+         {
+            this.mcIconPS4.visible = false;
+         }
+         if(this.mcIconPS5)
+         {
+            this.mcIconPS5.visible = false;
+         }
          if(this.mcKeyboardIcon)
          {
             this.mcKeyboardIcon.visible = false;
@@ -149,14 +166,11 @@ package red.game.witcher3.controls
          if(textField)
          {
             textField.text = "";
+            textField.autoSize = TextFieldAutoSize.LEFT;
          }
          if(this.mcClickRect)
          {
             this.mcClickRect.visible = false;
-         }
-         if(Boolean(this.mcIconPS) && Boolean(this.mcIconXbox))
-         {
-            this.mcIconPS.visible = this.mcIconXbox.visible = false;
          }
          if(this.mcHoldAnimation)
          {
@@ -262,6 +276,13 @@ package red.game.witcher3.controls
          this.SetHoldButtonText();
       }
       
+      public function setShiftForGamepad(param1:int = 0, param2:int = 0) : void
+      {
+         this._posXSource = x;
+         this._shiftXForGamepad = param1;
+         this._shiftXForKeyboard = param2;
+      }
+      
       public function getViewWidth() : Number
       {
          if(this.mcClickRect.visible)
@@ -291,7 +312,7 @@ package red.game.witcher3.controls
       
       public function setData(param1:KeyBindingData, param2:Boolean, param3:Boolean = false) : void
       {
-         var _loc4_:* = false;
+         var _loc4_:Boolean = false;
          var _loc5_:MovieClip = null;
          this._bindingData = param1;
          if(param3)
@@ -300,7 +321,7 @@ package red.game.witcher3.controls
          }
          if(this._bindingData)
          {
-            _loc4_ = InputManager.getInstance().getPlatform() == PlatformType.PLATFORM_PS4;
+            _loc4_ = InputManager.getInstance().isPsPlatform();
             _loc5_ = this.getCurrentPadIcon();
             if(Boolean(this._gpadIcon) && this._gpadIcon != _loc5_)
             {
@@ -313,6 +334,18 @@ package red.game.witcher3.controls
             this._gpadIcon = _loc5_;
             this._isGamepad = param2;
             _label = this._bindingData.label;
+            if(this._shiftXForGamepad > 0)
+            {
+               x = this._posXSource;
+               if(param2 || _loc4_)
+               {
+                  x += this._shiftXForGamepad;
+               }
+               else
+               {
+                  x += this._shiftXForKeyboard;
+               }
+            }
             if(this._isGamepad || _loc4_)
             {
                this.displayGamepadIcon();
@@ -343,7 +376,19 @@ package red.game.witcher3.controls
          switch(_loc1_)
          {
             case EInputDeviceType.IDT_PS4:
-               return this.mcIconPS;
+               if(this.mcIconPS)
+               {
+                  return this.mcIconPS;
+               }
+               return this.mcIconPS4;
+               break;
+            case EInputDeviceType.IDT_PS5:
+               if(this.mcIconPS)
+               {
+                  return this.mcIconPS;
+               }
+               return this.mcIconPS5;
+               break;
             case EInputDeviceType.IDT_Xbox1:
                return this.mcIconXbox;
             case EInputDeviceType.IDT_Steam:
@@ -813,6 +858,11 @@ package red.game.witcher3.controls
                }
             }
          }
+      }
+      
+      public function getOccupiedWidth() : int
+      {
+         return textField.x + textField.textWidth;
       }
       
       override public function toString() : String

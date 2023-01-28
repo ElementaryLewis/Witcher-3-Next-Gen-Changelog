@@ -48,7 +48,7 @@ package red.game.witcher3.menus.common
             }
             else
             {
-               this.mcCollapseBtnIcon.gotoAndStop(_loc1_.gamepadType == EInputDeviceType.IDT_PS4 ? 2 : 1);
+               this.mcCollapseBtnIcon.gotoAndStop(_loc1_.isPsGamepad() ? 2 : 1);
             }
             _loc1_.addEventListener(ControllerChangeEvent.CONTROLLER_CHANGE,this.handleControllerChanged,false,0,true);
          }

@@ -5,6 +5,7 @@ package red.core
    import red.core.events.GameEvent;
    import red.game.witcher3.managers.InputManager;
    import red.game.witcher3.managers.RuntimeAssetsManager;
+   import red.game.witcher3.utils.CommonUtils;
    import scaleform.clik.constants.InputValue;
    import scaleform.clik.core.UIComponent;
    import scaleform.clik.events.InputEvent;
@@ -69,6 +70,17 @@ package red.core
          }
       }
       
+      public static function set gameLanguage(param1:String) : void
+      {
+         _gameLanguage = param1;
+         CommonUtils.setTurkish(param1 == "TR");
+      }
+      
+      public static function get gameLanguage() : String
+      {
+         return _gameLanguage;
+      }
+      
       public function swapAcceptCancel(param1:Boolean) : void
       {
          InputManager.getInstance().swapAcceptCancel = param1;
@@ -78,16 +90,6 @@ package red.core
       public function resetInput() : void
       {
          InputManager.getInstance().reset();
-      }
-      
-      public function set gameLanguage(param1:String) : void
-      {
-         _gameLanguage = param1;
-      }
-      
-      public function get gameLanguage() : String
-      {
-         return _gameLanguage;
       }
       
       public function setControllerType(param1:Boolean) : void

@@ -4,6 +4,8 @@ package red.game.witcher3.menus.mainmenu
    import flash.events.Event;
    import flash.events.MouseEvent;
    import flash.text.TextField;
+   import flash.text.TextFormat;
+   import red.core.CoreComponent;
    import red.core.constants.KeyCode;
    import red.core.events.GameEvent;
    import red.game.witcher3.controls.InputFeedbackButton;
@@ -21,6 +23,8 @@ package red.game.witcher3.menus.mainmenu
    
    public class KeyBindsOptionModule extends StaticOptionModule
    {
+      
+      protected static const PADDING_BUTTON:Number = 40;
        
       
       private var isSettingKeycode:Boolean = false;
@@ -30,6 +34,8 @@ package red.game.witcher3.menus.mainmenu
       public var mcScrollbar:ScrollBar;
       
       public var mcResetDefaultsButtonPC:InputFeedbackButton;
+      
+      public var mcSafetiesEnabledButtonPC:InputFeedbackButton;
       
       public var mcList:W3ScrollingList;
       
@@ -55,15 +61,11 @@ package red.game.witcher3.menus.mainmenu
       
       public var mcItemRenderer11:KeybindItemRenderer;
       
-      public var mcItemRenderer12:KeybindItemRenderer;
-      
-      public var mcItemRenderer13:KeybindItemRenderer;
-      
-      public var mcItemRenderer14:KeybindItemRenderer;
-      
       private var _rebindingRenderer:KeybindItemRenderer;
       
       public var _lastMoveWasMouse:Boolean = false;
+      
+      protected var _smartKeybindingEnabled:Boolean = true;
       
       protected var _mouseEventsRegistered:Boolean = false;
       
@@ -72,6 +74,42 @@ package red.game.witcher3.menus.mainmenu
       public function KeyBindsOptionModule()
       {
          super();
+      }
+      
+      public function get smartKeybindingEnabled() : Boolean
+      {
+         return this._smartKeybindingEnabled;
+      }
+      
+      public function set smartKeybindingEnabled(param1:Boolean) : void
+      {
+         if(this._smartKeybindingEnabled != param1)
+         {
+            dispatchEvent(new GameEvent(GameEvent.CALL,"OnSmartKeybindEnabledChanged",[param1]));
+         }
+         this._smartKeybindingEnabled = param1;
+         var _loc2_:String = "";
+         var _loc3_:String = param1 ? "[[panel_mainmenu_option_value_off]]" : "[[panel_mainmenu_option_value_on]]";
+         var _loc4_:TextField;
+         (_loc4_ = new TextField()).text = "[[smart_keybinding_enabled]]";
+         _loc2_ += _loc4_.text;
+         _loc4_.text = _loc3_;
+         _loc2_ += " " + _loc4_.text;
+         this.mcSafetiesEnabledButtonPC.label = _loc2_;
+         this.mcSafetiesEnabledButtonPC.setDataFromStage("",KeyCode.O);
+         this.mcSafetiesEnabledButtonPC.validateNow();
+         this.setButtonPosition();
+         this.mcItemRenderer1.safetiesEnabled = param1;
+         this.mcItemRenderer2.safetiesEnabled = param1;
+         this.mcItemRenderer3.safetiesEnabled = param1;
+         this.mcItemRenderer4.safetiesEnabled = param1;
+         this.mcItemRenderer5.safetiesEnabled = param1;
+         this.mcItemRenderer6.safetiesEnabled = param1;
+         this.mcItemRenderer7.safetiesEnabled = param1;
+         this.mcItemRenderer8.safetiesEnabled = param1;
+         this.mcItemRenderer9.safetiesEnabled = param1;
+         this.mcItemRenderer10.safetiesEnabled = param1;
+         this.mcItemRenderer11.safetiesEnabled = param1;
       }
       
       public function get lastMoveWasMouse() : Boolean
@@ -113,19 +151,41 @@ package red.game.witcher3.menus.mainmenu
          this.mcResetDefaultsButtonPC.addEventListener(ButtonEvent.PRESS,this.handleResetDefaultPressed,false,0,true);
          this.mcResetDefaultsButtonPC.setDataFromStage("",KeyCode.R);
          this.mcResetDefaultsButtonPC.validateNow();
+         this.mcSafetiesEnabledButtonPC.clickable = true;
+         this.mcSafetiesEnabledButtonPC.addEventListener(ButtonEvent.PRESS,this.smartKeybindingPressed,false,0,true);
+         this.mcSafetiesEnabledButtonPC.setDataFromStage("",KeyCode.O);
+         this.mcSafetiesEnabledButtonPC.validateNow();
          if(this.mcScrollbar)
          {
             this.mcScrollbar.addEventListener(Event.SCROLL,this.handleScroll,false,1,true);
          }
       }
       
+      public function setButtonPosition() : *
+      {
+         this.mcResetDefaultsButtonPC.x = this.mcSafetiesEnabledButtonPC.x + this.mcSafetiesEnabledButtonPC.actualWidth + PADDING_BUTTON;
+      }
+      
       public function showWithData(param1:Array) : void
       {
-         var _loc2_:int = -1;
-         var _loc3_:int = -1;
+         var _loc5_:int = 0;
+         var _loc2_:TextField = getChildByName("tfAction") as TextField;
+         var _loc3_:TextFormat = new TextFormat();
+         if(CoreComponent.isArabicAligmentMode)
+         {
+            _loc3_.align = "right";
+         }
+         else
+         {
+            _loc3_.align = "left";
+         }
+         _loc2_.setTextFormat(_loc3_);
+         var _loc4_:int = -1;
+         _loc5_ = -1;
          if(!visible)
          {
             super.show();
+            this.smartKeybindingEnabled = true;
             if(this.mcList)
             {
                if(this.mcList.selectedIndex == 0)
@@ -144,16 +204,16 @@ package red.game.witcher3.menus.mainmenu
          }
          else
          {
-            _loc2_ = this.mcList.selectedIndex;
-            _loc3_ = this.mcList.scrollPosition;
+            _loc4_ = this.mcList.selectedIndex;
+            _loc5_ = this.mcList.scrollPosition;
          }
          this.mcList.dataProvider = new DataProvider(param1);
          this.mcList.validateNow();
          this.registerMouseEvents();
-         if(_loc2_ != -1 || _loc3_ != -1)
+         if(_loc4_ != -1 || _loc5_ != -1)
          {
-            this.mcList.selectedIndex = _loc2_;
-            this.mcList.scrollPosition = _loc3_;
+            this.mcList.selectedIndex = _loc4_;
+            this.mcList.scrollPosition = _loc5_;
             validateNow();
          }
       }
@@ -181,9 +241,6 @@ package red.game.witcher3.menus.mainmenu
             this.registerMouseEventsForItem(this.mcItemRenderer9);
             this.registerMouseEventsForItem(this.mcItemRenderer10);
             this.registerMouseEventsForItem(this.mcItemRenderer11);
-            this.registerMouseEventsForItem(this.mcItemRenderer12);
-            this.registerMouseEventsForItem(this.mcItemRenderer13);
-            this.registerMouseEventsForItem(this.mcItemRenderer14);
          }
       }
       
@@ -204,9 +261,6 @@ package red.game.witcher3.menus.mainmenu
             this.unregisterMouseEventsForItem(this.mcItemRenderer9);
             this.unregisterMouseEventsForItem(this.mcItemRenderer10);
             this.unregisterMouseEventsForItem(this.mcItemRenderer11);
-            this.unregisterMouseEventsForItem(this.mcItemRenderer12);
-            this.unregisterMouseEventsForItem(this.mcItemRenderer13);
-            this.unregisterMouseEventsForItem(this.mcItemRenderer14);
          }
       }
       
@@ -316,7 +370,7 @@ package red.game.witcher3.menus.mainmenu
                   this.stopChangingKeybind();
                   return;
                }
-               if(_loc2_.code == KeyCode.UP || _loc2_.code == KeyCode.DOWN || _loc2_.code == KeyCode.LEFT || _loc2_.code == KeyCode.RIGHT || _loc2_.code == KeyCode.W || _loc2_.code == KeyCode.S || _loc2_.code == KeyCode.A || _loc2_.code == KeyCode.D || _loc2_.code == KeyCode.ENTER || _loc2_.code == KeyCode.BACKSPACE)
+               if(_loc2_.code == KeyCode.F7 || _loc2_.code == KeyCode.F5 || this.smartKeybindingEnabled && (_loc2_.code == KeyCode.ENTER || _loc2_.code == KeyCode.BACKSPACE || _loc2_.code == KeyCode.K || _loc2_.code == KeyCode.I || _loc2_.code == KeyCode.M || _loc2_.code == KeyCode.J || _loc2_.code == KeyCode.N || _loc2_.code == KeyCode.B || _loc2_.code == KeyCode.G || _loc2_.code == KeyCode.H || _loc2_.code == KeyCode.L || _loc2_.code == KeyCode.O))
                {
                   dispatchEvent(new GameEvent(GameEvent.CALL,"OnInvalidKeybindTried",[_loc4_]));
                   return;
@@ -336,6 +390,10 @@ package red.game.witcher3.menus.mainmenu
                else if(_loc2_.code == KeyCode.R)
                {
                   this.resetKeybinds();
+               }
+               else if(_loc2_.code == KeyCode.O)
+               {
+                  this.smartKeybindingEnabled = !this.smartKeybindingEnabled;
                }
             }
             CommonUtils.convertWASDCodeToNavEquivalent(_loc2_);
@@ -369,7 +427,11 @@ package red.game.witcher3.menus.mainmenu
          {
             return;
          }
-         if(this._rebindingRenderer.isReset)
+         if(Boolean(this._rebindingRenderer.data.locked) && (this.smartKeybindingEnabled || this._rebindingRenderer.data.permaLocked))
+         {
+            dispatchEvent(new GameEvent(GameEvent.CALL,"OnLockedKeybindTried"));
+         }
+         else if(this._rebindingRenderer.isReset)
          {
             this.resetKeybinds();
          }
@@ -388,6 +450,11 @@ package red.game.witcher3.menus.mainmenu
       protected function handleResetDefaultPressed(param1:ButtonEvent) : void
       {
          this.resetKeybinds();
+      }
+      
+      protected function smartKeybindingPressed(param1:ButtonEvent) : void
+      {
+         this.smartKeybindingEnabled = !this.smartKeybindingEnabled;
       }
       
       protected function resetKeybinds() : void

@@ -1,14 +1,87 @@
 package
 {
+   import adobe.utils.*;
+   import fl.motion.AnimatorFactory3D;
+   import fl.motion.MotionBase;
+   import fl.motion.motion_internal;
+   import flash.accessibility.*;
+   import flash.desktop.*;
+   import flash.display.*;
+   import flash.errors.*;
+   import flash.events.*;
+   import flash.external.*;
+   import flash.filters.*;
+   import flash.geom.*;
+   import flash.globalization.*;
+   import flash.media.*;
+   import flash.net.*;
+   import flash.net.drm.*;
+   import flash.printing.*;
+   import flash.profiler.*;
+   import flash.sampler.*;
+   import flash.sensors.*;
+   import flash.system.*;
+   import flash.text.*;
+   import flash.text.engine.*;
+   import flash.text.ime.*;
+   import flash.ui.*;
+   import flash.utils.*;
+   import flash.xml.*;
    import red.game.witcher3.menus.inventory_menu.ModulePaperdoll;
    
    public dynamic class PaperdollRef extends ModulePaperdoll
    {
        
       
+      public var __animFactory_mcPaperDollSlot7af1:AnimatorFactory3D;
+      
+      public var __animArray_mcPaperDollSlot7af1:Array;
+      
+      public var ____motion_mcPaperDollSlot7af1_mat3DVec__:Vector.<Number>;
+      
+      public var ____motion_mcPaperDollSlot7af1_matArray__:Array;
+      
+      public var __motion_mcPaperDollSlot7af1:MotionBase;
+      
       public function PaperdollRef()
       {
          super();
+         if(this.__animFactory_mcPaperDollSlot7af1 == null)
+         {
+            this.__animArray_mcPaperDollSlot7af1 = new Array();
+            this.__motion_mcPaperDollSlot7af1 = new MotionBase();
+            this.__motion_mcPaperDollSlot7af1.duration = 1;
+            this.__motion_mcPaperDollSlot7af1.overrideTargetTransform();
+            this.__motion_mcPaperDollSlot7af1.addPropertyArray("blendMode",["normal"]);
+            this.__motion_mcPaperDollSlot7af1.addPropertyArray("cacheAsBitmap",[false]);
+            this.__motion_mcPaperDollSlot7af1.addPropertyArray("opaqueBackground",[null]);
+            this.__motion_mcPaperDollSlot7af1.addPropertyArray("visible",[true]);
+            this.__motion_mcPaperDollSlot7af1.is3D = true;
+            this.__motion_mcPaperDollSlot7af1.motion_internal::spanStart = 0;
+            this.____motion_mcPaperDollSlot7af1_matArray__ = new Array();
+            this.____motion_mcPaperDollSlot7af1_mat3DVec__ = new Vector.<Number>(16);
+            this.____motion_mcPaperDollSlot7af1_mat3DVec__[0] = 1;
+            this.____motion_mcPaperDollSlot7af1_mat3DVec__[1] = 0;
+            this.____motion_mcPaperDollSlot7af1_mat3DVec__[2] = 0;
+            this.____motion_mcPaperDollSlot7af1_mat3DVec__[3] = 0;
+            this.____motion_mcPaperDollSlot7af1_mat3DVec__[4] = 0;
+            this.____motion_mcPaperDollSlot7af1_mat3DVec__[5] = 1;
+            this.____motion_mcPaperDollSlot7af1_mat3DVec__[6] = 0;
+            this.____motion_mcPaperDollSlot7af1_mat3DVec__[7] = 0;
+            this.____motion_mcPaperDollSlot7af1_mat3DVec__[8] = 0;
+            this.____motion_mcPaperDollSlot7af1_mat3DVec__[9] = 0;
+            this.____motion_mcPaperDollSlot7af1_mat3DVec__[10] = 1;
+            this.____motion_mcPaperDollSlot7af1_mat3DVec__[11] = 0;
+            this.____motion_mcPaperDollSlot7af1_mat3DVec__[12] = 92.349998;
+            this.____motion_mcPaperDollSlot7af1_mat3DVec__[13] = 628.349976;
+            this.____motion_mcPaperDollSlot7af1_mat3DVec__[14] = 0;
+            this.____motion_mcPaperDollSlot7af1_mat3DVec__[15] = 1;
+            this.____motion_mcPaperDollSlot7af1_matArray__.push(new Matrix3D(this.____motion_mcPaperDollSlot7af1_mat3DVec__));
+            this.__motion_mcPaperDollSlot7af1.addPropertyArray("matrix3D",this.____motion_mcPaperDollSlot7af1_matArray__);
+            this.__animArray_mcPaperDollSlot7af1.push(this.__motion_mcPaperDollSlot7af1);
+            this.__animFactory_mcPaperDollSlot7af1 = new AnimatorFactory3D(null,this.__animArray_mcPaperDollSlot7af1);
+            this.__animFactory_mcPaperDollSlot7af1.addTargetInfo(this,"mcPaperDollSlot7",0,true,0,true,null,-1);
+         }
          this.__setProp_mcPaperdoll_Paperdoll_mcPaperDoll_0();
          this.__setProp_mcPaperDollSlot1_Paperdoll_McPaperDollItems_0();
          this.__setProp_mcPaperDollSlot2_Paperdoll_McPaperDollItems_0();
@@ -125,7 +198,7 @@ package
          mcPaperDollSlot7.enableInitCallback = false;
          mcPaperDollSlot7.equipID = 7;
          mcPaperDollSlot7.gridSize = 1;
-         mcPaperDollSlot7.navigationDown = 7;
+         mcPaperDollSlot7.navigationDown = 13;
          mcPaperDollSlot7.navigationLeft = -1;
          mcPaperDollSlot7.navigationRight = 12;
          mcPaperDollSlot7.navigationUp = 5;
@@ -353,7 +426,7 @@ package
          catch(e:Error)
          {
          }
-         mcPaperDollSlot13.enabled = true;
+         mcPaperDollSlot13.enabled = false;
          mcPaperDollSlot13.enableInitCallback = false;
          mcPaperDollSlot13.equipID = 8;
          mcPaperDollSlot13.gridSize = 1;
@@ -363,7 +436,7 @@ package
          mcPaperDollSlot13.navigationUp = 19;
          mcPaperDollSlot13.slotTag = "petard2";
          mcPaperDollSlot13.slotTypeID = 0;
-         mcPaperDollSlot13.visible = true;
+         mcPaperDollSlot13.visible = false;
          try
          {
             mcPaperDollSlot13["componentInspectorSetting"] = false;
@@ -386,10 +459,10 @@ package
          mcPaperDollSlot8.enableInitCallback = false;
          mcPaperDollSlot8.equipID = 10;
          mcPaperDollSlot8.gridSize = 1;
-         mcPaperDollSlot8.navigationDown = -1;
-         mcPaperDollSlot8.navigationLeft = -1;
-         mcPaperDollSlot8.navigationRight = 13;
-         mcPaperDollSlot8.navigationUp = 6;
+         mcPaperDollSlot8.navigationDown = 13;
+         mcPaperDollSlot8.navigationLeft = 6;
+         mcPaperDollSlot8.navigationRight = 16;
+         mcPaperDollSlot8.navigationUp = 19;
          mcPaperDollSlot8.slotTag = "quick1";
          mcPaperDollSlot8.slotTypeID = 0;
          mcPaperDollSlot8.visible = true;
@@ -445,9 +518,9 @@ package
          mcPaperDollSlot14.equipID = 11;
          mcPaperDollSlot14.gridSize = 1;
          mcPaperDollSlot14.navigationDown = -1;
-         mcPaperDollSlot14.navigationLeft = 7;
-         mcPaperDollSlot14.navigationRight = 16;
-         mcPaperDollSlot14.navigationUp = 12;
+         mcPaperDollSlot14.navigationLeft = 6;
+         mcPaperDollSlot14.navigationRight = 12;
+         mcPaperDollSlot14.navigationUp = 6;
          mcPaperDollSlot14.slotTag = "quick2";
          mcPaperDollSlot14.slotTypeID = 0;
          mcPaperDollSlot14.visible = true;

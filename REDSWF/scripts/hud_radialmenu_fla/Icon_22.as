@@ -6,9 +6,9 @@ package hud_radialmenu_fla
    {
        
       
-      public var mcLoaderLarge:IconLoaderLarge;
-      
       public var mcLoader:IconLoader;
+      
+      public var mcLoaderLarge:IconLoaderLarge;
       
       public function Icon_22()
       {

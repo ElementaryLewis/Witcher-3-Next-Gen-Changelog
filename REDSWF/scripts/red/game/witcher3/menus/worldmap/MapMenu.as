@@ -202,6 +202,7 @@ package red.game.witcher3.menus.worldmap
          dispatchEvent(new GameEvent(GameEvent.REGISTER,"map.current.area.name",[this.setCurrentName]));
          dispatchEvent(new GameEvent(GameEvent.REGISTER,"map.quest.name",[this.setCurrentQuest]));
          dispatchEvent(new GameEvent(GameEvent.REGISTER,"map.objectives",[this.setCurrentObjectives]));
+         dispatchEvent(new GameEvent(GameEvent.REGISTER,"map.hubs.custom",[this.handleCustomHubs]));
          _inputHandlers.push(this.mcUniverseMap);
          _inputHandlers.push(this.mcHubMap);
          _inputHandlers.push(this.mcInteriorMap);
@@ -1156,6 +1157,7 @@ package red.game.witcher3.menus.worldmap
       public function initializeCategoryPanel() : *
       {
          this.mcHubMapPinPanel.initializeCategoryPanel();
+         dispatchEvent(new GameEvent(GameEvent.CALL,"SetInitialFilters"));
       }
       
       public function updateCategoryPanel() : *
@@ -1256,6 +1258,11 @@ package red.game.witcher3.menus.worldmap
             }
             this.tfDebugInfo.htmlText = _loc1_;
          }
+      }
+      
+      protected function handleCustomHubs(param1:Object) : *
+      {
+         this.mcUniverseMap.mcUniverseMapContainer.addCustomHubs(param1 as Array);
       }
    }
 }

@@ -436,7 +436,7 @@ package red.game.witcher3.hud
       
       public function setGameLanguage(param1:String) : *
       {
-         CoreComponent._gameLanguage = param1;
+         CoreComponent.gameLanguage = param1;
       }
       
       public function debugHudList() : void

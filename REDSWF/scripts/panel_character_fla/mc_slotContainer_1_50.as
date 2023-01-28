@@ -6,77 +6,77 @@ package panel_character_fla
    {
        
       
-      public var bonusSocket4:SlotSkillSocketRef;
-      
-      public var gr3_socket3:SlotSkillSocketRef;
-      
-      public var gr2_socket2:SlotSkillSocketRef;
-      
-      public var gr1_socket1:SlotSkillSocketRef;
-      
-      public var gr2_socket1:SlotSkillSocketRef;
-      
-      public var gr1_socket2:SlotSkillSocketRef;
-      
-      public var gr3_socket1:SlotSkillSocketRef;
-      
-      public var gr1_socket3:SlotSkillSocketRef;
-      
       public var bonusSocket1:SlotSkillSocketRef;
-      
-      public var connector_g2_s2:ConnectorLineRef;
-      
-      public var bonusSocket3:SlotSkillSocketRef;
-      
-      public var connector_g3_s2:ConnectorLineRef;
-      
-      public var connector_g2_s3:SkillSlotConnectorRef;
       
       public var bonusSocket2:SlotSkillSocketRef;
       
-      public var connector_g3_s3:SkillSlotConnectorRef;
+      public var bonusSocket3:SlotSkillSocketRef;
       
-      public var gr3_mutagen:SlotSkillMutagenRef;
-      
-      public var connector_g2_s1:SkillSlotConnectorRef;
-      
-      public var connector_g1_s2:ConnectorLineRef;
-      
-      public var gr2_mutagen:SlotSkillMutagenRef;
-      
-      public var connector_g3_s1:SkillSlotConnectorRef;
-      
-      public var connector_g1_s3:SkillSlotConnectorRef;
-      
-      public var gr1_mutagen:SlotSkillMutagenRef;
-      
-      public var connector_g4_s2:ConnectorLineRef;
-      
-      public var groupConnector1:ConnectorLineRef;
+      public var bonusSocket4:SlotSkillSocketRef;
       
       public var connector_g1_s1:SkillSlotConnectorRef;
       
-      public var connector_g4_s3:SkillSlotConnectorRef;
+      public var connector_g1_s2:ConnectorLineRef;
       
-      public var gr4_socket1:SlotSkillSocketRef;
+      public var connector_g1_s3:SkillSlotConnectorRef;
       
-      public var groupConnector3:ConnectorLineRef;
+      public var connector_g2_s1:SkillSlotConnectorRef;
+      
+      public var connector_g2_s2:ConnectorLineRef;
+      
+      public var connector_g2_s3:SkillSlotConnectorRef;
+      
+      public var connector_g3_s1:SkillSlotConnectorRef;
+      
+      public var connector_g3_s2:ConnectorLineRef;
+      
+      public var connector_g3_s3:SkillSlotConnectorRef;
       
       public var connector_g4_s1:SkillSlotConnectorRef;
       
-      public var groupConnector2:ConnectorLineRef;
+      public var connector_g4_s2:ConnectorLineRef;
       
-      public var gr4_mutagen:SlotSkillMutagenRef;
+      public var connector_g4_s3:SkillSlotConnectorRef;
       
-      public var gr4_socket3:SlotSkillSocketRef;
+      public var gr1_mutagen:SlotSkillMutagenRef;
       
-      public var gr4_socket2:SlotSkillSocketRef;
+      public var gr1_socket1:SlotSkillSocketRef;
       
-      public var groupConnector4:ConnectorLineRef;
+      public var gr1_socket2:SlotSkillSocketRef;
+      
+      public var gr1_socket3:SlotSkillSocketRef;
+      
+      public var gr2_mutagen:SlotSkillMutagenRef;
+      
+      public var gr2_socket1:SlotSkillSocketRef;
+      
+      public var gr2_socket2:SlotSkillSocketRef;
+      
+      public var gr2_socket3:SlotSkillSocketRef;
+      
+      public var gr3_mutagen:SlotSkillMutagenRef;
+      
+      public var gr3_socket1:SlotSkillSocketRef;
       
       public var gr3_socket2:SlotSkillSocketRef;
       
-      public var gr2_socket3:SlotSkillSocketRef;
+      public var gr3_socket3:SlotSkillSocketRef;
+      
+      public var gr4_mutagen:SlotSkillMutagenRef;
+      
+      public var gr4_socket1:SlotSkillSocketRef;
+      
+      public var gr4_socket2:SlotSkillSocketRef;
+      
+      public var gr4_socket3:SlotSkillSocketRef;
+      
+      public var groupConnector1:ConnectorLineRef;
+      
+      public var groupConnector2:ConnectorLineRef;
+      
+      public var groupConnector3:ConnectorLineRef;
+      
+      public var groupConnector4:ConnectorLineRef;
       
       public function mc_slotContainer_1_50()
       {

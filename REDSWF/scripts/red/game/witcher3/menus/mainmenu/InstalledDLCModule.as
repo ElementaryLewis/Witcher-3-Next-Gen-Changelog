@@ -59,9 +59,9 @@ package red.game.witcher3.menus.mainmenu
          return this._lastMoveWasMouse;
       }
       
-      public function set lastMoveWasMouse(value:Boolean) : void
+      public function set lastMoveWasMouse(param1:Boolean) : void
       {
-         this._lastMoveWasMouse = value;
+         this._lastMoveWasMouse = param1;
          if(!this._lastMoveWasMouse)
          {
             if(this.mcList.selectedIndex == -1)
@@ -89,10 +89,10 @@ package red.game.witcher3.menus.mainmenu
          }
       }
       
-      public function showWithData(data:Array) : void
+      public function showWithData(param1:Array) : void
       {
          super.show();
-         this.mcList.dataProvider = new DataProvider(data);
+         this.mcList.dataProvider = new DataProvider(param1);
          this.mcList.validateNow();
          if(!this._lastMoveWasMouse)
          {
@@ -101,15 +101,15 @@ package red.game.witcher3.menus.mainmenu
          this.registerMouseEvents();
       }
       
-      protected function OnListItemSelectionChange(event:ListEvent) : void
+      protected function OnListItemSelectionChange(param1:ListEvent) : void
       {
-         if(event.index == -1)
+         if(param1.index == -1)
          {
             this.txtSelectionInfo.text = "";
          }
          else
          {
-            this.txtSelectionInfo.htmlText = (this.mcList.getRendererAt(event.index) as InstalledDLCMItemRenderer).getDLCDescription();
+            this.txtSelectionInfo.htmlText = (this.mcList.getRendererAt(param1.index) as InstalledDLCMItemRenderer).getDLCDescription();
          }
       }
       
@@ -157,29 +157,29 @@ package red.game.witcher3.menus.mainmenu
          }
       }
       
-      protected function registerMouseEventsForItem(item:InstalledDLCMItemRenderer) : void
+      protected function registerMouseEventsForItem(param1:InstalledDLCMItemRenderer) : void
       {
-         item.addEventListener(MouseEvent.MOUSE_OVER,this.onItemMouseOver,false,0,true);
-         item.addEventListener(MouseEvent.MOUSE_OUT,this.onItemMouseOut,false,0,true);
+         param1.addEventListener(MouseEvent.MOUSE_OVER,this.onItemMouseOver,false,0,true);
+         param1.addEventListener(MouseEvent.MOUSE_OUT,this.onItemMouseOut,false,0,true);
       }
       
-      protected function unregisterMouseEventsForItem(item:InstalledDLCMItemRenderer) : void
+      protected function unregisterMouseEventsForItem(param1:InstalledDLCMItemRenderer) : void
       {
-         item.removeEventListener(MouseEvent.MOUSE_OVER,this.onItemMouseOver);
-         item.removeEventListener(MouseEvent.MOUSE_OUT,this.onItemMouseOut);
+         param1.removeEventListener(MouseEvent.MOUSE_OVER,this.onItemMouseOver);
+         param1.removeEventListener(MouseEvent.MOUSE_OUT,this.onItemMouseOut);
       }
       
-      protected function onItemMouseOver(event:MouseEvent) : void
+      protected function onItemMouseOver(param1:MouseEvent) : void
       {
-         var currentTarget:InstalledDLCMItemRenderer = event.currentTarget as InstalledDLCMItemRenderer;
-         this._lastMouseOveredItem = this.mcList.getRenderers().indexOf(currentTarget);
+         var _loc2_:InstalledDLCMItemRenderer = param1.currentTarget as InstalledDLCMItemRenderer;
+         this._lastMouseOveredItem = this.mcList.getRenderers().indexOf(_loc2_);
          if(this._lastMoveWasMouse)
          {
-            this.mcList.selectedIndex = currentTarget.index;
+            this.mcList.selectedIndex = _loc2_.index;
          }
       }
       
-      protected function onItemMouseOut(event:MouseEvent) : void
+      protected function onItemMouseOut(param1:MouseEvent) : void
       {
          this._lastMouseOveredItem = -1;
          if(this._lastMoveWasMouse)
@@ -188,31 +188,31 @@ package red.game.witcher3.menus.mainmenu
          }
       }
       
-      override public function handleInputNavigate(event:InputEvent) : void
+      override public function handleInputNavigate(param1:InputEvent) : void
       {
          if(!visible)
          {
             return;
          }
-         var details:InputDetails = event.details;
-         CommonUtils.convertWASDCodeToNavEquivalent(details);
-         this.mcList.handleInput(event);
-         if(!event.handled)
+         var _loc2_:InputDetails = param1.details;
+         CommonUtils.convertWASDCodeToNavEquivalent(_loc2_);
+         this.mcList.handleInput(param1);
+         if(!param1.handled)
          {
-            super.handleInputNavigate(event);
+            super.handleInputNavigate(param1);
          }
       }
       
-      private function handleScroll(e:Event) : void
+      private function handleScroll(param1:Event) : void
       {
-         var currentTarget:InstalledDLCMItemRenderer = null;
+         var _loc2_:InstalledDLCMItemRenderer = null;
          this.mcList.validateNow();
          if(this._lastMouseOveredItem != -1 && this.lastMoveWasMouse)
          {
-            currentTarget = this.mcList.getRendererAt(this._lastMouseOveredItem) as InstalledDLCMItemRenderer;
-            if(currentTarget)
+            _loc2_ = this.mcList.getRendererAt(this._lastMouseOveredItem) as InstalledDLCMItemRenderer;
+            if(_loc2_)
             {
-               this.mcList.selectedIndex = currentTarget.index;
+               this.mcList.selectedIndex = _loc2_.index;
                this.mcList.validateNow();
             }
          }

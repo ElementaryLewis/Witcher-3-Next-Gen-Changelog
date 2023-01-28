@@ -33,6 +33,8 @@ package red.game.witcher3.hud.modules.radialmenu
       
       private var _isPocketData:Boolean;
       
+      private var _showChangeItemText:Boolean;
+      
       private var _baseItemData:Object;
       
       private var _alterItemData:Object;
@@ -100,6 +102,11 @@ package red.game.witcher3.hud.modules.radialmenu
       public function isCrossbow() : Boolean
       {
          return !this._isPocketData;
+      }
+      
+      public function ShowChangeItemText() : Boolean
+      {
+         return this._showChangeItemText;
       }
       
       public function isSwitchable() : Boolean
@@ -173,7 +180,7 @@ package red.game.witcher3.hud.modules.radialmenu
             this.updateAmmo(this._alterItemData,true);
             if(this._data)
             {
-               dispatchEvent(new GameEvent(GameEvent.CALL,"OnActivateSlot",[this._data.slotName]));
+               dispatchEvent(new GameEvent(GameEvent.CALL,"OnActivateSlot",[this._data.slotName,true,true]));
                this.mcEquipped.visible = true;
             }
             dispatchEvent(new Event(Event.CHANGE,true));
@@ -209,7 +216,7 @@ package red.game.witcher3.hud.modules.radialmenu
             this.updateAmmo(this._alterItemData,true);
             if(this._data)
             {
-               dispatchEvent(new GameEvent(GameEvent.CALL,"OnActivateSlot",[this._data.slotName]));
+               dispatchEvent(new GameEvent(GameEvent.CALL,"OnActivateSlot",[this._data.slotName,true,true]));
                this.mcEquipped.visible = true;
             }
             dispatchEvent(new Event(Event.CHANGE,true));
@@ -226,10 +233,18 @@ package red.game.witcher3.hud.modules.radialmenu
             this._alterItemData = this._baseItemData;
             this._baseItemData = _loc1_;
             this.setBaseDataFromObject(this._baseItemData);
-            dispatchEvent(new GameEvent(GameEvent.CALL,"OnActivateSlot",[this._baseItemData.slotName]));
+            dispatchEvent(new GameEvent(GameEvent.CALL,"OnActivateSlot",[this._baseItemData.slotName,false,true]));
             this.mcEquipped.visible = true;
             dispatchEvent(new Event(Event.CHANGE,true));
          }
+      }
+      
+      public function ResetPetardData() : void
+      {
+         this.cleanup();
+         this._baseItemData = null;
+         this._alterItemData = null;
+         this._subItemsList.Clear();
       }
       
       protected function updateData() : void
@@ -240,6 +255,7 @@ package red.game.witcher3.hud.modules.radialmenu
             return;
          }
          this._isPocketData = this._data.isPocketData;
+         this._showChangeItemText = this._data.showChangeItemText;
          if(this._isPocketData)
          {
             this.updatePocketData();

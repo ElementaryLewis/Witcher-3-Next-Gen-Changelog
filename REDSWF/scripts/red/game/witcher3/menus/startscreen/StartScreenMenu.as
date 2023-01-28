@@ -6,6 +6,7 @@ package red.game.witcher3.menus.startscreen
    import flash.utils.Timer;
    import red.core.CoreMenu;
    import red.core.events.GameEvent;
+   import red.game.witcher3.constants.PlatformType;
    import scaleform.clik.constants.InputValue;
    import scaleform.clik.events.InputEvent;
    import scaleform.clik.ui.InputDetails;
@@ -29,6 +30,7 @@ package red.game.witcher3.menus.startscreen
       public function StartScreenMenu()
       {
          addFrameScript(0,this.frame1);
+         _disableShowAnimation = true;
          super();
          upToCloseEnabled = false;
       }
@@ -48,18 +50,7 @@ package red.game.witcher3.menus.startscreen
       override public function setPlatform(param1:uint) : void
       {
          super.setPlatform(param1);
-         switch(param1)
-         {
-            case 0:
-            case 3:
-               this.textField.htmlText = "[[panel_button_press_any]]";
-               break;
-            case 1:
-               this.textField.htmlText = "[[panel_button_press_any_X1]]";
-               break;
-            case 2:
-               this.textField.htmlText = "[[panel_button_press_any_PS4]]";
-         }
+         this.textField.htmlText = PlatformType.getPlatformSpecificResourceString(param1,"panel_button_press_any");
       }
       
       public function setDisplayedText(param1:String) : void

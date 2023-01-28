@@ -9,12 +9,6 @@ package red.game.witcher3.constants
       
       public static const INVALID_STRING_PARAM:String = "INVALID_STRING_PARAM!";
       
-      public static const PLATFORM_PC = 0;
-      
-      public static const PLATFORM_XBOX1 = 1;
-      
-      public static const PLATFORM_PS4 = 2;
-      
       public static const ALIGNMENT_RIGHT:String = "Right";
       
       public static const ALIGNMENT_LEFT:String = "Left";

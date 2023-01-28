@@ -32,6 +32,8 @@ package red.game.witcher3.menus.mainmenu
       public static const SLOT_MODE_IMPORT:int = 2;
       
       public static const SLOT_MODE_NEWGAME_PLUS:int = 3;
+      
+      public static const CST_CLOUD = 30;
        
       
       public var mcScrollingList:W3ScrollingList;
@@ -55,6 +57,8 @@ package red.game.witcher3.menus.mainmenu
       public var mcSaveSlotItem9:SaveSlotItemRenderer;
       
       public var mcSaveSlotItem10:SaveSlotItemRenderer;
+      
+      public var mcSaveSlotItem11:SaveSlotItemRenderer;
       
       public var mcSlotPreview:W3UILoader;
       
@@ -141,6 +145,7 @@ package red.game.witcher3.menus.mainmenu
          this.registerMouseEventsForItem(this.mcSaveSlotItem8);
          this.registerMouseEventsForItem(this.mcSaveSlotItem9);
          this.registerMouseEventsForItem(this.mcSaveSlotItem10);
+         this.registerMouseEventsForItem(this.mcSaveSlotItem11);
          InputManager.getInstance().addEventListener(ControllerChangeEvent.CONTROLLER_CHANGE,this.handleControllerChange,false,0,true);
       }
       
@@ -156,6 +161,7 @@ package red.game.witcher3.menus.mainmenu
          this.unregisterMouseEventsForItem(this.mcSaveSlotItem8);
          this.unregisterMouseEventsForItem(this.mcSaveSlotItem9);
          this.unregisterMouseEventsForItem(this.mcSaveSlotItem10);
+         this.unregisterMouseEventsForItem(this.mcSaveSlotItem11);
          InputManager.getInstance().removeEventListener(ControllerChangeEvent.CONTROLLER_CHANGE,this.handleControllerChange);
       }
       
@@ -302,6 +308,10 @@ package red.game.witcher3.menus.mainmenu
                   case NavigationCode.GAMEPAD_X:
                      this.tryDeleteSlot();
                      param1.handled = true;
+                     break;
+                  case NavigationCode.GAMEPAD_L2:
+                     this.activateCloudSaves();
+                     param1.handled = true;
                }
                if(!param1.handled)
                {
@@ -314,11 +324,51 @@ package red.game.witcher3.menus.mainmenu
                      this.activateSelectedSlot();
                      param1.handled = true;
                   }
+                  else if(_loc2_.code == KeyCode.C)
+                  {
+                     this.activateCloudSaves();
+                     param1.handled = true;
+                  }
                }
             }
             if(!param1.handled)
             {
                this.mcScrollingList.handleInput(param1);
+            }
+         }
+      }
+      
+      protected function trySyncSlot() : void
+      {
+         var _loc1_:SaveSlotItemRenderer = null;
+         if(this.slotMode != SLOT_MODE_IMPORT && this.slotMode != SLOT_MODE_NEWGAME_PLUS)
+         {
+            _loc1_ = this.mcScrollingList.getSelectedRenderer() as SaveSlotItemRenderer;
+            if(Boolean(_loc1_) && _loc1_.data.tag != -1)
+            {
+               this.handleNavigateBack();
+               dispatchEvent(new GameEvent(GameEvent.CALL,"OnSyncSaveCalled",[_loc1_.data.saveType,_loc1_.data.tag,this.slotMode == SLOT_MODE_SAVES]));
+            }
+         }
+      }
+      
+      protected function activateCloudSaves() : void
+      {
+         var _loc1_:IngameMenu = null;
+         if(this.slotMode != SLOT_MODE_IMPORT && this.slotMode != SLOT_MODE_NEWGAME_PLUS)
+         {
+            _loc1_ = parent as IngameMenu;
+            if(_loc1_)
+            {
+               if(_loc1_.isCloudUserSignedIn)
+               {
+                  dispatchEvent(new GameEvent(GameEvent.CALL,"OnShowCloudModalCalled"));
+               }
+               else
+               {
+                  this.handleNavigateBack();
+                  dispatchEvent(new GameEvent(GameEvent.CALL,"OnLoginCloudCalled"));
+               }
             }
          }
       }
@@ -330,6 +380,10 @@ package red.game.witcher3.menus.mainmenu
          if(this.slotMode != SLOT_MODE_IMPORT && this.slotMode != SLOT_MODE_NEWGAME_PLUS)
          {
             _loc1_ = this.mcScrollingList.getSelectedRenderer() as SaveSlotItemRenderer;
+            if(_loc1_.data.cloudStatus == CST_CLOUD)
+            {
+               return;
+            }
             if(Boolean(_loc1_) && _loc1_.data.tag != -1)
             {
                _loc2_ = parent as IngameMenu;
@@ -388,7 +442,7 @@ package red.game.witcher3.menus.mainmenu
       
       protected function onSaveSlotSelected(param1:ListEvent) : void
       {
-         if(this.slotMode != SLOT_MODE_IMPORT && this.slotMode != SLOT_MODE_NEWGAME_PLUS)
+         if(this.slotMode != SLOT_MODE_IMPORT)
          {
             this.displaySelectedSavesScreenshot();
          }
@@ -407,6 +461,7 @@ package red.game.witcher3.menus.mainmenu
             {
                this.setSelectedSaveSlotImage(_loc1_.data.filename,_loc1_.data.tag);
             }
+            this.mcSlotPreview.y = _loc1_.y;
          }
          else
          {
@@ -467,7 +522,7 @@ package red.game.witcher3.menus.mainmenu
       
       public function onLoadingScreenshotComplete() : void
       {
-         if(this.slotMode != SLOT_MODE_IMPORT && this.slotMode != SLOT_MODE_NEWGAME_PLUS)
+         if(this.slotMode != SLOT_MODE_IMPORT)
          {
             this.mcSlotPreview.visible = true;
             this.mcSlotPreview.source = this._lastRequestedSaveImage;
