@@ -1,0 +1,185 @@
+package red.game.witcher3.slots
+{
+   import flash.display.MovieClip;
+   import flash.display.Sprite;
+   import flash.events.Event;
+   import flash.text.TextField;
+   import red.core.constants.KeyCode;
+   import red.game.witcher3.constants.InventoryActionType;
+   import red.game.witcher3.constants.InventorySlotType;
+   import red.game.witcher3.events.GridEvent;
+   import red.game.witcher3.events.SlotActionEvent;
+   import red.game.witcher3.interfaces.IInventorySlot;
+   import red.game.witcher3.managers.InputManager;
+   import scaleform.clik.events.InputEvent;
+   
+   public class SlotSkillGrid extends SlotPaperdoll implements IInventorySlot
+   {
+       
+      
+      public var slotBackground:MovieClip;
+      
+      public var txtLevel:TextField;
+      
+      public var equipedIcon:Sprite;
+      
+      public function SlotSkillGrid()
+      {
+         super();
+         _isLocked = false;
+         if(iconLock)
+         {
+            iconLock.visible = false;
+         }
+         if(this.equipedIcon)
+         {
+            this.equipedIcon.visible = false;
+         }
+      }
+      
+      override public function get isLocked() : Boolean
+      {
+         return _isLocked;
+      }
+      
+      override protected function updateData() : *
+      {
+         super.updateData();
+         if(!_data)
+         {
+            return;
+         }
+         if(_data.color && this.slotBackground && _data.level > 0 && !_data.isCoreSkill)
+         {
+            this.slotBackground.gotoAndStop(_data.color);
+         }
+         else
+         {
+            this.slotBackground.gotoAndStop("SC_None");
+         }
+         if(_data.maxLevel && _data.maxLevel > 0 && !_data.isCoreSkill && Boolean(_data.hasRequiredPointsSpent))
+         {
+            this.txtLevel.text = _data.level + "/" + _data.maxLevel;
+            this.txtLevel.visible = true;
+         }
+         else
+         {
+            this.txtLevel.visible = false;
+         }
+         this.applyAvailability();
+      }
+      
+      override protected function handleIconLoaded(param1:Event) : void
+      {
+         super.handleIconLoaded(param1);
+         if(this.txtLevel)
+         {
+            addChild(this.txtLevel);
+            addChild(iconLock);
+         }
+      }
+      
+      protected function applyAvailability() : void
+      {
+         this.filters = [];
+         if(this.equipedIcon)
+         {
+            if(!_data.isCoreSkill)
+            {
+               this.equipedIcon.visible = _data.isEquipped;
+            }
+            else
+            {
+               this.equipedIcon.visible = false;
+            }
+         }
+         this.alpha = 1;
+         if(_data.level < 1 && !_data.hasRequiredPointsSpent)
+         {
+            darkenIcon(0.2);
+            _isLocked = true;
+         }
+         else
+         {
+            _isLocked = false;
+         }
+         iconLock.visible = _isLocked;
+      }
+      
+      override protected function setBackgroundColor() : void
+      {
+         mcColorBackground.setBySkillType(_data.color);
+      }
+      
+      override protected function fireTooltipShowEvent(param1:Boolean = false) : void
+      {
+         var _loc3_:GridEvent = null;
+         var _loc2_:Boolean = activeSelectionEnabled || !InputManager.getInstance().isGamepad();
+         if(_data && _loc2_ && isParentEnabled())
+         {
+            _loc3_ = new GridEvent(GridEvent.DISPLAY_TOOLTIP,true,false,index,-1,-1,null,_data as Object);
+            _loc3_.tooltipContentRef = "SkillTooltipRef";
+            _loc3_.tooltipMouseContentRef = "SkillTooltipRef";
+            _loc3_.tooltipDataSource = "OnGetSkillTooltipData";
+            _loc3_.isMouseTooltip = param1;
+            if(param1)
+            {
+               _loc3_.anchorRect = getGlobalSlotRect();
+            }
+            _tooltipRequested = true;
+            dispatchEvent(_loc3_);
+         }
+      }
+      
+      override protected function fireTooltipHideEvent(param1:Boolean = false) : void
+      {
+         var _loc2_:GridEvent = null;
+         if(_tooltipRequested)
+         {
+            _loc2_ = new GridEvent(GridEvent.HIDE_TOOLTIP,true,false,index,-1,-1,null,_data as Object);
+            dispatchEvent(_loc2_);
+            _tooltipRequested = false;
+         }
+      }
+      
+      override public function canDrag() : Boolean
+      {
+         return _data && !this.isLocked && _data.level > 0 && !data.isCoreSkill;
+      }
+      
+      override protected function executeDefaultAction(param1:Number, param2:InputEvent) : void
+      {
+         trace("GFX <SlotSkillGrid> executeDefaultAction  ",canExecuteAction());
+         if(param1 == KeyCode.PAD_A_CROSS)
+         {
+            if(param2)
+            {
+               param2.handled = true;
+            }
+            fireActionEvent(_data.actionType);
+         }
+         else if(param1 == KeyCode.PAD_Y_TRIANGLE)
+         {
+            if(_data.slotType != InventorySlotType.Potion1 && _data.slotType != InventorySlotType.Potion2 && _data.slotType != InventorySlotType.Petard1 && _data.slotType != InventorySlotType.Petard2 && _data.slotType != InventorySlotType.Quickslot1 && _data.slotType != InventorySlotType.Quickslot2)
+            {
+               defaultSlotDropAction(_data);
+            }
+            fireActionEvent(InventoryActionType.DROP);
+         }
+         else if(param1 == KeyCode.PAD_X_SQUARE)
+         {
+            fireActionEvent(InventoryActionType.SUB_ACTION,SlotActionEvent.EVENT_SECONDARY_ACTION);
+         }
+      }
+      
+      override public function executeAction(param1:Number, param2:InputEvent) : Boolean
+      {
+         if(canExecuteAction())
+         {
+            this.executeDefaultAction(param1,param2);
+            return true;
+         }
+         return false;
+      }
+   }
+}
