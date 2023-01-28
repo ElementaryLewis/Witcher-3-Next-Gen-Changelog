@@ -1,0 +1,1251 @@
+<?xml version="1.0" encoding="utf-16"?>
+<redxml>
+	<custom>
+		<boidSpeciesDef species_name= "rootSpecies" type_name = "BoidLair" >
+			<!-- Base definition of state names -->
+			<boidStates>
+				<state state_name="idle"/>
+				<state state_name="move"/>
+				<state state_name="attack"/>
+				<state state_name="death"/>
+				<state state_name="flee"/>
+			</boidStates>
+			<subSpecies>
+				<boidSpeciesDef species_name= "crawlingSpecies" type_name = "BoidLair" >
+					<spawnPointType spawnPointType_name = "CrittersSpawn"/>
+					<!-- Base definition of state names -->
+					<boidStates>
+						<state state_name="idle">
+							<anim anim_name="boid_idle" loop="true"/>
+						</state>
+						<state state_name="move">
+							<anim anim_name="boid_walk" loop="true" speedVariation="0.2"/>
+						</state>
+						<state state_name="run">
+							<anim anim_name="boid_run" loop="true" speedVariation="0.2"/>
+						</state>
+						<state state_name="attack">
+							<anim anim_name="boid_attack" loop="true" speedVariation="0.2"/>
+						</state>
+						<state state_name="death">
+							<sequence>
+								<anim anim_name="boid_death_burn"  fx_name="burning_fx" speedVariation="0.5"/>
+								<anim anim_name="boid_death_end"  fx_name="death_fx" speedVariation="0.5"/>
+								<anim anim_name="boid_death_end" loop="true"/>
+							</sequence>
+						</state>
+						<state state_name="flee">
+							<anim anim_name="boid_walk" fx_name="burning_fx" loop="true" speedVariation="0.2"/>
+						</state>
+					</boidStates>
+					<subSpecies>
+						<!-- base crab species-->
+						<boidSpeciesDef species_name			= "Crabs" 	type_name				= "HumbleCritterLair" 
+										turnRatio				= "90" 		individualRandomization	= "0.4"
+										actorsRangeDesired		= "4" 		actorsRangeMax			= "9"
+										actorsGravity			= "0.7" 	
+										fireRangeMin			= "1" 		fireRangeMax			= "9" 					fireRepultion			= "5"
+										mutualUndesiredDensity	= "5" 		mutualRepultion			= "1.5"
+										hungerRatio				= "11.2211" eatingTime				= "3" 					hungerGravity 			= "0.5"
+										wanderTime				= "4.5" 	wanderGravity			= "0.15"
+										wallsDistance			= "4" 		wallsRepulsion			= "3"
+										panicSpeedBoost			= "2" 		panicActorsGravity		= "-2" 					actorRangeMultWhenPanic	= "3"
+										burnResistance			= "1.0" 	postPanicDeathChance	= "0.33333"
+										attackRange				= "2.0" 	hasAttackBehaviour		= "true"
+										updateTime				= "0.25" 
+										boidScaleMin			= "0.9" 	boidScaleMax			= "1.2"
+										testLocation_hack		= "false"
+										boidTemplate			= "characters\npc_entities\animals\boids\boid_crab.w2ent"
+                    walkSideway = "true"
+                    soundBank_name="animals_crabs.bnk">
+							<!-- Points of interest configuration -->
+							<POIConfig type_name="Player" gravity="0.5"/>
+							<POIConfig type_name="CrittersSpawn" gravity="0.0"/>
+							<POIConfig type_name="Fire" gravity="-2.0"/>
+							<POIConfig type_name="Food" gravity="0.5"/>
+							<soundConfig>
+								<sound startEvent="animals_crabs_moving" 	stopEvent="animals_crabs_moving_end" 	countParam="boids_moving_count">
+									<filter type_name="or">
+										<filter boidState_name="move" />
+										<filter boidState_name="attack" />
+									</filter>
+								</sound>
+								<sound startEvent="animals_crabs_attacking" stopEvent="animals_crabs_attacking_end" 	countParam="boids_attacking_count">
+									<filter boidState_name="attack" />
+								</sound>
+								<sound startEvent="animals_crabs_burning" 	stopEvent="animals_crabs_burning_end" 	countParam="boids_burning_count">
+									
+								</sound>
+								<sound startEvent="animals_crabs_dying" 	stopEvent="animals_crabs_dying_end" 		countParam="boids_dying_count">
+									<filter poiType_name="Fire" />
+								</sound>
+							</soundConfig>
+							<subSpecies>
+								<!-- Small crab species fleeing from all-->
+								<boidSpeciesDef species_name		= "PeacefulCrabs"
+												mutualRepultion		= "1.5"
+												actorsGravity		= "-1.4"
+												hasAttackBehaviour	= "false"
+												burnResistance		= "0.2"
+												boidScaleMin 		= "0.5" boidScaleMax = "1.5f" >
+								</boidSpeciesDef>
+								<!-- Big crabs species -->
+								<boidSpeciesDef species_name	= "BigCrabs"
+												mutualRepultion	= "4"
+												boidScaleMin	= "3.0" boidScaleMax="4.0f"
+												actorsGravity	= "1.4">
+								</boidSpeciesDef>
+							</subSpecies>
+						</boidSpeciesDef>
+						<!-- base beetle species-->
+						<boidSpeciesDef species_name			= "Beetle" 	type_name				= "HumbleCritterLair" 
+										turnRatio				= "90" 		individualRandomization	= "0.4"
+										actorsRangeDesired		= "4" 		actorsRangeMax			= "9"
+										actorsGravity			= "0.7" 	
+										fireRangeMin			= "1" 		fireRangeMax			= "9" 					fireRepultion			= "5"
+										mutualUndesiredDensity	= "5" 		mutualRepultion			= "1.5"
+										hungerRatio				= "11.2211" eatingTime				= "3" 					hungerGravity 			= "0.5"
+										wanderTime				= "4.5" 	wanderGravity			= "0.15"
+										wallsDistance			= "4" 		wallsRepulsion			= "3"
+										panicSpeedBoost			= "2" 		panicActorsGravity		= "-2" 					actorRangeMultWhenPanic	= "3"
+										burnResistance			= "1.0" 	postPanicDeathChance	= "0.33333"
+										attackRange				= "2.0" 	hasAttackBehaviour		= "true"
+										updateTime				= "0.25" 
+										boidScaleMin			= "0.9" 	boidScaleMax			= "1.2"
+										boidTemplate			= "characters\npc_entities\animals\boids\boid_crab.w2ent" >
+							<!-- Points of interest configuration -->
+							<POIConfig type_name="Player" gravity="0.5"/>
+							<POIConfig type_name="NPC" gravity="3.0"/>
+							<POIConfig type_name="CrittersSpawn" gravity="0.0"/>
+							<POIConfig type_name="Fire" gravity="-4.0"/>
+							<POIConfig type_name="Food" gravity="0.5"/>
+							<POIConfig type_name="Light" gravity="-4.0"/>
+							<soundConfig>
+								<sound startEvent="animals_crabs_moving" 	stopEvent="animals_crabs_moving_end" 	countParam="boids_moving_count">
+									<filter type_name="or">
+										<filter boidState_name="move" />
+										<filter boidState_name="attack" />
+									</filter>
+								</sound>
+								<sound startEvent="animals_crabs_attacking" stopEvent="animals_crabs_attacking_end" 	countParam="boids_attacking_count">
+									<filter boidState_name="attack" />
+								</sound>
+								<sound startEvent="animals_crabs_burning" 	stopEvent="animals_crabs_burning_end" 	countParam="boids_burning_count">
+									
+								</sound>
+								<sound startEvent="animals_crabs_dying" 	stopEvent="animals_crabs_dying_end" 		countParam="boids_dying_count">
+									<filter poiType_name="Fire" />
+								</sound>
+							</soundConfig>
+							<subSpecies>
+								<!-- Small crab species -->
+								<boidSpeciesDef species_name		= "SmallCrabs"
+												mutualRepultion		= "1.5"
+												actorsGravity		= "-1.4"
+												hasAttackBehaviour	= "false"
+												burnResistance		= "0.2"
+												boidScaleMin 		= "0.5" boidScaleMax = "1.5f" >
+								</boidSpeciesDef>
+								<!-- Big crabs species -->
+								<boidSpeciesDef species_name	= "BigCrabs"
+												mutualRepultion	= "4"
+												boidScaleMin	= "3.0" boidScaleMax="4.0f"
+												actorsGravity	= "1.4">
+								</boidSpeciesDef>
+							</subSpecies>
+						</boidSpeciesDef>
+						<!-- Base chicken species-->
+						<boidSpeciesDef species_name			= "Chickens" 	type_name				= "HumbleCritterLair" 
+										maxVelocity 			= "0.4"
+										turnRatio				= "90" 			individualRandomization	= "0.4"
+										actorsRangeDesired		= "2" 			actorsRangeMax			= "4"
+										actorsGravity			= "-10.0" 		
+										fireRangeMin			= "0.15" 		fireRangeMax			= "1.5" 				fireRepultion			= "5"
+										mutualUndesiredDensity	= "5" 			mutualRepultion			= "1"
+										hungerRatio				= "11.2211" 	eatingTime				= "3" 					hungerGravity			= "0.5"
+										wanderTime				= "4.5" 		wanderGravity			= "0.15"
+										wallsDistance			= "1" 			wallsRepulsion			= "3"
+										panicSpeedBoost			= "10" 			panicActorsGravity		= "-2" 					actorRangeMultWhenPanic	= "3"
+										burnResistance			= "0.9" 		postPanicDeathChance	= "0.9"
+										attackRange				= "2.0" 		hasAttackBehaviour		= "false"
+										updateTime				= "0.25" 
+										boidScaleMin			= "1.5" 		boidScaleMax			= "1.5"
+										allowAnimInterruption	= "true"		
+										boidTemplate			= "characters\npc_entities\animals\boids\boid_chicken.w2ent"
+                    soundBank_name="animals_chicken.bnk">
+							<boidStates>
+								<!-- idle -->
+								<state state_name="idle">
+									<loop>
+										<rand>
+											<anim anim_name="boid_idle_01"/>
+											<anim anim_name="boid_idle_03"/>
+											<anim anim_name="boid_idle_04"/>
+											<anim anim_name="boid_idle_05"/>
+										</rand>
+									</loop>
+								</state>
+								<!-- move -->
+								<state state_name="move">
+									<loop>
+										<anim anim_name="boid_walk"  speedVariation="0.2"/>
+										<anim anim_name="boid_walk"  speedVariation="0.2"/>
+										<rand>
+											<anim anim_name="boid_walk"  speedVariation="0.2" proba="0.2"/>  
+										</rand>
+										<anim anim_name="boid_jump"/>
+									</loop>
+								</state>
+								<!-- attack -->
+								<state state_name="attack">
+									<anim anim_name="boid_idle_03" loop="true" speedVariation="0.2"/>
+								</state>
+								<!-- death -->
+								<state state_name="death">
+									<anim anim_name="boid_death"  fx_name="death_fx" speedVariation="0.5"/>
+								</state>
+								<!-- flee -->
+								<state state_name="flee" doubleSpeed = "true" >
+									<sequence>
+										<anim anim_name="boid_jump"  fx_name="burning_fx"/>
+										<anim anim_name="boid_run" fx_name="burning_fx" speedVariation="0.2"/>
+										<loop>
+											<rand>
+												<anim anim_name="boid_jump"  fx_name="death_fx" proba="0.3"/>
+											</rand>
+											<anim anim_name="boid_run" fx_name="death_fx" speedVariation="0.2"/>
+										</loop>
+									</sequence>
+								</state>
+								<!-- eat -->
+								<state state_name="eat">
+									<loop>
+										<anim anim_name="boid_eating_start" speedVariation="0.2"/>
+										<rand>
+											<sequence proba="0.8">
+												<anim anim_name="boid_eating_loop" speedVariation="0.2"/>
+												<rand>
+													<anim anim_name="boid_eating_loop" speedVariation="0.2" proba="0.5"/>
+												</rand>
+											</sequence>
+										</rand>
+										<anim anim_name="boid_eating_stop" speedVariation="0.2"/>
+										<rand>
+											<anim anim_name="boid_idle_04"/>
+											<anim anim_name="boid_idle_03"/>
+										</rand>
+									</loop>
+								</state>
+							</boidStates>
+							<!-- Points of interest configuration -->
+							<POIConfig type_name="Player" gravity="0.5" action="true" state_name="flee"/>
+							<POIConfig type_name="CrittersSpawn" gravity="0.0"/>
+							<POIConfig type_name="Fire" gravity="-2.0"/>
+							<POIConfig type_name="Food" gravity="0.5" action="true" actionTimeOut="10.0" wanderTimeOut="10.0" timeOutVariation="0.75" state_name="eat"/>
+						</boidSpeciesDef> 
+						<!-- Base rat species -->
+						<boidSpeciesDef species_name			= "Rats" 	type_name				= "HumbleCritterLair" 
+										maxVelocity 			= "5.0"
+										turnRatio				= "90" 		individualRandomization	= "0.4"
+										actorsRangeDesired		= "4" 		actorsRangeMax			= "9"
+										actorsGravity			= "0.7" 	
+										fireRangeMin			= "1" 		fireRangeMax			= "9" 					fireRepultion			= "5"
+										mutualUndesiredDensity	= "2.5" 	mutualRepultion			= "0.40"
+										hungerRatio				= "11.2211" eatingTime				= "3" 					hungerGravity 			= "0.5"
+										wanderTime				= "4.5" 	wanderGravity			= "0.15"
+										wallsDistance			= "0.6" 	wallsRepulsion			= "3.0"
+										panicSpeedBoost			= "2" 		panicActorsGravity		= "-2" 					actorRangeMultWhenPanic	= "3"
+										burnResistance			= "0.1" 	postPanicDeathChance	= "0.9"
+										attackRange				= "1.0" 	hasAttackBehaviour		= "true"
+										updateTime				= "0.25" 
+										boidScaleMin			= "0.9" 	boidScaleMax			= "1.2"
+										boidTemplate			= "characters\npc_entities\animals\boids\boid_rat.w2ent"
+                    soundBank_name="animals_rat.bnk">
+							<boidStates>
+								<state state_name="idle">
+									
+									<anim anim_name="boid_idle_01" loop="true"/>
+									
+								</state>
+								<state state_name="move">
+									
+									<anim anim_name="boid_walk" loop="true"/>
+								
+								</state>
+								<state state_name="run">
+									<loop>
+										<anim anim_name="boid_attack" loop="true"/>
+									</loop>
+								</state>
+								<state state_name="death">
+									<rand>
+										<anim anim_name="boid_death_01" fx_name="death_fx" speedVariation="0.5" />
+										<anim anim_name="boid_death_02" fx_name="death_fx" speedVariation="0.5" />
+									</rand>
+								</state>
+								<state state_name="flee">
+									<loop>
+										<anim anim_name="boid_walk" loop="true"/>
+									</loop>
+								</state>
+								<!-- eat -->
+								<state state_name="eat">
+									<loop>
+										<anim anim_name="boid_idle_01" loop="true"/>
+									</loop>
+								</state>
+							</boidStates>
+							<!-- Points of interest configuration -->
+							<POIConfig type_name="Player" gravity="0.5"/>
+							<POIConfig type_name="CrittersSpawn" gravity="0.0"/>
+							<!-- Alpha hack -6 -->
+							<POIConfig type_name="Fire" gravity="-10.0"/>
+							<POIConfig type_name="Food" gravity="50.0" action="true" actionTimeOut="10.0" wanderTimeOut="10.0" timeOutVariation="0.75" state_name="eat"/>
+							<soundConfig>
+								<sound startEvent="animals_crabs_moving" 	stopEvent="animals_crabs_moving_end" 	countParam="boids_moving_count">
+									<filter type_name="or">
+										<filter boidState_name="move" />
+										<filter boidState_name="attack" />
+									</filter>
+								</sound>
+								<sound startEvent="animals_crabs_attacking" stopEvent="animals_crabs_attacking_end" 	countParam="boids_attacking_count">
+									<filter boidState_name="attack" />
+								</sound>
+								<sound startEvent="animals_crabs_burning" 	stopEvent="animals_crabs_burning_end" 	countParam="boids_burning_count">
+									
+								</sound>
+								<sound startEvent="animals_crabs_dying" 	stopEvent="animals_crabs_dying_end" 		countParam="boids_dying_count">
+									<filter poiType_name="Fire" />
+								</sound>
+							</soundConfig>
+							<subSpecies>
+								<boidSpeciesDef species_name			= "PeacefulRats"  hasAttackBehaviour		= "false" actorsGravity			= "-3.0">				
+									<subSpecies>
+										<boidSpeciesDef species_name			= "Q301Rats"  >
+											<!-- Points of interest configuration -->
+											<POIConfig type_name="Q301DespawnRats" gravity="10.0"/>
+										</boidSpeciesDef>
+									</subSpecies>
+								</boidSpeciesDef>
+							</subSpecies>
+						</boidSpeciesDef>
+						<!-- Base toad species -->
+						<boidSpeciesDef species_name			= "Toads" 	type_name				= "HumbleCritterLair" 
+										maxVelocity 			= "0.2"
+										turnRatio				= "90" 		individualRandomization	= "0.4"
+										actorsRangeDesired		= "1" 		actorsRangeMax			= "2"
+										actorsGravity			= "-3.0" 	
+										fireRangeMin			= "1" 		fireRangeMax			= "9" 					fireRepultion			= "5"
+										mutualUndesiredDensity	= "2.5" 	mutualRepultion			= "0.75"
+										hungerRatio				= "11.2211" eatingTime				= "3" 					hungerGravity 			= "0.5"
+										wanderTime				= "4.5" 	wanderGravity			= "0.15"
+										wallsDistance			= "4" 		wallsRepulsion			= "3"
+										panicSpeedBoost			= "2" 		panicActorsGravity		= "-2" 					actorRangeMultWhenPanic	= "3"
+										burnResistance			= "0.1" 	postPanicDeathChance	= "0.9"
+										attackRange				= "2.0" 	hasAttackBehaviour		= "false"
+										updateTime				= "0.25" 
+										boidScaleMin			= "0.9" 	boidScaleMax			= "1.2"
+										boidTemplate			= "characters\npc_entities\animals\boids\boid_toad.w2ent" >
+							<boidStates>
+								<state state_name="idle">
+									<loop>
+										<rand>
+											<anim anim_name="boid_idle_01"/>
+											<anim anim_name="boid_idle_02"/>
+										</rand>
+									</loop>
+								</state>
+								<state state_name="run">
+									<anim anim_name="boid_jump" speedVariation="0.2" loop="true"/>	
+								</state>
+								<state state_name="attack">
+									<anim anim_name="boid_idle_01" loop="true" speedVariation="0.2"/>
+								</state>
+								<state state_name="death">
+									<anim anim_name="boid_death" loop="true" fx_name="death_fx" speedVariation="0.5" />
+								</state>
+								<state state_name="flee">
+									<anim anim_name="boid_jump" loop="true" speedVariation="0.2" proba="0.1"/>
+								</state>
+							</boidStates>
+							<!-- Points of interest configuration -->
+							<POIConfig type_name="Player" gravity="0.5"/>
+							<POIConfig type_name="CrittersSpawn" gravity="0.0"/>
+							<POIConfig type_name="Fire" gravity="-2.0"/>
+							<POIConfig type_name="Food" gravity="0.5"/>
+							<!--
+							<soundConfig>
+								<sound startEvent="animals_crabs_moving" 	stopEvent="animals_crabs_moving_end" 	countParam="boids_moving_count">
+									<filter type_name="or">
+										<filter boidState_name="move" />
+										<filter boidState_name="attack" />
+									</filter>
+								</sound>
+								<sound startEvent="animals_crabs_attacking" stopEvent="animals_crabs_attacking_end" 	countParam="boids_attacking_count">
+									<filter boidState_name="attack" />
+								</sound>
+								<sound startEvent="animals_crabs_burning" 	stopEvent="animals_crabs_burning_end" 	countParam="boids_burning_count">
+									
+								</sound>
+								<sound startEvent="animals_crabs_dying" 	stopEvent="animals_crabs_dying_end" 		countParam="boids_dying_count">
+									<filter poiType_name="Fire" />
+								</sound>
+							</soundConfig>-->
+						</boidSpeciesDef>
+					</subSpecies>
+				</boidSpeciesDef>
+				<!-- Base bird species-->
+				<boidSpeciesDef species_name					= "Birds" 	type_name			= "FlyingCritterLair"
+								wallsDistance					= "1" 		wallsRepulsion		= "3"
+								updateTime						= "0.25" 	
+								boidScaleMin					= "1.0" 	boidScaleMax		= "1.0" >
+					<spawnPointType spawnPointType_name = "FlyingSpawn1"/>
+					<spawnPointType spawnPointType_name = "FlyingSpawn2"/>
+					<spawnPointType spawnPointType_name = "FlyingSpawn3"/>
+					<spawnPointType spawnPointType_name = "FlyingSpawn4"/>
+					<spawnPointType spawnPointType_name = "FlyingSpawn5"/>
+					<spawnPointType spawnPointType_name = "FlyingSpawn6"/>
+					<spawnPointType spawnPointType_name = "FlyingSpawn7"/>
+					<spawnPointType spawnPointType_name = "FlyingSpawn8"/>
+					<spawnPointType spawnPointType_name = "FlyingSpawn9"/>
+					<!-- 	A group state defines the behaviour of a group of birds ( you know scriptInput.groupList in your FlyingCrittersLairEntity class ) 
+								Some values are between 0 and 1: [0.0, 1.0] 
+								When the parameter says somethingMultiplier the values is between [ 0, +inf] but try to keep it as low as possible
+								a good range is most of the time [0, 20] because the higher the less natural the swarm will be.
+								
+								This set of parameters affects how a boid will behave regarding to its neighbours :
+									neighbourCount			:	Each bird has a number of neighbours that will define its behaviour from ( see cozyFlyDist )
+									cozyFlyDist				: 	( m ) if the distance between two neighbour birds is lower than cozyFlyDist then tooCloseMultiplier pulls then appart
+																if the distance is greater tooFarMultiplier pulls them together
+									tooCloseMultiplier		:	see cozyFlyDist
+									tooFarMultiplier		:	see cozyFlyDist
+									randomNeighboursRatio	:	[0.0, 1.0]That define the way neighbours are chosen, if neighbours are not chosen at random then birds will arrange themselves 
+																in a never ending string each bird following the other in front of him.
+																0.0 : all birds are following each other
+																1.0 : all neighbours are chosen at random ( default behaviour for a cloud of birds )
+																
+								This set of parameters affects the boid only
+									maxVelocity				:   ( m/s ) The maximum speed the boid will fly at 
+									minVelocity    			:	( m/s ) The minimum speed the boid will fly at, bats can have a minimum velocity of 0 because they can fly in place
+																but most birds cannot do that
+									frictionMultiplier		: 	The higher the denser the air. So that means it is easier to turn but can feel mechanic if too high
+									randomDirRatio      	:	[0.0, 1.0] 0.0: No bird have a random dir. 1.0 : all birds have a random dir.
+																Random dir is the personnal direction direction the birds wants to go regardless of the group direction
+									randomDirMultiplier 	:	The higher the farther away from the group the bird will go
+									thinnessMultiplier 		:	will force the group to be flat, the higher the flater 
+									collisionMultiplier		: 	The higher the stronger the repulsion from the ground, that means the will be less likely to hit the ground
+																that doesn't mean they will fly higher above the ground  	
+									glidePercentage 		: 	[0.0, 1.0] 0.0 bird glides only if the driving force only pulls him down    ( 0 % sideways, 100% down )
+																1.0 bird glides whenever the driving force pulls him down a bit  ( from 99 % sideways, 1% down )
+																0.75 bird glides when the driving force pulls him down 25% 		 ( from 75 % sideways, 25% down )
+								
+								This set of parameters is here to introduce some randomness to the parameters above :
+									velocityVariation		: 	[0.0, 1.0] randomness on minVelocity and maxVelocity
+																0.0 minVelocity and maxVelocity will be the same for all birds
+																0.5 maxVelocity can for exemple vary between [ maxVelocity - maxVelocity * 0.5, maxVelocity + maxVelocity * 0.5  ]
+																The greater the variation the longer the cloud of birds when it moves
+									tooCloseVariation		: 	Random variation of tooCloseMultiplier ( see velocityVariation to know what is a random variation )
+									tooFarVariation			: 	Random variation of tooFarMultiplier ( see velocityVariation to know what is a random variation )
+									genericVariation		: 	Random variation of randomDirMultiplier, thinnessMultiplier, frictionMultiplier and collisionMultiplier
+					--> 
+					<groupStates>
+						<!--  	Use this state when you don't know what to do with your birds
+								Each group will wander around randomly avoiding each other 		-->
+						<state  state_name				= "idle"
+								cozyFlyDist				= "2.0"
+								maxVelocity				= "13.5"
+								minVelocity           	= "10.0"
+								frictionMultiplier    	= "0.1"
+								tooCloseMultiplier		= "10.0"
+								tooFarMultiplier		= "0.0"
+								randomDirMultiplier		= "10.0"
+								thinnessMultiplier		= "10.0"
+								collisionMultiplier		= "30.0"
+								randomNeighboursRatio	= "1.0"
+								randomDirRatio        	= "0.1"
+								neighbourCount			= "20"
+							 
+								velocityVariation	    = "0.0"
+								tooCloseVariation		= "0.4"
+								tooFarVariation			= "0.0"
+								genericVariation		= "0.4"/>
+						<!-- The group will create a neat circle around a randomly picked 'CircleTarget' point of interest -->
+						<state  state_name            	= "circle"
+								maxVelocity				= "7.0"
+								minVelocity				= "3.0"
+								tooCloseMultiplier		= "15.0"
+								tooFarMultiplier		= "6.0"
+								randomDirMultiplier		= "0.2"
+								thinnessMultiplier		= "10.0"
+								collisionMultiplier		= "10.0"
+								randomNeighboursRatio	= "0.0"
+								neighbourCount			= "20"
+								randomDirRatio        	= "0.1"
+							 
+								velocityVariation	    = "0.0"
+								tooCloseVariation		= "0.0"
+								tooFarVariation			= "0.1"
+								genericVariation		= "0.4"/>        
+					</groupStates>
+					<boidStates>
+						<!-- idle -->
+						<state state_name="idle">
+							<loop>
+								<rand>
+									<anim anim_name="idle_1"/>
+									<anim anim_name="idle_2"/>
+									<anim anim_name="idle_3"/>
+								</rand>
+							</loop>
+						</state>
+						<!-- move -->
+						<state state_name="move" startRandom="true">
+							<loop>
+								<anim anim_name="boid_fly"  speedVariation="0.2" loop="true"/>  
+							</loop>
+						</state>
+						<!-- attack -->
+						<state state_name="attack">
+							<anim anim_name="boid_fly"  speedVariation="0.2"  />
+						</state>
+						<!-- death -->
+						<state state_name="death">
+							<loop>
+								<anim anim_name="boid_fly"  fx_name="burn_disappear" loop="true"/>
+							</loop>
+						</state>
+						<!-- flee -->
+						<state state_name="flee">
+							<anim anim_name="boid_fly"  speedVariation="0.2"/>
+						</state>
+						<state state_name="glide">
+							<loop>
+								<anim anim_name="boid_glide"  speedVariation="0.2"  loop="true"/>  
+							</loop>
+						</state>
+					</boidStates>
+					<!-- Points of interest configuration -->
+					<POIConfig type_name="Fire">
+						<groupState state_name="default">
+							<gravity radius="0.0" gravity="-100.0"/>
+							<gravity radius="1.0" gravity="-100.0"/>
+							<gravity radius="10.0" gravity="0.0"/>
+						</groupState>
+					</POIConfig>
+					<POIConfig type_name="Player" >
+						<positionOffset z="1.0"/>
+						<groupState state_name="default">
+							<gravity radius="0.0" gravity="-30.0"/>
+							<gravity radius="2.0" gravity="-30.0"/>
+							<gravity radius="3.0" gravity="0.0"/>
+						</groupState>
+					</POIConfig>
+					<POIConfig type_name="MovingIdleTarget">
+						<groupState state_name="default" gravity="0.0"/>
+						<groupState state_name="idle" gravity="0.0" closestOnly="true">
+							<gravity radius="0.0" gravity="0.0"/>
+							<gravity radius="50.0" gravity="20.0"/>
+						</groupState>
+					</POIConfig>
+					<POIConfig type_name="Food">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="CircleTarget">
+						<groupState state_name="default" gravity="0.0"/>
+						<groupState state_name="circle" closestOnly="true">
+							<gravity radius="0.0" gravity="-10.0"/>
+							<gravity radius="2.5" gravity="0.0"/>
+							<gravity radius="50.0" gravity="15.0"/>
+						</groupState>
+					</POIConfig>
+					<POIConfig type_name="CrittersSpawn">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FlyingSpawn1">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FlyingSpawn2">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FlyingSpawn3">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FlyingSpawn4">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FlyingSpawn5">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FlyingSpawn6">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FlyingSpawn7">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FlyingSpawn8">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FlyingSpawn9">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<subSpecies>
+						<boidSpeciesDef species_name					= "Crows" 	type_name			= "FlyingCritterLair"
+										boidTemplate					= "characters\npc_entities\animals\boids\boid_crow.w2ent"
+										boidScaleMin					= "0.5" 	boidScaleMax		= "0.6" soundBank_name="animals_crow.bnk">  
+							<groupStates>
+								  
+								<state  state_name				= "idle"
+										cozyFlyDist				= "2.0"
+										tooCloseMultiplier		= "1.0"
+										tooFarMultiplier		= "0.0"
+										maxVelocity				= "9.0"
+										minVelocity           	= "7.0"
+										frictionMultiplier    	= "0.1"
+										randomDirRatio        	= "0.1"
+										randomDirMultiplier		= "10.0"
+										
+										thinnessMultiplier		= "4.0"
+										collisionMultiplier		= "30.0"
+										neighbourCount			= "20"
+										randomNeighboursRatio	= "1.0"
+									 
+										velocityVariation	    = "0.0"
+										tooCloseVariation		= "0.4"
+										tooFarVariation			= "0.0"
+										genericVariation		= "0.4"/>
+								<!-- The group will dive and try to hit the player with its individuals -->
+								<state  state_name				= "beginAttack"
+										cozyFlyDist				= "2.0"
+										maxVelocity				= "13.5"
+										minVelocity           	= "10.0"
+										frictionMultiplier    	= "0.1"
+										tooCloseMultiplier		= "10.0"
+										tooFarMultiplier		= "0.0"
+										randomDirMultiplier		= "10.0"
+										thinnessMultiplier		= "10.0"
+										collisionMultiplier		= "10.0"
+										randomNeighboursRatio	= "1.0"
+										randomDirRatio        	= "0.1"
+										neighbourCount			= "20"
+									 
+										velocityVariation	    = "0.0"
+										tooCloseVariation		= "0.4"
+										tooFarVariation			= "0.0"
+										genericVariation		= "0.4"/>							
+								<state  state_name				= "attackPlayer"
+										ignorePoiAfterReach     = "true"
+										maxVelocity				= "13.5"
+										minVelocity           	= "0.0"
+										tooCloseMultiplier	    = "10.0"
+										tooFarMultiplier	 	= "0.0"
+										randomDirMultiplier	    = "0.0"
+										thinnessMultiplier	    = "0.0"
+										collisionMultiplier	    = "0.0"
+										randomNeighboursRatio	= "1.0"
+										randomDirRatio         	= "0.1"
+										neighbourCount			= "20"
+									 
+										velocityVariation		= "0.0"
+										tooCloseVariation		= "0.0"
+										tooFarVariation			= "0.4"
+										genericVariation		= "0.4"/>
+								<state  state_name				= "shieldToAttackPlayer"
+										ignorePoiAfterReach     = "true"
+										maxVelocity				= "13.5"
+										minVelocity           	= "0.0"
+										cozyFlyDist				= "2.0"
+										tooCloseMultiplier	    = "10.0"
+										tooFarMultiplier	 	= "0.0"
+										randomDirMultiplier	    = "0.0"
+										thinnessMultiplier	    = "0.0"
+										collisionMultiplier	    = "0.0"
+										randomNeighboursRatio	= "1.0"
+										randomDirRatio         	= "0.1"
+										neighbourCount			= "20"
+										glidingPercentage		= "0.0"
+									 
+										velocityVariation		= "0.0"
+										tooCloseVariation		= "0.0"
+										tooFarVariation			= "0.4"
+										genericVariation		= "0.4"/>
+								<!--  The group will assemble into a very unatural never ending string of birds -->
+								<state  state_name				= "supernatural"
+										maxVelocity				= "27.0"
+										tooCloseMultiplier	    = "0.0"
+										tooFarMultiplier		= "20.0"
+										randomDirMultiplier	    = "0.0"
+										thinnessMultiplier	    = "0.0"
+										collisionMultiplier	    = "0.0"
+										randomNeighboursRatio	= "0.0"
+										randomDirRatio			= "0.0"
+										neighbourCount			= "10"
+									 
+										velocityVariation	    = "0.0"
+										tooCloseVariation		= "0.0"
+										tooFarVariation			= "0.0"
+										genericVariation		= "0.0"/>
+								<!-- Creates a ball of birds around the 'BirdMaster' Point of interest, thus protecting the Bird Master -->  
+								<state  state_name              = "shield"
+										cozyFlyDist             = "2.0"
+										maxVelocity			    = "8.0"
+										minVelocity				= "7.5"
+										frictionMultiplier		= "0.1"
+										tooCloseMultiplier	    = "10.0"
+										tooFarMultiplier		= "0.0"
+										randomDirMultiplier	    = "10.0"
+										thinnessMultiplier	    = "0.0"
+										collisionMultiplier	    = "0.0"
+										randomNeighboursRatio	= "0.0"
+										randomDirRatio			= "1.0"
+										neighbourCount			= "20"
+										glidingPercentage		= "0.0"
+									 
+										velocityVariation		= "0.0"
+										tooCloseVariation		= "0.4"
+										tooFarVariation			= "0.0"
+										genericVariation		= "0.4"/>
+								<!-- The group uses that state will teleport to the bird Master -->
+								<state  state_name              = "teleport"
+										cozyFlyDist             = "4.0"
+										maxVelocity			    = "13.5"
+										minVelocity             = "7.5"
+										frictionMultiplier      = "0.1"
+										tooCloseMultiplier	    = "10.0"
+										tooFarMultiplier	    = "10.0"
+										randomDirMultiplier	    = "10.0" 
+										thinnessMultiplier	    = "0.0"
+										collisionMultiplier	    = "0.0"
+										randomNeighboursRatio   = "1.0"
+										randomDirRatio          = "0.4"
+										neighbourCount		    = "20"
+										glidingPercentage		= "0.0"
+								 
+										velocityVariation	    = "0.0"
+										tooCloseVariation	    = "0.4"
+										tooFarVariation		    = "0.0"
+										genericVariation	    = "0.4"/> 	
+								<!-- This state is used to guide the player through  -->
+								<state  state_name            	= "clue"
+										cozyFlyDist           	= "2.0"
+										maxVelocity			    = "3.0"
+										minVelocity           	= "2.0"
+										frictionMultiplier    	= "0.1"
+										tooCloseMultiplier	 	= "10.0"
+										tooFarMultiplier		= "6.0"
+										randomDirMultiplier	  	= "0.0"
+										thinnessMultiplier	  	= "0.0"
+										collisionMultiplier	  	= "0.0"
+										randomNeighboursRatio	= "1.0"
+										randomDirRatio        	= "0.1"
+										neighbourCount		    = "20"
+										glidingPercentage		= "0.2"
+										 
+										velocityVariation	    = "0.0"
+										tooCloseVariation		= "0.4"
+										tooFarVariation		    = "0.0"
+										genericVariation		= "0.4"/> 
+								<state  state_name				= "clueFly"
+										cozyFlyDist           	= "2.0"
+										maxVelocity			    = "13.0"
+										minVelocity           	= "7.0"
+										frictionMultiplier    	= "0.1"
+										tooCloseMultiplier	 	= "10.0"
+										tooFarMultiplier		= "0.0"
+										randomDirMultiplier	  	= "2.0"
+										thinnessMultiplier	  	= "10.0"
+										collisionMultiplier	  	= "60.0"
+										randomNeighboursRatio	= "1.0"
+										randomDirRatio        	= "0.5"
+										neighbourCount		    = "20"
+										 
+										velocityVariation	    = "0.8"
+										tooCloseVariation		= "0.2"
+										tooFarVariation		    = "0.0"
+										genericVariation		= "0.5"/>
+								<state  state_name				= "clueSpread"
+										cozyFlyDist           	= "2.0"
+										maxVelocity			    = "13.0"
+										minVelocity           	= "7.0"
+										frictionMultiplier    	= "0.1"
+										tooCloseMultiplier	 	= "7.0"
+										tooFarMultiplier		= "0.0"
+										randomDirMultiplier	  	= "2.0"
+										thinnessMultiplier	  	= "0.0"
+										collisionMultiplier	  	= "60.0"
+										randomNeighboursRatio	= "1.0"
+										randomDirRatio        	= "0.5"
+										neighbourCount		    = "20"
+										 
+										velocityVariation	    = "0.8"
+										tooCloseVariation		= "0.2"
+										tooFarVariation		    = "0.0"
+										genericVariation		= "0.5"/>
+								<state  state_name            	= "clueAbove"
+										cozyFlyDist           	= "2.0"
+										maxVelocity			    = "8.0"
+										minVelocity           	= "5.0"
+										frictionMultiplier    	= "0.1"
+										tooCloseMultiplier	 	= "10.0"
+										tooFarMultiplier		= "5.0"
+										randomDirMultiplier	  	= "0.0"
+										thinnessMultiplier	  	= "10.0"
+										collisionMultiplier	  	= "5.0"
+										randomNeighboursRatio	= "1.0"
+										randomDirRatio        	= "0.1"
+										neighbourCount		    = "20"
+										glidingPercentage		= "0.2"
+										 
+										velocityVariation	    = "0.0"
+										tooCloseVariation		= "0.4"
+										tooFarVariation		    = "0.0"
+										genericVariation		= "0.4"/>	
+								<state  state_name				= "gotoBirdMaster"
+										cozyFlyDist				= "2.0"
+										maxVelocity				= "17.5"
+										minVelocity           	= "10.0"
+										frictionMultiplier    	= "0.1"
+										tooCloseMultiplier		= "10.0"
+										tooFarMultiplier		= "0.0"
+										randomDirMultiplier		= "10.0"
+										thinnessMultiplier		= "10.0"
+										collisionMultiplier		= "10.0"
+										randomNeighboursRatio	= "1.0"
+										randomDirRatio        	= "0.1"
+										neighbourCount			= "20"
+									 
+										velocityVariation	    = "0.0"
+										tooCloseVariation		= "0.4"
+										tooFarVariation			= "0.0"
+										genericVariation		= "0.4"/>
+								<!-- same as shield but faster -->  
+								<state  state_name              = "fastShield"
+										cozyFlyDist             = "2.0"
+										maxVelocity			    = "13.5"
+										minVelocity				= "10.0"
+										frictionMultiplier		= "0.1"
+										tooCloseMultiplier	    = "10.0"
+										tooFarMultiplier		= "0.0"
+										randomDirMultiplier	    = "10.0"
+										thinnessMultiplier	    = "0.0"
+										collisionMultiplier	    = "0.0"
+										randomNeighboursRatio	= "0.0"
+										randomDirRatio			= "1.0"
+										neighbourCount			= "20"
+										glidingPercentage		= "0.0"
+									 
+										velocityVariation		= "0.0"
+										tooCloseVariation		= "0.4"
+										tooFarVariation			= "0.0"
+										genericVariation		= "0.4"/>
+							</groupStates>
+							<POIConfig type_name="BirdMaster" >
+								<groupState state_name="default" gravity="0.0" closestOnly="true"/>
+								<groupState state_name="teleport" closestOnly="true">
+									<gravity radius="1.0" gravity="0.0"/>
+									<gravity radius="1.5" gravity="0.0"/>
+									<gravity radius="50.0" gravity="50.0"/>
+								</groupState>
+								<groupState state_name="shield" closestOnly="true">
+									<gravity radius="0.0" gravity="0.0"/>
+									<gravity radius="5.0" gravity="30.0"/>
+									<gravity radius="5.0" gravity="10.0"/>
+								</groupState>
+								<groupState state_name="fastShield" closestOnly="true">
+									<gravity radius="0.0" gravity="0.0"/>
+									<gravity radius="5.0" gravity="30.0"/>
+									<gravity radius="5.0" gravity="10.0"/>
+								</groupState>
+								<groupState state_name="gotoBirdMaster" closestOnly="true"  >
+									<gravity radius="0.0" gravity="5.0"/>
+									<gravity radius="10.0" gravity="10.0"/>
+								</groupState>
+							</POIConfig>
+							<POIConfig type_name="AttackPoint" >
+								<groupState state_name="default" gravity="0.0" closestOnly="true"/>
+								<groupState state_name="beginAttack">
+									<gravity radius="0.0" gravity="0.0"/>
+									<gravity radius="5.0" gravity="30.0"/>
+									<gravity radius="50.0" gravity="50.0"/>
+								</groupState>
+							</POIConfig>
+							<POIConfig type_name="Player" >
+								<groupState state_name="attackPlayer" closestOnly="true">
+									<gravity radius="0.0" 	gravity="-30.0"/>
+									<gravity radius="2.0" 	gravity="-30.0"/>
+									<gravity radius="3.0" 	gravity="0.0"/>
+									<gravity radius="50.0" 	gravity="50.0"/>
+								</groupState>
+								<groupState state_name="shieldToAttackPlayer" closestOnly="true">
+									<gravity radius="0.0" 	gravity="-30.0"/>
+									<gravity radius="2.0" 	gravity="-30.0"/>
+									<gravity radius="3.0" 	gravity="0.0"/>
+									<gravity radius="4.0" 	gravity="50.0"/>
+									<gravity radius="50.0" 	gravity="50.0"/>
+								</groupState>
+								<groupState state_name="shield" gravity="0.0" closestOnly="true"/>
+							</POIConfig>
+							<POIConfig type_name="Fire">
+								<groupState state_name="default">
+									<gravity radius="0.0" gravity="-100.0"/>
+									<gravity radius="1.0" gravity="-100.0"/>
+									<gravity radius="10.0" gravity="0.0"/>
+								</groupState>
+								<groupState state_name="default">
+									<gravity radius="0.0" gravity="-5.0"/>
+									<gravity radius="1.0" gravity="-5.0"/>
+									<gravity radius="2.0" gravity="0.0"/>
+								</groupState>
+							</POIConfig>
+							<POIConfig type_name="ClueTarget">
+								<groupState state_name="default" gravity="0.0"/>
+								<groupState state_name="clue" gravity="50.0" closestOnly="false">
+									<gravity radius="0.0" gravity="0.0"/>
+									<gravity radius="5.0" gravity="20.0"/>
+									<gravity radius="50.0" gravity="50.0"/>
+								</groupState>
+								<groupState state_name="clueAbove" gravity="50.0" closestOnly="false">
+									<gravity radius="0.0" gravity="0.0"/>
+									<gravity radius="10.0" gravity="10.0"/>
+									<gravity radius="50.0" gravity="50.0"/>
+								</groupState>
+								<groupState state_name="clueFly" gravity="20.0" closestOnly="false">
+									<gravity radius="0.0" gravity="0.0"/>
+									<gravity radius="5.0" gravity="5.0"/>
+									<gravity radius="50.0" gravity="10.0"/>
+								</groupState>
+							</POIConfig>
+							<soundConfig>
+								<sound startEvent="animals_crow_swarm" 	stopEvent="animals_crow_swarm_end" 	countParam="swarm_count_crows" distanceParam="swarm_distance_crows"  yawParam="swarm_yaw"  pitchParam="swarm_pitch">
+									<filter type_name = "or">
+										<filter groupState_name="idle" />
+										<filter groupState_name="circle" />
+										<filter groupState_name="teleport"/>
+										<filter groupState_name="shield"/>
+										<filter groupState_name="attackPlayer" />
+									</filter>
+								</sound>
+							</soundConfig>
+							<subSpecies>
+								<boidSpeciesDef species_name					= "LeshyCrows" 	type_name			= "FlyingCritterLair"
+												boidTemplate					= "characters\npc_entities\animals\boids\boid_crow.w2ent"
+												boidScaleMin					= "0.5" 	boidScaleMax		= "0.6"
+												waterSurfaceCollisionForce = "0.0">
+									<soundConfig>
+										<sound startEvent="animals_crow_swarm" 	stopEvent="animals_crow_swarm_end" 	countParam="swarm_count_crows" distanceParam="swarm_distance_crows"  yawParam="swarm_yaw"  pitchParam="swarm_pitch">
+											<filter type_name = "or">
+												<filter groupState_name="idle" />
+												<filter groupState_name="circle" />
+												<filter groupState_name="teleport"/>
+												<filter groupState_name="shield"/>
+											</filter>
+										</sound>
+										<sound startEvent="animals_crow_swarm_leseh_attack" 	stopEvent="animals_crow_swarm_leseh_attack_end" 	countParam="swarm_count_crows" distanceParam="swarm_distance_crows"  yawParam="swarm_yaw"  pitchParam="swarm_pitch">
+											<filter type_name = "or">
+												<filter groupState_name="attackPlayer" />
+												<filter groupState_name="shieldToAttackPlayer"/>
+											</filter>
+										</sound>
+									</soundConfig>
+								</boidSpeciesDef>
+							</subSpecies>
+							<subSpecies>
+								<boidSpeciesDef species_name					= "CrowsOffsetLow" 	type_name			= "FlyingCritterLair">
+								</boidSpeciesDef>
+								<boidSpeciesDef species_name					= "CrowsOffsetHigh" 	type_name			= "FlyingCritterLair">
+								</boidSpeciesDef>
+								<boidSpeciesDef species_name					= "CrowsOffsetCinematic" 	type_name			= "FlyingCritterLair">
+								</boidSpeciesDef>
+								<boidSpeciesDef species_name					= "CrowsOffsetCinematicGallop" 	type_name			= "FlyingCritterLair">
+								</boidSpeciesDef>
+								<boidSpeciesDef species_name					= "CrowsCastle" 	type_name			= "FlyingCritterLair">
+								</boidSpeciesDef>
+								<boidSpeciesDef species_name					= "ClueCrows" 	type_name			= "FlyingCritterLair"
+												boidTemplate					= "characters\npc_entities\animals\boids\boid_crow.w2ent">
+									<soundConfig>
+										<sound startEvent="animals_crow_swarm_leseh_clue" 	stopEvent="animals_crow_swarm_leseh_clue_end" 	countParam="swarm_count_crows" distanceParam="swarm_distance_crows" yawParam="swarm_yaw"  pitchParam="swarm_pitch">
+											<filter type_name = "or">
+												<filter groupState_name="clue" />
+												<filter groupState_name="clueAbove" />
+												<filter groupState_name="clueSpread" />
+												<filter groupState_name="clueFly" />
+											</filter>
+										</sound>
+									</soundConfig>
+								</boidSpeciesDef>
+							</subSpecies>
+						</boidSpeciesDef>
+						<boidSpeciesDef species_name					= "Sparrows" 	type_name			= "FlyingCritterLair"
+										boidTemplate					= "characters\npc_entities\animals\boids\boid_sparrow.w2ent"
+										boidScaleMin					= "0.8" 	boidScaleMax		= "1.0">
+								<groupStates>
+									<state  state_name				= "idle"
+									maxVelocity				= "12.0"
+									randomDirRatio        	= "0.1"
+									cozyFlyDist				= "0.6"
+									tooCloseMultiplier		= "1.0"
+									thinnessMultiplier		= "4.0"
+									minVelocity           	= "10.0"/>
+								</groupStates>		
+							<subSpecies>
+								<boidSpeciesDef species_name					= "SparrowsOffsetLow" 	type_name			= "FlyingCritterLair">
+								</boidSpeciesDef>
+								<boidSpeciesDef species_name					= "SparrowsOffsetHigh" 	type_name			= "FlyingCritterLair">
+								</boidSpeciesDef>
+							</subSpecies>	
+							<soundConfig>
+								<sound startEvent="animals_sparrow_swarm" 	stopEvent="animals_sparrow_swarm_end" 	countParam="swarm_count" distanceParam="swarm_distance"  yawParam="swarm_yaw"  pitchParam="swarm_pitch">
+									<filter type_name = "or">
+										<filter groupState_name="idle" />
+										<filter groupState_name="circle" />
+									</filter>
+								</sound>
+							</soundConfig>		
+						</boidSpeciesDef>
+						<boidSpeciesDef species_name					= "Seagulls" 	type_name			= "FlyingCritterLair"
+										boidTemplate					= "characters\npc_entities\animals\boids\boid_seagull.w2ent"
+										boidScaleMin					= "0.9" 	boidScaleMax		= "1.1" soundBank_name="animals_seagull.bnk">
+							<groupStates>
+								<state  state_name				= "idle"
+										cozyFlyDist				= "10.0"
+										tooCloseMultiplier		= "40.0"
+										maxVelocity				= "8.0"
+										thinnessMultiplier		= "50.0"
+										randomDirRatio        	= "0.0"
+										minVelocity           	= "6.0"
+										/>
+							</groupStates>	
+							<soundConfig>
+								<sound startEvent="animals_seagull_swarm" 	stopEvent="animals_seagull_swarm_end" 	countParam="swarm_count" distanceParam="swarm_distance"  yawParam="swarm_yaw"  pitchParam="swarm_pitch">
+									<filter type_name = "or">
+										<filter groupState_name="idle" />
+										<filter groupState_name="circle" />
+									</filter>
+								</sound>
+							</soundConfig>							
+						</boidSpeciesDef>
+						<boidSpeciesDef species_name					= "Pigeons" 	type_name			= "FlyingCritterLair"
+										boidTemplate					= "characters\npc_entities\animals\boids\boid_pigeon.w2ent"
+										boidScaleMin					= "0.9" 	boidScaleMax		= "1.1" soundBank_name="animals_pigeon.bnk">	
+							<soundConfig>
+								<sound startEvent="animals_pigeon_swarm" 	stopEvent="animals_pigeon_swarm_end" 	countParam="swarm_count" distanceParam="swarm_distance"  yawParam="swarm_yaw"  pitchParam="swarm_pitch">
+									<filter type_name = "or">
+										<filter groupState_name="idle" />
+										<filter groupState_name="circle" />
+									</filter>
+								</sound>
+							</soundConfig>
+						</boidSpeciesDef>
+						<boidSpeciesDef species_name					= "Bats" 	type_name			= "FlyingCritterLair"
+										boidTemplate					= "characters\npc_entities\animals\boids\boid_bat.w2ent"
+										boidScaleMin					= "1" 	boidScaleMax		= "4">
+							<groupStates>
+								<state  state_name				= "idle"
+										maxVelocity				= "10.0"
+										minVelocity           	= "8.0"/>
+							</groupStates>		
+							<boidStates>
+								<state state_name="glide">
+									<loop>
+										<anim anim_name="boid_fly"  speedVariation="0.2"/>  
+									</loop>
+								</state>
+							</boidStates>
+							<soundConfig>
+								<sound startEvent="animals_bat_swarm" 	stopEvent="animals_bat_swarm_end" 	countParam="swarm_count" distanceParam="swarm_distance"  yawParam="swarm_yaw"  pitchParam="swarm_pitch">
+									<filter type_name = "or">
+										<filter groupState_name="idle" />
+										<filter groupState_name="circle" />
+									</filter>
+								</sound>
+							</soundConfig>
+						</boidSpeciesDef>
+						<boidSpeciesDef species_name					= "SuperFastCrazyBats" 	type_name			= "FlyingCritterLair"
+										boidTemplate					= "characters\npc_entities\animals\boids\boid_bat.w2ent"
+										boidScaleMin					= "0.2" 	boidScaleMax		= "0.8">
+							<groupStates>
+								<state  state_name				= "idle"
+										maxVelocity				= "30.0"
+										minVelocity           	= "10.0"/>
+							</groupStates>		
+							<boidStates>
+								<state state_name="glide">
+									<loop>
+										<anim anim_name="boid_fly"  speedVariation="0.2"/>  
+									</loop>
+								</state>
+							</boidStates>
+						</boidSpeciesDef>
+					</subSpecies>
+				</boidSpeciesDef>
+				
+				<!-- Base Fish species-->
+				<boidSpeciesDef species_name					= "Fishes" 	type_name			= "FlyingCritterLair"
+								wallsDistance					= "1" 		wallsRepulsion		= "1.0"
+								updateTime						= "0.25"
+								boidScaleMin					= "1.0" 	boidScaleMax		= "1.0"
+								livesUnderWater					= "true"
+								waterSurfaceCollisionForce		= "3.0"
+								boidTemplate					= "characters\npc_entities\animals\boids\boid_fish.w2ent">
+
+					<spawnPointType spawnPointType_name = "FishSpawn1"/>
+					<spawnPointType spawnPointType_name = "FishSpawn2"/>
+					<spawnPointType spawnPointType_name = "FishSpawn3"/>
+					<spawnPointType spawnPointType_name = "FishSpawn4"/>
+					<spawnPointType spawnPointType_name = "FishSpawn5"/>
+					<spawnPointType spawnPointType_name = "FishSpawn6"/>
+					<spawnPointType spawnPointType_name = "FishSpawn7"/>
+					<spawnPointType spawnPointType_name = "FishSpawn8"/>
+					<spawnPointType spawnPointType_name = "FishSpawn9"/>
+				
+					<groupStates>
+						<!--  	Use this state when you don't know what to do with your group
+								Each group will wander around randomly avoiding each other 		-->
+						<state  state_name				= "idle"
+								cozyFlyDist				= "2.0"
+								maxVelocity				= "12.0"
+								minVelocity           	= "4.0"
+								frictionMultiplier    	= "0.1"
+								tooCloseMultiplier		= "1.0"
+								tooFarMultiplier		= "0.1"
+								randomDirMultiplier		= "20.0"
+								thinnessMultiplier		= "10.0"
+								collisionMultiplier		= "4.0"
+								randomNeighboursRatio	= "1.0"
+								randomDirRatio        	= "0.5"
+								neighbourCount			= "10"
+							 
+								velocityVariation	    = "0.2"
+								tooCloseVariation		= "0.4"
+								tooFarVariation			= "0.0"
+								genericVariation		= "0.4"/>
+						<!-- The group will create a neat circle around a randomly picked 'CircleTarget' point of interest -->
+						<state  state_name            	= "circle"
+								maxVelocity				= "4.25"
+								tooCloseMultiplier		= "20.0"
+								tooFarMultiplier		= "0.1"
+								randomDirMultiplier		= "20.0"
+								thinnessMultiplier		= "0.1"
+								collisionMultiplier		= "10.0"
+								randomNeighboursRatio	= "1.0"
+								neighbourCount			= "1"
+							 
+								velocityVariation	    = "0.0"
+								tooCloseVariation		= "0.0"
+								tooFarVariation			= "0.0"
+								genericVariation		= "0.0"/>        
+					</groupStates>
+					<boidStates>
+						<!-- idle -->
+						<state state_name="idle">
+							<anim anim_name="boid_swim_slow"/>	
+						</state>
+						<!-- move -->
+						<state state_name="move" startRandom="true">
+							<loop>
+								<anim anim_name="boid_swim_fast"  speedVariation="0.2"/>  
+							</loop>
+						</state>
+						<!-- attack -->
+						<state state_name="attack">
+							<anim anim_name="boid_swim_fast"  speedVariation="0.2"/>
+						</state>
+						<!-- death -->
+						<state state_name="death">
+							<loop>
+								<anim anim_name="boid_death"  fx_name="burn_disappear" />
+							</loop>
+						</state>
+						<!-- flee -->
+						<state state_name="flee">
+							<anim anim_name="boid_swim_fast"  speedVariation="0.2"/>
+						</state>
+						<state state_name="glide">
+							<loop>
+								<anim anim_name="boid_swim_fast"  speedVariation="0.2"/>  
+							</loop>
+						</state>
+					</boidStates>
+					<!-- Points of interest configuration -->
+					<POIConfig type_name="Fire">
+						<groupState state_name="default">
+							<gravity radius="0.0" gravity="-100.0"/>
+							<gravity radius="1.0" gravity="-100.0"/>
+							<gravity radius="10.0" gravity="0.0"/>
+						</groupState>
+					</POIConfig>
+					<POIConfig type_name="Player" >
+						<positionOffset z="1.0"/>
+						<groupState state_name="default">
+							<gravity radius="0.0" gravity="-30.0"/>
+							<gravity radius="2.0" gravity="-30.0"/>
+							<gravity radius="3.0" gravity="0.0"/>
+						</groupState>
+					</POIConfig>
+					<POIConfig type_name="MovingIdleTarget">
+						<groupState state_name="default" gravity="0.0"/>
+						<groupState state_name="idle" gravity="0.0" closestOnly="true">
+							<gravity radius="0.0" gravity="0.0"/>
+							<gravity radius="50.0" gravity="20.0"/>
+						</groupState>
+					</POIConfig>
+					<POIConfig type_name="Food">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="CircleTarget">
+						<groupState state_name="default" gravity="0.0"/>
+						<groupState state_name="circle" closestOnly="true">
+							<gravity radius="0.0" gravity="-10.0"/>
+							<gravity radius="2.5" gravity="0.0"/>
+							<gravity radius="50.0" gravity="15.0"/>
+						</groupState>
+					</POIConfig>
+					<POIConfig type_name="CircleTargetMAS">
+						<groupState state_name="default" gravity="0.0"/>
+						<groupState state_name="circle" closestOnly="true">
+							<gravity radius="0.0" gravity="-10.0"/>
+							<gravity radius="2.5" gravity="0.0"/>
+							<gravity radius="150.0" gravity="15.0"/>
+						</groupState>
+					</POIConfig>
+					<POIConfig type_name="CrittersSpawn">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FishSpawn1">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FishSpawn2">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FishSpawn3">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FishSpawn4">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FishSpawn5">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FishSpawn6">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FishSpawn7">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FishSpawn8">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FishSpawn9">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<POIConfig type_name="FishSpawn10">
+						<groupState state_name="default" gravity="0.0"/>
+					</POIConfig>
+					<subSpecies>
+						<boidSpeciesDef species_name		= "PeacefulFishes" 	type_name			= "FlyingCritterLair" boidScaleMin = "0.1" boidScaleMax = "1.5f">
+						</boidSpeciesDef>
+					</subSpecies>
+				</boidSpeciesDef>
+			</subSpecies>
+		</boidSpeciesDef>
+	</custom>                      
+</redxml>
