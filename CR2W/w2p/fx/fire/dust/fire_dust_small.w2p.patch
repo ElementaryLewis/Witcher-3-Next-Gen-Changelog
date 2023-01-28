@@ -1,0 +1,178 @@
+ 1 file changed, 54 insertions(+), 31 deletions(-)
+
+diff --git 1.32/fx/fire/dust/fire_dust_small.w2p.txt 4.00/fx/fire/dust/fire_dust_small.w2p.txt
+index 5233e63..a8af7e5 100644
+--- 1.32/fx/fire/dust/fire_dust_small.w2p.txt
++++ 4.00/fx/fire/dust/fire_dust_small.w2p.txt
+@@ -1,5 +1,6 @@
+     CParticleSystem #0 (CParticleSystem) : 
+         CParticleSystem (CParticleSystem)
++            prewarmingTime (Float) : 50.0000
+             emitters (array:ptr:CParticleEmitter)
+                 0 (ptr:CParticleEmitter) : CParticleEmitter #1
+                 1 (ptr:CParticleEmitter) : CParticleEmitter #4
+@@ -11,8 +12,8 @@
+                 Green (Uint8) : 73
+                 Blue (Uint8) : 64
+                 Alpha (Uint8) : 255
+-            positionX (Int32) : -35
+-            positionY (Int32) : -15
++            positionX (Int32) : -13
++            positionY (Int32) : -109
+             material (handle:IMaterial) : fx/fire/dust/dust_mat_01.w2mg
+             maxParticles (Uint32) : 250
+             particleDrawer (ptr:IParticleDrawer) : CParticleDrawerBillboard #2
+@@ -40,6 +41,11 @@
+                     key (Uint32) : 536870912
+             lods (array:SParticleEmitterLODLevel)
+                 0 (SParticleEmitterLODLevel)
++                    emitterDurationSettings (EmitterDurationSettings)
++                        emitterDuration (Float) : 0.1500
++                    burstList (array:ParticleBurst)
++                        0 (ParticleBurst)
++                            spawnCount (Uint32) : 4
+                     birthRate (ptr:IEvaluatorFloat) : CEvaluatorFloatConst #3
+             ModuleData (SParticleEmitterModuleData)
+                 lifeTime (CBufferVLQInt32:CFloat)
+@@ -66,8 +72,8 @@
+                         x (Float) : 0.2000
+                         y (Float) : 0.2000
+                     1 (SVector2D)
+-                        x (Float) : 0.1000
+-                        y (Float) : 0.1000
++                        x (Float) : 0.2500
++                        y (Float) : 0.2500
+                 spawnExtents (CBufferVLQInt32:SVector3D)
+                     0 (SVector3D)
+                         X (Float) : 28.0000
+@@ -216,7 +222,7 @@
+         CParticleDrawerBillboard (CParticleDrawerBillboard) : <CParticleDrawerBillboard>CParticleDrawerBillboard
+     CEvaluatorFloatConst #3 (CEvaluatorFloatConst) : 
+         CEvaluatorFloatConst (CEvaluatorFloatConst)
+-            value (Float) : 35.0000
++            value (Float) : 25.0000
+     CParticleEmitter #4 (CParticleEmitter) : Copy of Copy of Copy of Copy of Default emitter
+         CParticleEmitter (CParticleEmitter)
+             editorName (String) : "Copy of Copy of Copy of Copy of Default emitter"
+@@ -225,11 +231,11 @@
+                 Green (Uint8) : 66
+                 Blue (Uint8) : 18
+                 Alpha (Uint8) : 255
+-            positionX (Int32) : 222
+-            positionY (Int32) : -3
+-            material (handle:IMaterial) : fx/shaders/fire_sparks.w2mg
++            positionX (Int32) : -365
++            positionY (Int32) : -117
++            material (handle:IMaterial) : CMaterialInstance #5
+             maxParticles (Uint32) : 120
+-            particleDrawer (ptr:IParticleDrawer) : CParticleDrawerMotionBlur #5
++            particleDrawer (ptr:IParticleDrawer) : CParticleDrawerMotionBlur #6
+             envColorGroup (EEnvColorGroup) : ECG_FX_Default
+             modifierSetMask (Uint32) : 52437032
+             numModifiers (Uint32) : 6
+@@ -250,7 +256,12 @@
+                     key (Uint32) : 536870912
+             lods (array:SParticleEmitterLODLevel)
+                 0 (SParticleEmitterLODLevel)
+-                    birthRate (ptr:IEvaluatorFloat) : CEvaluatorFloatConst #6
++                    emitterDurationSettings (EmitterDurationSettings)
++                        emitterDuration (Float) : 0.1000
++                    burstList (array:ParticleBurst)
++                        0 (ParticleBurst)
++                            spawnCount (Uint32) : 2
++                    birthRate (ptr:IEvaluatorFloat) : CEvaluatorFloatConst #7
+             ModuleData (SParticleEmitterModuleData)
+                 lifeTime (CBufferVLQInt32:CFloat)
+                     0 (Float) : 4.0000
+@@ -260,11 +271,11 @@
+                     1 (Float) : 0.0000
+                 size (CBufferVLQInt32:SVector2D)
+                     0 (SVector2D)
+-                        x (Float) : 0.0300
+-                        y (Float) : 0.0500
+-                    1 (SVector2D)
+-                        x (Float) : 0.0750
++                        x (Float) : 0.0330
+                         y (Float) : 0.0250
++                    1 (SVector2D)
++                        x (Float) : 0.0500
++                        y (Float) : 0.0330
+                 spawnExtents (CBufferVLQInt32:SVector3D)
+                     0 (SVector3D)
+                         X (Float) : 16.0000
+@@ -298,7 +309,7 @@
+                 velocity (CBufferVLQInt32:SVector3D)
+                     0 (SVector3D)
+                         X (Float) : 1.0000
+-                        Y (Float) : -0.3500
++                        Y (Float) : 1.0000
+                         Z (Float) : 1.0000
+                     1 (SVector3D)
+                         X (Float) : -1.0000
+@@ -328,14 +339,14 @@
+                     5 (Float) : 0.9941
+                     6 (Float) : 0.9929
+                     7 (Float) : 0.9922
+-                    8 (Float) : 0.9922
+-                    9 (Float) : 0.9929
+-                    10 (Float) : 0.9942
+-                    11 (Float) : 0.9957
+-                    12 (Float) : 0.9972
+-                    13 (Float) : 0.9986
+-                    14 (Float) : 0.9996
+-                    15 (Float) : 1.0000
++                    8 (Float) : 0.9794
++                    9 (Float) : 0.8887
++                    10 (Float) : 0.7344
++                    11 (Float) : 0.5450
++                    12 (Float) : 0.3489
++                    13 (Float) : 0.1746
++                    14 (Float) : 0.0504
++                    15 (Float) : 0.0048
+                 sizeOverLife (CBufferVLQInt32:SVector2D)
+                     0 (SVector2D)
+                         x (Float) : 0.0088
+@@ -389,13 +400,13 @@
+                     1 (Float) : 0.0000
+                 velocityTurbulizeScale (CBufferVLQInt32:SVector3D)
+                     0 (SVector3D)
+-                        X (Float) : 0.4000
+-                        Y (Float) : 0.4000
+-                        Z (Float) : 0.4000
++                        X (Float) : 1.0000
++                        Y (Float) : 1.0000
++                        Z (Float) : 1.0000
+                     1 (SVector3D)
+-                        X (Float) : -0.4000
+-                        Y (Float) : -0.4000
+-                        Z (Float) : -0.4000
++                        X (Float) : -1.0000
++                        Y (Float) : -1.0000
++                        Z (Float) : -1.0000
+                 velocityTurbulizeTimelifeLimit (CBufferVLQInt32:CFloat)
+                     0 (Float) : 1.0000
+                 velocityTurbulizeNoiseInterval (Float) : 0.2000
+@@ -410,9 +421,21 @@
+                 collision_spawn_probability (Float) : 0.0000
+                 alphaByDistanceFar (Float) : 0.0000
+                 alphaByDistanceNear (Float) : 0.0000
+-    CParticleDrawerMotionBlur #5 (CParticleDrawerMotionBlur) : 
++    CMaterialInstance #5 (CMaterialInstance) : 
++        CMaterialInstance (CMaterialInstance)
++            baseMaterial (handle:IMaterial) : fx/shaders/fire_sparks.w2mg
++            InstanceParameters (array:CVariantSizeNameType)
++                colour_power (Float) : 0.8600
++                colour (Color)
++                    Red (Uint8) : 253
++                    Green (Uint8) : 215
++                    Blue (Uint8) : 185
++                    Alpha (Uint8) : 255
++                color_multiplier (Float) : 8.0000
++    CParticleDrawerMotionBlur #6 (CParticleDrawerMotionBlur) : 
+         CParticleDrawerMotionBlur (CParticleDrawerMotionBlur)
+             stretchPerVelocity (Float) : 0.4000
+-    CEvaluatorFloatConst #6 (CEvaluatorFloatConst) : 
++            blendEndVelocity (Float) : 2.0000
++    CEvaluatorFloatConst #7 (CEvaluatorFloatConst) : 
+         CEvaluatorFloatConst (CEvaluatorFloatConst)
+             value (Float) : 22.0000

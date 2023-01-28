@@ -1,0 +1,621 @@
+ 1 file changed, 393 insertions(+), 87 deletions(-)
+
+diff --git 1.32/fx/fire/dust/fire_dust.w2p.txt 4.00/fx/fire/dust/fire_dust.w2p.txt
+index 31c4fd2..66b2d12 100644
+--- 1.32/fx/fire/dust/fire_dust.w2p.txt
++++ 4.00/fx/fire/dust/fire_dust.w2p.txt
+@@ -4,6 +4,7 @@
+             emitters (array:ptr:CParticleEmitter)
+                 0 (ptr:CParticleEmitter) : CParticleEmitter #1
+                 1 (ptr:CParticleEmitter) : CParticleEmitter #4
++                2 (ptr:CParticleEmitter) : CParticleEmitter #8
+             autoHideDistance (Float) : 40.0000
+             autoHideRange (Float) : 10.0000
+     CParticleEmitter #1 (CParticleEmitter) : Default emitter
+@@ -14,8 +15,8 @@
+                 Green (Uint8) : 93
+                 Blue (Uint8) : 44
+                 Alpha (Uint8) : 255
+-            positionX (Int32) : -3302
+-            positionY (Int32) : -413
++            positionX (Int32) : -3579
++            positionY (Int32) : -742
+             material (handle:IMaterial) : fx/fire/dust/dust_mat_01.w2mg
+             maxParticles (Uint32) : 400
+             particleDrawer (ptr:IParticleDrawer) : CParticleDrawerBillboard #2
+@@ -66,11 +67,11 @@
+                     1 (Float) : -1.0000
+                 size (CBufferVLQInt32:SVector2D)
+                     0 (SVector2D)
+-                        x (Float) : 0.2000
+-                        y (Float) : 0.2000
++                        x (Float) : 0.1700
++                        y (Float) : 0.1700
+                     1 (SVector2D)
+-                        x (Float) : 0.1000
+-                        y (Float) : 0.1000
++                        x (Float) : 0.2500
++                        y (Float) : 0.2500
+                 spawnExtents (CBufferVLQInt32:SVector3D)
+                     0 (SVector3D)
+                         X (Float) : 28.0000
+@@ -109,7 +110,7 @@
+                     1 (SVector3D)
+                         X (Float) : -2.0000
+                         Y (Float) : -2.0000
+-                        Z (Float) : -2.0000
++                        Z (Float) : -1.0000
+                 texture_animation_initial_frame (CBufferVLQInt32:CFloat)
+                     0 (Float) : 16.0000
+                 accelerationDirection (CBufferVLQInt32:SVector3D)
+@@ -121,6 +122,14 @@
+                         X (Float) : 0.0000
+                         Y (Float) : 0.0000
+                         Z (Float) : -1.0000
++                    2 (SVector3D)
++                        X (Float) : 0.0000
++                        Y (Float) : 0.0000
++                        Z (Float) : -1.0000
++                    3 (SVector3D)
++                        X (Float) : 0.0000
++                        Y (Float) : 0.0000
++                        Z (Float) : -1.0000
+                 accelerationScale (CBufferVLQInt32:CFloat)
+                     0 (Float) : 0.5000
+                     1 (Float) : 0.5000
+@@ -146,47 +155,47 @@
+                         x (Float) : 0.0088
+                         y (Float) : 0.0088
+                     1 (SVector2D)
+-                        x (Float) : 0.1076
+-                        y (Float) : 0.1076
++                        x (Float) : 0.1573
++                        y (Float) : 0.1573
+                     2 (SVector2D)
+-                        x (Float) : 0.3222
+-                        y (Float) : 0.3222
++                        x (Float) : 0.4444
++                        y (Float) : 0.4444
+                     3 (SVector2D)
+-                        x (Float) : 0.5302
+-                        y (Float) : 0.5302
++                        x (Float) : 0.6328
++                        y (Float) : 0.6328
+                     4 (SVector2D)
+-                        x (Float) : 0.6092
+-                        y (Float) : 0.6092
++                        x (Float) : 0.6432
++                        y (Float) : 0.6432
+                     5 (SVector2D)
+-                        x (Float) : 0.5842
+-                        y (Float) : 0.5842
++                        x (Float) : 0.6470
++                        y (Float) : 0.6470
+                     6 (SVector2D)
+-                        x (Float) : 0.5812
+-                        y (Float) : 0.5812
++                        x (Float) : 0.6489
++                        y (Float) : 0.6489
+                     7 (SVector2D)
+-                        x (Float) : 0.5896
+-                        y (Float) : 0.5896
++                        x (Float) : 0.6494
++                        y (Float) : 0.6494
+                     8 (SVector2D)
+-                        x (Float) : 0.5987
+-                        y (Float) : 0.5987
++                        x (Float) : 0.6492
++                        y (Float) : 0.6492
+                     9 (SVector2D)
+-                        x (Float) : 0.5493
+-                        y (Float) : 0.5493
++                        x (Float) : 0.6489
++                        y (Float) : 0.6489
+                     10 (SVector2D)
+-                        x (Float) : 0.4581
+-                        y (Float) : 0.4581
++                        x (Float) : 0.5969
++                        y (Float) : 0.5969
+                     11 (SVector2D)
+-                        x (Float) : 0.3669
+-                        y (Float) : 0.3669
++                        x (Float) : 0.4760
++                        y (Float) : 0.4760
+                     12 (SVector2D)
+-                        x (Float) : 0.2757
+-                        y (Float) : 0.2757
++                        x (Float) : 0.3211
++                        y (Float) : 0.3211
+                     13 (SVector2D)
+-                        x (Float) : 0.1845
+-                        y (Float) : 0.1845
++                        x (Float) : 0.1671
++                        y (Float) : 0.1671
+                     14 (SVector2D)
+-                        x (Float) : 0.0933
+-                        y (Float) : 0.0933
++                        x (Float) : 0.0491
++                        y (Float) : 0.0491
+                     15 (SVector2D)
+                         x (Float) : 0.0020
+                         y (Float) : 0.0020
+@@ -220,63 +229,74 @@
+     CEvaluatorFloatConst #3 (CEvaluatorFloatConst) : 
+         CEvaluatorFloatConst (CEvaluatorFloatConst)
+             value (Float) : 64.0000
+-    CParticleEmitter #4 (CParticleEmitter) : Copy of Copy of Copy of Default emitter
++    CParticleEmitter #4 (CParticleEmitter) : sparks
+         CParticleEmitter (CParticleEmitter)
+-            editorName (String) : "Copy of Copy of Copy of Default emitter"
++            editorName (String) : "sparks"
+             editorColor (Color)
+                 Red (Uint8) : 29
+                 Green (Uint8) : 70
+                 Blue (Uint8) : 32
+                 Alpha (Uint8) : 255
+-            positionX (Int32) : -3618
+-            positionY (Int32) : -416
+-            material (handle:IMaterial) : fx/shaders/fire_sparks.w2mg
++            positionX (Int32) : -4177
++            positionY (Int32) : -638
++            material (handle:IMaterial) : CMaterialInstance #5
+             maxParticles (Uint32) : 300
+-            particleDrawer (ptr:IParticleDrawer) : CParticleDrawerMotionBlur #5
++            particleDrawer (ptr:IParticleDrawer) : CParticleDrawerMotionBlur #6
+             envColorGroup (EEnvColorGroup) : ECG_FX_Default
+             modifierSetMask (Uint32) : 52437032
+             numModifiers (Uint32) : 6
+-            initializerSetMask (Uint32) : 554828320
+-            numInitializers (Uint32) : 6
++            initializerSetMask (Uint32) : 554828384
++            numInitializers (Uint32) : 7
+             seeds (array:SSeedKeyValue)
+                 0 (SSeedKeyValue)
+                     key (Uint32) : 32
+                 1 (SSeedKeyValue)
+-                    key (Uint32) : 512
++                    key (Uint32) : 64
+                 2 (SSeedKeyValue)
+-                    key (Uint32) : 131072
++                    key (Uint32) : 512
+                 3 (SSeedKeyValue)
+-                    key (Uint32) : 1048576
++                    key (Uint32) : 131072
+                 4 (SSeedKeyValue)
+-                    key (Uint32) : 16777216
++                    key (Uint32) : 1048576
+                 5 (SSeedKeyValue)
++                    key (Uint32) : 16777216
++                6 (SSeedKeyValue)
+                     key (Uint32) : 536870912
+             lods (array:SParticleEmitterLODLevel)
+                 0 (SParticleEmitterLODLevel)
+-                    birthRate (ptr:IEvaluatorFloat) : CEvaluatorFloatConst #6
++                    birthRate (ptr:IEvaluatorFloat) : CEvaluatorFloatConst #7
+             ModuleData (SParticleEmitterModuleData)
+                 lifeTime (CBufferVLQInt32:CFloat)
+                     0 (Float) : 4.0000
+                     1 (Float) : 6.0000
++                position (CBufferVLQInt32:SVector3D)
++                    0 (SVector3D)
++                        X (Float) : 0.0000
++                        Y (Float) : 0.0000
++                        Z (Float) : 4.0000
++                    1 (SVector3D)
++                        X (Float) : 0.0000
++                        Y (Float) : 0.0000
++                        Z (Float) : 4.0000
+                 position_offset (Float) : 0.0000
+                 rotation (CBufferVLQInt32:CFloat)
+                     1 (Float) : 0.0000
+                 size (CBufferVLQInt32:SVector2D)
+                     0 (SVector2D)
+-                        x (Float) : 0.0600
+-                        y (Float) : 0.0500
++                        x (Float) : 0.0300
++                        y (Float) : 0.0350
+                     1 (SVector2D)
+-                        x (Float) : 0.0750
+-                        y (Float) : 0.0250
++                        x (Float) : 0.0500
++                        y (Float) : 0.0300
+                 spawnExtents (CBufferVLQInt32:SVector3D)
+                     0 (SVector3D)
+                         X (Float) : 22.0000
+                         Y (Float) : 22.0000
+-                        Z (Float) : 6.0000
++                        Z (Float) : 8.0000
+                     1 (SVector3D)
+                         X (Float) : 22.0000
+                         Y (Float) : 22.0000
+-                        Z (Float) : 6.0000
++                        Z (Float) : 8.0000
+                 p0A8 (SVector3D)
+                     X (Float) : 0.0000
+                     Y (Float) : 0.0000
+@@ -320,8 +340,8 @@
+                         Y (Float) : 0.0000
+                         Z (Float) : -1.0000
+                 accelerationScale (CBufferVLQInt32:CFloat)
+-                    0 (Float) : 0.2000
+-                    1 (Float) : 0.2000
++                    0 (Float) : 0.4000
++                    1 (Float) : 0.4000
+                 alphaOverLife (CBufferVLQInt32:CFloat)
+                     0 (Float) : 1.0000
+                     1 (Float) : 0.9996
+@@ -344,47 +364,47 @@
+                         x (Float) : 0.0088
+                         y (Float) : 0.0088
+                     1 (SVector2D)
+-                        x (Float) : 0.1076
+-                        y (Float) : 0.1076
++                        x (Float) : 0.2052
++                        y (Float) : 0.2052
+                     2 (SVector2D)
+-                        x (Float) : 0.3222
+-                        y (Float) : 0.3222
++                        x (Float) : 0.5071
++                        y (Float) : 0.5071
+                     3 (SVector2D)
+-                        x (Float) : 0.5302
+-                        y (Float) : 0.5302
++                        x (Float) : 0.5648
++                        y (Float) : 0.5648
+                     4 (SVector2D)
+-                        x (Float) : 0.6092
+-                        y (Float) : 0.6092
++                        x (Float) : 0.5671
++                        y (Float) : 0.5671
+                     5 (SVector2D)
+-                        x (Float) : 0.5842
+-                        y (Float) : 0.5842
++                        x (Float) : 0.5668
++                        y (Float) : 0.5668
+                     6 (SVector2D)
+-                        x (Float) : 0.5812
+-                        y (Float) : 0.5812
++                        x (Float) : 0.5626
++                        y (Float) : 0.5626
+                     7 (SVector2D)
+-                        x (Float) : 0.5896
+-                        y (Float) : 0.5896
++                        x (Float) : 0.5532
++                        y (Float) : 0.5532
+                     8 (SVector2D)
+-                        x (Float) : 0.5987
+-                        y (Float) : 0.5987
++                        x (Float) : 0.5372
++                        y (Float) : 0.5372
+                     9 (SVector2D)
+-                        x (Float) : 0.5493
+-                        y (Float) : 0.5493
++                        x (Float) : 0.5135
++                        y (Float) : 0.5135
+                     10 (SVector2D)
+-                        x (Float) : 0.4581
+-                        y (Float) : 0.4581
++                        x (Float) : 0.4807
++                        y (Float) : 0.4807
+                     11 (SVector2D)
+-                        x (Float) : 0.3669
+-                        y (Float) : 0.3669
++                        x (Float) : 0.4219
++                        y (Float) : 0.4219
+                     12 (SVector2D)
+-                        x (Float) : 0.2757
+-                        y (Float) : 0.2757
++                        x (Float) : 0.3039
++                        y (Float) : 0.3039
+                     13 (SVector2D)
+-                        x (Float) : 0.1845
+-                        y (Float) : 0.1845
++                        x (Float) : 0.1654
++                        y (Float) : 0.1654
+                     14 (SVector2D)
+-                        x (Float) : 0.0933
+-                        y (Float) : 0.0933
++                        x (Float) : 0.0502
++                        y (Float) : 0.0502
+                     15 (SVector2D)
+                         x (Float) : 0.0020
+                         y (Float) : 0.0020
+@@ -413,9 +433,295 @@
+                 collision_spawn_probability (Float) : 0.0000
+                 alphaByDistanceFar (Float) : 0.0000
+                 alphaByDistanceNear (Float) : 0.0000
+-    CParticleDrawerMotionBlur #5 (CParticleDrawerMotionBlur) : 
++    CMaterialInstance #5 (CMaterialInstance) : 
++        CMaterialInstance (CMaterialInstance)
++            baseMaterial (handle:IMaterial) : fx/shaders/fire_sparks.w2mg
++            InstanceParameters (array:CVariantSizeNameType)
++                color_multiplier (Float) : 4.0000
++                colour_power (Float) : 1.0000
++                colour (Color)
++                    Red (Uint8) : 253
++                    Green (Uint8) : 212
++                    Blue (Uint8) : 217
++                    Alpha (Uint8) : 255
++    CParticleDrawerMotionBlur #6 (CParticleDrawerMotionBlur) : 
+         CParticleDrawerMotionBlur (CParticleDrawerMotionBlur)
+-            stretchPerVelocity (Float) : 0.4000
+-    CEvaluatorFloatConst #6 (CEvaluatorFloatConst) : 
++            stretchPerVelocity (Float) : 0.2000
++            blendStartVelocity (Float) : 0.2000
++            blendEndVelocity (Float) : 0.5000
++    CEvaluatorFloatConst #7 (CEvaluatorFloatConst) : 
+         CEvaluatorFloatConst (CEvaluatorFloatConst)
+             value (Float) : 66.0000
++    CParticleEmitter #8 (CParticleEmitter) : embers
++        CParticleEmitter (CParticleEmitter)
++            editorName (String) : "embers"
++            editorColor (Color)
++                Red (Uint8) : 89
++                Green (Uint8) : 71
++                Blue (Uint8) : 76
++                Alpha (Uint8) : 255
++            isShowing (Bool) : true
++            positionX (Int32) : -3863
++            positionY (Int32) : -676
++            material (handle:IMaterial) : CMaterialInstance #9
++            maxParticles (Uint32) : 200
++            particleDrawer (ptr:IParticleDrawer) : CParticleDrawerMotionBlur #10
++            envColorGroup (EEnvColorGroup) : ECG_FX_Fire
++            windInfluence (Float) : 1.0000
++            modifierSetMask (Uint32) : 52437034
++            numModifiers (Uint32) : 7
++            initializerSetMask (Uint32) : 554827874
++            numInitializers (Uint32) : 7
++            seeds (array:SSeedKeyValue)
++                0 (SSeedKeyValue)
++                    key (Uint32) : 2
++                1 (SSeedKeyValue)
++                    key (Uint32) : 32
++                2 (SSeedKeyValue)
++                    key (Uint32) : 64
++                3 (SSeedKeyValue)
++                    key (Uint32) : 131072
++                4 (SSeedKeyValue)
++                    key (Uint32) : 1048576
++                5 (SSeedKeyValue)
++                    key (Uint32) : 16777216
++                6 (SSeedKeyValue)
++                    key (Uint32) : 536870912
++            lods (array:SParticleEmitterLODLevel)
++                0 (SParticleEmitterLODLevel)
++                    birthRate (ptr:IEvaluatorFloat) : CEvaluatorFloatConst #11
++            ModuleData (SParticleEmitterModuleData)
++                alpha (CBufferVLQInt32:CFloat)
++                    0 (Float) : 0.7000
++                lifeTime (CBufferVLQInt32:CFloat)
++                    0 (Float) : 1.7000
++                    1 (Float) : 2.3000
++                position (CBufferVLQInt32:SVector3D)
++                    0 (SVector3D)
++                        X (Float) : 0.0000
++                        Y (Float) : 0.0000
++                        Z (Float) : 5.0000
++                    1 (SVector3D)
++                        X (Float) : 0.0000
++                        Y (Float) : 0.0000
++                        Z (Float) : 5.0000
++                position_offset (Float) : 0.0000
++                size (CBufferVLQInt32:SVector2D)
++                    0 (SVector2D)
++                        x (Float) : 0.0580
++                        y (Float) : 0.0580
++                    1 (SVector2D)
++                        x (Float) : 0.0790
++                        y (Float) : 0.0790
++                spawnExtents (CBufferVLQInt32:SVector3D)
++                    0 (SVector3D)
++                        X (Float) : 16.0000
++                        Y (Float) : 16.0000
++                        Z (Float) : 5.0000
++                    1 (SVector3D)
++                        X (Float) : 16.0000
++                        Y (Float) : 16.0000
++                        Z (Float) : 5.0000
++                p0A8 (SVector3D)
++                    X (Float) : 0.0000
++                    Y (Float) : 0.0000
++                    Z (Float) : 0.0000
++                spawnToLocalMatrix (CMatrix4x4)
++                    ax (Float) : 0.0000
++                    ay (Float) : 0.0000
++                    az (Float) : 0.0000
++                    aw (Float) : 0.0000
++                    bx (Float) : 0.0000
++                    by (Float) : 0.0000
++                    bz (Float) : 0.0000
++                    bw (Float) : 0.0000
++                    cx (Float) : 0.0000
++                    cy (Float) : 0.0000
++                    cz (Float) : 0.0000
++                    cw (Float) : 0.0000
++                    dx (Float) : 0.0000
++                    dy (Float) : 0.0000
++                    dz (Float) : 0.0000
++                    dw (Float) : 0.0000
++                velocity (CBufferVLQInt32:SVector3D)
++                    0 (SVector3D)
++                        X (Float) : -1.0000
++                        Y (Float) : -1.0000
++                        Z (Float) : -1.0000
++                    1 (SVector3D)
++                        X (Float) : 1.0000
++                        Y (Float) : 1.0000
++                        Z (Float) : 1.0000
++                texture_animation_initial_frame (CBufferVLQInt32:CFloat)
++                    0 (Float) : 1.0000
++                    1 (Float) : 4.0000
++                velocityOverLife (CBufferVLQInt32:SVector3D)
++                    0 (SVector3D)
++                        X (Float) : 1.0968
++                        Y (Float) : 1.0968
++                        Z (Float) : 1.0968
++                    1 (SVector3D)
++                        X (Float) : 1.0881
++                        Y (Float) : 1.0881
++                        Z (Float) : 1.0881
++                    2 (SVector3D)
++                        X (Float) : 1.0636
++                        Y (Float) : 1.0636
++                        Z (Float) : 1.0636
++                    3 (SVector3D)
++                        X (Float) : 1.0257
++                        Y (Float) : 1.0257
++                        Z (Float) : 1.0257
++                    4 (SVector3D)
++                        X (Float) : 0.9769
++                        Y (Float) : 0.9769
++                        Z (Float) : 0.9769
++                    5 (SVector3D)
++                        X (Float) : 0.9195
++                        Y (Float) : 0.9195
++                        Z (Float) : 0.9195
++                    6 (SVector3D)
++                        X (Float) : 0.8560
++                        Y (Float) : 0.8560
++                        Z (Float) : 0.8560
++                    7 (SVector3D)
++                        X (Float) : 0.7887
++                        Y (Float) : 0.7887
++                        Z (Float) : 0.7887
++                    8 (SVector3D)
++                        X (Float) : 0.7202
++                        Y (Float) : 0.7202
++                        Z (Float) : 0.7202
++                    9 (SVector3D)
++                        X (Float) : 0.6529
++                        Y (Float) : 0.6529
++                        Z (Float) : 0.6529
++                    10 (SVector3D)
++                        X (Float) : 0.5891
++                        Y (Float) : 0.5891
++                        Z (Float) : 0.5891
++                    11 (SVector3D)
++                        X (Float) : 0.5312
++                        Y (Float) : 0.5312
++                        Z (Float) : 0.5312
++                    12 (SVector3D)
++                        X (Float) : 0.4818
++                        Y (Float) : 0.4818
++                        Z (Float) : 0.4818
++                    13 (SVector3D)
++                        X (Float) : 0.4432
++                        Y (Float) : 0.4432
++                        Z (Float) : 0.4432
++                    14 (SVector3D)
++                        X (Float) : 0.4178
++                        Y (Float) : 0.4178
++                        Z (Float) : 0.4178
++                    15 (SVector3D)
++                        X (Float) : 0.4081
++                        Y (Float) : 0.4081
++                        Z (Float) : 0.4081
++                accelerationDirection (CBufferVLQInt32:SVector3D)
++                    0 (SVector3D)
++                        X (Float) : 0.0000
++                        Y (Float) : 0.0000
++                        Z (Float) : -1.0000
++                    1 (SVector3D)
++                        X (Float) : 0.0000
++                        Y (Float) : 0.0000
++                        Z (Float) : -1.0000
++                    2 (SVector3D)
++                        X (Float) : 0.0000
++                        Y (Float) : 0.0000
++                        Z (Float) : -1.0000
++                    3 (SVector3D)
++                        X (Float) : 0.0000
++                        Y (Float) : 0.0000
++                        Z (Float) : -1.0000
++                accelerationScale (CBufferVLQInt32:CFloat)
++                    0 (Float) : 1.5000
++                    1 (Float) : 1.5000
++                alphaOverLife (CBufferVLQInt32:CFloat)
++                    0 (Float) : 1.0000
++                    2 (Float) : 1.0000
++                    3 (Float) : 1.0000
++                    4 (Float) : 1.0000
++                    5 (Float) : 1.0000
++                    6 (Float) : 1.0000
++                    7 (Float) : 1.0000
++                    8 (Float) : 1.0000
++                    9 (Float) : 1.0000
++                    10 (Float) : 1.0000
++                    11 (Float) : 1.0000
++                    12 (Float) : 0.8000
++                    13 (Float) : 0.5333
++                    14 (Float) : 0.2667
++                    15 (Float) : 0.0000
++                sizeOverLife (CBufferVLQInt32:SVector2D)
++                    0 (SVector2D)
++                        x (Float) : 0.6500
++                        y (Float) : 0.6500
++                    1 (SVector2D)
++                        x (Float) : 0.6500
++                        y (Float) : 0.6500
++                textureAnimationSpeed (CBufferVLQInt32:CFloat)
++                    1 (Float) : 0.0000
++                velocityTurbulizeScale (CBufferVLQInt32:SVector3D)
++                    0 (SVector3D)
++                        X (Float) : 1.0000
++                        Y (Float) : 1.0000
++                        Z (Float) : 1.0000
++                    1 (SVector3D)
++                        X (Float) : -1.0000
++                        Y (Float) : -1.0000
++                        Z (Float) : -1.0000
++                    2 (SVector3D)
++                        X (Float) : -1.0000
++                        Y (Float) : -1.0000
++                        Z (Float) : -1.0000
++                    3 (SVector3D)
++                        X (Float) : 1.0000
++                        Y (Float) : 1.0000
++                        Z (Float) : 1.0000
++                velocityTurbulizeTimelifeLimit (CBufferVLQInt32:CFloat)
++                    0 (Float) : 1.0000
++                velocityTurbulizeNoiseInterval (Float) : 0.3300
++                velocityTurbulizeDuration (Float) : 0.3300
++                targetMaxForce (Float) : 0.0000
++                collisionTriggeringGroupIndex (Uint64) : 0
++                collision_dynamic_friction (Float) : 0.0000
++                collision_static_friction (Float) : 0.0000
++                collision_restitution (Float) : 0.0000
++                collision_velocity_dampening (Float) : 0.0000
++                collision_radius (Float) : 0.0000
++                collision_spawn_probability (Float) : 0.0000
++                alphaByDistanceFar (Float) : 0.0000
++                alphaByDistanceNear (Float) : 0.0000
++    CMaterialInstance #9 (CMaterialInstance) : 
++        CMaterialInstance (CMaterialInstance)
++            baseMaterial (handle:IMaterial) : fx/shaders/additive_fire_glow.w2mg
++            InstanceParameters (array:CVariantSizeNameType)
++                camera_offset (Float) : 0.0000
++                color (Color)
++                    Red (Uint8) : 255
++                    Green (Uint8) : 150
++                    Blue (Uint8) : 100
++                    Alpha (Uint8) : 255
++                color_multiplier (Float) : 0.9000
++                glow_color (Color)
++                    Red (Uint8) : 255
++                    Green (Uint8) : 75
++                    Blue (Uint8) : 50
++                    Alpha (Uint8) : 255
++                glow_multiplier (Float) : 0.0000
++                soft_alpha (Float) : 1.0000
++                subuUVwidth (Float) : 2.0000
++                subUVheight (Float) : 2.0000
++                tex (handle:ITexture) : fx/textures/fire/fire_spark_04.xbm
++    CParticleDrawerMotionBlur #10 (CParticleDrawerMotionBlur) : 
++        CParticleDrawerMotionBlur (CParticleDrawerMotionBlur)
++            stretchPerVelocity (Float) : 0.1000
++            blendStartVelocity (Float) : 0.1000
++            blendEndVelocity (Float) : 2.0000
++    CEvaluatorFloatConst #11 (CEvaluatorFloatConst) : 
++        CEvaluatorFloatConst (CEvaluatorFloatConst)
++            value (Float) : 44.0000

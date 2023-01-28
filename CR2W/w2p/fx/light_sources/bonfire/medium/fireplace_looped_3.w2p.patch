@@ -1,0 +1,314 @@
+ 1 file changed, 212 insertions(+), 32 deletions(-)
+
+diff --git 1.32/fx/light_sources/bonfire/medium/fireplace_looped_3.w2p.txt 4.00/fx/light_sources/bonfire/medium/fireplace_looped_3.w2p.txt
+index be03488..87cffbd 100644
+--- 1.32/fx/light_sources/bonfire/medium/fireplace_looped_3.w2p.txt
++++ 4.00/fx/light_sources/bonfire/medium/fireplace_looped_3.w2p.txt
+@@ -2,13 +2,14 @@
+         CParticleSystem (CParticleSystem)
+             emitters (array:ptr:CParticleEmitter)
+                 0 (ptr:CParticleEmitter) : CParticleEmitter #1
+-    CParticleEmitter #1 (CParticleEmitter) : new_fire_looped
++                1 (ptr:CParticleEmitter) : CParticleEmitter #5
++    CParticleEmitter #1 (CParticleEmitter) : Copy of new_fire_looped
+         CParticleEmitter (CParticleEmitter)
+-            editorName (String) : "new_fire_looped"
++            editorName (String) : "Copy of new_fire_looped"
+             editorColor (Color)
+-                Red (Uint8) : 22
+-                Green (Uint8) : 92
+-                Blue (Uint8) : 88
++                Red (Uint8) : 118
++                Green (Uint8) : 100
++                Blue (Uint8) : 52
+                 Alpha (Uint8) : 255
+             positionX (Int32) : 10
+             positionY (Int32) : 10
+@@ -18,18 +19,20 @@
+             envColorGroup (EEnvColorGroup) : ECG_FX_Fire
+             modifierSetMask (Uint32) : 34611232
+             numModifiers (Uint32) : 4
+-            initializerSetMask (Uint32) : 538051104
+-            numInitializers (Uint32) : 5
++            initializerSetMask (Uint32) : 538051168
++            numInitializers (Uint32) : 6
+             seeds (array:SSeedKeyValue)
+                 0 (SSeedKeyValue)
+                     key (Uint32) : 32
+                 1 (SSeedKeyValue)
++                    key (Uint32) : 64
++                2 (SSeedKeyValue)
+                     key (Uint32) : 512
+-                2 (SSeedKeyValue)
+-                    key (Uint32) : 131072
+                 3 (SSeedKeyValue)
+-                    key (Uint32) : 1048576
++                    key (Uint32) : 131072
+                 4 (SSeedKeyValue)
++                    key (Uint32) : 1048576
++                5 (SSeedKeyValue)
+                     key (Uint32) : 536870912
+             lods (array:SParticleEmitterLODLevel)
+                 0 (SParticleEmitterLODLevel)
+@@ -38,24 +41,33 @@
+                 lifeTime (CBufferVLQInt32:CFloat)
+                     0 (Float) : 4.0000
+                     1 (Float) : 5.0000
++                position (CBufferVLQInt32:SVector3D)
++                    0 (SVector3D)
++                        X (Float) : 0.0000
++                        Y (Float) : 0.0000
++                        Z (Float) : -0.1500
++                    1 (SVector3D)
++                        X (Float) : 0.0000
++                        Y (Float) : 0.0000
++                        Z (Float) : -0.1500
+                 position_offset (Float) : 0.0000
+                 rotation (CBufferVLQInt32:CFloat)
+                     0 (Float) : 0.2500
+                     1 (Float) : 0.2500
+                 size (CBufferVLQInt32:SVector2D)
+                     0 (SVector2D)
+-                        x (Float) : 0.1000
+-                        y (Float) : 0.1000
++                        x (Float) : 0.0500
++                        y (Float) : 0.0500
+                     1 (SVector2D)
+-                        x (Float) : 0.2000
+-                        y (Float) : 0.2000
++                        x (Float) : 0.1200
++                        y (Float) : 0.1200
+                 spawnExtents (CBufferVLQInt32:SVector3D)
+                     0 (SVector3D)
+-                        X (Float) : 0.6000
++                        X (Float) : 0.5000
+                         Y (Float) : 0.0500
+                         Z (Float) : 0.0000
+                     1 (SVector3D)
+-                        X (Float) : 0.6000
++                        X (Float) : 0.5000
+                         Y (Float) : 0.0500
+                         Z (Float) : 0.0000
+                 p0A8 (SVector3D)
+@@ -99,14 +111,14 @@
+                     15 (Float) : 0.0000
+                 sizeOverLife (CBufferVLQInt32:SVector2D)
+                     0 (SVector2D)
+-                        x (Float) : 1.0000
+-                        y (Float) : 1.8000
++                        x (Float) : 0.8000
++                        y (Float) : 1.3000
+                     1 (SVector2D)
+-                        x (Float) : 1.0000
+-                        y (Float) : 1.8000
++                        x (Float) : 0.8000
++                        y (Float) : 1.3000
+                 textureAnimationSpeed (CBufferVLQInt32:CFloat)
+-                    0 (Float) : 18.0000
+-                    1 (Float) : 18.0000
++                    0 (Float) : 27.0000
++                    1 (Float) : 27.0000
+                 velocityTurbulizeNoiseInterval (Float) : 0.0000
+                 velocityTurbulizeDuration (Float) : 0.0000
+                 targetMaxForce (Float) : 0.0000
+@@ -121,22 +133,190 @@
+                 alphaByDistanceNear (Float) : 0.0000
+     CMaterialInstance #2 (CMaterialInstance) : 
+         CMaterialInstance (CMaterialInstance)
+-            baseMaterial (handle:IMaterial) : fx/shaders/fire_textures_no_alpha.w2mg
++            baseMaterial (handle:IMaterial) : fx/shaders/additive_fire_glow.w2mg
+             InstanceParameters (array:CVariantSizeNameType)
+-                fire_subuv_texture (handle:ITexture) : fx/textures/fire/new_textures/small_fire_looped10x4.xbm
+-                subuv_height (Float) : 4.0000
+-                alpha_power (Float) : 2.0000
+-                soft_alpha (Float) : 10.0000
+-                color_multiplier (Float) : 1.5000
++                camera_offset (Float) : 0.0000
+                 color (Color)
+                     Red (Uint8) : 255
+-                    Green (Uint8) : 255
+-                    Blue (Uint8) : 255
++                    Green (Uint8) : 138
++                    Blue (Uint8) : 88
+                     Alpha (Uint8) : 255
+-                subuv_width (Float) : 10.0000
++                color_multiplier (Float) : 1.0000
++                glow_color (Color)
++                    Red (Uint8) : 255
++                    Green (Uint8) : 164
++                    Blue (Uint8) : 139
++                    Alpha (Uint8) : 255
++                glow_multiplier (Float) : 0.1000
++                soft_alpha (Float) : 4.0000
++                subuUVwidth (Float) : 10.0000
++                subUVheight (Float) : 4.0000
++                tex (handle:ITexture) : fx/textures/fire/new_textures/small_fire_looped10x4.xbm
+     CParticleDrawerSphereAligned #3 (CParticleDrawerSphereAligned) : 
+         CParticleDrawerSphereAligned (CParticleDrawerSphereAligned)
+             verticalFixed (Bool) : true
+     CEvaluatorFloatConst #4 (CEvaluatorFloatConst) : 
+         CEvaluatorFloatConst (CEvaluatorFloatConst)
+-            value (Float) : 3.0000
++            value (Float) : 1.0000
++    CParticleEmitter #5 (CParticleEmitter) : Copy of big_fire25
++        CParticleEmitter (CParticleEmitter)
++            editorName (String) : "Copy of big_fire25"
++            editorColor (Color)
++                Red (Uint8) : 4
++                Green (Uint8) : 99
++                Blue (Uint8) : 114
++                Alpha (Uint8) : 255
++            isShowing (Bool) : true
++            positionX (Int32) : 206
++            positionY (Int32) : 10
++            material (handle:IMaterial) : CMaterialInstance #6
++            maxParticles (Uint32) : 2
++            particleDrawer (ptr:IParticleDrawer) : CParticleDrawerMotionBlur #7
++            envColorGroup (EEnvColorGroup) : ECG_FX_Fire
++            modifierSetMask (Uint32) : 1056800
++            numModifiers (Uint32) : 3
++            initializerSetMask (Uint32) : 546439264
++            numInitializers (Uint32) : 6
++            seeds (array:SSeedKeyValue)
++                0 (SSeedKeyValue)
++                    key (Uint32) : 32
++                1 (SSeedKeyValue)
++                    key (Uint32) : 64
++                2 (SSeedKeyValue)
++                    key (Uint32) : 131072
++                3 (SSeedKeyValue)
++                    key (Uint32) : 1048576
++                4 (SSeedKeyValue)
++                    key (Uint32) : 8388608
++                5 (SSeedKeyValue)
++                    key (Uint32) : 536870912
++            lods (array:SParticleEmitterLODLevel)
++                0 (SParticleEmitterLODLevel)
++                    birthRate (ptr:IEvaluatorFloat) : CEvaluatorFloatConst #8
++            ModuleData (SParticleEmitterModuleData)
++                lifeTime (CBufferVLQInt32:CFloat)
++                    0 (Float) : 1.3300
++                    1 (Float) : 1.6600
++                position (CBufferVLQInt32:SVector3D)
++                    0 (SVector3D)
++                        X (Float) : 0.0000
++                        Y (Float) : 0.0000
++                        Z (Float) : -0.1200
++                    1 (SVector3D)
++                        X (Float) : 0.0000
++                        Y (Float) : 0.0000
++                        Z (Float) : -0.1200
++                position_offset (Float) : 0.0000
++                size (CBufferVLQInt32:SVector2D)
++                    0 (SVector2D)
++                        x (Float) : -0.7000
++                        y (Float) : -0.4000
++                    1 (SVector2D)
++                        x (Float) : -0.9000
++                        y (Float) : -0.5000
++                spawnExtents (CBufferVLQInt32:SVector3D)
++                    0 (SVector3D)
++                        X (Float) : 0.3000
++                        Y (Float) : 0.0500
++                        Z (Float) : 0.0000
++                    1 (SVector3D)
++                        X (Float) : 0.3000
++                        Y (Float) : 0.0500
++                        Z (Float) : 0.0000
++                p0A8 (SVector3D)
++                    X (Float) : 0.0000
++                    Y (Float) : 0.0000
++                    Z (Float) : 0.0000
++                spawnToLocalMatrix (CMatrix4x4)
++                    ax (Float) : 0.0000
++                    ay (Float) : 0.0000
++                    az (Float) : 0.0000
++                    aw (Float) : 0.0000
++                    bx (Float) : 0.0000
++                    by (Float) : 0.0000
++                    bz (Float) : 0.0000
++                    bw (Float) : 0.0000
++                    cx (Float) : 0.0000
++                    cy (Float) : 0.0000
++                    cz (Float) : 0.0000
++                    cw (Float) : 0.0000
++                    dx (Float) : 0.0000
++                    dy (Float) : 0.0000
++                    dz (Float) : 0.0000
++                    dw (Float) : 0.0000
++                velocity (CBufferVLQInt32:SVector3D)
++                    0 (SVector3D)
++                        X (Float) : 0.0000
++                        Y (Float) : 0.0000
++                        Z (Float) : 0.0200
++                    1 (SVector3D)
++                        X (Float) : 0.0000
++                        Y (Float) : 0.0000
++                        Z (Float) : 0.0200
++                texture_animation_initial_frame (CBufferVLQInt32:CFloat)
++                    1 (Float) : 122.0000
++                alphaOverLife (CBufferVLQInt32:CFloat)
++                    0 (Float) : 0.0029
++                    1 (Float) : 0.2688
++                    2 (Float) : 0.5347
++                    3 (Float) : 0.8006
++                    4 (Float) : 1.0000
++                    5 (Float) : 1.0000
++                    6 (Float) : 1.0000
++                    7 (Float) : 1.0000
++                    8 (Float) : 1.0000
++                    9 (Float) : 1.0000
++                    10 (Float) : 1.0000
++                    11 (Float) : 0.8889
++                    12 (Float) : 0.6667
++                    13 (Float) : 0.4444
++                    14 (Float) : 0.2222
++                    15 (Float) : 0.0000
++                sizeOverLife (CBufferVLQInt32:SVector2D)
++                    0 (SVector2D)
++                        x (Float) : 0.2500
++                        y (Float) : 0.3000
++                    1 (SVector2D)
++                        x (Float) : 0.2500
++                        y (Float) : 0.3000
++                textureAnimationSpeed (CBufferVLQInt32:CFloat)
++                    0 (Float) : 44.0000
++                    1 (Float) : 44.0000
++                velocityTurbulizeNoiseInterval (Float) : 0.0000
++                velocityTurbulizeDuration (Float) : 0.0000
++                targetMaxForce (Float) : 0.0000
++                collisionTriggeringGroupIndex (Uint64) : 0
++                collision_dynamic_friction (Float) : 0.0000
++                collision_static_friction (Float) : 0.0000
++                collision_restitution (Float) : 0.0000
++                collision_velocity_dampening (Float) : 0.0000
++                collision_radius (Float) : 0.0000
++                collision_spawn_probability (Float) : 0.0000
++                alphaByDistanceFar (Float) : 0.0000
++                alphaByDistanceNear (Float) : 0.0000
++    CMaterialInstance #6 (CMaterialInstance) : 
++        CMaterialInstance (CMaterialInstance)
++            baseMaterial (handle:IMaterial) : fx/shaders/additive_fire_glow.w2mg
++            InstanceParameters (array:CVariantSizeNameType)
++                camera_offset (Float) : -0.1000
++                color (Color)
++                    Red (Uint8) : 255
++                    Green (Uint8) : 174
++                    Blue (Uint8) : 113
++                    Alpha (Uint8) : 0
++                color_multiplier (Float) : 1.0000
++                glow_color (Color)
++                    Red (Uint8) : 255
++                    Green (Uint8) : 75
++                    Blue (Uint8) : 50
++                    Alpha (Uint8) : 255
++                glow_multiplier (Float) : 0.3000
++                soft_alpha (Float) : 5.0000
++                subuUVwidth (Float) : 8.0000
++                subUVheight (Float) : 8.0000
++                tex (handle:ITexture) : fx/textures/fire/fire_cyberpunk_01.xbm
++    CParticleDrawerMotionBlur #7 (CParticleDrawerMotionBlur) : 
++        CParticleDrawerMotionBlur (CParticleDrawerMotionBlur)
++    CEvaluatorFloatConst #8 (CEvaluatorFloatConst) : 
++        CEvaluatorFloatConst (CEvaluatorFloatConst)
++            value (Float) : 1.0000
