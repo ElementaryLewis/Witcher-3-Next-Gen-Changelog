@@ -93,26 +93,6 @@ class W3Effect_AxiiGuardMe extends CBaseGameplayEffect
 		super.CalculateDuration(setInitialDuration);
 		
 		if ( duration > 0 )
-		{	
-			duration = 9.f;
-		
-			
-			if(thePlayer.IsSkillEquipped(S_Magic_s18))
-			{
-				switch(GetWitcherPlayer().GetSkillLevel(S_Magic_s18))
-				{
-					case 3: 
-						duration = 15.f;
-						break;
-					case 2: 
-						duration = 13.f;
-						break;
-					case 1: 
-						duration = 11.f;
-						break;
-				}
-			}
-			
-		}
+			duration = MaxF(8.f,duration);
 	}
 }

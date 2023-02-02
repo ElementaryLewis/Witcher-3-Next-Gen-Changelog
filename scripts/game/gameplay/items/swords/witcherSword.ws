@@ -89,11 +89,6 @@ import class CWitcherSword extends CItemEntity
 		
 		if(waterColliderComp)
 			waterColliderComp.SetEnabled(true);
-			
-		
-		if( HasEffect('glow_sword') )
-			PlayEffectSingle('glow_sword');
-		
 	}
 	
 	event OnPut()

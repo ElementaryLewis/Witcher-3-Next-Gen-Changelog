@@ -273,7 +273,6 @@ import class CGame extends CObject
 	import final function GetHairWorksEnabled() : bool;
 	import final function GetDLSSEnabled() : bool;
 	import final function GetFSREnabled() : bool;
-	import final function GetTAAEnabled() : bool;
 	import final function GetRTAOEnabled() : bool;
 	import final function GetRTREnabled() : bool;
 	import final function GetDLSSGEnabled() : bool;

@@ -829,7 +829,6 @@ import class CR4GuiManager extends CGuiManager
 		var specialMsgText : string;
 		var i:int;
 		var contentKey : string;
-		var contentName : string;
 		var len : int;
 		var len_minus_one : int;
 		var htmlNewline:string;
@@ -889,13 +888,7 @@ import class CR4GuiManager extends CGuiManager
 			for (i = 0; i < len; i += 1)
 			{
 				contentKey = "content_name_" + NameToString(missingContent[i]);
-				contentName = GetLocStringByKeyExt(contentKey);
-				if (contentName == "")
-				{
-					contentName = NameToString(missingContent[i]);
-				}
-
-				specialMsgText += contentName;
+				specialMsgText += GetLocStringByKeyExt(contentKey);
 				
 				if (i < len_minus_one)
 				{

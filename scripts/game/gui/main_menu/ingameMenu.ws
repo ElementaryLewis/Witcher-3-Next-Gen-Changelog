@@ -869,11 +869,6 @@ class CR4IngameMenu extends CR4MenuBase
 			}
 		}
 	}
-
-	event  OnShowOptionSubmenu( actionType:int, menuTag:int ) : void
-	{
-		updateDLSSGOptionChanged();
-	}
 	
 	public function HandleLoadGameFailed():void
 	{
@@ -1705,11 +1700,6 @@ class CR4IngameMenu extends CR4MenuBase
 		dataArray = m_flashValueStorage.CreateTempFlashArray();
 
 		dataObject = m_flashValueStorage.CreateTempFlashObject();
-		dataObject.SetMemberFlashUInt( "tag", NameToFlashUInt('RTGIPreset') );
-		dataObject.SetMemberFlashBool( "disabled", !enabled);
-		dataArray.PushBackFlashObject(dataObject);
-
-		dataObject = m_flashValueStorage.CreateTempFlashObject();
 		dataObject.SetMemberFlashUInt( "tag", NameToFlashUInt('EnableRtRadiance') );
 		dataObject.SetMemberFlashBool( "disabled", !enabled);
 		dataArray.PushBackFlashObject(dataObject);
@@ -1753,12 +1743,12 @@ class CR4IngameMenu extends CR4MenuBase
 
 		dataObject = m_flashValueStorage.CreateTempFlashObject();
 		dataObject.SetMemberFlashUInt( "tag", NameToFlashUInt('DynamicResolutionScaling') );
-		dataObject.SetMemberFlashBool( "disabled", theGame.GetDLSSEnabled() || theGame.GetDLSSGEnabled());
+		dataObject.SetMemberFlashBool( "disabled", theGame.GetDLSSEnabled());
 		dataArray.PushBackFlashObject(dataObject);
 
 		dataObject = m_flashValueStorage.CreateTempFlashObject();
 		dataObject.SetMemberFlashUInt( "tag", NameToFlashUInt('Virtual_SharpenAmount') );
-		dataObject.SetMemberFlashBool( "disabled", false );
+		dataObject.SetMemberFlashBool( "disabled", theGame.GetFSREnabled());
 		dataArray.PushBackFlashObject(dataObject);
 
 		m_flashValueStorage.SetFlashArray( "options.update_disabled", dataArray );
@@ -1809,10 +1799,8 @@ class CR4IngameMenu extends CR4MenuBase
 	{
 		var dataObject : CScriptedFlashObject;
 		var dataArray : CScriptedFlashArray;
-		var dlssEnabled : bool;
 		var dlssgEnabled : bool;
 
-		dlssEnabled = theGame.GetDLSSEnabled();
 		dlssgEnabled = theGame.GetDLSSGEnabled();
 
 		dataArray = m_flashValueStorage.CreateTempFlashArray();
@@ -1838,11 +1826,6 @@ class CR4IngameMenu extends CR4MenuBase
 		dataObject = m_flashValueStorage.CreateTempFlashObject();
 		dataObject.SetMemberFlashUInt( "tag", NameToFlashUInt('FPSLimit') );
 		dataObject.SetMemberFlashBool( "disabled", dlssgEnabled);
-		dataArray.PushBackFlashObject(dataObject);
-
-		dataObject = m_flashValueStorage.CreateTempFlashObject();
-		dataObject.SetMemberFlashUInt( "tag", NameToFlashUInt('DynamicResolutionScaling') );
-		dataObject.SetMemberFlashBool( "disabled", dlssEnabled || dlssgEnabled);
 		dataArray.PushBackFlashObject(dataObject);
 
 		m_flashValueStorage.SetFlashArray( "options.update_disabled", dataArray );
@@ -1902,7 +1885,6 @@ class CR4IngameMenu extends CR4MenuBase
 		{
 			UpdateOptions('PostProcess', true);
 			postprocessEntered = true;
-			updateAAOptionChanged();
 		}
 		
 		if ( optionName == 'EnableRT')

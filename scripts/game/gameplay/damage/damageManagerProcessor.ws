@@ -33,12 +33,6 @@ class W3DamageManagerProcessor extends CObject
 		var arrStr : array<string>;
 		var aerondight	: W3Effect_Aerondight;
 		var trailFxName : name;
-		
-		
-		var swordEntity : CWitcherSword;
-		var swordItem : SItemUniqueId;
-		var bloodType : EBloodType;
-		
 			
 		wasAlive = act.victim.IsAlive();		
 		npc = (CNewNPC)act.victim;
@@ -206,69 +200,39 @@ class W3DamageManagerProcessor extends CObject
 			}
 		}
 		
-		if( playerAttacker && npc && action.IsActionMelee() && action.DealtDamage() && IsRequiredAttitudeBetween( playerAttacker, npc, true ))
-		{		
-			if(!npc.HasTag( 'AerondightIgnore' ))	
+		if( playerAttacker && npc && action.IsActionMelee() && action.DealtDamage() && IsRequiredAttitudeBetween( playerAttacker, npc, true ) && !npc.HasTag( 'AerondightIgnore' ) )
+		{			
+			if( playerAttacker.inv.ItemHasTag( attackAction.GetWeaponId(), 'Aerondight' ) )
 			{
-				if( playerAttacker.inv.ItemHasTag( attackAction.GetWeaponId(), 'Aerondight' ) )
+				
+				aerondight = (W3Effect_Aerondight)playerAttacker.GetBuff( EET_Aerondight );
+				aerondight.IncreaseAerondightCharges( attackAction.GetAttackName() );
+				
+				
+				if( aerondight.GetCurrentCount() == aerondight.GetMaxCount() )
 				{
-					
-					aerondight = (W3Effect_Aerondight)playerAttacker.GetBuff( EET_Aerondight );
-					aerondight.IncreaseAerondightCharges( attackAction.GetAttackName() );
-					
-					
-					if( aerondight.GetCurrentCount() == aerondight.GetMaxCount() )
+					switch( npc.GetBloodType() )
 					{
-						switch( npc.GetBloodType() )
-						{
-							case BT_Red : 
-								trailFxName = 'aerondight_blood_red';
-								break;
-								
-							case BT_Yellow :
-								trailFxName = 'aerondight_blood_yellow';
-								break;
+						case BT_Red : 
+							trailFxName = 'aerondight_blood_red';
+							break;
 							
-							case BT_Black : 
-								trailFxName = 'aerondight_blood_black';
-								break;
-							
-							case BT_Green :
-								trailFxName = 'aerondight_blood_green';
-								break;
-						}
+						case BT_Yellow :
+							trailFxName = 'aerondight_blood_yellow';
+							break;
 						
-						playerAttacker.inv.GetItemEntityUnsafe( attackAction.GetWeaponId() ).PlayEffect( trailFxName );
+						case BT_Black : 
+							trailFxName = 'aerondight_blood_black';
+							break;
+						
+						case BT_Green :
+							trailFxName = 'aerondight_blood_green';
+							break;
 					}
+					
+					playerAttacker.inv.GetItemEntityUnsafe( attackAction.GetWeaponId() ).PlayEffect( trailFxName );
 				}
 			}
-			
-			
-			if(!action.WasDodged() && !attackAction.IsParried() && !attackAction.IsCountered())
-			{
-				swordItem = GetWitcherPlayer().GetHeldSword();
-				if(swordItem != GetInvalidUniqueId())
-				{
-					swordEntity = (CWitcherSword)thePlayer.GetInventory().GetItemEntityUnsafe( swordItem );	
-					if(swordEntity)
-					{
-						bloodType = npc.GetBloodType();
-						if(bloodType == BT_Red || bloodType == BT_Yellow)
-						{
-							swordEntity.PlayEffectSingle('weapon_blood');
-						}
-						else if (bloodType == BT_Black || npc.HasAbility('mon_kikimora_warrior') || npc.HasAbility('mon_kikimora_worker') || npc.HasAbility('mon_black_spider_base') || npc.HasAbility('mon_black_spider_ep2_base') )
-						{
-							swordEntity.PlayEffectSingle('weapon_blood_black');
-						}
-						else if (bloodType == BT_Green)
-						{
-							swordEntity.PlayEffectSingle('weapon_blood_green');
-						}
-					}
-				}
-			}
-			
 		}
 	}
 	
@@ -1530,7 +1494,7 @@ class W3DamageManagerProcessor extends CObject
 		
 		
 		if(playerAttacker && attackAction && playerAttacker.IsHeavyAttack(attackAction.GetAttackName()))
-			powerMod.valueMultiplicative -= 0.433;
+			powerMod.valueMultiplicative -= 0.833;
 		
 		
 		if ( playerAttacker && (W3IgniProjectile)action.causer )
@@ -1546,7 +1510,7 @@ class W3DamageManagerProcessor extends CObject
 		weaponName = inv.GetItemName( weaponId );
 		
 		if( !playerAttacker && actorVictim && !thePlayer.IsInFistFightMiniGame() && GetAttitudeBetween( thePlayer, actorAttacker ) == AIA_Friendly && !actorAttacker.HasTag( 'keira' ) && !actorAttacker.HasTag( 'Yennefer' )
-			&& ( actorAttacker.IsWeaponHeld( 'silversword' ) || actorAttacker.IsWeaponHeld( 'staff2h' ) || weaponName == 'fists_lightning' || weaponName == 'fists_fire' || actorAttacker.HasAbility( 'SkillWitcher' ) || actorAttacker.HasTag( 'regis' )  || actorAttacker.HasBuff(EET_AxiiGuardMe) ) )
+			&& ( actorAttacker.IsWeaponHeld( 'silversword' ) || actorAttacker.IsWeaponHeld( 'staff2h' ) || weaponName == 'fists_lightning' || weaponName == 'fists_fire' || actorAttacker.HasAbility( 'SkillWitcher' ) || actorAttacker.HasTag( 'regis' ) ) )
 		{
 			if ( powerMod.valueMultiplicative <= 0.1 )
 			{
@@ -1783,7 +1747,7 @@ class W3DamageManagerProcessor extends CObject
 			
 			if( !playerAttacker && actorVictim && GetAttitudeBetween( thePlayer, actorAttacker ) == AIA_Friendly && !action.IsDoTDamage() && !actorAttacker.HasTag( 'Yennefer' ) && !actorAttacker.HasTag( 'keira' ) 
 				&& !actorAttacker.HasTag( 'Philippa' ) && ( actorAttacker.IsWeaponHeld( 'silversword' ) || actorAttacker.IsWeaponHeld( 'staff2h' ) || weaponName == 'fists_lightning' || weaponName == 'fists_fire' 
-				|| actorAttacker.HasAbility( 'SkillWitcher' ) || actorAttacker.HasTag( 'zoltan' ) || actorAttacker.HasTag( 'hjalmar' ) || actorAttacker.HasTag( 'regis' ) || actorAttacker.HasBuff(EET_AxiiGuardMe) ) && ( finalDamage < dmgLevel || thePlayer.IsCiri() ) )
+				|| actorAttacker.HasAbility( 'SkillWitcher' ) || actorAttacker.HasTag( 'zoltan' ) || actorAttacker.HasTag( 'hjalmar' ) || actorAttacker.HasTag( 'regis' ) ) && ( finalDamage < dmgLevel || thePlayer.IsCiri() ) )
 			{
 				dmgBonus += dmgLevel - finalDamage;
 				finalDamage = MaxF(0, (dmgInfo.dmgVal + powerMod.valueBase + dmgBonus) * powerMod.valueMultiplicative + powerMod.valueAdditive);
@@ -1825,7 +1789,7 @@ class W3DamageManagerProcessor extends CObject
 
 		
 		
-		if( !playerAttacker && actorVictim && !action.IsDoTDamage() && !thePlayer.IsFistFightMinigameEnabled() && finalDamage <= actorVictim.GetMaxHealth() * 0.01 && (GetAttitudeBetween( thePlayer, actorAttacker ) == AIA_Friendly || actorAttacker.HasBuff(EET_AxiiGuardMe)) )
+		if( !playerAttacker && actorVictim && !action.IsDoTDamage() && !thePlayer.IsFistFightMinigameEnabled() && finalDamage <= actorVictim.GetMaxHealth() * 0.01 && GetAttitudeBetween( thePlayer, actorAttacker ) == AIA_Friendly )
 		{
 			dmgBonus += dmgLevel - finalDamage;
 			if ( powerMod.valueMultiplicative < 1.0 )
@@ -1851,21 +1815,21 @@ class W3DamageManagerProcessor extends CObject
 		curStats = GetWitcherPlayer().GetOffenseStatsList();
 		playerStlDmg = MaxF(0, curStats.steelStrongDmg - resistPoints);
 		playerStlDmg *= 1 - resistPercents;
-		playerStlDmg /= 6;
+		playerStlDmg /= 8;
 		
 		playerFastSlvDmg = MaxF(0, curStats.silverFastDmg - resistPoints);
 		playerFastSlvDmg *= 1 - resistPercents;
-		playerFastSlvDmg /= 6;
+		playerFastSlvDmg /= 8;
 
 		playerSlvDmg = MaxF(0, curStats.silverStrongDmg - resistPoints);
 		playerSlvDmg *= 1 - resistPercents;
-		playerSlvDmg /= 6;
+		playerSlvDmg /= 8;
 		
 		playerSlvCritDmg = MaxF(0, curStats.silverStrongCritDmg - resistPoints);
 		playerSlvCritDmg *= 1 - resistPercents;
-		playerSlvCritDmg /= 6;
+		playerSlvCritDmg /= 8;
 		
-		if( !playerAttacker && actorVictim && !action.IsDoTDamage() && !thePlayer.IsFistFightMinigameEnabled() && (GetAttitudeBetween( thePlayer, actorAttacker ) == AIA_Friendly || actorAttacker.HasBuff(EET_AxiiGuardMe)) && !thePlayer.IsCiri()  )
+		if( !playerAttacker && actorVictim && !action.IsDoTDamage() && !thePlayer.IsFistFightMinigameEnabled() && GetAttitudeBetween( thePlayer, actorAttacker ) == AIA_Friendly && !thePlayer.IsCiri()  )
 		{
 			if(finalDamage > playerStlDmg && !actorAttacker.HasAbility( 'ForceInstantKill' ))
 			{
@@ -1894,7 +1858,7 @@ class W3DamageManagerProcessor extends CObject
 						finalDamage = ClampF( finalDamage, playerFastSlvDmg, finalDamage );
 					}
 				}
-				else if ( actorAttacker.IsWeaponHeld( 'silversword' ) || actorAttacker.HasAbility( 'SkillWitcher' ) || actorAttacker.HasBuff(EET_AxiiGuardMe) )
+				else if ( actorAttacker.IsWeaponHeld( 'silversword' ) || actorAttacker.HasAbility( 'SkillWitcher' ) )
 				{
 					if ( finalDamage > playerSlvCritDmg )
 					{
@@ -1925,21 +1889,6 @@ class W3DamageManagerProcessor extends CObject
 			if(thePlayer.GetBossTag() != '' || (W3MonsterHuntNPC)actorVictim || actorVictim.GetCharacterStats().HasAbilityWithTag('Boss') || actorVictim.HasAbility( 'Boss' ) || actorVictim.HasAbility( 'SkillBoss') )
 			{
 				finalDamage = ClampF(finalDamage, 0, actorVictim.GetMaxHealth() * 0.005);
-			}
-		}
-		if(actorAttacker.HasBuff(EET_AxiiGuardMe))
-		{
-			switch(GetWitcherPlayer().GetSkillLevel(S_Magic_s05))
-			{
-				case 3: 
-					finalDamage *= 1.6;	
-					break;
-				case 2: 
-					finalDamage *= 1.4;	
-					break;
-				case 1: 
-					finalDamage *= 1.2;	
-					break;
 			}
 		}
 		
