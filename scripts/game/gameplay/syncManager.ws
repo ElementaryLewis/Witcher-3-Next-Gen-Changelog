@@ -590,7 +590,7 @@ statemachine class W3SyncAnimationManager
 			case 'SirenCrawlFinisher':
 			{
 				
-				masterSequencePart.animation		= 'man_attack';
+				masterSequencePart.animation		= 'man_ger_crawl_finish';
 				masterSequencePart.syncType			= AMST_SyncMatchEvents;
 				masterSequencePart.syncEventName	= 'SyncEvent';
 				masterSequencePart.shouldSlide		= true;

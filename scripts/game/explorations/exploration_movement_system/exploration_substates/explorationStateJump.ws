@@ -1008,7 +1008,7 @@ class CExplorationStateJump extends CExplorationStateAbstract
 		
 		if( prevStateName != 'StartFalling' )
 		{
-			thePlayer.DrainStamina(ESAT_Jump);
+			
 		}
 	}
 	
