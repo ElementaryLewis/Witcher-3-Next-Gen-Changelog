@@ -298,6 +298,7 @@ class CR4JournalQuestMenu extends CR4ListBaseMenu
 				if( sortingArray[i] == GetLocStringById( arr[j].GetTitleStringId() ) )
 				{
 					tempArray.PushBack(arr[j]);
+					arr.Erase(j);
 					break;
 				}
 			}

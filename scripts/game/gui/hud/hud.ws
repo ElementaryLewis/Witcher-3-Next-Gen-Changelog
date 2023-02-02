@@ -933,6 +933,7 @@ class CR4ScriptedHud extends CR4Hud
 		if ( dialogModule )
 		{
 			dialogModule.OnDialogChoiceTimeoutSet(timeOutPercent);
+			FactsSet("nge_pause_menu_disabled",1,20); 
 		}
 		else
 		{
@@ -948,6 +949,7 @@ class CR4ScriptedHud extends CR4Hud
 		if ( dialogModule )
 		{
 			dialogModule.OnDialogChoiceTimeoutHide();
+			FactsRemove("nge_pause_menu_disabled"); 
 		}
 		else
 		{

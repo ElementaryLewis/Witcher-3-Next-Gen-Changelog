@@ -5671,6 +5671,14 @@ import abstract class CActor extends CGameplayEntity
 		}
 		
 		
+		if( HasBuff(EET_AxiiGuardMe) && damageData.attacker != thePlayer )
+		{
+			damageData.processedDmg.vitalityDamage *= 0.1f;
+			damageData.processedDmg.essenceDamage *= 0.1f;
+		}
+		
+		
+		
 		if(damageData.IsActionMelee() && HasAbility( 'ReflectMeleeAttacks' ) )
 		{
 			if ( canLog )

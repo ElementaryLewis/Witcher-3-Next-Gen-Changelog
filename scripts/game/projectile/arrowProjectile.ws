@@ -99,7 +99,7 @@ class W3ArrowProjectile extends W3AdvancedProjectile
 			}
 			
 		}
-		else if ( hitCollisionsGroups.Contains( 'Terrain' ) || hitCollisionsGroups.Contains( 'Static' ) )
+		else if ( hitCollisionsGroups.Contains( 'Terrain' ) || hitCollisionsGroups.Contains( 'Static' ) || hitCollisionsGroups.Contains( 'Foliage' ) )	 
 		{
 			StopProjectile();
 			isActive = false;

@@ -181,6 +181,7 @@ class CBTTaskShoot extends CBTTaskPlayAnimationEventDecorator
 		}
 		else
 		{
+			collisionGroups.PushBack('Foliage'); 
 			arrow.ShootProjectileAtPosition( 7, arrow.projSpeed, targetPos, attackRange, collisionGroups );
 			projShot = true;
 		}
