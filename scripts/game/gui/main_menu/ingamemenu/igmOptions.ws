@@ -672,6 +672,7 @@ function IngameMenu_FillSubMenuOptionsList(flashStorageUtility : CScriptedFlashV
 	var isDLSSGEnabled	  	  : bool;
 	var isDLSSGSupported	  : bool;
 	var isReflexSupported	  : bool;
+	var isMotionBlurEnabled   : bool;
 
 	var enableIfRT		  	: bool;
 	var enableIfRTSupported	: bool;
@@ -687,6 +688,7 @@ function IngameMenu_FillSubMenuOptionsList(flashStorageUtility : CScriptedFlashV
 	var disableIfDLSSG			: bool;
 	var disableIfDLSSGAndSet1	: bool;
 	var disableIfIntelGPU    	: bool;
+	var enableIfMotionBlur		: bool;
 	
 	var inGameConfigWrapper	: CInGameConfigWrapper;
 	
@@ -709,6 +711,7 @@ function IngameMenu_FillSubMenuOptionsList(flashStorageUtility : CScriptedFlashV
 	isDLSSGEnabled = theGame.GetDLSSGEnabled();
 	isDLSSGSupported = theGame.GetDLSSGSupported();
 	isReflexSupported = theGame.GetReflexSupported();
+	isMotionBlurEnabled = theGame.GetMotionBlurEnabled();
 	
 	presetNum = inGameConfigWrapper.GetGroupPresetsNum(groupName);
 	if (presetNum > 0)
@@ -771,6 +774,7 @@ function IngameMenu_FillSubMenuOptionsList(flashStorageUtility : CScriptedFlashV
 		disableIfDLSSG = inGameConfigWrapper.DoVarHasTag(groupName, optionName, 'disableIfDLSSG');
 		disableIfDLSSGAndSet1 = inGameConfigWrapper.DoVarHasTag(groupName, optionName, 'disableIfDLSSGAndSet1');
 		disableIfIntelGPU = inGameConfigWrapper.DoVarHasTag(groupName, optionName, 'disableIfIntelGPU');
+		enableIfMotionBlur = inGameConfigWrapper.DoVarHasTag(groupName, optionName, 'enableIfMotionBlur');
 		
 		if( optionName == 'DeveloperMode' )
 			continue;
@@ -824,7 +828,8 @@ function IngameMenu_FillSubMenuOptionsList(flashStorageUtility : CScriptedFlashV
 				(disableIfDLSSG && isDLSSGEnabled) ||
 				(enableIfDLSSGSupported && !isDLSSGSupported) ||
 				(enableIfReflexSupported && !isReflexSupported) ||
-				(disableIfIntelGPU && isIntelGPU)
+				(disableIfIntelGPU && isIntelGPU) ||
+				(enableIfMotionBlur && !isMotionBlurEnabled)
 			);
 			optionObject.SetMemberFlashBool( "indent", inGameConfigWrapper.DoVarHasTag( groupName, optionName, 'indent' ) );
 			

@@ -258,6 +258,10 @@ class CBTTaskRidingManagerVehicleDismount extends IBehTreeTask
 		var vehicleRight					: Vector 	= vehicleEntity.GetWorldRight();
 		var dismountCheckLength				: float		= 1.0;
 		var possibleDirections				: array<float>;
+		
+		
+		var lookatAngle : float;
+		
 		dismountDirection = 1.0;	
 		actorMovingAgentComponent =( CMovingPhysicalAgentComponent ) riderActor.GetMovingAgentComponent();
 		
@@ -268,6 +272,9 @@ class CBTTaskRidingManagerVehicleDismount extends IBehTreeTask
 		LeftBackwardDismountPosition 	= vehiclePosition + (-vehicleForward - vehicleRight) * dismountCheckLength;
 		RightBackwardDismountPosition 	= vehiclePosition + (-vehicleForward + vehicleRight) * dismountCheckLength;
 		BackDismountPosition 			= vehiclePosition + (-vehicleForward ) * dismountCheckLength;
+		
+		
+		lookatAngle = AngleDistance(thePlayer.GetHeading(), theCamera.GetCameraHeading());
 		
 		horseComponent = (W3HorseComponent)vehicleComponent;
 		
@@ -304,19 +311,7 @@ class CBTTaskRidingManagerVehicleDismount extends IBehTreeTask
 					thePlayer.SetBehaviorVariable('dismountType',0.f);
 				}
 			}
-		}
-		
-		
-		if( IsPositionValid( vehicleComponent, LeftForwardDismountPosition ) )
-		{
-			possibleDirections.PushBack( 0.0 );
-		}
-		if( IsPositionValid( vehicleComponent, RightForwardDismountPosition ) )
-		{
-			possibleDirections.PushBack( 1.0 );
-		}
-		if( possibleDirections.Size() <= 0 )
-		{
+			
 			
 			if( IsPositionValid( vehicleComponent, LeftBackwardDismountPosition ) )
 			{
@@ -325,6 +320,14 @@ class CBTTaskRidingManagerVehicleDismount extends IBehTreeTask
 			if( IsPositionValid( vehicleComponent, RightBackwardDismountPosition ) )
 			{
 				possibleDirections.PushBack( 3.0 );
+			}
+			if( IsPositionValid( vehicleComponent, LeftForwardDismountPosition ) )
+			{
+				possibleDirections.PushBack( 0.0 );
+			}
+			if( IsPositionValid( vehicleComponent, RightForwardDismountPosition ) )
+			{
+				possibleDirections.PushBack( 1.0 );
 			}
 			
 			if( !possibleDirections.Size() )
@@ -341,13 +344,73 @@ class CBTTaskRidingManagerVehicleDismount extends IBehTreeTask
 				}
 			}
 			
-			dismountDirection = possibleDirections[ RandRange( possibleDirections.Size() ) ];
+			if( lookatAngle < -130.0f && possibleDirections.Contains( 2.0 ) )
+			{
+				dismountDirection = 2.0;
+			}
+			else if(lookatAngle > 130.0f  && possibleDirections.Contains( 3.0 ) )
+			{
+				dismountDirection = 3.0;
+			}
+			else if( lookatAngle > -130.0f && lookatAngle < 0.0f && possibleDirections.Contains( 0.0 ) )
+			{
+				dismountDirection = 0.0;
+			}
+			else if( lookatAngle < 130.0f && lookatAngle > 0.0f && possibleDirections.Contains( 1.0 ) )
+			{
+				dismountDirection = 1.0;
+			}
+			else
+			{
+				dismountDirection = possibleDirections[ RandRange( possibleDirections.Size() ) ];
+			}			
 			
 		}
-		else
+		else	
 		{
-			dismountDirection = possibleDirections[ RandRange( possibleDirections.Size() ) ];
-		}
+			
+			if( IsPositionValid( vehicleComponent, LeftForwardDismountPosition ) )
+			{
+				possibleDirections.PushBack( 0.0 );
+			}
+			if( IsPositionValid( vehicleComponent, RightForwardDismountPosition ) )
+			{
+				possibleDirections.PushBack( 1.0 );
+			}
+			if( possibleDirections.Size() <= 0 )
+			{
+				
+				if( IsPositionValid( vehicleComponent, LeftBackwardDismountPosition ) )
+				{
+					possibleDirections.PushBack( 2.0 );
+				}
+				if( IsPositionValid( vehicleComponent, RightBackwardDismountPosition ) )
+				{
+					possibleDirections.PushBack( 3.0 );
+				}
+				
+				if( !possibleDirections.Size() )
+				{
+					if( IsPositionValid( vehicleComponent, BackDismountPosition ) )
+					{
+						dismountDirection = 4.0;
+						return;
+					}
+					else
+					{
+						riderData.ridingManagerDismountType = DT_instant;
+						return;
+					}
+				}
+				
+				dismountDirection = possibleDirections[ RandRange( possibleDirections.Size() ) ];
+				
+			}
+			else
+			{
+				dismountDirection = possibleDirections[ RandRange( possibleDirections.Size() ) ];
+			}
+		} 
 	}
 	
 	function IsPositionValid( vehicleComponent : CVehicleComponent, _position : Vector ) : bool

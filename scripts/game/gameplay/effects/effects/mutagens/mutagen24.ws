@@ -23,7 +23,7 @@ class W3Mutagen24_Effect extends W3Mutagen_Effect
 		
 		currentHour = GameTimeHours(theGame.GetGameTime());
 		
-		if( GetCurWeather() != EWE_Clear || (currentHour > GetHourForDayPart(EDP_Dawn) && currentHour < GetHourForDayPart(EDP_Dusk)) )
+		if( (GetCurWeather() != EWE_Clear && GetWeatherConditionName() != 'WT_Clear') || (currentHour > GetHourForDayPart(EDP_Dawn) && currentHour < GetHourForDayPart(EDP_Dusk)) )
 		{
 			if(hasAbility)
 			{

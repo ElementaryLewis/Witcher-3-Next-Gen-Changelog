@@ -1600,6 +1600,11 @@ class CR4IngameMenu extends CR4MenuBase
 			updateRTAOOptionChanged();
 			updateRTROptionChanged();
 		}
+		
+		if (optionName == 'AllowMotionBlur')
+		{
+			updateMotionBlurOptionChanged(optionValue == "true");
+		}
 
 		
 		
@@ -1668,6 +1673,23 @@ class CR4IngameMenu extends CR4MenuBase
 		{
 			theGame.UpdateCrossProgressionValue( optionValue );
 		}
+	}
+	
+	private function updateMotionBlurOptionChanged(enabled:bool):void
+	{
+		var dataObject : CScriptedFlashObject;
+		var dataArray : CScriptedFlashArray;
+
+		dataArray = m_flashValueStorage.CreateTempFlashArray();
+
+		dataObject = m_flashValueStorage.CreateTempFlashObject();
+		dataObject.SetMemberFlashUInt( "tag", NameToFlashUInt('MotionBlurIntensity') );
+		dataObject.SetMemberFlashBool( "disabled", !enabled);
+		dataArray.PushBackFlashObject(dataObject);
+		
+		m_flashValueStorage.SetFlashArray( "options.update_disabled", dataArray );
+		
+		theGame.GetGuiManager().ForceProcessFlashStorage();
 	}
 
 	private function setLocksOnPresetChanged():void

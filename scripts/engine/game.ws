@@ -280,6 +280,7 @@ import class CGame extends CObject
 	import final function GetDLSSGSupported() : bool;
 	import final function GetReflexEnabled() : bool;
 	import final function GetReflexSupported() : bool;
+	import final function GetMotionBlurEnabled() : bool;
 	
 	import final function GetGameResource() : CGameResource;
 
