@@ -57,12 +57,14 @@ class CR4HudModuleWolfHead extends CR4HudModuleBase
 	private var m_lockedToxicity			: float;
 	private var m_curVitality				: float;
 	private var m_maxVitality				: float;
+	private var m_bForceToxicityUpdate		: bool;
 		
 		
 		
 	default m_iCurrentPositiveEffectsSize = 0;
 	default m_iCurrentNegativeEffectsSize = 0;
 	default m_IsPlayerCiri				  = false;
+	default m_bForceToxicityUpdate		  = false;
 
 	 event OnConfigUI()
 	{
@@ -233,10 +235,10 @@ class CR4HudModuleWolfHead extends CR4HudModuleBase
 		m_curToxicity = curToxicity;
 		m_lockedToxicity = curLockedToxicity;
 		
-		if ( m_LastToxicity != curToxicity || m_LastMaxToxicity != curMaxToxicity || m_LastLockedToxicity != curLockedToxicity )
+		if ( m_bForceToxicityUpdate || m_LastToxicity != curToxicity || m_LastMaxToxicity != curMaxToxicity || m_LastLockedToxicity != curLockedToxicity )
 		{
 			
-			if( m_LastLockedToxicity != curLockedToxicity || m_LastMaxToxicity != curMaxToxicity)
+			if( m_bForceToxicityUpdate || m_LastLockedToxicity != curLockedToxicity || m_LastMaxToxicity != curMaxToxicity)
 			{
 				m_fxSetLockedToxicity.InvokeSelfOneArg( FlashArgNumber( ( curLockedToxicity )/ curMaxToxicity ) );
 				m_LastLockedToxicity = curLockedToxicity;
@@ -247,12 +249,13 @@ class CR4HudModuleWolfHead extends CR4HudModuleBase
 			
 			damageThreshold = GetWitcherPlayer().GetToxicityDamageThreshold();
 			curDeadlyToxicity = ( (curToxicity + curLockedToxicity) >= damageThreshold * curMaxToxicity ); 
-			if( m_bLastDeadlyToxicity != curDeadlyToxicity ) 
+			if( m_bForceToxicityUpdate || m_bLastDeadlyToxicity != curDeadlyToxicity ) 
 			{
 				m_fxSetDeadlyToxicity.InvokeSelfOneArg( FlashArgBool( curDeadlyToxicity ) );
 				m_bLastDeadlyToxicity = curDeadlyToxicity;
 			}
 			
+			m_bForceToxicityUpdate = false;
 			
 		}
 	}
@@ -356,6 +359,7 @@ class CR4HudModuleWolfHead extends CR4HudModuleBase
 		if( thePlayer.IsCiri() != m_IsPlayerCiri )
 		{
 			m_IsPlayerCiri = thePlayer.IsCiri();
+			m_bForceToxicityUpdate = true;
 			m_fxSetCiriAsMainCharacter.InvokeSelfOneArg(FlashArgBool(m_IsPlayerCiri));
 			DisplayNewLevelIndicator();
 		}

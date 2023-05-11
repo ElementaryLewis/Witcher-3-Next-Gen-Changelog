@@ -306,6 +306,8 @@ import class CCommonGame extends CGame
 	
 	import final function GetIsDLSSSupported() : bool;
 
+	import final function GetIsXESSSupported() : bool;
+
 	import final function VisitWeibo();
 	
 	import final function RequestVoiceLangDownload( lockName : string ) : void;

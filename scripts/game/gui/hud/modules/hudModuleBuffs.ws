@@ -351,7 +351,7 @@ class CR4HudModuleBuffs extends CR4HudModuleBase
 						{
 							l_flashObject.SetMemberFlashNumber("duration",        oilEffect.GetAmmoMaxCount() 	  * 1.0 );
 							l_flashObject.SetMemberFlashNumber("initialDuration", oilEffect.GetAmmoMaxCount() 	  * 1.0 );
-							l_flashObject.SetMemberFlashInt("format", 3);
+							l_flashObject.SetMemberFlashInt("format", 0);
 						}
 						
 						else

@@ -652,7 +652,7 @@ class CR4BlacksmithMenu extends CR4MenuBase
 			
 			_fixerInventory.AddMoney(price * m_lastConfirmedDisassembleQuantity);
 			_inv.RemoveMoney(price * m_lastConfirmedDisassembleQuantity);
-			if ( _inv.GetItemEnhancementCount(item) > 0 )
+			if ( _inv.GetItemEnhancementCount(item) > 0 && !_inv.IsItemEnchanted( item ) )
 			{
 				_inv.GetItemEnhancementItems(item, runesList);
 				for (idx = 0; idx <  runesList.Size(); idx+=1)

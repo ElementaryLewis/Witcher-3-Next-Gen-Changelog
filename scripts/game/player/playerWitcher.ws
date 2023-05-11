@@ -5159,6 +5159,10 @@ statemachine class W3PlayerWitcher extends CR4Player
 		var i : int;
 		var equippedNewEdible : bool;
 		
+		var newEdibleId : int;
+		var isLevel1, isLevel2 : bool;
+		var abilities : array<name>;
+		
 		itemName = inv.GetItemName( itemId );
 		
 		if (itemName == 'q111_imlerith_acorn' ) 
@@ -5215,14 +5219,45 @@ statemachine class W3PlayerWitcher extends CR4Player
 				edibles = inv.GetItemsByTag('Edibles');
 				equippedNewEdible = false;
 				
+				newEdibleId = 0;
+				
 				
 				for(i=0; i<edibles.Size(); i+=1)
 				{
 					if(!IsItemEquipped(edibles[i]) && !inv.ItemHasTag(edibles[i], 'Alcohol') && inv.GetItemName(edibles[i]) != 'Clearing Potion' && inv.GetItemName(edibles[i]) != 'Wolf Hour')
 					{
-						EquipItemInGivenSlot(edibles[i], toSlot, true, false);
-						equippedNewEdible = true;
-						break;
+						abilities.Clear();
+						inv.GetItemAbilities(edibles[i], abilities);
+						if (abilities.Contains('FoodEdibleQuality_3') || abilities.Contains('BeverageQuality_3'))
+						{
+							equippedNewEdible = true;
+							newEdibleId = i;
+							break;
+						}
+						else if (!isLevel2)
+						{
+							if (abilities.Contains('FoodEdibleQuality_2') || abilities.Contains('BeverageQuality_2'))
+							{
+								isLevel2 = true;
+								isLevel1 = false;
+								equippedNewEdible = true;
+								newEdibleId = i;
+							}
+							else if (!isLevel1)
+							{
+								if (abilities.Contains('FoodEdibleQuality_1') || abilities.Contains('BeverageQuality_1'))
+								{
+									equippedNewEdible = true;
+									newEdibleId = i;
+									isLevel1 = true;
+								}
+								else 
+								{
+									equippedNewEdible = true;
+									newEdibleId = i;
+								}
+							}
+						}
 					}
 				}
 				
@@ -5238,6 +5273,8 @@ statemachine class W3PlayerWitcher extends CR4Player
 						}
 					}
 				}
+				else
+					EquipItemInGivenSlot(edibles[newEdibleId], toSlot, true, false);
 			}
 		}
 		

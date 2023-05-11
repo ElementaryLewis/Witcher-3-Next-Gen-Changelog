@@ -683,7 +683,9 @@ statemachine abstract import class CR4Player extends CPlayer
 		if(this.GetInventory().IsIdValid(tempItem) && this.GetInventory().GetItemCategory(tempItem) != 'mask')
 		{
 			GetWitcherPlayer().UnequipItemFromSlot(EES_Quickslot2,true);
-		}		
+		}
+		
+		shouldAutoApplyOils = theGame.GetInGameConfigWrapper().GetVarValue('Gameplay', 'AutoApplyBladeOils' ) == "true";
 	}
 	
 	public function NewGamePlusInitialize()
@@ -3418,8 +3420,69 @@ statemachine abstract import class CR4Player extends CPlayer
 		if( newState != GetCurrentStateName() )
 		{
 			GotoState( newState, keepStack, forceEvents );
+			
+			ShouldAutoApplyOil(); 
 		}
 	}
+	
+	
+	private var shouldAutoApplyOils : bool;
+	public function SetAutoApplyOils(set : bool){ shouldAutoApplyOils = set; }
+	
+	public function ShouldAutoApplyOil()
+	{	
+		if( !IsCiri() && shouldAutoApplyOils )
+		{
+			RemoveTimer('AutoApplyBladeOilTimer');
+			AddTimer('AutoApplyBladeOilTimer',0.3f,false);
+		}
+	}	
+	
+	private timer function AutoApplyBladeOilTimer(dt:float, id:int)
+	{
+		AutoApplyBladeOil();
+	}
+	
+	public function ShouldAutoApplyOilImmediately( target : CActor )
+	{	
+		if( !IsCiri() && shouldAutoApplyOils )
+		{
+			AutoApplyBladeOil( target );
+		}
+	}
+
+	private function AutoApplyBladeOil( optional target : CActor )
+	{
+		var monsterCategory : EMonsterCategory;
+		var isTeleporting, canBeTargeted, canBeHitByFists, steel : bool;		
+		var itemName, soundMonsterName : name;
+		var oilItems : array<SItemUniqueId>;
+		var oils : array<name>;
+		var i : int;
+		
+		if( !target )
+			target = GetTarget();
+			
+		if( !target )
+			return;
+		
+		theGame.GetMonsterParamsForActor( target, monsterCategory, soundMonsterName, isTeleporting, canBeTargeted, canBeHitByFists );
+		if( monsterCategory == MC_NotSet )
+			return;			
+		
+		oils = MonsterCategoryToOilNames(monsterCategory);
+		
+		for( i=0; i<oils.Size(); i+=1 )
+		{
+			if( inv.HasItem( oils[i] ) )
+			{
+				oilItems = inv.GetItemsByName( oils[i] );				
+				ApplyOil(oilItems[0], GetEquippedSword( target.UsesVitality() ));
+				break;
+			}
+		}
+	}
+	
 	
 	
 	public function GotoState( newState : name, optional keepStack : bool, optional forceEvents : bool  )
@@ -10862,7 +10925,7 @@ statemachine abstract import class CR4Player extends CPlayer
 		if(category == 'edibles' || inv.ItemHasTag(itemId, 'Drinks') || ( category == 'alchemy_ingredient' && inv.ItemHasTag(itemId, 'Alcohol')) )
 		{
 			
-			if(IsFistFightMinigameEnabled())
+			if(IsFistFightMinigameEnabled() || IsDiving())
 			{
 				DisplayActionDisallowedHudMessage(EIAB_Undefined, false, false, true);
 				return false;

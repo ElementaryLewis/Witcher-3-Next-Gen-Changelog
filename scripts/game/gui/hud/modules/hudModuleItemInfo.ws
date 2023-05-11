@@ -54,6 +54,8 @@ class CR4HudModuleItemInfo extends CR4HudModuleBase
 	
 	private var m_previousShowButtonHints		: int;						default m_previousShowButtonHints    = -1;
 	private var m_previousSetItemInfo			: array< SHudItemInfo >;
+	private var m_fPlayerSwitchForceHideTime : float;
+	default m_fPlayerSwitchForceHideTime = 0.0f;
 	
 	event  OnConfigUI()
 	{
@@ -110,11 +112,14 @@ class CR4HudModuleItemInfo extends CR4HudModuleBase
 		if( m_IsPlayerCiri != thePlayer.IsCiri() )
 		{
 			m_IsPlayerCiri = thePlayer.IsCiri();
-			if( m_IsPlayerCiri )
-			{
-				ClearItems();
-			}
+			ClearItems();
+			m_fPlayerSwitchForceHideTime = 1.f;
+		}
+
+		if (m_fPlayerSwitchForceHideTime > 0.f)
+		{
 			m_fxHideSlotsSFF.InvokeSelfOneArg(FlashArgBool(!m_IsPlayerCiri));
+			m_fPlayerSwitchForceHideTime -= timeDelta;
 		}
 		
 		if( m_IsPlayerCiri )
@@ -325,6 +330,8 @@ class CR4HudModuleItemInfo extends CR4HudModuleBase
 		m_currentItemSelected = dummy;
 		m_currentItemOnSlot1 = dummy;
 		m_currentItemOnSlot2 = dummy;
+		m_currentItemOnSlot3 = dummy;
+		m_currentItemOnSlot4 = dummy;
 	}
 	
 	public function UpdateItemData(item : SItemUniqueId, bindingID : HudItemInfoBinding)

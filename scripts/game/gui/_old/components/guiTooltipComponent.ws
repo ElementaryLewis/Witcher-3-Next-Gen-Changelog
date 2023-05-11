@@ -310,6 +310,13 @@ class W3TooltipComponent
 			else
 			{
 				compareItemInv.GetItemPrimaryStat(equipedItem, eqPrimaryStatLabel, eqPrimaryStatValue);
+				if( compareItemInv.ItemHasTag( equipedItem, 'Aerondight' ) )
+				{
+					if( compareItemInv.GetItemModifierFloat( equipedItem, 'PermDamageBoost' ) >= 0.f )
+					{
+						eqPrimaryStatValue += compareItemInv.GetItemModifierFloat( equipedItem, 'PermDamageBoost' );
+					}
+				}
 			}
 			
 			canBeCompared = isArmorOrWeapon;
@@ -445,7 +452,7 @@ class W3TooltipComponent
 		
 		if( itemInvComponent.ItemHasTag( item, 'Aerondight' ) )
 		{
-			uniqueDescription = GetAerondightTooltipDescription( item );
+			uniqueDescription = GetAerondightTooltipDescription( itemInvComponent, item );
 		}
 		
 		
@@ -1999,7 +2006,7 @@ class W3TooltipComponent
 		return rec;
 	}
 	
-	public function GetAerondightTooltipDescription( sword : SItemUniqueId ) : string
+	public function GetAerondightTooltipDescription( itemInvComponent : CInventoryComponent, sword : SItemUniqueId ) : string
 	{
 		var uniqueDesc		: string;
 		var argsString		: array<string>;
@@ -2014,7 +2021,7 @@ class W3TooltipComponent
 		argsString.Clear();
 		
 		
-		val_1 = thePlayer.inv.GetItemModifierFloat( sword, 'PermDamageBoost' );
+		val_1 = itemInvComponent.GetItemModifierFloat( sword, 'PermDamageBoost' );
 		
 		
 		if( val_1 > 0 )
@@ -2027,7 +2034,7 @@ class W3TooltipComponent
 		}
 		
 		
-		val_2 = thePlayer.GetLevel() - thePlayer.inv.GetItemLevel( sword ) + 1;
+		val_2 = thePlayer.GetLevel() - itemInvComponent.GetItemLevel( sword ) + 1;
 		
 		dm.GetAbilityAttributeValue( 'AerondightEffect', 'stacks_per_level', min, max );		
 		val_2 *= min.valueAdditive;

@@ -15,8 +15,9 @@ enum IgmOptionsAmbientOcclusion
 };
 
 enum IgmOptionsAntiAliasing
-{	
-	IGMOPT_AA_DLSS = 4
+{
+	IGMOPT_AA_XESS = 4,	
+	IGMOPT_AA_DLSS = 5
 };
 
 function IngameMenu_GetOptionTypeFromString(optionType:string): InGameMenuActionType
@@ -486,6 +487,11 @@ function SetOptionSkipsAndLocks(flashObject : CScriptedFlashObject, optionName :
 	else if(optionName == 'AAMode' && !theGame.GetIsDLSSSupported() )
 	{
 		lock = IntToString(IGMOPT_AA_DLSS);
+		if(!theGame.GetIsXESSSupported())
+		{
+			
+			lock = IntToString(IGMOPT_AA_XESS);
+		}
 	}
 	
 	flashObject.SetMemberFlashString( "skip", skip );
@@ -667,6 +673,7 @@ function IngameMenu_FillSubMenuOptionsList(flashStorageUtility : CScriptedFlashV
 	var isHairWorksEnabled	  : bool;
 	var isFSREnabled		  : bool;
 	var isDLSSEnabled		  : bool;
+	var isXESSEnabled		  : bool;
 	var isRTAOEnabled		  : bool;
 	var isRTREnabled 		  : bool;
 	var isDLSSGEnabled	  	  : bool;
@@ -679,6 +686,8 @@ function IngameMenu_FillSubMenuOptionsList(flashStorageUtility : CScriptedFlashV
 	var enableIfHairWorks	: bool;
 	var enableIfFSR		  	: bool;
 	var disableIfFSR		: bool;
+	var enableIfXESS		: bool;
+	var disableIfXESS		: bool;
 	var enableIfDLSS		: bool;
 	var disableIfDLSS		: bool;
 	var disableIfRTAO		: bool;
@@ -712,6 +721,7 @@ function IngameMenu_FillSubMenuOptionsList(flashStorageUtility : CScriptedFlashV
 	isDLSSGSupported = theGame.GetDLSSGSupported();
 	isReflexSupported = theGame.GetReflexSupported();
 	isMotionBlurEnabled = theGame.GetMotionBlurEnabled();
+	isXESSEnabled = theGame.GetXESSEnabled();
 	
 	presetNum = inGameConfigWrapper.GetGroupPresetsNum(groupName);
 	if (presetNum > 0)
@@ -767,6 +777,8 @@ function IngameMenu_FillSubMenuOptionsList(flashStorageUtility : CScriptedFlashV
 		disableIfFSR = inGameConfigWrapper.DoVarHasTag(groupName, optionName, 'disableIfFSR');
 		enableIfDLSS = inGameConfigWrapper.DoVarHasTag(groupName, optionName, 'enableIfDLSS');
 		disableIfDLSS = inGameConfigWrapper.DoVarHasTag(groupName, optionName, 'disableIfDLSS');
+		enableIfXESS = inGameConfigWrapper.DoVarHasTag(groupName, optionName, 'enableIfXESS');
+		disableIfXESS = inGameConfigWrapper.DoVarHasTag(groupName, optionName, 'disableIfXESS');
 		disableIfRTAO = inGameConfigWrapper.DoVarHasTag(groupName, optionName, 'disableIfRTAO');
 		disableIfRTR = inGameConfigWrapper.DoVarHasTag(groupName, optionName, 'disableIfRTR');
 		enableIfDLSSGSupported = inGameConfigWrapper.DoVarHasTag(groupName, optionName, 'enableIfDLSSGSupported');
@@ -822,6 +834,8 @@ function IngameMenu_FillSubMenuOptionsList(flashStorageUtility : CScriptedFlashV
 				(disableIfFSR && isFSREnabled) ||
 				(enableIfDLSS && !isDLSSEnabled) ||
 				(disableIfDLSS && isDLSSEnabled) ||
+				(enableIfXESS && !isXESSEnabled) ||
+				(disableIfXESS && isXESSEnabled) ||
 				(disableIfRTAO && isRTAOEnabled) ||
 				(disableIfRTR && isRTREnabled) ||
 				(disableIfDLSSGAndSet1 && isDLSSGEnabled) ||

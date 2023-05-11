@@ -14,7 +14,8 @@ class W3GuiDisassembleInventoryComponent extends W3GuiPlayerInventoryComponent
 		super.SetInventoryFlashObjectForItem( item, flashObject );
 		
 		addRecyclingPartsList( item, flashObject );
-		addSocketsListInfo( item, flashObject );
+		if ( !_inv.IsItemEnchanted( item ) )
+			addSocketsListInfo( item, flashObject );
 		flashObject.SetMemberFlashBool( "enableComparison", _inv.CanBeCompared(item) );
 		flashObject.SetMemberFlashInt( "gridPosition", -1 );
 		

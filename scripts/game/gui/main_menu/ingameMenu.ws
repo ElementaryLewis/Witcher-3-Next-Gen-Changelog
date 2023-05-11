@@ -134,6 +134,7 @@ class CR4IngameMenu extends CR4MenuBase
 	private var m_fxShowCloudModal      : CScriptedFlashFunction;
 	private var m_fxCloseGalaxySignInModalWindow: CScriptedFlashFunction;
 	private var m_fxSetDLSSIsSupported	: CScriptedFlashFunction;
+	private var m_fxSetXESSIsSupported	: CScriptedFlashFunction;
 	private var m_fxSetRTEnabled		: CScriptedFlashFunction;
 	private var m_fxHideErrorWindow		: CScriptedFlashFunction;
 	
@@ -234,6 +235,7 @@ class CR4IngameMenu extends CR4MenuBase
 		m_fxShowCloudModal = m_flashModule.GetMemberFlashFunction("ShowCloudModal");
 		m_fxCloseGalaxySignInModalWindow = m_flashModule.GetMemberFlashFunction("closeGalaxySignInDialog");
 		m_fxSetDLSSIsSupported = m_flashModule.GetMemberFlashFunction("DLSSIsSupported");
+		m_fxSetXESSIsSupported = m_flashModule.GetMemberFlashFunction("XESSIsSupported");
 		m_fxSetRTEnabled = m_flashModule.GetMemberFlashFunction("RTEnabled");
 		m_fxHideErrorWindow = m_flashModule.GetMemberFlashFunction("hideErrorHandlingWindow");
 
@@ -793,6 +795,7 @@ class CR4IngameMenu extends CR4MenuBase
 				break;
 			case IGMActionType_Options:
 				DLSSSupported();
+				XESSSupported();
 				RTEnabled();
 				
 				developerOptions = m_flashValueStorage.CreateTempFlashArray();
@@ -1196,6 +1199,13 @@ class CR4IngameMenu extends CR4MenuBase
 		DLSSIsSupported = theGame.GetIsDLSSSupported();
 		m_fxSetDLSSIsSupported.InvokeSelfTwoArgs( FlashArgBool(DLSSIsSupported), FlashArgUInt(NameToFlashUInt('AAMode') ));				
 	}
+
+	public function XESSSupported()
+	{
+		var XESSIsSupported : bool;
+		XESSIsSupported = theGame.GetIsXESSSupported();
+		m_fxSetXESSIsSupported.InvokeSelfTwoArgs( FlashArgBool(XESSIsSupported), FlashArgUInt(NameToFlashUInt('AAMode') ));				
+	}
 	
 	public function RTEnabled()
 	{ 
@@ -1219,10 +1229,16 @@ class CR4IngameMenu extends CR4MenuBase
 				
 		groupName = mInGameConfigWrapper.GetGroupName(groupId);
 
+		if (groupName == 'Graphics' && optionName == 'AAMode' && theGame.GetIsXESSSupported() == false)
+		{
+			showNotification(GetPlatformLocString("option_warning_xess_support"));
+		}
+
 		if (groupName == 'Graphics' && optionName == 'AAMode' && theGame.GetIsDLSSSupported() == false)
 		{
 			showNotification(GetPlatformLocString("option_warning_dlss_support"));
 		}
+
 		
 		
 		
@@ -1407,6 +1423,11 @@ class CR4IngameMenu extends CR4MenuBase
 		}
 		
 		
+		if (optionName == 'WidescreenCutscene' && optionValue == "true")
+		{
+			theGame.GetGuiManager().ShowUserDialog(0, "", "message_widescreen_cutscene_use_cachets_disclaimer", UDB_Ok);
+		}
+		
 		
 		if (optionName == 'MinimapDuringFocusCombat')
 		{
@@ -1460,6 +1481,16 @@ class CR4IngameMenu extends CR4MenuBase
 				thePlayer.SetLeftStickSprint(true);
 			else
 				thePlayer.SetLeftStickSprint(false);
+		}
+		
+		
+		
+		if (optionName == 'AutoApplyBladeOils')
+		{
+			if ( optionValue == "true" )
+				thePlayer.SetAutoApplyOils(true);
+			else
+				thePlayer.SetAutoApplyOils(false);
 		}
 		
 		
@@ -1774,8 +1805,13 @@ class CR4IngameMenu extends CR4MenuBase
 		dataArray.PushBackFlashObject(dataObject);
 
 		dataObject = m_flashValueStorage.CreateTempFlashObject();
+		dataObject.SetMemberFlashUInt( "tag", NameToFlashUInt('XESSQuality') );
+		dataObject.SetMemberFlashBool( "disabled", !theGame.GetXESSEnabled());
+		dataArray.PushBackFlashObject(dataObject);
+
+		dataObject = m_flashValueStorage.CreateTempFlashObject();
 		dataObject.SetMemberFlashUInt( "tag", NameToFlashUInt('DynamicResolutionScaling') );
-		dataObject.SetMemberFlashBool( "disabled", theGame.GetDLSSEnabled() || theGame.GetDLSSGEnabled());
+		dataObject.SetMemberFlashBool( "disabled", theGame.GetDLSSEnabled() || theGame.GetDLSSGEnabled()  || theGame.GetXESSEnabled());
 		dataArray.PushBackFlashObject(dataObject);
 
 		dataObject = m_flashValueStorage.CreateTempFlashObject();

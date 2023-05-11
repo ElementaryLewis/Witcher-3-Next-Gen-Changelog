@@ -367,6 +367,14 @@ class W3GuiPlayerInventoryComponent extends W3GuiBaseInventoryComponent
 		{
 			playerInv.GetItemStats(equipedItemId, equipedItemStats);
 			playerInv.GetItemPrimaryStat(equipedItemId, eqPrimaryStatLabel, eqPrimaryStatValue);
+
+			if( playerInv.ItemHasTag( equipedItemId, 'Aerondight' ) )
+			{
+				if( playerInv.GetItemModifierFloat( equipedItemId, 'PermDamageBoost' ) >= 0.f )
+				{
+					eqPrimaryStatValue += playerInv.GetItemModifierFloat( equipedItemId, 'PermDamageBoost' );
+				}
+			}
 		}
 		
 		dontCompare = itemCategory == 'potion' || itemCategory == 'petard' || itemCategory == 'oil';

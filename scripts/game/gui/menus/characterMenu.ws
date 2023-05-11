@@ -1013,6 +1013,7 @@ class CR4CharacterMenu extends CR4MenuBase
 		{
 			showNotification(GetLocStringByKeyExt("menu_cannot_perform_action_combat"));
 			OnPlaySoundEvent("gui_global_denied");
+			UpdateAppliedSkill(slotID);
 		}
 		else
 		{

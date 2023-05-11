@@ -22,7 +22,7 @@ state Swimming in CR4Player extends ExtendedMovable
 	default LEAVE_STATE_SUBMERGE_DEPTH 	= -0.9; 
 	default WALK_DEEP_WATER_LEVEL 		= 1.10;
 	default MIN_WATER_LEVEL_FOR_DIVING 	= 1.95;
-	default ENTER_DIVING_WATER_LEVEL 	= -1.6; 
+	default ENTER_DIVING_WATER_LEVEL 	= -2.1; 
 	default EXIT_DIVING_WATER_LEVEL 	= -1.2;
 	default MINIMAL_SUBMERGE_DEPTH 		= -25.0;
 	

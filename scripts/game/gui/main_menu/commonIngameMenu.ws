@@ -16,6 +16,7 @@ class CR4CommonIngameMenu extends CR4MenuBase
 	event  OnConfigUI()
 	{
 		var menuName : name;
+		var selectionPopupRef : CR4ItemSelectionPopup; 
 		
 		
 		if ((!thePlayer.IsAlive() && !thePlayer.OnCheckUnconscious()) || theGame.HasBlackscreenRequested() || FactsQuerySum("nge_pause_menu_disabled") > 0 ) 
@@ -27,6 +28,14 @@ class CR4CommonIngameMenu extends CR4MenuBase
 			
 			if(theGame.IsDialogOrCutscenePlaying())
 				theSound.SoundEvent("music_pause");
+			
+			
+			
+			selectionPopupRef = (CR4ItemSelectionPopup)theGame.GetGuiManager().GetPopup('ItemSelectionPopup');
+			if (selectionPopupRef)
+			{
+				theGame.ClosePopup('ItemSelectionPopup');
+			}
 			
 			
 			m_hideTutorial = true;

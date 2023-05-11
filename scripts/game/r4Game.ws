@@ -1776,7 +1776,14 @@ import class CR4Game extends CCommonGame
 		var witcher : W3PlayerWitcher;
 		
 		
-		thePlayer.RemoveAllNonAutoBuffs( , true );
+		
+		
+		
+		thePlayer.RemoveAllBuffsOfType( EET_Burning );
+		thePlayer.RemoveAllBuffsOfType( EET_Frozen );
+		thePlayer.RemoveAllBuffsOfType( EET_Bleeding );
+		thePlayer.RemoveAllBuffsOfType( EET_SlowdownFrost );
+		thePlayer.RemoveAllBuffsOfType( EET_Slowdown );
 		
 		
 		buffs = thePlayer.GetBuffs();

@@ -173,6 +173,8 @@ class W3Effect_Oil extends CBaseGameplayEffect
 		if( currCount == 1 )
 		{
 			Show( false );
+			
+			thePlayer.ShouldAutoApplyOil(); 
 		}
 		
 		currCount = Max( 0, currCount - 1 );

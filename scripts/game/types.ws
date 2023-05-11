@@ -490,6 +490,78 @@ function MonsterCategoryToResistReduction(type : EMonsterCategory) : name
 	}
 }
 
+function MonsterCategoryToOilNames(monsterCategory : EMonsterCategory) : array<name>
+{
+	var oils : array<name>;
+	
+	switch(monsterCategory)
+	{
+		case MC_Beast:
+			oils.PushBack('Beast Oil 3');
+			oils.PushBack('Beast Oil 2');
+			oils.PushBack('Beast Oil 1');
+			return oils;
+		case MC_Cursed:
+			oils.PushBack('Cursed Oil 3');
+			oils.PushBack('Cursed Oil 2');
+			oils.PushBack('Cursed Oil 1');
+			return oils;
+		case MC_Draconide:
+			oils.PushBack('Draconide Oil 3');
+			oils.PushBack('Draconide Oil 2');
+			oils.PushBack('Draconide Oil 1');
+			return oils;
+		case MC_Human:
+			oils.PushBack('Hanged Man Venom 3');
+			oils.PushBack('Hanged Man Venom 2');
+			oils.PushBack('Hanged Man Venom 1');
+			return oils;
+		case MC_Hybrid:
+			oils.PushBack('Hybrid Oil 3');
+			oils.PushBack('Hybrid Oil 2');
+			oils.PushBack('Hybrid Oil 1');
+			return oils;
+		case MC_Insectoid:
+			oils.PushBack('Insectoid Oil 3');
+			oils.PushBack('Insectoid Oil 2');
+			oils.PushBack('Insectoid Oil 1');
+			return oils;
+		case MC_Magicals:
+			oils.PushBack('Magicals Oil 3');
+			oils.PushBack('Magicals Oil 2');
+			oils.PushBack('Magicals Oil 1');
+			return oils;			
+		case MC_Necrophage:
+			oils.PushBack('Necrophage Oil 3');
+			oils.PushBack('Necrophage Oil 2');
+			oils.PushBack('Necrophage Oil 1');
+			return oils;	
+		case MC_Troll:
+			oils.PushBack('Ogre Oil 3');
+			oils.PushBack('Ogre Oil 2');
+			oils.PushBack('Ogre Oil 1');
+			return oils;	
+		case MC_Relic:
+			oils.PushBack('Relic Oil 3');
+			oils.PushBack('Relic Oil 2');
+			oils.PushBack('Relic Oil 1');
+			return oils;	
+		case MC_Specter:
+			oils.PushBack('Specter Oil 3');
+			oils.PushBack('Specter Oil 2');
+			oils.PushBack('Specter Oil 1');
+			return oils;	
+		case MC_Vampire:
+			oils.PushBack('Vampire Oil 3');
+			oils.PushBack('Vampire Oil 2');
+			oils.PushBack('Vampire Oil 1');
+			return oils;				
+		
+		default : return oils;
+	}
+}
+
+
 
 struct SAttributeTooltip
 {

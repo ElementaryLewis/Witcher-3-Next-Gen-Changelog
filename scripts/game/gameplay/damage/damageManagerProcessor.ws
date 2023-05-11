@@ -47,6 +47,13 @@ class W3DamageManagerProcessor extends CObject
  		InitializeActionVars(act);
  		
  		
+		if( ((CNewNPC)actorAttacker).IsHorse() && actorVictim.HasAbility('mon_werewolf_base'))
+		{
+			action.SetHitReactionType(EHRT_Light);
+		}
+		
+ 		
+ 		
 		
  		if(playerVictim && attackAction && attackAction.IsActionMelee() && !attackAction.CanBeParried() && attackAction.IsParried())
  		{
@@ -532,15 +539,29 @@ class W3DamageManagerProcessor extends CObject
 		if(playerAttacker && actorVictim)
 		{
 			
-			if(playerAttacker.inv.ItemHasAnyActiveOilApplied(weaponId) && (!playerAttacker.CanUseSkill(S_Alchemy_s06) || (playerAttacker.GetSkillLevel(S_Alchemy_s06) < 3)) )
+			if( playerAttacker.inv.ItemHasAnyActiveOilApplied(weaponId) ) 
 			{			
-				playerAttacker.ReduceAllOilsAmmo( weaponId );
-				
-				if(ShouldProcessTutorial('TutorialOilAmmo'))
+				if( !playerAttacker.CanUseSkill(S_Alchemy_s06) || playerAttacker.GetSkillLevel(S_Alchemy_s06) < 3 )
 				{
-					FactsAdd("tut_used_oil_in_combat");
+					playerAttacker.ReduceAllOilsAmmo( weaponId );
+					
+					if(ShouldProcessTutorial('TutorialOilAmmo'))
+					{
+						FactsAdd("tut_used_oil_in_combat");
+					}
+				}
+				
+				
+				if( !playerAttacker.inv.ItemHasActiveOilApplied( weaponId, victimMonsterCategory ) )
+				{
+					thePlayer.ShouldAutoApplyOilImmediately( actorVictim );
 				}
 			}
+			else
+			{
+				thePlayer.ShouldAutoApplyOilImmediately( actorVictim );
+			}
+			
 			
 			
 			playerAttacker.inv.ReduceItemRepairObjectBonusCharge(weaponId);
