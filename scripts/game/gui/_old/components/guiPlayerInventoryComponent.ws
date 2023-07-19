@@ -32,6 +32,11 @@ class W3GuiPlayerInventoryComponent extends W3GuiBaseInventoryComponent
 	public var previewItems    : array<SItemUniqueId>;
 	public var dyePreviewSlots : array<SItemUniqueId>;
 	
+	
+	public var checkTagsOR : bool;
+	default checkTagsOR = false;
+	
+	
 	protected function InvalidateItems( items : array<SItemUniqueId> ) 
 	{
 	}
@@ -797,14 +802,30 @@ class W3GuiPlayerInventoryComponent extends W3GuiBaseInventoryComponent
 	{
 		var i, len:int;
 		len = filterTagList.Size();
-		for (i = 0; i < len; i+=1)
+		
+		if(!checkTagsOR)
 		{
-			if (!_inv.ItemHasTag(item, filterTagList[i]))
+			for (i = 0; i < len; i+=1)
 			{
-				return false;
+				if (!_inv.ItemHasTag(item, filterTagList[i]))
+				{
+					return false;
+				}
 			}
+			return true;
 		}
-		return true;
+		else
+		{
+			for (i = 0; i < len; i+=1)
+			{
+				if (_inv.ItemHasTag(item, filterTagList[i]))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		
 	}
 
 	

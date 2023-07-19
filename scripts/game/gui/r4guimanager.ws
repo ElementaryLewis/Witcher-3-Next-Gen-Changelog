@@ -734,6 +734,20 @@ import class CR4GuiManager extends CGuiManager
 		}
 	}
 	
+	public function OnHDRChanged():void
+	{
+		var menuBase : CR4MenuBase;
+		var ingameMenu : CR4IngameMenu;
+		
+		menuBase = (CR4MenuBase)GetRootMenu();
+		
+		ingameMenu = (CR4IngameMenu)(menuBase.GetSubMenu());
+		if( ingameMenu )
+		{
+			ingameMenu.OnRefreshHDR();
+		}
+	}
+	
 	public function OnSignIn():void
 	{
 		var menuBase : CR4MenuBase;

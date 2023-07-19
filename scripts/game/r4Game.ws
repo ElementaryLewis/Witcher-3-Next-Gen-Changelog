@@ -537,6 +537,11 @@ import class CR4Game extends CCommonGame
 		GetGuiManager().OnSignIn();
 	}
 	
+	event OnHDRChangedEvent()
+	{
+		GetGuiManager().OnHDRChanged();
+	}
+	
 	event OnUserSignedOut()
 	{
 		isSignedIn = false;

@@ -130,12 +130,18 @@ abstract class W3GuiBaseInventoryComponent
 	
 	
 	
+	
+	public var maxItemLimit : int;
+	default maxItemLimit = 9999;
+	
+	
 	public function GetInventoryFlashArray( out flashArray : CScriptedFlashArray, flashObject : CScriptedFlashObject ) : void
 	{
 		var i : int;
 		var item : SItemUniqueId;
 		var rawItems : array< SItemUniqueId >;
 		var l_flashObject : CScriptedFlashObject;
+		var itemCount : int; 
 		
 		_inv.GetAllItems( rawItems );
 		
@@ -144,12 +150,14 @@ abstract class W3GuiBaseInventoryComponent
 		{		
 			item = rawItems[i];
 			
-			if ( ShouldShowItem( item ) )
+			if ( ShouldShowItem( item ) && itemCount < maxItemLimit ) 
 			{
 				
 				l_flashObject = flashObject.CreateFlashObject("red.game.witcher3.menus.common.ItemDataStub");
 				SetInventoryFlashObjectForItem( item, l_flashObject );
 				flashArray.PushBackFlashObject(l_flashObject);
+				
+				itemCount += 1; 
 			}
 		}
 	}	

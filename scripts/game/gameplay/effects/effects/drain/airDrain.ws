@@ -57,6 +57,7 @@ class W3Effect_AirDrain extends CBaseGameplayEffect
 	{
 		super.OnEffectRemoved();
 		
+		target.RemoveBuff(EET_Choking, false, "NoAir"); 
 		target.ResumeEffects(EET_AutoAirRegen, 'AirDrain');
 	}
 }

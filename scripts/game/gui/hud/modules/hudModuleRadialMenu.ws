@@ -21,6 +21,7 @@ class CR4HudModuleRadialMenu extends CR4HudModuleBase
 	
 	private var m_fxSetDescription				  : CScriptedFlashFunction;
 	private var m_fxResetPetardData				  : CScriptedFlashFunction;
+	private var m_fxDisableRadialInput 			  : CScriptedFlashFunction;
 	private var selectedSign : ESignType;
 	private var lastItemDescription : string;
 	
@@ -68,6 +69,7 @@ class CR4HudModuleRadialMenu extends CR4HudModuleBase
 		
 		m_fxSetDescription 			= flashModule.GetMemberFlashFunction( "SetChoosenDescription" );
 		m_fxResetPetardData			= flashModule.GetMemberFlashFunction( "ResetPetardData" );
+		m_fxDisableRadialInput		= flashModule.GetMemberFlashFunction( "DisableRadialInput" );
 		
 		
 		theInput.RegisterListener( this, 'OnRadialMenu', 'RadialMenu' );
@@ -81,6 +83,20 @@ class CR4HudModuleRadialMenu extends CR4HudModuleBase
 		
 		SelectCurrentSign();
 	}
+	
+	
+	public function DisableRadialMenuInput(disable : bool)
+	{
+		m_fxDisableRadialInput.InvokeSelfOneArg(FlashArgBool(disable));
+	}
+	
+	private function ToggleRadialMenuInItemsModule(on : bool)
+	{	
+		var itemInfoModule : CR4HudModuleItemInfo;
+		itemInfoModule = (CR4HudModuleItemInfo)theGame.GetHud().GetHudModule("ItemInfoModule");
+		itemInfoModule.RadialMenuOn(on);
+	}
+	
 	
 	public function setArabicAligmentMode() : void
 	{
@@ -299,7 +315,7 @@ class CR4HudModuleRadialMenu extends CR4HudModuleBase
 	}
 	event  OnRadialPauseGame()
 	{
-		theGame.Pause( "FastMenu" );
+		
 	}
 	function ShowRadialMenu()
 	{
@@ -373,6 +389,7 @@ class CR4HudModuleRadialMenu extends CR4HudModuleBase
 			theGame.GetTutorialSystem().uiHandler.OnOpeningMenu( 'RadialMenu' );
 			
 			
+			ToggleRadialMenuInItemsModule(true);
 			if(!thePlayer.IsCiri())
 				selectedSign = GetWitcherPlayer().GetEquippedSign();
 		}
@@ -438,6 +455,7 @@ class CR4HudModuleRadialMenu extends CR4HudModuleBase
 			theGame.GetTutorialSystem().uiHandler.OnClosingMenu( 'RadialMenu' );
 			
 			
+			ToggleRadialMenuInItemsModule(false);
 			if(GetWitcherPlayer().GetEquippedSign() == ST_None)
 			{
 				GetWitcherPlayer().SetEquippedSign(selectedSign);

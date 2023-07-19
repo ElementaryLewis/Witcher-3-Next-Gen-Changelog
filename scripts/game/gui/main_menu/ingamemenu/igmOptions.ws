@@ -351,9 +351,16 @@ function IngameMenu_FillArrayFromConfigGroup(flashStorageUtility : CScriptedFlas
 	
 	groupName = inGameConfigWrapper.GetGroupName(groupID);
 	
-	if (groupName != 'Hidden' && inGameConfigWrapper.IsGroupVisible(groupName) && !inGameConfigWrapper.DoGroupHasTag(groupName, 'keybinds'))
+	if (groupName != 'Hidden' && inGameConfigWrapper.IsGroupVisible(groupName) && !inGameConfigWrapper.DoGroupHasTag(groupName, 'keybinds') && (groupName != 'HDR' || theGame.GetHDRSupported()))
 	{
-		groupRootObject = IngameMenu_FetchAndGenerateGroupMenuObject(flashStorageUtility, "panel_", inGameConfigWrapper.GetGroupDisplayName(groupName), rootFlashArray, groupParentArray);
+		if (inGameConfigWrapper.DoGroupHasTag(groupName, 'customDisplayName'))
+		{
+			groupRootObject = IngameMenu_FetchAndGenerateGroupMenuObject(flashStorageUtility, "", inGameConfigWrapper.GetGroupDisplayName(groupName), rootFlashArray, groupParentArray);
+		}
+		else
+		{
+			groupRootObject = IngameMenu_FetchAndGenerateGroupMenuObject(flashStorageUtility, "panel_", inGameConfigWrapper.GetGroupDisplayName(groupName), rootFlashArray, groupParentArray);
+		}
 		
 		if (groupRootObject)
 		{
@@ -667,6 +674,7 @@ function IngameMenu_FillSubMenuOptionsList(flashStorageUtility : CScriptedFlashV
 	var optionalEntry		  : bool;
 
 	
+	var isHDRSupported        : bool;
 	var isIntelGPU		  	  : bool;
 	var isRTEnabled  		  : bool;
 	var isRTSupported  		  : bool;
@@ -681,6 +689,7 @@ function IngameMenu_FillSubMenuOptionsList(flashStorageUtility : CScriptedFlashV
 	var isReflexSupported	  : bool;
 	var isMotionBlurEnabled   : bool;
 
+	var enableIfHDR			: bool;
 	var enableIfRT		  	: bool;
 	var enableIfRTSupported	: bool;
 	var enableIfHairWorks	: bool;
@@ -709,6 +718,7 @@ function IngameMenu_FillSubMenuOptionsList(flashStorageUtility : CScriptedFlashV
 	
 	groupDisplayName = StrReplaceAll(inGameConfigWrapper.GetGroupDisplayName(groupName), ".", "_");
 
+	isHDRSupported = theGame.GetHDRSupported();
 	isIntelGPU = theGame.IsIntelGPU();
 	isRTEnabled = theGame.GetRTEnabled();
 	isRTSupported = theGame.GetRTSupported();
@@ -770,6 +780,7 @@ function IngameMenu_FillSubMenuOptionsList(flashStorageUtility : CScriptedFlashV
 		streamable = inGameConfigWrapper.DoVarHasTag(groupName, optionName, 'streamable');
 		optionalEntry = inGameConfigWrapper.DoVarHasTag(groupName, optionName, 'optional');
 
+		enableIfHDR = inGameConfigWrapper.DoVarHasTag(groupName, optionName, 'enableIfHDR');
 		enableIfRT = inGameConfigWrapper.DoVarHasTag(groupName, optionName, 'enableIfRT');
 		enableIfRTSupported = inGameConfigWrapper.DoVarHasTag(groupName, optionName, 'enableIfRTSupported');
 		enableIfHairWorks = inGameConfigWrapper.DoVarHasTag(groupName, optionName, 'enableIfHairWorks');
@@ -815,6 +826,7 @@ function IngameMenu_FillSubMenuOptionsList(flashStorageUtility : CScriptedFlashV
 			startingValue = optionValue;
 			if (disableIfDLSSGAndSet1 && isDLSSGEnabled) optionValue = "1";
 			if (enableIfRTSupported && !isRTSupported) optionValue = "0"; 
+			if (enableIfHDR && !isHDRSupported) optionValue = "0"; 
 			if (optionName == 'Virtual_HairWorksLevel' && disableIfIntelGPU && isIntelGPU) optionValue = "0"; 
 						
 			optionObject.SetMemberFlashUInt( "type", IngameMenu_GetOptionTypeFromString(optionDisplayType) );
@@ -843,6 +855,7 @@ function IngameMenu_FillSubMenuOptionsList(flashStorageUtility : CScriptedFlashV
 				(enableIfDLSSGSupported && !isDLSSGSupported) ||
 				(enableIfReflexSupported && !isReflexSupported) ||
 				(disableIfIntelGPU && isIntelGPU) ||
+				(enableIfHDR && !isHDRSupported) ||
 				(enableIfMotionBlur && !isMotionBlurEnabled)
 			);
 			optionObject.SetMemberFlashBool( "indent", inGameConfigWrapper.DoVarHasTag( groupName, optionName, 'indent' ) );
@@ -1196,7 +1209,13 @@ function IngameMenu_GatherKeybindData(parentArray : CScriptedFlashArray, flashSt
 			
 			currentKeybindData = flashStorageUtility.CreateTempFlashObject();
 			
-			currentKeybindData.SetMemberFlashString("label", IngameMenu_GetLocalizedKeybindName(currentKeybindName));
+			
+			if(currentKeybindName == 'DrinkPotion1Hold' || currentKeybindName == 'DrinkPotion2Hold' || currentKeybindName == 'DrinkPotion3Hold' || currentKeybindName == 'DrinkPotion4Hold')
+				continue;
+				
+			else
+			
+				currentKeybindData.SetMemberFlashString("label", IngameMenu_GetLocalizedKeybindName(currentKeybindName));
 			
 			keybindBindingKey = inGameConfigWrapper.GetVarValue('PCInput', currentKeybindName);
 			keybindBindingKey = StrReplace(keybindBindingKey, ";IK_None", ""); 

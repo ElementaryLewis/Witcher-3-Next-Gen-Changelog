@@ -8,7 +8,7 @@
 
 
 statemachine class W3PlayerWitcher extends CR4Player
-{	
+{
 	
 	private saved var craftingSchematics				: array<name>; 					
 	private saved var expandedCraftingCategories		: array<name>;
@@ -5035,28 +5035,66 @@ statemachine class W3PlayerWitcher extends CR4Player
 	{
 		if(isUpperSlot)
 		{
-			if(selectedPotionSlotUpper == EES_Potion1 && IsAnyItemEquippedOnSlot(EES_Potion3))
+			if(selectedPotionSlotUpper == EES_Potion1)
 			{
-				selectedPotionSlotUpper = EES_Potion3;
-				return true;
+				
+				if(IsAnyItemEquippedOnSlot(EES_Potion3))
+				{
+					selectedPotionSlotUpper = EES_Potion3;
+					return true;
+				}
+				else if(CheckRadialMenu())
+				{
+					PotionSelectionPopup( EISPM_RadialMenuSlot3 );
+					return true;
+				}
+				
 			}
-			else if(selectedPotionSlotUpper == EES_Potion3 && IsAnyItemEquippedOnSlot(EES_Potion1))
+			else if(selectedPotionSlotUpper == EES_Potion3)
 			{
-				selectedPotionSlotUpper = EES_Potion1;
-				return true;
+				
+				if(IsAnyItemEquippedOnSlot(EES_Potion1))
+				{
+					selectedPotionSlotUpper = EES_Potion1;
+					return true;
+				}
+				else if(CheckRadialMenu())
+				{
+					PotionSelectionPopup( EISPM_RadialMenuSlot1 );
+					return true;
+				}
+				
 			}
 		}
 		else
 		{
-			if(selectedPotionSlotLower == EES_Potion2 && IsAnyItemEquippedOnSlot(EES_Potion4))
+			if(selectedPotionSlotLower == EES_Potion2)
 			{
-				selectedPotionSlotLower = EES_Potion4;
-				return true;
+				
+				if(IsAnyItemEquippedOnSlot(EES_Potion4))
+				{
+					selectedPotionSlotLower = EES_Potion4;
+					return true;
+				}
+				else if(CheckRadialMenu())
+				{
+					PotionSelectionPopup( EISPM_RadialMenuSlot4 );
+				}
+				
 			}
-			else if(selectedPotionSlotLower == EES_Potion4 && IsAnyItemEquippedOnSlot(EES_Potion2))
+			else if(selectedPotionSlotLower == EES_Potion4)
 			{
-				selectedPotionSlotLower = EES_Potion2;
-				return true;
+				
+				if(IsAnyItemEquippedOnSlot(EES_Potion2))
+				{
+					selectedPotionSlotLower = EES_Potion2;
+					return true;
+				}
+				else if(CheckRadialMenu())
+				{
+					PotionSelectionPopup( EISPM_RadialMenuSlot2 );
+				}
+				
 			}
 		}
 		
@@ -11706,6 +11744,124 @@ statemachine class W3PlayerWitcher extends CR4Player
 		
 		theGame.GetJournalManager().ForceUntrackingQuestForEP1Savegame();
 	}
+	
+	
+	private var radialPopupShown : bool;
+	
+	private function ToggleRadialMenuInput(enable : bool)
+	{
+		var hud    : CR4ScriptedHud;
+		var module : CR4HudModuleRadialMenu;
+		
+		hud = ( CR4ScriptedHud )theGame.GetHud();
+		
+		if ( hud )
+		{
+			module = (CR4HudModuleRadialMenu)hud.GetHudModule( "RadialMenuModule" );
+			if ( module )
+			{
+				module.DisableRadialMenuInput(!enable);
+			}
+		}
+	}
+	public function EnableRadialInput()
+	{
+		radialPopupShown = false;
+		AddTimer( 'EnableRadialMenuInput', 0.03f, false );
+	}
+	
+	timer function EnableRadialMenuInput( delta : float , id : int)
+	{
+		ToggleRadialMenuInput(true);
+	}
+	
+	timer function DrinkRadialPotionUpper( delta : float , id : int)
+	{
+		OnPotionDrinkInput(true);
+		GetInputHandler().SetRadialPotionUpperTimer(false);
+	}
+	
+	timer function DrinkRadialPotionLower( delta : float , id : int)
+	{
+		OnPotionDrinkInput(false);
+		GetInputHandler().SetRadialPotionLowerTimer(false);
+	}
+	
+	public function GetRadialPopupShown() : bool
+	{
+		return radialPopupShown;
+	}
+
+	public function PotionSelectionPopup( selectionMode : EItemSelectionPopupMode )
+	{
+		var cat : array<name>;
+		var m_popupData : W3ItemSelectionPopupData;
+	
+		m_popupData = new W3ItemSelectionPopupData in theGame.GetGuiManager();
+		m_popupData.targetInventory = thePlayer.GetInventory();
+		m_popupData.overrideQuestItemRestrictions = true;
+
+		m_popupData.selectionMode = selectionMode;
+		
+		cat.PushBack('potion');
+		cat.PushBack('edibles');
+		m_popupData.categoryFilterList = cat;
+		
+		theGame.RequestPopup('ItemSelectionPopup', m_popupData);
+		
+		ToggleRadialMenuInput(false);
+		radialPopupShown = true;
+	}
+	
+	public function OilSelectionPopup( steel : bool )
+	{
+		var cat, tags : array<name>;
+		var m_popupData : W3ItemSelectionPopupData;
+	
+		m_popupData = new W3ItemSelectionPopupData in theGame.GetGuiManager();
+		m_popupData.targetInventory = thePlayer.GetInventory();
+		m_popupData.overrideQuestItemRestrictions = true;
+		
+		if(steel)
+		{
+			tags.PushBack('SteelOil');
+			m_popupData.selectionMode = EISPM_RadialMenuSteelOil;
+		}
+		else
+		{
+			tags.PushBack('SilverOil');
+			m_popupData.selectionMode = EISPM_RadialMenuSilverOil;
+		}
+		m_popupData.filterTagsList = tags;		
+		
+		cat.PushBack('oil');
+		m_popupData.categoryFilterList = cat;
+		
+		theGame.RequestPopup('ItemSelectionPopup', m_popupData);
+		
+		ToggleRadialMenuInput(false);
+		radialPopupShown = true;
+	}
+	
+	private function CheckRadialMenu() : bool
+	{
+		var hud    : CR4ScriptedHud;
+		var module : CR4HudModuleRadialMenu;
+		
+		hud = ( CR4ScriptedHud )theGame.GetHud();
+		
+		if ( hud )
+		{
+			module = (CR4HudModuleRadialMenu)hud.GetHudModule( "RadialMenuModule" );
+			if ( module )
+			{				
+				return module.IsRadialMenuOpened();
+			}
+		}
+		
+		return false;
+	}
+	
 }
 
 exec function fuqfep1()

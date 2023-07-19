@@ -10,7 +10,9 @@ enum HudItemInfoBinding
 	HudItemInfoBinding_potion1 = 1,
 	HudItemInfoBinding_potion2 = 2,
 	HudItemInfoBinding_potion3 = 3,
-	HudItemInfoBinding_potion4 = 4
+	HudItemInfoBinding_potion4 = 4,
+	HudItemInfoBinding_steelsword = 5,
+	HudItemInfoBinding_silversword = 6
 };
 
 struct SHudItemInfo
@@ -30,6 +32,16 @@ class CR4HudModuleItemInfo extends CR4HudModuleBase
 	private var m_currentItemOnSlot2 	: SItemUniqueId;
 	private var m_currentItemOnSlot3 	: SItemUniqueId;
 	private var m_currentItemOnSlot4 	: SItemUniqueId;
+	
+	
+	private var m_currentItemOnSlotSteelSword 	: SItemUniqueId;
+	private var m_currentItemOnSlotSilverSword 	: SItemUniqueId;
+	
+	private var m_currentItemOnSlotSteelSwordAmmo	: int;
+	private var m_currentItemOnSlotSilverSwordAmmo	: int;
+	
+	private var m_fxRadialMenuOn : CScriptedFlashFunction;
+	
 	
 	private var m_lastBoltItem : SItemUniqueId;
 
@@ -74,6 +86,7 @@ class CR4HudModuleItemInfo extends CR4HudModuleBase
 		m_fxSetItemInfo 		= flashModule.GetMemberFlashFunction( "setItemInfo" );
 		m_fxSwitchAnimation		= flashModule.GetMemberFlashFunction( "animatePotionSwitch" );
 		m_fxShowButtonHints		= flashModule.GetMemberFlashFunction( "showButtonHints" );
+		m_fxRadialMenuOn		= flashModule.GetMemberFlashFunction( "setRadialMenuOn" ); 
 
 		m_previousSetItemInfo.Resize( EnumGetMax( 'HudItemInfoBinding' ) + 1 );
 		
@@ -101,6 +114,13 @@ class CR4HudModuleItemInfo extends CR4HudModuleBase
 		
 		var runword6Applied  : bool;
 		var forcedIconUpdate : bool;
+		
+		
+		var steelOils, silverOils : array<SItemUniqueId>;
+		var steelOil, silverOil : SItemUniqueId;
+		var steelOilItemNames, silverOilItemNames : array<W3Effect_Oil>; 
+		var i : int;
+		
 		
 		if ( !CanTick( timeDelta ) )
 		{
@@ -204,6 +224,34 @@ class CR4HudModuleItemInfo extends CR4HudModuleBase
 			UpdateItem( alterItem1, m_currentItemOnSlot3,  m_currentItemOnSlot3Ammo,  HudItemInfoBinding_potion3, 3, forcedIconUpdate );
 			UpdateItem( alterItem2, m_currentItemOnSlot4,  m_currentItemOnSlot4Ammo,  HudItemInfoBinding_potion4, 4, forcedIconUpdate );
 			
+			
+			if(radialMenuOn && !m_IsPlayerCiri)
+			{
+				steelOilItemNames = thePlayer.inv.GetOilsAppliedOnItem( thePlayer.GetEquippedSword( true ) );
+				silverOilItemNames = thePlayer.inv.GetOilsAppliedOnItem( thePlayer.GetEquippedSword( false ) );
+				for(i=0;i<steelOilItemNames.Size();i+=1)
+				{
+					if( thePlayer.inv.HasItem( steelOilItemNames[i].GetOilItemName() ) )
+					{
+						steelOils = thePlayer.inv.GetItemsByName(steelOilItemNames[i].GetOilItemName());
+						break;
+					}
+				}
+				for(i=0;i<silverOilItemNames.Size();i+=1)
+				{
+					if( thePlayer.inv.HasItem( silverOilItemNames[i].GetOilItemName() ) )
+					{
+						silverOils = thePlayer.inv.GetItemsByName(silverOilItemNames[i].GetOilItemName());
+						break;
+					}
+				}		
+				steelOil = steelOils[0];
+				silverOil = silverOils[0];
+				UpdateItem( steelOil, m_currentItemOnSlotSteelSword,  m_currentItemOnSlotSteelSwordAmmo,  HudItemInfoBinding_steelsword, 5, forcedIconUpdate );
+				UpdateItem( silverOil, m_currentItemOnSlotSilverSword,  m_currentItemOnSlotSilverSwordAmmo,  HudItemInfoBinding_silversword, 6, forcedIconUpdate );	
+			}
+			
+			
 			if ( switchAnimation != -1 )
 			{
 				m_fxSwitchAnimation.InvokeSelfOneArg( FlashArgInt( switchAnimation ) );
@@ -216,6 +264,15 @@ class CR4HudModuleItemInfo extends CR4HudModuleBase
 		else
 			SetAlwaysDisplayed( false );
 	}
+	
+	
+	private var radialMenuOn : bool;
+	public function RadialMenuOn(on : bool)
+	{
+		radialMenuOn = on;
+		m_fxRadialMenuOn.InvokeSelfOneArg( FlashArgBool( radialMenuOn && !m_IsPlayerCiri ) );
+	}
+	
 	
 	function GetCiriItem() : SItemUniqueId
 	{
@@ -240,6 +297,11 @@ class CR4HudModuleItemInfo extends CR4HudModuleBase
 		m_currentItemOnSlot2  = dummy;
 		m_currentItemOnSlot3  = dummy;
 		m_currentItemOnSlot4  = dummy;
+		
+		
+		m_currentItemOnSlotSteelSword = dummy;
+		m_currentItemOnSlotSilverSword = dummy;
+		
 	}
 	
 	public function UpdateItem( out currItem : SItemUniqueId, out prevItem : SItemUniqueId, out prevItemAmmo : int, bindingID : HudItemInfoBinding, slotId : int, optional forceUpdate:bool )
@@ -302,6 +364,8 @@ class CR4HudModuleItemInfo extends CR4HudModuleBase
 				if ( slotId == 2 ) UpdateItemData( dummy, HudItemInfoBinding_potion2 );
 				if ( slotId == 3 ) UpdateItemData( dummy, HudItemInfoBinding_potion3 );
 				if ( slotId == 4 ) UpdateItemData( dummy, HudItemInfoBinding_potion4 );
+				if ( slotId == 5 ) UpdateItemData( dummy, HudItemInfoBinding_steelsword );	
+				if ( slotId == 6 ) UpdateItemData( dummy, HudItemInfoBinding_silversword );	
 			}
 		}
 		else
@@ -310,7 +374,9 @@ class CR4HudModuleItemInfo extends CR4HudModuleBase
 			if ( slotId == 1 ) UpdateItemData( dummy, HudItemInfoBinding_potion1 );
 			if ( slotId == 2 ) UpdateItemData( dummy, HudItemInfoBinding_potion2 );		
 			if ( slotId == 3 ) UpdateItemData( dummy, HudItemInfoBinding_potion3 );
-			if ( slotId == 4 ) UpdateItemData( dummy, HudItemInfoBinding_potion4 );		
+			if ( slotId == 4 ) UpdateItemData( dummy, HudItemInfoBinding_potion4 );	
+			if ( slotId == 5 ) UpdateItemData( dummy, HudItemInfoBinding_steelsword );	
+			if ( slotId == 6 ) UpdateItemData( dummy, HudItemInfoBinding_silversword );	
 		}
 		if ( updateItem )
 		{
@@ -327,9 +393,13 @@ class CR4HudModuleItemInfo extends CR4HudModuleBase
 		UpdateItemData( dummy, HudItemInfoBinding_potion2 );
 		UpdateItemData( dummy, HudItemInfoBinding_potion3 );
 		UpdateItemData( dummy, HudItemInfoBinding_potion4 );
+		UpdateItemData( dummy, HudItemInfoBinding_steelsword );	
+		UpdateItemData( dummy, HudItemInfoBinding_silversword );
 		m_currentItemSelected = dummy;
 		m_currentItemOnSlot1 = dummy;
 		m_currentItemOnSlot2 = dummy;
+		m_currentItemOnSlotSteelSword = dummy;	
+		m_currentItemOnSlotSilverSword = dummy;	
 		m_currentItemOnSlot3 = dummy;
 		m_currentItemOnSlot4 = dummy;
 	}
@@ -449,6 +519,13 @@ class CR4HudModuleItemInfo extends CR4HudModuleBase
 			}
 		}
 		
+		
+		if(bindingID == HudItemInfoBinding_steelsword || bindingID == HudItemInfoBinding_silversword)
+		{
+			ammoStr = "";
+		}
+		
+		
 		itemInfo = m_previousSetItemInfo[ bindingID ];
 		if ( itemInfo.m_icon     != icon ||
 			 itemInfo.m_category != category ||
@@ -512,6 +589,14 @@ class CR4HudModuleItemInfo extends CR4HudModuleBase
 			case HudItemInfoBinding_potion4 :
 				theInput.GetPCKeysForAction('DrinkPotion4',outKeys);
 				break;
+			
+			case HudItemInfoBinding_steelsword :
+				theInput.GetPCKeysForAction('SteelSword',outKeys);
+				break;
+			case HudItemInfoBinding_silversword :
+				theInput.GetPCKeysForAction('SilverSword',outKeys);
+				break;
+			
 			
 			
 				

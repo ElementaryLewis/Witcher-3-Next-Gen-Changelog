@@ -237,6 +237,12 @@ state Meditation in W3PlayerWitcher extends MeditationBase
 		}
 		
 		
+		thePlayer.abilityManager.SetStatPointCurrent(BCS_Air, thePlayer.GetStatMax(BCS_Air));
+		thePlayer.RemoveAllBuffsOfType(EET_AutoAirRegen);
+		thePlayer.AddEffectDefault(EET_AutoAirRegen, thePlayer, "meditation_reset", false);
+		
+		
+		
 		if(changedContext)
 		{
 			theInput.RestoreContext('Meditation', false);

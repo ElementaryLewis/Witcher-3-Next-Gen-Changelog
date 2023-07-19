@@ -314,6 +314,7 @@ import class CCommonGame extends CGame
 	import final function GetVoiceLangDownloadStatus( lockName : string ) : int;
 	
 	import final function UpdateCrossProgressionValue( value : string ) : void;
+	import final function RefreshCrossProgressionSavesList() : void;
 	
 	
 	protected var m_voiceLangDownloadStatusListener : CScriptedFlashValueStorage;

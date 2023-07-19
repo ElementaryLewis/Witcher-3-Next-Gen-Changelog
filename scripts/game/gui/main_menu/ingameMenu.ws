@@ -420,7 +420,12 @@ class CR4IngameMenu extends CR4MenuBase
 			m_fxSetCurrentUsername.InvokeSelfOneArg(FlashArgString(username));
 		}
 	}
-
+	
+	event OnRefreshHDR()
+	{
+		PopulateMenuData();
+	}
+	
 	event OnRefresh()
 	{
 		var audioLanguageName 	: string;
@@ -560,6 +565,8 @@ class CR4IngameMenu extends CR4MenuBase
 		var controlsFeedbackModule : CR4HudModuleControlsFeedback;
 		var interactionModule : CR4HudModuleInteractions;
 		var hud : CR4ScriptedHud;
+		
+		theGame.SetHDRMenuActive(false);
 		
 		SaveChangedSettings();
 		
@@ -873,9 +880,27 @@ class CR4IngameMenu extends CR4MenuBase
 		}
 	}
 
-	event  OnShowOptionSubmenu( actionType:int, menuTag:int ) : void
+	event  OnShowSaveGameMenu() : void
 	{
+		LogChannel('UI', "OnShowSaveGameMenu");
+	}
+
+	event  OnShowLoadGameMenu() : void
+	{
+		theGame.RefreshCrossProgressionSavesList();
+	}
+
+	event  OnShowOptionSubmenu( actionType:int, menuTag:int, id:string ) : void
+	{		
 		updateDLSSGOptionChanged();
+		if (id == "settings_hdr")
+		{
+			theGame.SetHDRMenuActive(true);
+		}
+		else
+		{
+			theGame.SetHDRMenuActive(false);
+		}
 	}
 	
 	public function HandleLoadGameFailed():void
@@ -2008,6 +2033,8 @@ class CR4IngameMenu extends CR4MenuBase
 		var graphicChangesPending:bool;
 		var hud : CR4ScriptedHud;
 		
+		theGame.SetHDRMenuActive(false);
+		
 		if (inGameConfigBufferedWrapper.AnyBufferedVarHasTag('refreshViewport'))
 		{
 			inGameConfigBufferedWrapper.ApplyNewValues();
@@ -2034,6 +2061,8 @@ class CR4IngameMenu extends CR4MenuBase
 		var radialMenuModule : CR4HudModuleRadialMenu;
 		var confirmResult : int;
 		var flashObject : CScriptedFlashObject;
+		
+		theGame.SetHDRMenuActive(false);
 		
 		hud = (CR4ScriptedHud)(theGame.GetHud());
 		overlayPopupRef = (CR4OverlayPopup) theGame.GetGuiManager().GetPopup('OverlayPopup');
@@ -3113,6 +3142,24 @@ class CR4IngameMenu extends CR4MenuBase
 			return 'input_overlap5';
 		}
 		
+		else if (mInGameConfigWrapper.DoVarHasTag('PCInput', keybindName, 'input_overlap_potion1'))
+		{
+			return 'input_overlap_potion1';
+		}
+		else if (mInGameConfigWrapper.DoVarHasTag('PCInput', keybindName, 'input_overlap_potion2'))
+		{
+			return 'input_overlap_potion2';
+		}
+		else if (mInGameConfigWrapper.DoVarHasTag('PCInput', keybindName, 'input_overlap_potion3'))
+		{
+			return 'input_overlap_potion3';
+		}
+		else if (mInGameConfigWrapper.DoVarHasTag('PCInput', keybindName, 'input_overlap_potion4'))
+		{
+			return 'input_overlap_potion4';
+		}
+		
+		
 		return '';
 	}
 	
@@ -3174,6 +3221,17 @@ class CR4IngameMenu extends CR4MenuBase
 		newSettingString = newKeybindValue + ";IK_None"; 
 		mInGameConfigWrapper.SetVarValue('PCInput', keybindTag, newSettingString);
 		SendKeybindData();
+		
+		
+		if(keybindTag == 'DrinkPotion1')
+			OnChangeKeybind('DrinkPotion1Hold', newKeybindValue);
+		else if(keybindTag == 'DrinkPotion2')
+			OnChangeKeybind('DrinkPotion2Hold', newKeybindValue);
+		else if(keybindTag == 'DrinkPotion3')
+			OnChangeKeybind('DrinkPotion3Hold', newKeybindValue);
+		else if(keybindTag == 'DrinkPotion4')
+			OnChangeKeybind('DrinkPotion4Hold', newKeybindValue);
+		
 	}
 	
 	event  OnSmartKeybindEnabledChanged(value:bool):void

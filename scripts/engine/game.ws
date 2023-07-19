@@ -267,6 +267,8 @@ import class CGame extends CObject
 	
 	import final function ToggleRTEnabled() : void;
 	
+	import final function GetHDRSupported() : bool;
+	import final function SetHDRMenuActive( hdrMenuActive: bool) : void;
 	import final function IsIntelGPU() : bool;
 	import final function GetRTEnabled() : bool;
 	import final function GetRTSupported() : bool;
