@@ -745,8 +745,6 @@ function TutorialMessagesEnable(optional enable : bool)
 	{
 		inGameConfigWrapper.SetVarValue('Gameplay', 'HudTutorialEnabled', "true");
 	}
-	
-	theGame.SaveUserSettings();
 }
 
 exec function tut_scr(scriptName : name)

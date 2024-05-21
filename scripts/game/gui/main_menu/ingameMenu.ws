@@ -983,10 +983,7 @@ class CR4IngameMenu extends CR4MenuBase
 		l_DataFlashObject.SetMemberFlashString( "tfContentSignInTopA", "[[ui_gog_qr_explain_1]]" );
 		l_DataFlashObject.SetMemberFlashString( "tfContentSignInTopB", "[[ui_gog_qr_explain_2]]" );
 		if (isPlatformPC) {
-			if (theGame.UsesRedLauncher())
-				l_DataFlashObject.SetMemberFlashString( "tfContentSignIn2", "[[ui_gog_red_launcher_signin_instructions]]");
-			else
-				l_DataFlashObject.SetMemberFlashString( "tfContentSignIn2", "[[ui_gog_pc_signin_instructions]]");
+			l_DataFlashObject.SetMemberFlashString( "tfContentSignIn2", "[[ui_gog_red_launcher_signin_instructions]]");
 		}
 		else
 		{
